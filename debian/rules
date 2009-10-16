@@ -36,7 +36,9 @@ clean:
 config: config-stamp
 config-stamp: configure
 	dh_testdir
-	CFLAGS="$(CFLAGS)" ./configure --prefix=/usr --sysconfdir=/usr/share
+	CFLAGS="$(CFLAGS)" ./configure --prefix=/usr	\
+		--sysconfdir=/usr/share	\
+		--mandir=/usr/share/man
 	touch config-stamp
 
 build: build-stamp
@@ -69,7 +71,8 @@ binary-arch: build install
 	dh_installchangelogs ChangeLog
 	dh_installdocs NEWS README THANKS
 	dh_installmenu
-	dh_installman debian/gwaei.1 debian/waei.1
+	# should be done by the installation above
+	#dh_installman mandir/gwaei.1 mandir/waei.1
 	dh_gconf
 	dh_strip
 	dh_compress
