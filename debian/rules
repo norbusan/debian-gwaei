@@ -1,0 +1,84 @@
+#!/usr/bin/make -f
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+# currently not needed
+#include /usr/share/quilt/quilt.make
+
+PACKAGE=gwaei
+
+CFLAGS = -Wall -g
+
+ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+	CFLAGS += -O0
+endif
+
+# if we need quilt
+#clean: unpatch
+
+clean:
+	dh_testdir
+	dh_testroot
+	make clean || true
+	rm -f config.status Doxyfile config.h stamp-h1 config.log
+	rm -f Makefile help/gwaei.omf help/Makefile po/Makefile
+	rm -f po/POTFILES po/Makefile.in rpm/rpm_gconf_install_post.sh
+	rm -f rpm/gwaei.spec rpm/rpm_gconf_uninstall_pre.sh 
+	rm -f src/Makefile src/xml/Makefile src/kpengine/Makefile
+	rm -rf src/kpengine/.deps src/.deps
+	rm -f src/desktop/Makefile src/schemas/Makefile
+	rm -f src/img/Makefile
+	rm -f deb/DEBIAN/control deb/DEBIAN/postinst deb/DEBIAN/prerm
+	rm -f build-stamp configure-stamp
+	dh_clean
+
+config: config-stamp
+config-stamp: configure
+	dh_testdir
+	CFLAGS="$(CFLAGS)" ./configure --prefix=/usr --sysconfdir=/usr/share
+	touch config-stamp
+
+build: build-stamp
+#
+# if we need quilt
+#build-stamp: config $(QUILT_STAMPFN)
+
+build-stamp: config
+	dh_testdir
+	$(MAKE)
+	touch build-stamp
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_prep
+	$(MAKE) install DESTDIR=$(CURDIR)/debian/$(PACKAGE)
+	# GPL is shipped globally, and mentioned in the copyright file
+	rm -f $(CURDIR)/debian/$(PACKAGE)/usr/share/doc/gwaei/COPYING
+	# this will be already installed by dh_installchangelogs below
+	rm -f $(CURDIR)/debian/$(PACKAGE)/usr/share/doc/gwaei/ChangeLog
+
+# Build architecture-independent files here.
+binary-indep: build install
+
+# Build architecture-dependent files here.
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs ChangeLog
+	dh_installdocs NEWS README THANKS
+	dh_installmenu
+	dh_installman debian/gwaei.1 debian/waei.1
+	dh_gconf
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: config build clean binary-indep binary-arch binary install

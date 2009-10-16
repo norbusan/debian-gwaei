@@ -1,0 +1,5 @@
+gwaei (1.1+git091016-1) unstable; urgency=low
+
+  * Initial packaging for Debian (Closes: #530398)
+
+ -- Norbert Preining <preining@debian.org>  Fri, 16 Oct 2009 12:37:57 +0900
