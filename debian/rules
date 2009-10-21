@@ -38,7 +38,8 @@ config-stamp: configure
 	dh_testdir
 	CFLAGS="$(CFLAGS)" ./configure --prefix=/usr	\
 		--sysconfdir=/usr/share	\
-		--mandir=/usr/share/man
+		--mandir=/usr/share/man \
+		--disable-schemas-install
 	touch config-stamp
 
 build: build-stamp
