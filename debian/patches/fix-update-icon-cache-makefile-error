@@ -1,0 +1,33 @@
+small but in the makefiles, already included upstream
+Norbert Preining
+---
+ src/img/Makefile.am |    2 +-
+ src/img/Makefile.in |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+Index: gwaei-1.2.0/src/img/Makefile.am
+===================================================================
+--- gwaei-1.2.0.orig/src/img/Makefile.am	2009-10-26 09:48:01.000000000 +0900
++++ gwaei-1.2.0/src/img/Makefile.am	2009-10-26 09:48:44.000000000 +0900
+@@ -45,7 +45,7 @@
+ update-icon-cache:
+ 	gtk-update-icon-cache $(datadir)/icons/hicolor || true
+ else
+-	update-icon-cache:
++update-icon-cache:
+ endif
+ 
+ 
+Index: gwaei-1.2.0/src/img/Makefile.in
+===================================================================
+--- gwaei-1.2.0.orig/src/img/Makefile.in	2009-10-26 09:47:59.000000000 +0900
++++ gwaei-1.2.0/src/img/Makefile.in	2009-10-26 09:48:24.000000000 +0900
+@@ -711,7 +711,7 @@
+ 
+ @GCONF_SCHEMAS_INSTALL_TRUE@update-icon-cache:
+ @GCONF_SCHEMAS_INSTALL_TRUE@	gtk-update-icon-cache $(datadir)/icons/hicolor || true
+-@GCONF_SCHEMAS_INSTALL_FALSE@	update-icon-cache:
++@GCONF_SCHEMAS_INSTALL_FALSE@update-icon-cache:
+ # Tell versions [3.59,3.63) of GNU make to not export all variables.
+ # Otherwise a system limit (for SysV at least) may be exceeded.
+ .NOEXPORT:

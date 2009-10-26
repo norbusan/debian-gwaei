@@ -4,7 +4,9 @@
 #export DH_VERBOSE=1
 
 # currently not needed
-#include /usr/share/quilt/quilt.make
+# not needed, but for convenience when I work by hand:
+#export QUILT_PATCHES=debian/patches
+include /usr/share/quilt/quilt.make
 
 PACKAGE=gwaei
 
@@ -14,10 +16,7 @@ ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
 	CFLAGS += -O0
 endif
 
-# if we need quilt
-#clean: unpatch
-
-clean:
+clean: unpatch
 	dh_testdir
 	dh_testroot
 	make clean || true
@@ -26,6 +25,7 @@ clean:
 	rm -f po/POTFILES po/Makefile.in rpm/rpm_gconf_install_post.sh
 	rm -f rpm/gwaei.spec rpm/rpm_gconf_uninstall_pre.sh 
 	rm -f src/Makefile src/xml/Makefile src/kpengine/Makefile
+	rm -f mandir/Makefile
 	rm -rf src/kpengine/.deps src/.deps
 	rm -f src/desktop/Makefile src/schemas/Makefile
 	rm -f src/img/Makefile
@@ -43,11 +43,8 @@ config-stamp: configure
 	touch config-stamp
 
 build: build-stamp
-#
-# if we need quilt
-#build-stamp: config $(QUILT_STAMPFN)
 
-build-stamp: config
+build-stamp: config $(QUILT_STAMPFN)
 	dh_testdir
 	$(MAKE)
 	touch build-stamp
@@ -70,7 +67,7 @@ binary-arch: build install
 	dh_testdir
 	dh_testroot
 	dh_installchangelogs ChangeLog
-	dh_installdocs NEWS README THANKS
+	dh_installdocs NEWS README THANKS debian/README.source
 	dh_installmenu
 	# should be done by the installation above
 	#dh_installman mandir/gwaei.1 mandir/waei.1
