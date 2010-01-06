@@ -11,7 +11,9 @@ Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Recommends: ttf-kanjistrokeorders
 Description: Japanese-English Dictionary for GNOME
- gWaei is a drop-in replacement for Gjiten. The main
- feature of this dictonary program is regular expression
- support. For example, you can use periods in place of
- unknown Kanji of a word to search for it.
+ gWaei is an easy to use and yet powerful full-featured
+ dictionary program for Japanese to English translation.
+ It organizes results by relevance, supports regex searches,
+ tabs, spell checking, kanji handwriting recognition and
+ an accompanying console version for searches through
+ the terminal.
