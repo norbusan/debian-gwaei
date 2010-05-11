@@ -3,10 +3,8 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
-# currently not needed
 # not needed, but for convenience when I work by hand:
 #export QUILT_PATCHES=debian/patches
-include /usr/share/quilt/quilt.make
 
 PACKAGE=gwaei
 
@@ -16,7 +14,7 @@ ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
 	CFLAGS += -O0
 endif
 
-clean: unpatch
+clean:
 	dh_testdir
 	dh_testroot
 	make clean || true
@@ -44,7 +42,7 @@ config-stamp: configure
 
 build: build-stamp
 
-build-stamp: config $(QUILT_STAMPFN)
+build-stamp: config
 	dh_testdir
 	$(MAKE)
 	touch build-stamp
@@ -83,3 +81,4 @@ binary-arch: build install
 
 binary: binary-indep binary-arch
 .PHONY: config build clean binary-indep binary-arch binary install
+

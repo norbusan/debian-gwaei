@@ -4,6 +4,8 @@ gwaei (1.4.0-1) unstable; urgency=low
     - fixes the bug when removing dicts (Closes: #557565)
     - includes copyright statements for included sub-programs, carried over
       to debian/copyright (Closes: #557300)
+  * change package to source format 3.0 (quilt)
+  * bump standards version to 3.8.4, no changes necessary
 
  -- Norbert Preining <preining@debian.org>  Tue, 11 May 2010 17:50:24 +0900
 

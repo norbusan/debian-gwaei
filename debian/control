@@ -2,8 +2,8 @@ Source: gwaei
 Section: gnome
 Priority: optional
 Maintainer: Norbert Preining <preining@debian.org>
-Build-Depends: libcurl4-gnutls-dev, libgtk2.0-dev, libsexy-dev, libgconf2-dev, gnome-doc-utils, debhelper (>= 7), libunique-dev, quilt, rarian-compat
-Standards-Version: 3.8.3
+Build-Depends: libcurl4-gnutls-dev, libgtk2.0-dev, libsexy-dev, libgconf2-dev, gnome-doc-utils, debhelper (>= 7), libunique-dev, rarian-compat
+Standards-Version: 3.8.4
 Homepage: http://gwaei.sourceforge.net
 
 Package: gwaei
