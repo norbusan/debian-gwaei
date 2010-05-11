@@ -1,3 +1,12 @@
+gwaei (1.4.0-1) unstable; urgency=low
+
+  * new upstream releases:
+    - fixes the bug when removing dicts (Closes: #557565)
+    - includes copyright statements for included sub-programs, carried over
+      to debian/copyright (Closes: #557300)
+
+ -- Norbert Preining <preining@debian.org>  Tue, 11 May 2010 17:50:24 +0900
+
 gwaei (1.2.1-1) unstable; urgency=low
 
   * Initial packaging for Debian (Closes: #530398)
