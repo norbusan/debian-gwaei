@@ -6,8 +6,9 @@ gwaei (1.4.0-1) unstable; urgency=low
       to debian/copyright (Closes: #557300)
   * change package to source format 3.0 (quilt)
   * bump standards version to 3.8.4, no changes necessary
+  * adapt build-dep for curses libraries
 
- -- Norbert Preining <preining@debian.org>  Tue, 11 May 2010 17:50:24 +0900
+ -- Norbert Preining <preining@debian.org>  Tue, 11 May 2010 18:08:02 +0900
 
 gwaei (1.2.1-1) unstable; urgency=low
 

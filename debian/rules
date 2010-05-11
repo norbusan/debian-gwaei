@@ -65,7 +65,7 @@ binary-arch: build install
 	dh_testdir
 	dh_testroot
 	dh_installchangelogs ChangeLog
-	dh_installdocs NEWS README THANKS debian/README.source
+	dh_installdocs NEWS README THANKS
 	dh_installmenu
 	# should be done by the installation above
 	#dh_installman mandir/gwaei.1 mandir/waei.1
