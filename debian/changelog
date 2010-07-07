@@ -1,3 +1,10 @@
+gwaei (1.4.1-1) unstable; urgency=low
+
+  * new upstream release
+  * bump standards version to 3.9.0, no changes necessary
+
+ -- Norbert Preining <preining@debian.org>  Thu, 08 Jul 2010 01:45:21 +0900
+
 gwaei (1.4.0-1) unstable; urgency=low
 
   * new upstream releases:
