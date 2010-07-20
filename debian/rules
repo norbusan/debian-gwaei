@@ -66,11 +66,11 @@ install: build
 	#
 	# install additional xpm icons
 	dh_installdirs usr/share/pixmaps
-	cp src/images/16x16/gwaei.png \
+	cp src/images/16x16/gwaei.xpm \
 		$(CURDIR)/debian/$(PACKAGE)/usr/share/pixmaps/gwaei_16x16.xpm
-	cp src/images/32x32/gwaei.png \
+	cp src/images/32x32/gwaei.xpm \
 		$(CURDIR)/debian/$(PACKAGE)/usr/share/pixmaps/gwaei_32x32.xpm
-	cp src/images/24x24/gwaei.png \
+	cp src/images/24x24/gwaei.xpm \
 		$(CURDIR)/debian/$(PACKAGE)/usr/share/pixmaps/gwaei.xpm
 
 # Build architecture-independent files here.
