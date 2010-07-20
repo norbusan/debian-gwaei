@@ -1,0 +1,1 @@
+?package(gwaei):needs="x11" section="Applications/Education" title="gwaei" command="gwaei"

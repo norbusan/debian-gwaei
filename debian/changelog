@@ -1,3 +1,9 @@
+gwaei (1.4.1-2) unstable; urgency=low
+
+  * add menu file for gwaei (Closes: #589305)
+
+ -- Norbert Preining <preining@debian.org>  Tue, 20 Jul 2010 16:06:01 +0900
+
 gwaei (1.4.1-1) unstable; urgency=low
 
   * new upstream release
