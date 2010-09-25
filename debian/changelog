@@ -1,3 +1,10 @@
+gwaei (1.4.2-1) unstable; urgency=low
+
+  * new upstream release
+  * debian/control: bump standards version to 3.9.1, no changes necessary
+
+ -- Norbert Preining <preining@debian.org>  Wed, 22 Sep 2010 23:59:48 +0900
+
 gwaei (1.4.1-2) unstable; urgency=low
 
   * add menu file for gwaei (Closes: #589305)
