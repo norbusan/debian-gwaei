@@ -2,7 +2,7 @@ Source: gwaei
 Section: gnome
 Priority: optional
 Maintainer: Norbert Preining <preining@debian.org>
-Build-Depends: libcurl4-gnutls-dev, libgtk2.0-dev, libsexy-dev, libgconf2-dev, gnome-doc-utils, debhelper (>= 7), libunique-dev, rarian-compat, libncurses5-dev, libncursesw5-dev, imagemagick
+Build-Depends: libcurl4-gnutls-dev, libgtk-3-dev, gnome-doc-utils, debhelper (>= 7), libunique-3.0-dev, libncurses5-dev, libncursesw5-dev, imagemagick
 Standards-Version: 3.9.1
 Homepage: http://gwaei.sourceforge.net
 
