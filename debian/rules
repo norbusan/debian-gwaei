@@ -19,7 +19,7 @@ clean:
 	dh_testroot
 	make clean || true
 	for i in 16x16 24x24 32x32 ; do \
-	  rm -f src/gwaei/images/$$i/gwaei.xpm ; \
+	  rm -f src/images/$$i/gwaei.xpm ; \
 	done
 	rm -f config.status Doxyfile config.h stamp-h1 config.log
 	rm -f Makefile help/gwaei.omf help/Makefile po/Makefile
@@ -42,7 +42,7 @@ config-stamp: configure
 		--mandir=/usr/share/man
 	# convert png icons to xpm so that we can use them with menu system
 	for i in 16x16 24x24 32x32 ; do \
-	  convert src/gwaei/images/$$i/gwaei.png src/gwaei/images/$$i/gwaei.xpm ; \
+	  convert src/images/$$i/gwaei.png src/images/$$i/gwaei.xpm ; \
 	done
 	touch config-stamp
 
@@ -65,11 +65,11 @@ install: build
 	#
 	# install additional xpm icons
 	dh_installdirs usr/share/pixmaps
-	cp src/gwaei/images/16x16/gwaei.xpm \
+	cp src/images/16x16/gwaei.xpm \
 		$(CURDIR)/debian/$(PACKAGE)/usr/share/pixmaps/gwaei_16x16.xpm
-	cp src/gwaei/images/32x32/gwaei.xpm \
+	cp src/images/32x32/gwaei.xpm \
 		$(CURDIR)/debian/$(PACKAGE)/usr/share/pixmaps/gwaei_32x32.xpm
-	cp src/gwaei/images/24x24/gwaei.xpm \
+	cp src/images/24x24/gwaei.xpm \
 		$(CURDIR)/debian/$(PACKAGE)/usr/share/pixmaps/gwaei.xpm
 
 # Build architecture-independent files here.
