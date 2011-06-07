@@ -22,9 +22,20 @@ clean:
 	  rm -f src/images/$$i/gwaei.xpm ; \
 	done
 	rm -f config.status Doxyfile config.h stamp-h1 config.log
-	rm -f Makefile help/gwaei.omf help/Makefile po/Makefile
+	rm -f Makefile help/gwaei.omf help/Makefile po/Makefile libtool
 	rm -f po/POTFILES po/Makefile.in rpm/rpm_gconf_install_post.sh
-	rm -f rpm/gwaei.spec rpm/rpm_gconf_uninstall_pre.sh 
+	rm -f rpm/fedora/SPECS/gwaei.spec rpm/gwaei.spec
+	rm -f src/gwaei/doxyfile
+	rm -f src/gwaei/Makefile
+	rm -f src/gwaei/help/Makefile src/gwaei/help/gwaei.omf
+	rm -f src/gwaei/help/C/gwaei.xml 
+	rm -f src/gwaei/ui/Makefile
+	rm -f src/gwaei/include/gwaei/Makefile
+	rm -f src/libwaei/doxyfile
+	rm -f src/libwaei/Makefile src/libwaei/include/libwaei/Makefile
+	rm -f src/waei/doxyfile src/waei/Makefile
+	rm -f src/waei/include/waei/Makefile
+	rm -f src/images/Makefile
 	rm -f src/Makefile src/xml/Makefile src/kpengine/Makefile
 	rm -f mandir/Makefile
 	rm -rf src/kpengine/.deps src/.deps
@@ -79,6 +90,7 @@ binary-indep: build install
 binary-arch: build install
 	dh_testdir
 	dh_testroot
+	dh_makeshlibs
 	dh_installchangelogs ChangeLog
 	dh_installdocs NEWS README THANKS
 	dh_installmenu
