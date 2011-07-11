@@ -2,8 +2,10 @@ gwaei (3.0.0-1) unstable; urgency=low
 
   * new upstream release
   * adapt build dependencies
+  * bump standards version, no changes necessary
+  * add some recommended build targets to make lintian happy
 
- -- Norbert Preining <preining@debian.org>  Mon, 11 Jul 2011 11:21:20 +0900
+ -- Norbert Preining <preining@debian.org>  Mon, 11 Jul 2011 11:41:10 +0900
 
 gwaei (1.4.3-1) experimental; urgency=low
 

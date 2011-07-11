@@ -57,7 +57,9 @@ config-stamp: configure
 	done
 	touch config-stamp
 
-build: build-stamp
+build: build-arch build-indep
+build-arch: build-stamp
+build-indep: build-stamp
 
 build-stamp: config
 	dh_testdir
