@@ -1,9 +1,9 @@
-gwaei (2.99.20110605-1) unstable; urgency=low
+gwaei (3.0.0-1) unstable; urgency=low
 
-  * preliminary 3.0 release
+  * new upstream release
   * adapt build dependencies
 
- -- Norbert Preining <preining@debian.org>  Sun, 05 Jun 2011 21:42:29 +0900
+ -- Norbert Preining <preining@debian.org>  Mon, 11 Jul 2011 11:21:20 +0900
 
 gwaei (1.4.3-1) experimental; urgency=low
 
