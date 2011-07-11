@@ -70,7 +70,9 @@ install: build
 	dh_testdir
 	dh_testroot
 	dh_prep
-	$(MAKE) install DESTDIR=$(CURDIR)/debian/$(PACKAGE)
+	$(MAKE) install DESTDIR=$(CURDIR)/debian/tmp
+	dh_install --sourcedir=debian/tmp
+	dh_makeshlibs
 	# GPL is shipped globally, and mentioned in the copyright file
 	rm -f $(CURDIR)/debian/$(PACKAGE)/usr/share/doc/gwaei/COPYING
 	# this will be already installed by dh_installchangelogs below
@@ -99,6 +101,7 @@ binary-arch: build install
 	# should be done by the installation above
 	#dh_installman mandir/gwaei.1 mandir/waei.1
 	dh_gconf
+	dh_makeshlibs
 	dh_strip
 	dh_compress
 	dh_fixperms
