@@ -1,4 +1,4 @@
-gwaei (3.0.0-1) unstable; urgency=low
+gwaei (3.0.2-1) unstable; urgency=low
 
   * new upstream release
   * adapt build dependencies
@@ -6,7 +6,7 @@ gwaei (3.0.0-1) unstable; urgency=low
   * add some recommended build targets to make lintian happy
   * split shared library into a separate package
 
- -- Norbert Preining <preining@debian.org>  Mon, 11 Jul 2011 15:00:02 +0900
+ -- Norbert Preining <preining@debian.org>  Tue, 19 Jul 2011 19:16:54 +0900
 
 gwaei (1.4.3-1) experimental; urgency=low
 
