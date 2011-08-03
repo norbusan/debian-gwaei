@@ -9,7 +9,7 @@ Homepage: http://gwaei.sourceforge.net
 Package: gwaei
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Recommends: ttf-kanjistrokeorders, enchant
+Recommends: fonts-kanjistrokeorders, enchant
 Description: Japanese-English Dictionary for GNOME
  gWaei is an easy to use and yet powerful full-featured
  dictionary program for Japanese to English translation.
