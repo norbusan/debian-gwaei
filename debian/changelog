@@ -1,3 +1,13 @@
+gwaei (3.2.0b1-1) unstable; urgency=low
+
+  * new upstream beta releases
+  * libwaei1 renamed to libwaei2 due to so version change
+  * remove libunique from build-deps, not needed anymore
+  * added build-deps: gsettings-desktop-schemas and enchant (needed
+    for configure testing, otherwise disabled)
+
+ -- Norbert Preining <preining@debian.org>  Sun, 20 Nov 2011 22:51:20 +0900
+
 gwaei (3.0.2-1) unstable; urgency=low
 
   * new upstream release
