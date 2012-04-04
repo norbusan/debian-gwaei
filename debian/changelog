@@ -1,3 +1,10 @@
+gwaei (3.2.0b1-2) unstable; urgency=low
+
+  * fix for stupid libgtk library breaking unrelated software, needed
+    otherwise gwaei will never start (see eog bug #665374 for reference)
+
+ -- Norbert Preining <preining@debian.org>  Wed, 04 Apr 2012 11:36:28 +0900
+
 gwaei (3.2.0b1-1) unstable; urgency=low
 
   * new upstream beta releases
