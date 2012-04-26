@@ -1,10 +1,11 @@
-gwaei (3.4.2-1) experimental; urgency=low
+gwaei (3.4.3-1) unstable; urgency=low
 
   * new upstream release(s)
-  * upload to experimental, the necessary libs are not in unstable by now
+    . switch to hunspell, no need for enchant (Closes: #649576)
+    . switch to gtk >= 3.3 (Closes: #641814)
   * adjust build dependencies
 
- -- Norbert Preining <preining@debian.org>  Tue, 03 Apr 2012 17:13:21 +0900
+ -- Norbert Preining <preining@debian.org>  Thu, 26 Apr 2012 13:29:23 +0900
 
 gwaei (3.2.0b1-2) unstable; urgency=low
 
