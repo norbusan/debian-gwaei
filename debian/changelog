@@ -3,9 +3,10 @@ gwaei (3.4.3-1) unstable; urgency=low
   * new upstream release(s)
     . switch to hunspell, no need for enchant (Closes: #649576)
     . switch to gtk >= 3.3 (Closes: #641814)
+    . disable old patches
   * adjust build dependencies
 
- -- Norbert Preining <preining@debian.org>  Thu, 26 Apr 2012 13:29:23 +0900
+ -- Norbert Preining <preining@debian.org>  Thu, 26 Apr 2012 13:36:43 +0900
 
 gwaei (3.2.0b1-2) unstable; urgency=low
 
