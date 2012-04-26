@@ -1,0 +1,44 @@
+Hack around some strange Unity (Ubuntu) problems
+Patch by Yvon TANGUY <vono22@yahoo.fr>
+---
+ src/gwaei/window.c |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+Index: gwaei-3.4.3/src/gwaei/window.c
+===================================================================
+--- gwaei-3.4.3.orig/src/gwaei/window.c	2012-04-03 23:28:42.000000000 +0900
++++ gwaei-3.4.3/src/gwaei/window.c	2012-04-27 08:28:08.751758894 +0900
+@@ -206,6 +206,7 @@
+     //Declarations
+     GwWindowPrivate *priv;
+     GtkWidget *toplevel;
++    GtkWidget *menu;
+     char *paths[4];
+     char **iter;
+     char *path;
+@@ -219,6 +220,8 @@
+     paths[3] = NULL;
+     loaded = FALSE;
+ 
++    menu = NULL;
++
+     //Search for the files
+     for (iter = paths; *iter != NULL && loaded == FALSE; iter++)
+     {
+@@ -231,6 +234,16 @@
+         g_assert (toplevel != NULL);
+         gtk_widget_reparent (toplevel, GTK_WIDGET (window));
+ 
++        // quick and bad fix for Unity: global menu won't be seen, if we do not reparent to itself (hackish fix)
++        menu = GTK_WIDGET (gtk_builder_get_object (priv->builder, "menubar"));
++        if (NULL != menu) {
++          g_object_ref(menu);
++          gtk_container_remove (GTK_CONTAINER (toplevel), menu);
++          gtk_container_add (GTK_CONTAINER (toplevel), menu);
++          g_object_unref(menu);
++          menu = NULL;
++        }
++
+         loaded = TRUE;
+       }
+     }

@@ -24,11 +24,11 @@ clean:
 	rm -f config.status Doxyfile config.h stamp-h1 config.log
 	rm -f Makefile help/gwaei.omf help/Makefile po/Makefile libtool
 	rm -f po/POTFILES po/Makefile.in rpm/rpm_gconf_install_post.sh
+	rm -f po/stamp-it
 	rm -f rpm/fedora/SPECS/gwaei.spec rpm/gwaei.spec
 	rm -f src/gwaei/doxyfile
 	rm -f src/gwaei/Makefile
 	rm -f src/gwaei/help/Makefile src/gwaei/help/gwaei.omf
-	rm -f src/gwaei/help/C/gwaei.xml 
 	rm -f src/gwaei/ui/Makefile
 	rm -f src/gwaei/include/gwaei/Makefile
 	rm -f src/libwaei/doxyfile
