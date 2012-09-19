@@ -14,7 +14,6 @@
 # PARTICULAR PURPOSE.
 
 @SET_MAKE@
-
 VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
@@ -34,230 +33,147 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-bin_PROGRAMS = gwaei$(EXEEXT)
-
-#EMPTY
-@WITH_GNOME_TRUE@am__append_1 = gtk-gconf-preferences.c \
-@WITH_GNOME_TRUE@	gtk-main-callbacks.c \
-@WITH_GNOME_TRUE@	include/gwaei/gtk-main-callbacks.h \
-@WITH_GNOME_TRUE@	gtk-main-interface.c gtk-settings-callbacks.c \
-@WITH_GNOME_TRUE@	include/gwaei/gtk-settings-callbacks.h \
-@WITH_GNOME_TRUE@	gtk-settings-interface.c \
-@WITH_GNOME_TRUE@	gtk-radicals-interface.c \
-@WITH_GNOME_TRUE@	gtk-radicals-callbacks.c \
-@WITH_GNOME_TRUE@	include/gwaei/gtk-radicals-callbacks.h \
-@WITH_GNOME_TRUE@	gtk-printing.c \
-@WITH_GNOME_TRUE@	include/gwaei/gtk-main-interface.h \
-@WITH_GNOME_TRUE@	include/gwaei/gtk-settings-interface.h \
-@WITH_GNOME_TRUE@	include/gwaei/gtk-radicals-interface.h \
-@WITH_GNOME_TRUE@	include/gwaei/gtk-printing.h \
-@WITH_GNOME_TRUE@	include/gwaei/gtk.h \
-@WITH_GNOME_TRUE@	include/gwaei/gtk-settings-interface-install-line.h \
-@WITH_GNOME_TRUE@	gtk-kanjipad-callbacks.c \
-@WITH_GNOME_TRUE@	include/gwaei/gtk-kanjipad-callbacks.h \
-@WITH_GNOME_TRUE@	gtk-kanjipad-interface.c \
-@WITH_GNOME_TRUE@	include/gwaei/gtk-kanjipad-interface.h \
-@WITH_GNOME_TRUE@	gtk-kanjipad-interface-candidatearea.c \
-@WITH_GNOME_TRUE@	include/gwaei/gtk-kanjipad-interface-candidatearea.h \
-@WITH_GNOME_TRUE@	gtk-kanjipad-interface-drawingarea.c \
-@WITH_GNOME_TRUE@	include/gwaei/gtk-kanjipad-interface-drawingarea.h \
-@WITH_GNOME_TRUE@	gtk-main-interface-tabs.c \
-@WITH_GNOME_TRUE@	include/gwaei/gtk-main-interface-tabs.h \
-@WITH_GNOME_TRUE@	gtk-settings-interface-install-line.c
-@WITH_GNOME_TRUE@am__append_2 = $(GNOME_LIBS)
-@WITH_GNOME_TRUE@am__append_3 = $(GNOME_CFLAGS)$(GNOME_DEFS)
-@WITH_GNOME_FALSE@am__append_4 = none-preferences.c
-@WITH_LIBUNIQUE_TRUE@am__append_5 = gtk-main-interface-unique.c include/gwaei/gtk-main-interface-unique.h
-@WITH_LIBUNIQUE_TRUE@am__append_6 = $(LIBUNIQUE_LIBS)
-@WITH_LIBUNIQUE_TRUE@am__append_7 = $(LIBUNIQUE_CFLAGS)$(LIBUNIQUE_DEFS)
-@WITH_LIBSEXY_TRUE@am__append_8 = gtk-main-interface-sexy.c include/gwaei/gtk-main-interface-sexy.h
-@WITH_LIBSEXY_TRUE@am__append_9 = $(LIBSEXY_LIBS)
-@WITH_LIBSEXY_TRUE@am__append_10 = $(LIBSEXY_CFLAGS)$(LIBSEXY_DEFS)
-@WITH_NCURSES_TRUE@am__append_11 = ncurses-main-interface.c include/gwaei/ncurses-main-interface.h
-@WITH_NCURSES_TRUE@am__append_12 = $(NCURSES_LIBS)
-@WITH_NCURSES_TRUE@am__append_13 = $(NCURSES_DEFS)
+@WITH_GNOME_TRUE@am__append_1 = gwaei kpengine desktop images
 subdir = src
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
-	$(top_srcdir)/m4/gnome-doc-utils.m4 $(top_srcdir)/m4/iconv.m4 \
-	$(top_srcdir)/m4/lib-ld.m4 $(top_srcdir)/m4/lib-link.m4 \
-	$(top_srcdir)/m4/lib-prefix.m4 $(top_srcdir)/m4/nls.m4 \
-	$(top_srcdir)/m4/po.m4 $(top_srcdir)/m4/progtest.m4 \
-	$(top_srcdir)/configure.ac
+am__aclocal_m4_deps = $(top_srcdir)/m4/gnome-doc-utils.m4 \
+	$(top_srcdir)/m4/intltool.m4 $(top_srcdir)/m4/libtool.m4 \
+	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
+	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
+	$(top_srcdir)/m4/nls.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
-am__installdirs = "$(DESTDIR)$(bindir)"
-PROGRAMS = $(bin_PROGRAMS)
-am__gwaei_SOURCES_DIST = main.c dictinfo-object.c dictlist-object.c \
-	queryline-object.c engine.c utilities.c io.c regex.c \
-	console-main-interface.c searchitem-object.c \
-	historylist-object.c resultline-object.c \
-	include/gwaei/definitions.h include/gwaei/main.h \
-	include/gwaei/search-objects.h \
-	include/gwaei/dictionary-objects.h \
-	include/gwaei/dictinfo-object.h \
-	include/gwaei/dictlist-object.h \
-	include/gwaei/queryline-object.h include/gwaei/engine.h \
-	include/gwaei/utilities.h include/gwaei/io.h \
-	include/gwaei/regex.h include/gwaei/console-main-interface.h \
-	include/gwaei/searchitem-object.h \
-	include/gwaei/historylist-object.h \
-	include/gwaei/resultline-object.h include/gwaei/preferences.h \
-	gtk-gconf-preferences.c gtk-main-callbacks.c \
-	include/gwaei/gtk-main-callbacks.h gtk-main-interface.c \
-	gtk-settings-callbacks.c \
-	include/gwaei/gtk-settings-callbacks.h \
-	gtk-settings-interface.c gtk-radicals-interface.c \
-	gtk-radicals-callbacks.c \
-	include/gwaei/gtk-radicals-callbacks.h gtk-printing.c \
-	include/gwaei/gtk-main-interface.h \
-	include/gwaei/gtk-settings-interface.h \
-	include/gwaei/gtk-radicals-interface.h \
-	include/gwaei/gtk-printing.h include/gwaei/gtk.h \
-	include/gwaei/gtk-settings-interface-install-line.h \
-	gtk-kanjipad-callbacks.c \
-	include/gwaei/gtk-kanjipad-callbacks.h \
-	gtk-kanjipad-interface.c \
-	include/gwaei/gtk-kanjipad-interface.h \
-	gtk-kanjipad-interface-candidatearea.c \
-	include/gwaei/gtk-kanjipad-interface-candidatearea.h \
-	gtk-kanjipad-interface-drawingarea.c \
-	include/gwaei/gtk-kanjipad-interface-drawingarea.h \
-	gtk-main-interface-tabs.c \
-	include/gwaei/gtk-main-interface-tabs.h \
-	gtk-settings-interface-install-line.c none-preferences.c \
-	gtk-main-interface-unique.c \
-	include/gwaei/gtk-main-interface-unique.h \
-	gtk-main-interface-sexy.c \
-	include/gwaei/gtk-main-interface-sexy.h \
-	ncurses-main-interface.c \
-	include/gwaei/ncurses-main-interface.h
-@WITH_GNOME_TRUE@am__objects_1 = gtk-gconf-preferences.$(OBJEXT) \
-@WITH_GNOME_TRUE@	gtk-main-callbacks.$(OBJEXT) \
-@WITH_GNOME_TRUE@	gtk-main-interface.$(OBJEXT) \
-@WITH_GNOME_TRUE@	gtk-settings-callbacks.$(OBJEXT) \
-@WITH_GNOME_TRUE@	gtk-settings-interface.$(OBJEXT) \
-@WITH_GNOME_TRUE@	gtk-radicals-interface.$(OBJEXT) \
-@WITH_GNOME_TRUE@	gtk-radicals-callbacks.$(OBJEXT) \
-@WITH_GNOME_TRUE@	gtk-printing.$(OBJEXT) \
-@WITH_GNOME_TRUE@	gtk-kanjipad-callbacks.$(OBJEXT) \
-@WITH_GNOME_TRUE@	gtk-kanjipad-interface.$(OBJEXT) \
-@WITH_GNOME_TRUE@	gtk-kanjipad-interface-candidatearea.$(OBJEXT) \
-@WITH_GNOME_TRUE@	gtk-kanjipad-interface-drawingarea.$(OBJEXT) \
-@WITH_GNOME_TRUE@	gtk-main-interface-tabs.$(OBJEXT) \
-@WITH_GNOME_TRUE@	gtk-settings-interface-install-line.$(OBJEXT)
-@WITH_GNOME_FALSE@am__objects_2 = none-preferences.$(OBJEXT)
-@WITH_LIBUNIQUE_TRUE@am__objects_3 =  \
-@WITH_LIBUNIQUE_TRUE@	gtk-main-interface-unique.$(OBJEXT)
-@WITH_LIBSEXY_TRUE@am__objects_4 = gtk-main-interface-sexy.$(OBJEXT)
-@WITH_NCURSES_TRUE@am__objects_5 = ncurses-main-interface.$(OBJEXT)
-am_gwaei_OBJECTS = main.$(OBJEXT) dictinfo-object.$(OBJEXT) \
-	dictlist-object.$(OBJEXT) queryline-object.$(OBJEXT) \
-	engine.$(OBJEXT) utilities.$(OBJEXT) io.$(OBJEXT) \
-	regex.$(OBJEXT) console-main-interface.$(OBJEXT) \
-	searchitem-object.$(OBJEXT) historylist-object.$(OBJEXT) \
-	resultline-object.$(OBJEXT) $(am__objects_1) $(am__objects_2) \
-	$(am__objects_3) $(am__objects_4) $(am__objects_5)
-gwaei_OBJECTS = $(am_gwaei_OBJECTS)
-am__DEPENDENCIES_1 =
-@WITH_GNOME_TRUE@am__DEPENDENCIES_2 = $(am__DEPENDENCIES_1)
-@WITH_LIBUNIQUE_TRUE@am__DEPENDENCIES_3 = $(am__DEPENDENCIES_1)
-@WITH_LIBSEXY_TRUE@am__DEPENDENCIES_4 = $(am__DEPENDENCIES_1)
-@WITH_NCURSES_TRUE@am__DEPENDENCIES_5 = $(am__DEPENDENCIES_1)
-gwaei_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
-	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
-	$(am__DEPENDENCIES_5)
-DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
-depcomp = $(SHELL) $(top_srcdir)/depcomp
-am__depfiles_maybe = depfiles
-am__mv = mv -f
-COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
-	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-CCLD = $(CC)
-LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-SOURCES = $(gwaei_SOURCES)
-DIST_SOURCES = $(am__gwaei_SOURCES_DIST)
+SOURCES =
+DIST_SOURCES =
+RECURSIVE_TARGETS = all-recursive check-recursive dvi-recursive \
+	html-recursive info-recursive install-data-recursive \
+	install-dvi-recursive install-exec-recursive \
+	install-html-recursive install-info-recursive \
+	install-pdf-recursive install-ps-recursive install-recursive \
+	installcheck-recursive installdirs-recursive pdf-recursive \
+	ps-recursive uninstall-recursive
+RECURSIVE_CLEAN_TARGETS = mostlyclean-recursive clean-recursive	\
+  distclean-recursive maintainer-clean-recursive
+AM_RECURSIVE_TARGETS = $(RECURSIVE_TARGETS:-recursive=) \
+	$(RECURSIVE_CLEAN_TARGETS:-recursive=) tags TAGS ctags CTAGS \
+	distdir
 ETAGS = etags
 CTAGS = ctags
+DIST_SUBDIRS = libwaei waei schemas gwaei kpengine desktop images
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
+am__relativize = \
+  dir0=`pwd`; \
+  sed_first='s,^\([^/]*\)/.*$$,\1,'; \
+  sed_rest='s,^[^/]*/*,,'; \
+  sed_last='s,^.*/\([^/]*\)$$,\1,'; \
+  sed_butlast='s,/*[^/]*$$,,'; \
+  while test -n "$$dir1"; do \
+    first=`echo "$$dir1" | sed -e "$$sed_first"`; \
+    if test "$$first" != "."; then \
+      if test "$$first" = ".."; then \
+        dir2=`echo "$$dir0" | sed -e "$$sed_last"`/"$$dir2"; \
+        dir0=`echo "$$dir0" | sed -e "$$sed_butlast"`; \
+      else \
+        first2=`echo "$$dir2" | sed -e "$$sed_first"`; \
+        if test "$$first2" = "$$first"; then \
+          dir2=`echo "$$dir2" | sed -e "$$sed_rest"`; \
+        else \
+          dir2="../$$dir2"; \
+        fi; \
+        dir0="$$dir0"/"$$first"; \
+      fi; \
+    fi; \
+    dir1=`echo "$$dir1" | sed -e "$$sed_rest"`; \
+  done; \
+  reldir="$$dir2"
 ACLOCAL = @ACLOCAL@
+ALL_LINGUAS = @ALL_LINGUAS@
 AMTAR = @AMTAR@
+AR = @AR@
 AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
+BASE_CFLAGS = @BASE_CFLAGS@
+BASE_LIBS = @BASE_LIBS@
+CATALOGS = @CATALOGS@
+CATOBJEXT = @CATOBJEXT@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
-COMMENT_FG_DEFAULT = @COMMENT_FG_DEFAULT@
+CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
 CYGPATH_W = @CYGPATH_W@
+DATADIRNAME = @DATADIRNAME@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
-DEPS_CFLAGS = @DEPS_CFLAGS@
-DEPS_LIBS = @DEPS_LIBS@
 DISTCHECK_CONFIGURE_FLAGS = @DISTCHECK_CONFIGURE_FLAGS@
+DLLTOOL = @DLLTOOL@
 DOC_USER_FORMATS = @DOC_USER_FORMATS@
 DPKG_DEB = @DPKG_DEB@
+DSYMUTIL = @DSYMUTIL@
+DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
 ECHO_T = @ECHO_T@
-ENGLISH_DEFAULT_URI = @ENGLISH_DEFAULT_URI@
-EXAMPLES_DEFAULT_URI = @EXAMPLES_DEFAULT_URI@
+EGREP = @EGREP@
+ENCHANT = @ENCHANT@
 EXEEXT = @EXEEXT@
-FRENCH_DEFAULT_URI = @FRENCH_DEFAULT_URI@
-GCONFTOOL = @GCONFTOOL@
-GCONF_SCHEMA_CONFIG_SOURCE = @GCONF_SCHEMA_CONFIG_SOURCE@
-GCONF_SCHEMA_FILE_DIR = @GCONF_SCHEMA_FILE_DIR@
-GERMAN_DEFAULT_URI = @GERMAN_DEFAULT_URI@
-GETTEXT_MACRO_VERSION = @GETTEXT_MACRO_VERSION@
+FGREP = @FGREP@
+GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
+GLIB_COMPILE_SCHEMAS = @GLIB_COMPILE_SCHEMAS@
+GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
-GMSGFMT_015 = @GMSGFMT_015@
 GNOME_CFLAGS = @GNOME_CFLAGS@
 GNOME_LIBS = @GNOME_LIBS@
-GUNZIP = @GUNZIP@
-HEADER_BG_DEFAULT = @HEADER_BG_DEFAULT@
-HEADER_FG_DEFAULT = @HEADER_FG_DEFAULT@
+GREP = @GREP@
+GSETTINGS_DISABLE_SCHEMAS_COMPILE = @GSETTINGS_DISABLE_SCHEMAS_COMPILE@
+GWAEI_LOCALEDIR = @GWAEI_LOCALEDIR@
+GZIP = @GZIP@
 HELP_DIR = @HELP_DIR@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
+INSTOBJEXT = @INSTOBJEXT@
 INTLLIBS = @INTLLIBS@
-INTL_MACOSX_LIBS = @INTL_MACOSX_LIBS@
-KANJI_DEFAULT_URI = @KANJI_DEFAULT_URI@
+INTLTOOL_EXTRACT = @INTLTOOL_EXTRACT@
+INTLTOOL_MERGE = @INTLTOOL_MERGE@
+INTLTOOL_PERL = @INTLTOOL_PERL@
+INTLTOOL_UPDATE = @INTLTOOL_UPDATE@
 KILLALL = @KILLALL@
+LD = @LD@
 LDFLAGS = @LDFLAGS@
-LIBICONV = @LIBICONV@
-LIBINTL = @LIBINTL@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
-LIBSEXY_CFLAGS = @LIBSEXY_CFLAGS@
-LIBSEXY_LIBS = @LIBSEXY_LIBS@
+LIBTOOL = @LIBTOOL@
+LIBTOOL_DEPS = @LIBTOOL_DEPS@
 LIBUNIQUE_CFLAGS = @LIBUNIQUE_CFLAGS@
 LIBUNIQUE_LIBS = @LIBUNIQUE_LIBS@
+LIPO = @LIPO@
 LN_S = @LN_S@
-LOAD_ORDER_DEFAULT = @LOAD_ORDER_DEFAULT@
-LTLIBICONV = @LTLIBICONV@
-LTLIBINTL = @LTLIBINTL@
 LTLIBOBJS = @LTLIBOBJS@
 MAKEINFO = @MAKEINFO@
-MATCH_BG_DEFAULT = @MATCH_BG_DEFAULT@
-MATCH_FG_DEFAULT = @MATCH_FG_DEFAULT@
+MANIFEST_TOOL = @MANIFEST_TOOL@
 MKDIR_P = @MKDIR_P@
+MKINSTALLDIRS = @MKINSTALLDIRS@
 MSGFMT = @MSGFMT@
-MSGFMT_015 = @MSGFMT_015@
+MSGFMT_OPTS = @MSGFMT_OPTS@
 MSGMERGE = @MSGMERGE@
-NAMES_DEFAULT_URI = @NAMES_DEFAULT_URI@
 NCURSES_LIBS = @NCURSES_LIBS@
+NM = @NM@
+NMEDIT = @NMEDIT@
+OBJDUMP = @OBJDUMP@
 OBJEXT = @OBJEXT@
 OMF_DIR = @OMF_DIR@
+OTOOL = @OTOOL@
+OTOOL64 = @OTOOL64@
 PACKAGE = @PACKAGE@
 PACKAGE_BUGREPORT = @PACKAGE_BUGREPORT@
 PACKAGE_NAME = @PACKAGE_NAME@
@@ -270,29 +186,29 @@ PERL = @PERL@
 PKG_CONFIG = @PKG_CONFIG@
 PKG_CONFIG_LIBDIR = @PKG_CONFIG_LIBDIR@
 PKG_CONFIG_PATH = @PKG_CONFIG_PATH@
+POFILES = @POFILES@
 POSUB = @POSUB@
-RADICALS_DEFAULT_URI = @RADICALS_DEFAULT_URI@
+PO_IN_DATADIR_FALSE = @PO_IN_DATADIR_FALSE@
+PO_IN_DATADIR_TRUE = @PO_IN_DATADIR_TRUE@
+RANLIB = @RANLIB@
 RELEASE = @RELEASE@
 RPMBUILD = @RPMBUILD@
 RPMDIR = @RPMDIR@
-RSYNC = @RSYNC@
+SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
-SPANISH_DEFAULT_URI = @SPANISH_DEFAULT_URI@
 STRIP = @STRIP@
 UNZIP = @UNZIP@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
-WIN32_CFLAGS = @WIN32_CFLAGS@
-WIN32_LIBS = @WIN32_LIBS@
 XGETTEXT = @XGETTEXT@
-XGETTEXT_015 = @XGETTEXT_015@
-XGETTEXT_EXTRA_OPTIONS = @XGETTEXT_EXTRA_OPTIONS@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
 abs_top_srcdir = @abs_top_srcdir@
+ac_ct_AR = @ac_ct_AR@
 ac_ct_CC = @ac_ct_CC@
+ac_ct_DUMPBIN = @ac_ct_DUMPBIN@
 am__include = @am__include@
 am__leading_dot = @am__leading_dot@
 am__quote = @am__quote@
@@ -310,6 +226,7 @@ datarootdir = @datarootdir@
 docdir = @docdir@
 dvidir = @dvidir@
 exec_prefix = @exec_prefix@
+gsettingsschemadir = @gsettingsschemadir@
 host = @host@
 host_alias = @host_alias@
 host_cpu = @host_cpu@
@@ -321,7 +238,7 @@ infodir = @infodir@
 install_sh = @install_sh@
 libdir = @libdir@
 libexecdir = @libexecdir@
-localedir = $(datadir)/locale
+localedir = @localedir@
 localstatedir = @localstatedir@
 mandir = @mandir@
 mkdir_p = @mkdir_p@
@@ -338,40 +255,10 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-ACLOCAL_AMFLAGS = -I m4
-DEPS_DEFS = -DLOCALEDIR=\"$(localedir)\" -DVERSION=\"$(VERSION)\" -DPACKAGE=\"$(PACKAGE)\" -DBINDIR=\"$(bindir)\" -DRSYNC=\"$(RSYNC)\" -DUNZIP=\"$(UNZIP)\" -DGUNZIP=\"$(GUNZIP)\" -DDATADIR=\"$(datadir)\" -DLIBDIR=\"$(libdir)\"
-#AM_CFLAGS = --pedantic -std=c99 -O2 -g
-gwaei_SOURCES = main.c dictinfo-object.c dictlist-object.c \
-	queryline-object.c engine.c utilities.c io.c regex.c \
-	console-main-interface.c searchitem-object.c \
-	historylist-object.c resultline-object.c \
-	include/gwaei/definitions.h include/gwaei/main.h \
-	include/gwaei/search-objects.h \
-	include/gwaei/dictionary-objects.h \
-	include/gwaei/dictinfo-object.h \
-	include/gwaei/dictlist-object.h \
-	include/gwaei/queryline-object.h include/gwaei/engine.h \
-	include/gwaei/utilities.h include/gwaei/io.h \
-	include/gwaei/regex.h include/gwaei/console-main-interface.h \
-	include/gwaei/search-objects.h \
-	include/gwaei/searchitem-object.h \
-	include/gwaei/historylist-object.h \
-	include/gwaei/resultline-object.h include/gwaei/preferences.h \
-	$(am__append_1) $(am__append_4) $(am__append_5) \
-	$(am__append_8) $(am__append_11)
-gwaei_LDADD = $(DEPS_LIBS) @LIBINTL@ $(am__append_2) $(am__append_6) \
-	$(am__append_9) $(am__append_12)
-AM_CPPFLAGS = $(DEPS_CFLAGS)$(DEPS_DEFS) $(am__append_3) \
-	$(am__append_7) $(am__append_10) $(am__append_13)
-INCLUDES = -I $(top_srcdir)/src/include
-@WITH_GNOME_TRUE@GNOME_DEFS = -DWITH_GTK
-@WITH_LIBUNIQUE_TRUE@LIBUNIQUE_DEFS = -DWITH_LIBUNIQUE
-@WITH_LIBSEXY_TRUE@LIBSEXY_DEFS = -DWITH_LIBSEXY
-@WITH_NCURSES_TRUE@NCURSES_DEFS = -DWITH_NCURSES
-all: all-am
+SUBDIRS = libwaei waei schemas $(am__append_1)
+all: all-recursive
 
 .SUFFIXES:
-.SUFFIXES: .c .o .obj
 $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
@@ -402,97 +289,82 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(am__aclocal_m4_deps):
-install-binPROGRAMS: $(bin_PROGRAMS)
-	@$(NORMAL_INSTALL)
-	test -z "$(bindir)" || $(MKDIR_P) "$(DESTDIR)$(bindir)"
-	@list='$(bin_PROGRAMS)'; test -n "$(bindir)" || list=; \
-	for p in $$list; do echo "$$p $$p"; done | \
-	sed 's/$(EXEEXT)$$//' | \
-	while read p p1; do if test -f $$p; \
-	  then echo "$$p"; echo "$$p"; else :; fi; \
-	done | \
-	sed -e 'p;s,.*/,,;n;h' -e 's|.*|.|' \
-	    -e 'p;x;s,.*/,,;s/$(EXEEXT)$$//;$(transform);s/$$/$(EXEEXT)/' | \
-	sed 'N;N;N;s,\n, ,g' | \
-	$(AWK) 'BEGIN { files["."] = ""; dirs["."] = 1 } \
-	  { d=$$3; if (dirs[d] != 1) { print "d", d; dirs[d] = 1 } \
-	    if ($$2 == $$4) files[d] = files[d] " " $$1; \
-	    else { print "f", $$3 "/" $$4, $$1; } } \
-	  END { for (d in files) print "f", d, files[d] }' | \
-	while read type dir files; do \
-	    if test "$$dir" = .; then dir=; else dir=/$$dir; fi; \
-	    test -z "$$files" || { \
-	      echo " $(INSTALL_PROGRAM_ENV) $(INSTALL_PROGRAM) $$files '$(DESTDIR)$(bindir)$$dir'"; \
-	      $(INSTALL_PROGRAM_ENV) $(INSTALL_PROGRAM) $$files "$(DESTDIR)$(bindir)$$dir" || exit $$?; \
-	    } \
-	; done
 
-uninstall-binPROGRAMS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(bin_PROGRAMS)'; test -n "$(bindir)" || list=; \
-	files=`for p in $$list; do echo "$$p"; done | \
-	  sed -e 'h;s,^.*/,,;s/$(EXEEXT)$$//;$(transform)' \
-	      -e 's/$$/$(EXEEXT)/' `; \
-	test -n "$$list" || exit 0; \
-	echo " ( cd '$(DESTDIR)$(bindir)' && rm -f" $$files ")"; \
-	cd "$(DESTDIR)$(bindir)" && rm -f $$files
+mostlyclean-libtool:
+	-rm -f *.lo
 
-clean-binPROGRAMS:
-	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
-gwaei$(EXEEXT): $(gwaei_OBJECTS) $(gwaei_DEPENDENCIES) 
-	@rm -f gwaei$(EXEEXT)
-	$(LINK) $(gwaei_OBJECTS) $(gwaei_LDADD) $(LIBS)
+clean-libtool:
+	-rm -rf .libs _libs
 
-mostlyclean-compile:
-	-rm -f *.$(OBJEXT)
+# This directory's subdirectories are mostly independent; you can cd
+# into them and run `make' without going through this Makefile.
+# To change the values of `make' variables: instead of editing Makefiles,
+# (1) if the variable is set in `config.status', edit `config.status'
+#     (which will cause the Makefiles to be regenerated when you run `make');
+# (2) otherwise, pass the desired values on the `make' command line.
+$(RECURSIVE_TARGETS):
+	@fail= failcom='exit 1'; \
+	for f in x $$MAKEFLAGS; do \
+	  case $$f in \
+	    *=* | --[!k]*);; \
+	    *k*) failcom='fail=yes';; \
+	  esac; \
+	done; \
+	dot_seen=no; \
+	target=`echo $@ | sed s/-recursive//`; \
+	list='$(SUBDIRS)'; for subdir in $$list; do \
+	  echo "Making $$target in $$subdir"; \
+	  if test "$$subdir" = "."; then \
+	    dot_seen=yes; \
+	    local_target="$$target-am"; \
+	  else \
+	    local_target="$$target"; \
+	  fi; \
+	  ($(am__cd) $$subdir && $(MAKE) $(AM_MAKEFLAGS) $$local_target) \
+	  || eval $$failcom; \
+	done; \
+	if test "$$dot_seen" = "no"; then \
+	  $(MAKE) $(AM_MAKEFLAGS) "$$target-am" || exit 1; \
+	fi; test -z "$$fail"
 
-distclean-compile:
-	-rm -f *.tab.c
-
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/console-main-interface.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dictinfo-object.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dictlist-object.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/engine.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gtk-gconf-preferences.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gtk-kanjipad-callbacks.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gtk-kanjipad-interface-candidatearea.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gtk-kanjipad-interface-drawingarea.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gtk-kanjipad-interface.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gtk-main-callbacks.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gtk-main-interface-sexy.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gtk-main-interface-tabs.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gtk-main-interface-unique.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gtk-main-interface.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gtk-printing.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gtk-radicals-callbacks.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gtk-radicals-interface.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gtk-settings-callbacks.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gtk-settings-interface-install-line.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gtk-settings-interface.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/historylist-object.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/io.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ncurses-main-interface.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/none-preferences.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/queryline-object.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/regex.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/resultline-object.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/searchitem-object.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/utilities.Po@am__quote@
-
-.c.o:
-@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(COMPILE) -c $<
-
-.c.obj:
-@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(COMPILE) -c `$(CYGPATH_W) '$<'`
+$(RECURSIVE_CLEAN_TARGETS):
+	@fail= failcom='exit 1'; \
+	for f in x $$MAKEFLAGS; do \
+	  case $$f in \
+	    *=* | --[!k]*);; \
+	    *k*) failcom='fail=yes';; \
+	  esac; \
+	done; \
+	dot_seen=no; \
+	case "$@" in \
+	  distclean-* | maintainer-clean-*) list='$(DIST_SUBDIRS)' ;; \
+	  *) list='$(SUBDIRS)' ;; \
+	esac; \
+	rev=''; for subdir in $$list; do \
+	  if test "$$subdir" = "."; then :; else \
+	    rev="$$subdir $$rev"; \
+	  fi; \
+	done; \
+	rev="$$rev ."; \
+	target=`echo $@ | sed s/-recursive//`; \
+	for subdir in $$rev; do \
+	  echo "Making $$target in $$subdir"; \
+	  if test "$$subdir" = "."; then \
+	    local_target="$$target-am"; \
+	  else \
+	    local_target="$$target"; \
+	  fi; \
+	  ($(am__cd) $$subdir && $(MAKE) $(AM_MAKEFLAGS) $$local_target) \
+	  || eval $$failcom; \
+	done && test -z "$$fail"
+tags-recursive:
+	list='$(SUBDIRS)'; for subdir in $$list; do \
+	  test "$$subdir" = . || ($(am__cd) $$subdir && $(MAKE) $(AM_MAKEFLAGS) tags); \
+	done
+ctags-recursive:
+	list='$(SUBDIRS)'; for subdir in $$list; do \
+	  test "$$subdir" = . || ($(am__cd) $$subdir && $(MAKE) $(AM_MAKEFLAGS) ctags); \
+	done
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \
@@ -504,10 +376,23 @@ ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	mkid -fID $$unique
 tags: TAGS
 
-TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
+TAGS: tags-recursive $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
 		$(TAGS_FILES) $(LISP)
 	set x; \
 	here=`pwd`; \
+	if ($(ETAGS) --etags-include --version) >/dev/null 2>&1; then \
+	  include_option=--etags-include; \
+	  empty_fix=.; \
+	else \
+	  include_option=--include; \
+	  empty_fix=; \
+	fi; \
+	list='$(SUBDIRS)'; for subdir in $$list; do \
+	  if test "$$subdir" = .; then :; else \
+	    test ! -f $$subdir/TAGS || \
+	      set "$$@" "$$include_option=$$here/$$subdir/TAGS"; \
+	  fi; \
+	done; \
 	list='$(SOURCES) $(HEADERS)  $(LISP) $(TAGS_FILES)'; \
 	unique=`for i in $$list; do \
 	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
@@ -526,7 +411,7 @@ TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
 	  fi; \
 	fi
 ctags: CTAGS
-CTAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
+CTAGS: ctags-recursive $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
 		$(TAGS_FILES) $(LISP)
 	list='$(SOURCES) $(HEADERS)  $(LISP) $(TAGS_FILES)'; \
 	unique=`for i in $$list; do \
@@ -576,22 +461,48 @@ distdir: $(DISTFILES)
 	    || exit 1; \
 	  fi; \
 	done
-check-am: all-am
-check: check-am
-all-am: Makefile $(PROGRAMS)
-installdirs:
-	for dir in "$(DESTDIR)$(bindir)"; do \
-	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
+	@list='$(DIST_SUBDIRS)'; for subdir in $$list; do \
+	  if test "$$subdir" = .; then :; else \
+	    test -d "$(distdir)/$$subdir" \
+	    || $(MKDIR_P) "$(distdir)/$$subdir" \
+	    || exit 1; \
+	  fi; \
 	done
-install: install-am
-install-exec: install-exec-am
-install-data: install-data-am
-uninstall: uninstall-am
+	@list='$(DIST_SUBDIRS)'; for subdir in $$list; do \
+	  if test "$$subdir" = .; then :; else \
+	    dir1=$$subdir; dir2="$(distdir)/$$subdir"; \
+	    $(am__relativize); \
+	    new_distdir=$$reldir; \
+	    dir1=$$subdir; dir2="$(top_distdir)"; \
+	    $(am__relativize); \
+	    new_top_distdir=$$reldir; \
+	    echo " (cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) top_distdir="$$new_top_distdir" distdir="$$new_distdir" \\"; \
+	    echo "     am__remove_distdir=: am__skip_length_check=: am__skip_mode_fix=: distdir)"; \
+	    ($(am__cd) $$subdir && \
+	      $(MAKE) $(AM_MAKEFLAGS) \
+	        top_distdir="$$new_top_distdir" \
+	        distdir="$$new_distdir" \
+		am__remove_distdir=: \
+		am__skip_length_check=: \
+		am__skip_mode_fix=: \
+	        distdir) \
+	      || exit 1; \
+	  fi; \
+	done
+check-am: all-am
+check: check-recursive
+all-am: Makefile
+installdirs: installdirs-recursive
+installdirs-am:
+install: install-recursive
+install-exec: install-exec-recursive
+install-data: install-data-recursive
+uninstall: uninstall-recursive
 
 install-am: all-am
 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
 
-installcheck: installcheck-am
+installcheck: installcheck-recursive
 install-strip:
 	$(MAKE) $(AM_MAKEFLAGS) INSTALL_PROGRAM="$(INSTALL_STRIP_PROGRAM)" \
 	  install_sh_PROGRAM="$(INSTALL_STRIP_PROGRAM)" INSTALL_STRIP_FLAG=-s \
@@ -608,103 +519,89 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
-clean: clean-am
+clean: clean-recursive
 
-clean-am: clean-binPROGRAMS clean-generic mostlyclean-am
+clean-am: clean-generic clean-libtool mostlyclean-am
 
-distclean: distclean-am
-	-rm -rf ./$(DEPDIR)
+distclean: distclean-recursive
 	-rm -f Makefile
-distclean-am: clean-am distclean-compile distclean-generic \
-	distclean-tags
+distclean-am: clean-am distclean-generic distclean-tags
 
-dvi: dvi-am
+dvi: dvi-recursive
 
 dvi-am:
 
-html: html-am
+html: html-recursive
 
 html-am:
 
-info: info-am
+info: info-recursive
 
 info-am:
 
-install-data-am: install-data-local
+install-data-am:
 
-install-dvi: install-dvi-am
+install-dvi: install-dvi-recursive
 
 install-dvi-am:
 
-install-exec-am: install-binPROGRAMS
+install-exec-am:
 
-install-html: install-html-am
+install-html: install-html-recursive
 
 install-html-am:
 
-install-info: install-info-am
+install-info: install-info-recursive
 
 install-info-am:
 
 install-man:
 
-install-pdf: install-pdf-am
+install-pdf: install-pdf-recursive
 
 install-pdf-am:
 
-install-ps: install-ps-am
+install-ps: install-ps-recursive
 
 install-ps-am:
 
 installcheck-am:
 
-maintainer-clean: maintainer-clean-am
-	-rm -rf ./$(DEPDIR)
+maintainer-clean: maintainer-clean-recursive
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
-mostlyclean: mostlyclean-am
+mostlyclean: mostlyclean-recursive
 
-mostlyclean-am: mostlyclean-compile mostlyclean-generic
+mostlyclean-am: mostlyclean-generic mostlyclean-libtool
 
-pdf: pdf-am
+pdf: pdf-recursive
 
 pdf-am:
 
-ps: ps-am
+ps: ps-recursive
 
 ps-am:
 
-uninstall-am: uninstall-binPROGRAMS uninstall-local
+uninstall-am:
 
-.MAKE: install-am install-strip
+.MAKE: $(RECURSIVE_CLEAN_TARGETS) $(RECURSIVE_TARGETS) ctags-recursive \
+	install-am install-strip tags-recursive
 
-.PHONY: CTAGS GTAGS all all-am check check-am clean clean-binPROGRAMS \
-	clean-generic ctags distclean distclean-compile \
-	distclean-generic distclean-tags distdir dvi dvi-am html \
-	html-am info info-am install install-am install-binPROGRAMS \
-	install-data install-data-am install-data-local install-dvi \
-	install-dvi-am install-exec install-exec-am install-html \
-	install-html-am install-info install-info-am install-man \
-	install-pdf install-pdf-am install-ps install-ps-am \
-	install-strip installcheck installcheck-am installdirs \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-compile mostlyclean-generic pdf pdf-am ps ps-am \
-	tags uninstall uninstall-am uninstall-binPROGRAMS \
-	uninstall-local
+.PHONY: $(RECURSIVE_CLEAN_TARGETS) $(RECURSIVE_TARGETS) CTAGS GTAGS \
+	all all-am check check-am clean clean-generic clean-libtool \
+	ctags ctags-recursive distclean distclean-generic \
+	distclean-libtool distclean-tags distdir dvi dvi-am html \
+	html-am info info-am install install-am install-data \
+	install-data-am install-dvi install-dvi-am install-exec \
+	install-exec-am install-html install-html-am install-info \
+	install-info-am install-man install-pdf install-pdf-am \
+	install-ps install-ps-am install-strip installcheck \
+	installcheck-am installdirs installdirs-am maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-generic \
+	mostlyclean-libtool pdf pdf-am ps ps-am tags tags-recursive \
+	uninstall uninstall-am
 
-
-install-data-local: install-symbolic-link
-uninstall-local: uninstall-symbolic-link
-
-install-symbolic-link: install-binPROGRAMS
-@ENABLE_WIN32_TRUE@	rm -f $(DESTDIR)$(bindir)/waei.exe
-@ENABLE_WIN32_TRUE@	cp $(DESTDIR)$(bindir)/gwaei.exe $(DESTDIR)$(bindir)/waei.exe
-@ENABLE_WIN32_FALSE@	rm -f $(DESTDIR)$(bindir)/waei
-@ENABLE_WIN32_FALSE@	cp $(DESTDIR)$(bindir)/gwaei $(DESTDIR)$(bindir)/waei
-uninstall-symbolic-link:
-@ENABLE_WIN32_TRUE@	rm -f $(DESTDIR)$(bindir)/waei.exe
-@ENABLE_WIN32_FALSE@	rm -f $(DESTDIR)$(bindir)/waei
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

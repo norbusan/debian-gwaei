@@ -43,7 +43,8 @@ load_database()
   else
     {
 #ifdef G_OS_WIN32
-      char *dir = g_win32_get_package_installation_directory (NULL, NULL);
+      //char *dir = g_win32_get_package_installation_directory (NULL, NULL);
+      char *dir = g_build_filename ("..", "share", "gwaei", NULL);
 #else
       char *dir = g_strdup (KP_LIBDIR);
 #endif      
@@ -51,7 +52,7 @@ load_database()
       file = fopen (fname, "rb");
       
       if (!file)
-	file = fopen ("jdata.dat", "rb");
+	      file = fopen ("jdata.dat", "rb");
 
       g_free (fname);
       g_free (dir);

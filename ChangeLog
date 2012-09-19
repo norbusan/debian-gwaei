@@ -1,46 +1,5 @@
-2010-08-17  general fixes <pizzach@gamil.com>
-	* updated version string: 1.4.2
-	* fixes to grade to accept 2 digit numbers
-	* fixes to kanji numbers searches to be more accurate
-	* fixes for english searches in kanji dictionary
-	* removed kanji list in the beginning of kanji searches for speed
-	* Save fixed
-	* Added scrollbars for kanjisidebar
-	* fixed crash when sucessively starting too many searches (usually seen when
-	using the kanji radical tool)
-
-2010-04-06  gettextize  <bug-gnu-gettext@gnu.org>
-
-	* Added chek translation: new file
-
-2010-04-06  gettextize  <bug-gnu-gettext@gnu.org>
-
-	* Makefile.am (EXTRA_DIST): Add m4/ChangeLog.
-	* configure.ac (AC_CONFIG_FILES): Add po/Makefile.in.
-
-2010-04-06  gettextize  <bug-gnu-gettext@gnu.org>
-
-	* configure.ac (AC_CONFIG_FILES): Add intl/Makefile.
-
-2010-04-06  gettextize  <bug-gnu-gettext@gnu.org>
-
-	* Makefile.am (SUBDIRS): Remove intl.
-	* configure.ac (AC_CONFIG_FILES): Remove intl/Makefile.
-
-2010-04-06  gettextize  <bug-gnu-gettext@gnu.org>
-
-	* configure.ac (AC_CONFIG_FILES): Add intl/Makefile.
-
-2010-04-06  gettextize  <bug-gnu-gettext@gnu.org>
-
-	* configure.ac (AC_CONFIG_FILES): Add po/Makefile.in.
-
-2010-04-06  gettextize  <bug-gnu-gettext@gnu.org>
-
-	* configure.ac (AC_CONFIG_FILES): Add po/Makefile.in.
-
-2010-04-06  gettextize  <bug-gnu-gettext@gnu.org>
-
-	* Makefile.am (SUBDIRS): Add intl.
-	* configure.ac (AC_CONFIG_FILES): Add intl/Makefile.
-	(AM_GNU_GETTEXT_VERSION): Bump to 0.17.
+2011-07-16  Zachary Dovel <pizzach@gmail.com>
+	* Fixed warning coming from a tooltip window not being empting when adding
+	  an hbox to it.
+	* Tweaks to the mutexes that were causing the program to freeze and
+	  choppy query input.

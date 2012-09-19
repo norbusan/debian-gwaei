@@ -14,7 +14,6 @@
 # PARTICULAR PURPOSE.
 
 @SET_MAKE@
-
 VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
@@ -35,120 +34,105 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 subdir = src/schemas
-DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
-	$(srcdir)/gwaei.schemas.in
+DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
-	$(top_srcdir)/m4/gnome-doc-utils.m4 $(top_srcdir)/m4/iconv.m4 \
-	$(top_srcdir)/m4/lib-ld.m4 $(top_srcdir)/m4/lib-link.m4 \
-	$(top_srcdir)/m4/lib-prefix.m4 $(top_srcdir)/m4/nls.m4 \
-	$(top_srcdir)/m4/po.m4 $(top_srcdir)/m4/progtest.m4 \
-	$(top_srcdir)/configure.ac
+am__aclocal_m4_deps = $(top_srcdir)/m4/gnome-doc-utils.m4 \
+	$(top_srcdir)/m4/intltool.m4 $(top_srcdir)/m4/libtool.m4 \
+	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
+	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
+	$(top_srcdir)/m4/nls.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
-CONFIG_CLEAN_FILES = gwaei.schemas
+CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 SOURCES =
 DIST_SOURCES =
-am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
-am__vpath_adj = case $$p in \
-    $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
-    *) f=$$p;; \
-  esac;
-am__strip_dir = f=`echo $$p | sed -e 's|^.*/||'`;
-am__install_max = 40
-am__nobase_strip_setup = \
-  srcdirstrip=`echo "$(srcdir)" | sed 's/[].[^$$\\*|]/\\\\&/g'`
-am__nobase_strip = \
-  for p in $$list; do echo "$$p"; done | sed -e "s|$$srcdirstrip/||"
-am__nobase_list = $(am__nobase_strip_setup); \
-  for p in $$list; do echo "$$p $$p"; done | \
-  sed "s| $$srcdirstrip/| |;"' / .*\//!s/ .*/ ./; s,\( .*\)/[^/]*$$,\1,' | \
-  $(AWK) 'BEGIN { files["."] = "" } { files[$$2] = files[$$2] " " $$1; \
-    if (++n[$$2] == $(am__install_max)) \
-      { print $$2, files[$$2]; n[$$2] = 0; files[$$2] = "" } } \
-    END { for (dir in files) print dir, files[dir] }'
-am__base_list = \
-  sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
-  sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
-am__installdirs = "$(DESTDIR)$(schemasdir)"
-DATA = $(schemas_DATA)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
+ALL_LINGUAS = @ALL_LINGUAS@
 AMTAR = @AMTAR@
+AR = @AR@
 AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
+BASE_CFLAGS = @BASE_CFLAGS@
+BASE_LIBS = @BASE_LIBS@
+CATALOGS = @CATALOGS@
+CATOBJEXT = @CATOBJEXT@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
-COMMENT_FG_DEFAULT = @COMMENT_FG_DEFAULT@
+CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
 CYGPATH_W = @CYGPATH_W@
+DATADIRNAME = @DATADIRNAME@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
-DEPS_CFLAGS = @DEPS_CFLAGS@
-DEPS_LIBS = @DEPS_LIBS@
 DISTCHECK_CONFIGURE_FLAGS = @DISTCHECK_CONFIGURE_FLAGS@
+DLLTOOL = @DLLTOOL@
 DOC_USER_FORMATS = @DOC_USER_FORMATS@
 DPKG_DEB = @DPKG_DEB@
+DSYMUTIL = @DSYMUTIL@
+DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
 ECHO_T = @ECHO_T@
-ENGLISH_DEFAULT_URI = @ENGLISH_DEFAULT_URI@
-EXAMPLES_DEFAULT_URI = @EXAMPLES_DEFAULT_URI@
+EGREP = @EGREP@
+ENCHANT = @ENCHANT@
 EXEEXT = @EXEEXT@
-FRENCH_DEFAULT_URI = @FRENCH_DEFAULT_URI@
-GCONFTOOL = @GCONFTOOL@
-GCONF_SCHEMA_CONFIG_SOURCE = @GCONF_SCHEMA_CONFIG_SOURCE@
-GCONF_SCHEMA_FILE_DIR = @GCONF_SCHEMA_FILE_DIR@
-GERMAN_DEFAULT_URI = @GERMAN_DEFAULT_URI@
-GETTEXT_MACRO_VERSION = @GETTEXT_MACRO_VERSION@
+FGREP = @FGREP@
+GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
+GLIB_COMPILE_SCHEMAS = @GLIB_COMPILE_SCHEMAS@
+GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
-GMSGFMT_015 = @GMSGFMT_015@
 GNOME_CFLAGS = @GNOME_CFLAGS@
 GNOME_LIBS = @GNOME_LIBS@
-GUNZIP = @GUNZIP@
-HEADER_BG_DEFAULT = @HEADER_BG_DEFAULT@
-HEADER_FG_DEFAULT = @HEADER_FG_DEFAULT@
+GREP = @GREP@
+GSETTINGS_DISABLE_SCHEMAS_COMPILE = @GSETTINGS_DISABLE_SCHEMAS_COMPILE@
+GWAEI_LOCALEDIR = @GWAEI_LOCALEDIR@
+GZIP = @GZIP@
 HELP_DIR = @HELP_DIR@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
+INSTOBJEXT = @INSTOBJEXT@
 INTLLIBS = @INTLLIBS@
-INTL_MACOSX_LIBS = @INTL_MACOSX_LIBS@
-KANJI_DEFAULT_URI = @KANJI_DEFAULT_URI@
+INTLTOOL_EXTRACT = @INTLTOOL_EXTRACT@
+INTLTOOL_MERGE = @INTLTOOL_MERGE@
+INTLTOOL_PERL = @INTLTOOL_PERL@
+INTLTOOL_UPDATE = @INTLTOOL_UPDATE@
 KILLALL = @KILLALL@
+LD = @LD@
 LDFLAGS = @LDFLAGS@
-LIBICONV = @LIBICONV@
-LIBINTL = @LIBINTL@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
-LIBSEXY_CFLAGS = @LIBSEXY_CFLAGS@
-LIBSEXY_LIBS = @LIBSEXY_LIBS@
+LIBTOOL = @LIBTOOL@
+LIBTOOL_DEPS = @LIBTOOL_DEPS@
 LIBUNIQUE_CFLAGS = @LIBUNIQUE_CFLAGS@
 LIBUNIQUE_LIBS = @LIBUNIQUE_LIBS@
+LIPO = @LIPO@
 LN_S = @LN_S@
-LOAD_ORDER_DEFAULT = @LOAD_ORDER_DEFAULT@
-LTLIBICONV = @LTLIBICONV@
-LTLIBINTL = @LTLIBINTL@
 LTLIBOBJS = @LTLIBOBJS@
 MAKEINFO = @MAKEINFO@
-MATCH_BG_DEFAULT = @MATCH_BG_DEFAULT@
-MATCH_FG_DEFAULT = @MATCH_FG_DEFAULT@
+MANIFEST_TOOL = @MANIFEST_TOOL@
 MKDIR_P = @MKDIR_P@
+MKINSTALLDIRS = @MKINSTALLDIRS@
 MSGFMT = @MSGFMT@
-MSGFMT_015 = @MSGFMT_015@
+MSGFMT_OPTS = @MSGFMT_OPTS@
 MSGMERGE = @MSGMERGE@
-NAMES_DEFAULT_URI = @NAMES_DEFAULT_URI@
 NCURSES_LIBS = @NCURSES_LIBS@
+NM = @NM@
+NMEDIT = @NMEDIT@
+OBJDUMP = @OBJDUMP@
 OBJEXT = @OBJEXT@
 OMF_DIR = @OMF_DIR@
+OTOOL = @OTOOL@
+OTOOL64 = @OTOOL64@
 PACKAGE = @PACKAGE@
 PACKAGE_BUGREPORT = @PACKAGE_BUGREPORT@
 PACKAGE_NAME = @PACKAGE_NAME@
@@ -161,29 +145,29 @@ PERL = @PERL@
 PKG_CONFIG = @PKG_CONFIG@
 PKG_CONFIG_LIBDIR = @PKG_CONFIG_LIBDIR@
 PKG_CONFIG_PATH = @PKG_CONFIG_PATH@
+POFILES = @POFILES@
 POSUB = @POSUB@
-RADICALS_DEFAULT_URI = @RADICALS_DEFAULT_URI@
+PO_IN_DATADIR_FALSE = @PO_IN_DATADIR_FALSE@
+PO_IN_DATADIR_TRUE = @PO_IN_DATADIR_TRUE@
+RANLIB = @RANLIB@
 RELEASE = @RELEASE@
 RPMBUILD = @RPMBUILD@
 RPMDIR = @RPMDIR@
-RSYNC = @RSYNC@
+SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
-SPANISH_DEFAULT_URI = @SPANISH_DEFAULT_URI@
 STRIP = @STRIP@
 UNZIP = @UNZIP@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
-WIN32_CFLAGS = @WIN32_CFLAGS@
-WIN32_LIBS = @WIN32_LIBS@
 XGETTEXT = @XGETTEXT@
-XGETTEXT_015 = @XGETTEXT_015@
-XGETTEXT_EXTRA_OPTIONS = @XGETTEXT_EXTRA_OPTIONS@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
 abs_top_srcdir = @abs_top_srcdir@
+ac_ct_AR = @ac_ct_AR@
 ac_ct_CC = @ac_ct_CC@
+ac_ct_DUMPBIN = @ac_ct_DUMPBIN@
 am__include = @am__include@
 am__leading_dot = @am__leading_dot@
 am__quote = @am__quote@
@@ -201,6 +185,7 @@ datarootdir = @datarootdir@
 docdir = @docdir@
 dvidir = @dvidir@
 exec_prefix = @exec_prefix@
+gsettingsschemadir = @gsettingsschemadir@
 host = @host@
 host_alias = @host_alias@
 host_cpu = @host_cpu@
@@ -229,12 +214,8 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-SCHEMAS_DIRECTORY = $(top_srcdir)/src/schemas
-PREFIX = $(prefix)
-SCHEMA_PATH = $(SCHEMAS_DIRECTORY)/@PACKAGE@.schemas
-schemasdir = $(GCONF_SCHEMA_FILE_DIR)
-schemas_DATA = $(top_srcdir)/src/schemas/@PACKAGE@.schemas
-EXTRA_DIST = @PACKAGE@.schemas
+gsettings_SCHEMAS = org.gnome.gwaei.gschema.xml
+EXTRA_DIST = org.gnome.gwaei.gschema.xml
 all: all-am
 
 .SUFFIXES:
@@ -268,28 +249,12 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(am__aclocal_m4_deps):
-gwaei.schemas: $(top_builddir)/config.status $(srcdir)/gwaei.schemas.in
-	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
-install-schemasDATA: $(schemas_DATA)
-	@$(NORMAL_INSTALL)
-	test -z "$(schemasdir)" || $(MKDIR_P) "$(DESTDIR)$(schemasdir)"
-	@list='$(schemas_DATA)'; test -n "$(schemasdir)" || list=; \
-	for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  echo "$$d$$p"; \
-	done | $(am__base_list) | \
-	while read files; do \
-	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(schemasdir)'"; \
-	  $(INSTALL_DATA) $$files "$(DESTDIR)$(schemasdir)" || exit $$?; \
-	done
 
-uninstall-schemasDATA:
-	@$(NORMAL_UNINSTALL)
-	@list='$(schemas_DATA)'; test -n "$(schemasdir)" || list=; \
-	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
-	test -n "$$files" || exit 0; \
-	echo " ( cd '$(DESTDIR)$(schemasdir)' && rm -f" $$files ")"; \
-	cd "$(DESTDIR)$(schemasdir)" && rm -f $$files
+mostlyclean-libtool:
+	-rm -f *.lo
+
+clean-libtool:
+	-rm -rf .libs _libs
 tags: TAGS
 TAGS:
 
@@ -329,11 +294,8 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(DATA)
+all-am: Makefile
 installdirs:
-	for dir in "$(DESTDIR)$(schemasdir)"; do \
-	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
-	done
 install: install-am
 install-exec: install-exec-am
 install-data: install-data-am
@@ -361,7 +323,7 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-am
 
-clean-am: clean-generic mostlyclean-am
+clean-am: clean-generic clean-libtool mostlyclean-am
 
 distclean: distclean-am
 	-rm -f Makefile
@@ -379,7 +341,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-data-local install-schemasDATA
+install-data-am:
 
 install-dvi: install-dvi-am
 
@@ -413,7 +375,7 @@ maintainer-clean-am: distclean-am maintainer-clean-generic
 
 mostlyclean: mostlyclean-am
 
-mostlyclean-am: mostlyclean-generic
+mostlyclean-am: mostlyclean-generic mostlyclean-libtool
 
 pdf: pdf-am
 
@@ -423,36 +385,22 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-local uninstall-schemasDATA
+uninstall-am:
 
 .MAKE: install-am install-strip
 
-.PHONY: all all-am check check-am clean clean-generic distclean \
-	distclean-generic distdir dvi dvi-am html html-am info info-am \
-	install install-am install-data install-data-am \
-	install-data-local install-dvi install-dvi-am install-exec \
-	install-exec-am install-html install-html-am install-info \
-	install-info-am install-man install-pdf install-pdf-am \
-	install-ps install-ps-am install-schemasDATA install-strip \
+.PHONY: all all-am check check-am clean clean-generic clean-libtool \
+	distclean distclean-generic distclean-libtool distdir dvi \
+	dvi-am html html-am info info-am install install-am \
+	install-data install-data-am install-dvi install-dvi-am \
+	install-exec install-exec-am install-html install-html-am \
+	install-info install-info-am install-man install-pdf \
+	install-pdf-am install-ps install-ps-am install-strip \
 	installcheck installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
-	pdf-am ps ps-am uninstall uninstall-am uninstall-local \
-	uninstall-schemasDATA
+	maintainer-clean-generic mostlyclean mostlyclean-generic \
+	mostlyclean-libtool pdf pdf-am ps ps-am uninstall uninstall-am
 
-
-install-data-local: install-schemas
-uninstall-local: uninstall-schemas
-
-@GCONF_SCHEMAS_INSTALL_TRUE@uninstall-schemas:
-@GCONF_SCHEMAS_INSTALL_TRUE@	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) \
-@GCONF_SCHEMAS_INSTALL_TRUE@	$(GCONFTOOL) --makefile-uninstall-rule $(SCHEMAS_DIRECTORY)/@PACKAGE@.schemas 
-@GCONF_SCHEMAS_INSTALL_TRUE@	`$(KILLALL) -HUP gconfd-2 || true`
-@GCONF_SCHEMAS_INSTALL_FALSE@uninstall-schemas:
-
-@GCONF_SCHEMAS_INSTALL_TRUE@install-schemas:
-@GCONF_SCHEMAS_INSTALL_TRUE@	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) $(GCONFTOOL) --makefile-install-rule $(SCHEMA_PATH)
-@GCONF_SCHEMAS_INSTALL_TRUE@	`$(KILLALL) -HUP gconfd-2 || true`
-@GCONF_SCHEMAS_INSTALL_FALSE@install-schemas:
+@GSETTINGS_RULES@
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

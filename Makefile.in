@@ -34,36 +34,29 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-@WITH_GNOME_TRUE@am__append_1 = src/schemas src/gtk-builder-xml src/kpengine src/images src/desktop help
 subdir = .
-DIST_COMMON = README $(am__configure_deps) $(srcdir)/Doxyfile.in \
-	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
-	$(srcdir)/config.h.in $(top_srcdir)/configure \
-	$(top_srcdir)/help/C/gwaei.xml.in \
+DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
+	$(srcdir)/Makefile.in $(srcdir)/config.h.in \
+	$(top_srcdir)/configure \
 	$(top_srcdir)/rpm/fedora/SPECS/gwaei.spec.in \
 	$(top_srcdir)/rpm/gwaei.spec.in \
-	$(top_srcdir)/rpm/rpm_gconf_install_post.sh.in \
-	$(top_srcdir)/rpm/rpm_gconf_uninstall_pre.sh.in \
-	$(top_srcdir)/src/include/gwaei/definitions.h.in ABOUT-NLS \
-	AUTHORS COPYING ChangeLog INSTALL NEWS THANKS config.guess \
+	$(top_srcdir)/src/gwaei/help/C/gwaei.xml.in ABOUT-NLS AUTHORS \
+	COPYING ChangeLog INSTALL NEWS THANKS compile config.guess \
 	config.rpath config.sub depcomp install-sh ltmain.sh missing
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
-	$(top_srcdir)/m4/gnome-doc-utils.m4 $(top_srcdir)/m4/iconv.m4 \
-	$(top_srcdir)/m4/lib-ld.m4 $(top_srcdir)/m4/lib-link.m4 \
-	$(top_srcdir)/m4/lib-prefix.m4 $(top_srcdir)/m4/nls.m4 \
-	$(top_srcdir)/m4/po.m4 $(top_srcdir)/m4/progtest.m4 \
-	$(top_srcdir)/configure.ac
+am__aclocal_m4_deps = $(top_srcdir)/m4/gnome-doc-utils.m4 \
+	$(top_srcdir)/m4/intltool.m4 $(top_srcdir)/m4/libtool.m4 \
+	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
+	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
+	$(top_srcdir)/m4/nls.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
  configure.lineno config.status.lineno
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = config.h
-CONFIG_CLEAN_FILES = help/C/gwaei.xml rpm/gwaei.spec \
-	rpm/rpm_gconf_install_post.sh rpm/rpm_gconf_uninstall_pre.sh \
-	rpm/fedora/SPECS/gwaei.spec src/include/gwaei/definitions.h \
-	Doxyfile
+CONFIG_CLEAN_FILES = src/gwaei/help/C/gwaei.xml rpm/gwaei.spec \
+	rpm/fedora/SPECS/gwaei.spec
 CONFIG_CLEAN_VPATH_FILES =
 SOURCES =
 DIST_SOURCES =
@@ -105,8 +98,7 @@ AM_RECURSIVE_TARGETS = $(RECURSIVE_TARGETS:-recursive=) \
 	distdir dist dist-all distcheck
 ETAGS = etags
 CTAGS = ctags
-DIST_SUBDIRS = src po mandir src/schemas src/gtk-builder-xml \
-	src/kpengine src/images src/desktop help
+DIST_SUBDIRS = $(SUBDIRS)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -144,78 +136,88 @@ GZIP_ENV = --best
 distuninstallcheck_listfiles = find . -type f -print
 distcleancheck_listfiles = find . -type f -print
 ACLOCAL = @ACLOCAL@
+ALL_LINGUAS = @ALL_LINGUAS@
 AMTAR = @AMTAR@
+AR = @AR@
 AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
+BASE_CFLAGS = @BASE_CFLAGS@
+BASE_LIBS = @BASE_LIBS@
+CATALOGS = @CATALOGS@
+CATOBJEXT = @CATOBJEXT@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
-COMMENT_FG_DEFAULT = @COMMENT_FG_DEFAULT@
+CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
 CYGPATH_W = @CYGPATH_W@
+DATADIRNAME = @DATADIRNAME@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
-DEPS_CFLAGS = @DEPS_CFLAGS@
-DEPS_LIBS = @DEPS_LIBS@
 DISTCHECK_CONFIGURE_FLAGS = @DISTCHECK_CONFIGURE_FLAGS@
+DLLTOOL = @DLLTOOL@
 DOC_USER_FORMATS = @DOC_USER_FORMATS@
 DPKG_DEB = @DPKG_DEB@
+DSYMUTIL = @DSYMUTIL@
+DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
 ECHO_T = @ECHO_T@
-ENGLISH_DEFAULT_URI = @ENGLISH_DEFAULT_URI@
-EXAMPLES_DEFAULT_URI = @EXAMPLES_DEFAULT_URI@
+EGREP = @EGREP@
+ENCHANT = @ENCHANT@
 EXEEXT = @EXEEXT@
-FRENCH_DEFAULT_URI = @FRENCH_DEFAULT_URI@
-GCONFTOOL = @GCONFTOOL@
-GCONF_SCHEMA_CONFIG_SOURCE = @GCONF_SCHEMA_CONFIG_SOURCE@
-GCONF_SCHEMA_FILE_DIR = @GCONF_SCHEMA_FILE_DIR@
-GERMAN_DEFAULT_URI = @GERMAN_DEFAULT_URI@
-GETTEXT_MACRO_VERSION = @GETTEXT_MACRO_VERSION@
+FGREP = @FGREP@
+GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
+GLIB_COMPILE_SCHEMAS = @GLIB_COMPILE_SCHEMAS@
+GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
-GMSGFMT_015 = @GMSGFMT_015@
 GNOME_CFLAGS = @GNOME_CFLAGS@
 GNOME_LIBS = @GNOME_LIBS@
-GUNZIP = @GUNZIP@
-HEADER_BG_DEFAULT = @HEADER_BG_DEFAULT@
-HEADER_FG_DEFAULT = @HEADER_FG_DEFAULT@
+GREP = @GREP@
+GSETTINGS_DISABLE_SCHEMAS_COMPILE = @GSETTINGS_DISABLE_SCHEMAS_COMPILE@
+GWAEI_LOCALEDIR = @GWAEI_LOCALEDIR@
+GZIP = @GZIP@
 HELP_DIR = @HELP_DIR@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
+INSTOBJEXT = @INSTOBJEXT@
 INTLLIBS = @INTLLIBS@
-INTL_MACOSX_LIBS = @INTL_MACOSX_LIBS@
-KANJI_DEFAULT_URI = @KANJI_DEFAULT_URI@
+INTLTOOL_EXTRACT = @INTLTOOL_EXTRACT@
+INTLTOOL_MERGE = @INTLTOOL_MERGE@
+INTLTOOL_PERL = @INTLTOOL_PERL@
+INTLTOOL_UPDATE = @INTLTOOL_UPDATE@
 KILLALL = @KILLALL@
+LD = @LD@
 LDFLAGS = @LDFLAGS@
-LIBICONV = @LIBICONV@
-LIBINTL = @LIBINTL@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
-LIBSEXY_CFLAGS = @LIBSEXY_CFLAGS@
-LIBSEXY_LIBS = @LIBSEXY_LIBS@
+LIBTOOL = @LIBTOOL@
+LIBTOOL_DEPS = @LIBTOOL_DEPS@
 LIBUNIQUE_CFLAGS = @LIBUNIQUE_CFLAGS@
 LIBUNIQUE_LIBS = @LIBUNIQUE_LIBS@
+LIPO = @LIPO@
 LN_S = @LN_S@
-LOAD_ORDER_DEFAULT = @LOAD_ORDER_DEFAULT@
-LTLIBICONV = @LTLIBICONV@
-LTLIBINTL = @LTLIBINTL@
 LTLIBOBJS = @LTLIBOBJS@
 MAKEINFO = @MAKEINFO@
-MATCH_BG_DEFAULT = @MATCH_BG_DEFAULT@
-MATCH_FG_DEFAULT = @MATCH_FG_DEFAULT@
+MANIFEST_TOOL = @MANIFEST_TOOL@
 MKDIR_P = @MKDIR_P@
+MKINSTALLDIRS = @MKINSTALLDIRS@
 MSGFMT = @MSGFMT@
-MSGFMT_015 = @MSGFMT_015@
+MSGFMT_OPTS = @MSGFMT_OPTS@
 MSGMERGE = @MSGMERGE@
-NAMES_DEFAULT_URI = @NAMES_DEFAULT_URI@
 NCURSES_LIBS = @NCURSES_LIBS@
+NM = @NM@
+NMEDIT = @NMEDIT@
+OBJDUMP = @OBJDUMP@
 OBJEXT = @OBJEXT@
 OMF_DIR = @OMF_DIR@
+OTOOL = @OTOOL@
+OTOOL64 = @OTOOL64@
 PACKAGE = @PACKAGE@
 PACKAGE_BUGREPORT = @PACKAGE_BUGREPORT@
 PACKAGE_NAME = @PACKAGE_NAME@
@@ -228,29 +230,29 @@ PERL = @PERL@
 PKG_CONFIG = @PKG_CONFIG@
 PKG_CONFIG_LIBDIR = @PKG_CONFIG_LIBDIR@
 PKG_CONFIG_PATH = @PKG_CONFIG_PATH@
+POFILES = @POFILES@
 POSUB = @POSUB@
-RADICALS_DEFAULT_URI = @RADICALS_DEFAULT_URI@
+PO_IN_DATADIR_FALSE = @PO_IN_DATADIR_FALSE@
+PO_IN_DATADIR_TRUE = @PO_IN_DATADIR_TRUE@
+RANLIB = @RANLIB@
 RELEASE = @RELEASE@
 RPMBUILD = @RPMBUILD@
 RPMDIR = @RPMDIR@
-RSYNC = @RSYNC@
+SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
-SPANISH_DEFAULT_URI = @SPANISH_DEFAULT_URI@
 STRIP = @STRIP@
 UNZIP = @UNZIP@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
-WIN32_CFLAGS = @WIN32_CFLAGS@
-WIN32_LIBS = @WIN32_LIBS@
 XGETTEXT = @XGETTEXT@
-XGETTEXT_015 = @XGETTEXT_015@
-XGETTEXT_EXTRA_OPTIONS = @XGETTEXT_EXTRA_OPTIONS@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
 abs_top_srcdir = @abs_top_srcdir@
+ac_ct_AR = @ac_ct_AR@
 ac_ct_CC = @ac_ct_CC@
+ac_ct_DUMPBIN = @ac_ct_DUMPBIN@
 am__include = @am__include@
 am__leading_dot = @am__leading_dot@
 am__quote = @am__quote@
@@ -268,6 +270,7 @@ datarootdir = @datarootdir@
 docdir = @docdir@
 dvidir = @dvidir@
 exec_prefix = @exec_prefix@
+gsettingsschemadir = @gsettingsschemadir@
 host = @host@
 host_alias = @host_alias@
 host_cpu = @host_cpu@
@@ -296,7 +299,8 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-SUBDIRS = src po mandir $(am__append_1)
+SUBDIRS = src po mandir
+INTLTOOL_FILES = intltool-extract.in intltool-merge.in intltool-update.in
 ACLOCAL_AMFLAGS = -I m4
 ARCH = @ARCH@
 RPM_SOURCE = `@RPMDIR@ --eval '%{_sourcedir}'`
@@ -308,7 +312,8 @@ newsdir = $(docdir)
 copyingdir = $(docdir)
 changelogdir = $(docdir)
 CONFIGURE_OPTIONS = --prefix $(prefix) --bindir=$(bindir) --sbindir=$(sbindir) --libexecdir=$(libexecdir) --sysconfdir=$(sysconfdir) --sharedstatedir=$(sharedstatedir) --localstatedir=$(localstatedir) --libdir=$(libdir) --includedir=$(includedir) --oldincludedir=$(oldincludedir) --datarootdir=$(datarootdir) --datadir=$(datadir) --infodir=$(infodir) --localedir=$(localedir) --mandir=$(mandir) --docdir=$(docdir)
-EXTRA_DIST = m4/ChangeLog  config.rpath m4/ChangeLog config.rpath m4/ChangeLog help/Makefile.am.gnome help/Makefile.am.none mandir/gwaei.1 mandir/waei.1 autogen.sh rpm/create_rpms.sh
+DISTCLEANFILES = intltool-extract intltool-merge intltool-update po/.intltool-merge-cache
+EXTRA_DIST = m4/ChangeLog  config.rpath m4/ChangeLog config.rpath m4/ChangeLog mandir/gwaei.1 mandir/waei.1 autogen.sh rpm/create_rpms.sh $(INTLTOOL_FILES)
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
@@ -364,20 +369,21 @@ $(srcdir)/config.h.in:  $(am__configure_deps)
 
 distclean-hdr:
 	-rm -f config.h stamp-h1
-help/C/gwaei.xml: $(top_builddir)/config.status $(top_srcdir)/help/C/gwaei.xml.in
+src/gwaei/help/C/gwaei.xml: $(top_builddir)/config.status $(top_srcdir)/src/gwaei/help/C/gwaei.xml.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 rpm/gwaei.spec: $(top_builddir)/config.status $(top_srcdir)/rpm/gwaei.spec.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
-rpm/rpm_gconf_install_post.sh: $(top_builddir)/config.status $(top_srcdir)/rpm/rpm_gconf_install_post.sh.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-rpm/rpm_gconf_uninstall_pre.sh: $(top_builddir)/config.status $(top_srcdir)/rpm/rpm_gconf_uninstall_pre.sh.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
 rpm/fedora/SPECS/gwaei.spec: $(top_builddir)/config.status $(top_srcdir)/rpm/fedora/SPECS/gwaei.spec.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
-src/include/gwaei/definitions.h: $(top_builddir)/config.status $(top_srcdir)/src/include/gwaei/definitions.h.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-Doxyfile: $(top_builddir)/config.status $(srcdir)/Doxyfile.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
+
+mostlyclean-libtool:
+	-rm -f *.lo
+
+clean-libtool:
+	-rm -rf .libs _libs
+
+distclean-libtool:
+	-rm -f libtool config.lt
 install-changelogDATA: $(changelog_DATA)
 	@$(NORMAL_INSTALL)
 	test -z "$(changelogdir)" || $(MKDIR_P) "$(DESTDIR)$(changelogdir)"
@@ -778,19 +784,20 @@ clean-generic:
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
 	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
+	-test -z "$(DISTCLEANFILES)" || rm -f $(DISTCLEANFILES)
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-recursive
 
-clean-am: clean-generic mostlyclean-am
+clean-am: clean-generic clean-libtool mostlyclean-am
 
 distclean: distclean-recursive
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
 	-rm -f Makefile
-distclean-am: clean-am distclean-generic distclean-hdr distclean-local \
-	distclean-tags
+distclean-am: clean-am distclean-generic distclean-hdr \
+	distclean-libtool distclean-local distclean-tags
 
 dvi: dvi-recursive
 
@@ -841,7 +848,7 @@ maintainer-clean-am: distclean-am maintainer-clean-generic
 
 mostlyclean: mostlyclean-recursive
 
-mostlyclean-am: mostlyclean-generic
+mostlyclean-am: mostlyclean-generic mostlyclean-libtool
 
 pdf: pdf-recursive
 
@@ -859,22 +866,25 @@ uninstall-am: uninstall-changelogDATA uninstall-copyingDATA \
 
 .PHONY: $(RECURSIVE_CLEAN_TARGETS) $(RECURSIVE_TARGETS) CTAGS GTAGS \
 	all all-am am--refresh check check-am clean clean-generic \
-	ctags ctags-recursive dist dist-all dist-bzip2 dist-gzip \
-	dist-lzma dist-shar dist-tarZ dist-xz dist-zip distcheck \
-	distclean distclean-generic distclean-hdr distclean-local \
-	distclean-tags distcleancheck distdir distuninstallcheck dvi \
-	dvi-am html html-am info info-am install install-am \
-	install-changelogDATA install-copyingDATA install-data \
-	install-data-am install-dvi install-dvi-am install-exec \
-	install-exec-am install-html install-html-am install-info \
-	install-info-am install-man install-newsDATA install-pdf \
-	install-pdf-am install-ps install-ps-am install-strip \
-	installcheck installcheck-am installdirs installdirs-am \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-generic pdf pdf-am ps ps-am tags tags-recursive \
+	clean-libtool ctags ctags-recursive dist dist-all dist-bzip2 \
+	dist-gzip dist-lzma dist-shar dist-tarZ dist-xz dist-zip \
+	distcheck distclean distclean-generic distclean-hdr \
+	distclean-libtool distclean-local distclean-tags \
+	distcleancheck distdir distuninstallcheck dvi dvi-am html \
+	html-am info info-am install install-am install-changelogDATA \
+	install-copyingDATA install-data install-data-am install-dvi \
+	install-dvi-am install-exec install-exec-am install-html \
+	install-html-am install-info install-info-am install-man \
+	install-newsDATA install-pdf install-pdf-am install-ps \
+	install-ps-am install-strip installcheck installcheck-am \
+	installdirs installdirs-am maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-generic \
+	mostlyclean-libtool pdf pdf-am ps ps-am tags tags-recursive \
 	uninstall uninstall-am uninstall-changelogDATA \
 	uninstall-copyingDATA uninstall-local uninstall-newsDATA
 
+libtool: $(LIBTOOL_DEPS)
+	$(SHELL) ./config.status libtool
 
 distclean-local:
 

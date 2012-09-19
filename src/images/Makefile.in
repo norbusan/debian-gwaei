@@ -37,12 +37,11 @@ host_triplet = @host@
 subdir = src/images
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
-	$(top_srcdir)/m4/gnome-doc-utils.m4 $(top_srcdir)/m4/iconv.m4 \
-	$(top_srcdir)/m4/lib-ld.m4 $(top_srcdir)/m4/lib-link.m4 \
-	$(top_srcdir)/m4/lib-prefix.m4 $(top_srcdir)/m4/nls.m4 \
-	$(top_srcdir)/m4/po.m4 $(top_srcdir)/m4/progtest.m4 \
-	$(top_srcdir)/configure.ac
+am__aclocal_m4_deps = $(top_srcdir)/m4/gnome-doc-utils.m4 \
+	$(top_srcdir)/m4/intltool.m4 $(top_srcdir)/m4/libtool.m4 \
+	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
+	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
+	$(top_srcdir)/m4/nls.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -77,6 +76,7 @@ am__installdirs = "$(DESTDIR)$(data16dir)" "$(DESTDIR)$(data24dir)" \
 	"$(DESTDIR)$(datanonwordboundary16dir)" \
 	"$(DESTDIR)$(datanonwordboundary22dir)" \
 	"$(DESTDIR)$(datanonwordboundary24dir)" \
+	"$(DESTDIR)$(datascalabledir)" \
 	"$(DESTDIR)$(dataunknowncharacter16dir)" \
 	"$(DESTDIR)$(dataunknowncharacter22dir)" \
 	"$(DESTDIR)$(dataunknowncharacter24dir)" \
@@ -85,84 +85,95 @@ am__installdirs = "$(DESTDIR)$(data16dir)" "$(DESTDIR)$(data24dir)" \
 	"$(DESTDIR)$(datawordboundary24dir)" "$(DESTDIR)$(pkgdatadir)"
 DATA = $(data16_DATA) $(data24_DATA) $(data32_DATA) $(data48_DATA) \
 	$(datanonwordboundary16_DATA) $(datanonwordboundary22_DATA) \
-	$(datanonwordboundary24_DATA) $(dataunknowncharacter16_DATA) \
-	$(dataunknowncharacter22_DATA) $(dataunknowncharacter24_DATA) \
-	$(datawordboundary16_DATA) $(datawordboundary22_DATA) \
-	$(datawordboundary24_DATA) $(pkgdata_DATA)
+	$(datanonwordboundary24_DATA) $(datascalable_DATA) \
+	$(dataunknowncharacter16_DATA) $(dataunknowncharacter22_DATA) \
+	$(dataunknowncharacter24_DATA) $(datawordboundary16_DATA) \
+	$(datawordboundary22_DATA) $(datawordboundary24_DATA) \
+	$(pkgdata_DATA)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
+ALL_LINGUAS = @ALL_LINGUAS@
 AMTAR = @AMTAR@
+AR = @AR@
 AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
+BASE_CFLAGS = @BASE_CFLAGS@
+BASE_LIBS = @BASE_LIBS@
+CATALOGS = @CATALOGS@
+CATOBJEXT = @CATOBJEXT@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
-COMMENT_FG_DEFAULT = @COMMENT_FG_DEFAULT@
+CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
 CYGPATH_W = @CYGPATH_W@
+DATADIRNAME = @DATADIRNAME@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
-DEPS_CFLAGS = @DEPS_CFLAGS@
-DEPS_LIBS = @DEPS_LIBS@
 DISTCHECK_CONFIGURE_FLAGS = @DISTCHECK_CONFIGURE_FLAGS@
+DLLTOOL = @DLLTOOL@
 DOC_USER_FORMATS = @DOC_USER_FORMATS@
 DPKG_DEB = @DPKG_DEB@
+DSYMUTIL = @DSYMUTIL@
+DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
 ECHO_T = @ECHO_T@
-ENGLISH_DEFAULT_URI = @ENGLISH_DEFAULT_URI@
-EXAMPLES_DEFAULT_URI = @EXAMPLES_DEFAULT_URI@
+EGREP = @EGREP@
+ENCHANT = @ENCHANT@
 EXEEXT = @EXEEXT@
-FRENCH_DEFAULT_URI = @FRENCH_DEFAULT_URI@
-GCONFTOOL = @GCONFTOOL@
-GCONF_SCHEMA_CONFIG_SOURCE = @GCONF_SCHEMA_CONFIG_SOURCE@
-GCONF_SCHEMA_FILE_DIR = @GCONF_SCHEMA_FILE_DIR@
-GERMAN_DEFAULT_URI = @GERMAN_DEFAULT_URI@
-GETTEXT_MACRO_VERSION = @GETTEXT_MACRO_VERSION@
+FGREP = @FGREP@
+GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
+GLIB_COMPILE_SCHEMAS = @GLIB_COMPILE_SCHEMAS@
+GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
-GMSGFMT_015 = @GMSGFMT_015@
 GNOME_CFLAGS = @GNOME_CFLAGS@
 GNOME_LIBS = @GNOME_LIBS@
-GUNZIP = @GUNZIP@
-HEADER_BG_DEFAULT = @HEADER_BG_DEFAULT@
-HEADER_FG_DEFAULT = @HEADER_FG_DEFAULT@
+GREP = @GREP@
+GSETTINGS_DISABLE_SCHEMAS_COMPILE = @GSETTINGS_DISABLE_SCHEMAS_COMPILE@
+GWAEI_LOCALEDIR = @GWAEI_LOCALEDIR@
+GZIP = @GZIP@
 HELP_DIR = @HELP_DIR@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
+INSTOBJEXT = @INSTOBJEXT@
 INTLLIBS = @INTLLIBS@
-INTL_MACOSX_LIBS = @INTL_MACOSX_LIBS@
-KANJI_DEFAULT_URI = @KANJI_DEFAULT_URI@
+INTLTOOL_EXTRACT = @INTLTOOL_EXTRACT@
+INTLTOOL_MERGE = @INTLTOOL_MERGE@
+INTLTOOL_PERL = @INTLTOOL_PERL@
+INTLTOOL_UPDATE = @INTLTOOL_UPDATE@
 KILLALL = @KILLALL@
+LD = @LD@
 LDFLAGS = @LDFLAGS@
-LIBICONV = @LIBICONV@
-LIBINTL = @LIBINTL@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
-LIBSEXY_CFLAGS = @LIBSEXY_CFLAGS@
-LIBSEXY_LIBS = @LIBSEXY_LIBS@
+LIBTOOL = @LIBTOOL@
+LIBTOOL_DEPS = @LIBTOOL_DEPS@
 LIBUNIQUE_CFLAGS = @LIBUNIQUE_CFLAGS@
 LIBUNIQUE_LIBS = @LIBUNIQUE_LIBS@
+LIPO = @LIPO@
 LN_S = @LN_S@
-LOAD_ORDER_DEFAULT = @LOAD_ORDER_DEFAULT@
-LTLIBICONV = @LTLIBICONV@
-LTLIBINTL = @LTLIBINTL@
 LTLIBOBJS = @LTLIBOBJS@
 MAKEINFO = @MAKEINFO@
-MATCH_BG_DEFAULT = @MATCH_BG_DEFAULT@
-MATCH_FG_DEFAULT = @MATCH_FG_DEFAULT@
+MANIFEST_TOOL = @MANIFEST_TOOL@
 MKDIR_P = @MKDIR_P@
+MKINSTALLDIRS = @MKINSTALLDIRS@
 MSGFMT = @MSGFMT@
-MSGFMT_015 = @MSGFMT_015@
+MSGFMT_OPTS = @MSGFMT_OPTS@
 MSGMERGE = @MSGMERGE@
-NAMES_DEFAULT_URI = @NAMES_DEFAULT_URI@
 NCURSES_LIBS = @NCURSES_LIBS@
+NM = @NM@
+NMEDIT = @NMEDIT@
+OBJDUMP = @OBJDUMP@
 OBJEXT = @OBJEXT@
 OMF_DIR = @OMF_DIR@
+OTOOL = @OTOOL@
+OTOOL64 = @OTOOL64@
 PACKAGE = @PACKAGE@
 PACKAGE_BUGREPORT = @PACKAGE_BUGREPORT@
 PACKAGE_NAME = @PACKAGE_NAME@
@@ -175,29 +186,29 @@ PERL = @PERL@
 PKG_CONFIG = @PKG_CONFIG@
 PKG_CONFIG_LIBDIR = @PKG_CONFIG_LIBDIR@
 PKG_CONFIG_PATH = @PKG_CONFIG_PATH@
+POFILES = @POFILES@
 POSUB = @POSUB@
-RADICALS_DEFAULT_URI = @RADICALS_DEFAULT_URI@
+PO_IN_DATADIR_FALSE = @PO_IN_DATADIR_FALSE@
+PO_IN_DATADIR_TRUE = @PO_IN_DATADIR_TRUE@
+RANLIB = @RANLIB@
 RELEASE = @RELEASE@
 RPMBUILD = @RPMBUILD@
 RPMDIR = @RPMDIR@
-RSYNC = @RSYNC@
+SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
-SPANISH_DEFAULT_URI = @SPANISH_DEFAULT_URI@
 STRIP = @STRIP@
 UNZIP = @UNZIP@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
-WIN32_CFLAGS = @WIN32_CFLAGS@
-WIN32_LIBS = @WIN32_LIBS@
 XGETTEXT = @XGETTEXT@
-XGETTEXT_015 = @XGETTEXT_015@
-XGETTEXT_EXTRA_OPTIONS = @XGETTEXT_EXTRA_OPTIONS@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
 abs_top_srcdir = @abs_top_srcdir@
+ac_ct_AR = @ac_ct_AR@
 ac_ct_CC = @ac_ct_CC@
+ac_ct_DUMPBIN = @ac_ct_DUMPBIN@
 am__include = @am__include@
 am__leading_dot = @am__leading_dot@
 am__quote = @am__quote@
@@ -215,6 +226,7 @@ datarootdir = @datarootdir@
 docdir = @docdir@
 dvidir = @dvidir@
 exec_prefix = @exec_prefix@
+gsettingsschemadir = @gsettingsschemadir@
 host = @host@
 host_alias = @host_alias@
 host_cpu = @host_cpu@
@@ -249,10 +261,12 @@ data16dir = $(datadir)/icons/hicolor/16x16/apps
 data24dir = $(datadir)/icons/hicolor/24x24/apps
 data32dir = $(datadir)/icons/hicolor/32x32/apps
 data48dir = $(datadir)/icons/hicolor/48x48/apps
+datascalabledir = $(datadir)/icons/hicolor/scalable/apps
 data16_DATA = 16x16/$(PACKAGE).png
 data24_DATA = 24x24/$(PACKAGE).png
 data32_DATA = 32x32/$(PACKAGE).png
 data48_DATA = 48x48/$(PACKAGE).png
+datascalable_DATA = scalable/$(PACKAGE).svg
 
 #Install Application Logo
 pkgdata_DATA = logo.png goo.png google.png wikipedia.png book_green.png
@@ -276,7 +290,12 @@ datanonwordboundary24_DATA = 24x24/non-word-boundary.png
 dataunknowncharacter16_DATA = 16x16/unknown-character.png
 dataunknowncharacter22_DATA = 22x22/unknown-character.png
 dataunknowncharacter24_DATA = 24x24/unknown-character.png
-EXTRA_DIST = logo.png 16x16/$(PACKAGE).png 24x24/$(PACKAGE).png 32x32/$(PACKAGE).png 48x48/$(PACKAGE).png 22x22/word-boundary.png 16x16/non-word-boundary.png 16x16/unknown-character.png 24x24/non-word-boundary.png 16x16/word-boundary.png 24x24/unknown-character.png 22x22/non-word-boundary.png 24x24/word-boundary.png 22x22/unknown-character.png goo.png google.png wikipedia.png book_green.png
+
+#
+# GTK icon cache
+#
+gtk_update_icon_cache = gtk-update-icon-cache -f -t $(datadir)/icons/hicolor
+EXTRA_DIST = logo.png 16x16/$(PACKAGE).png 24x24/$(PACKAGE).png 32x32/$(PACKAGE).png 48x48/$(PACKAGE).png scalable/$(PACKAGE).svg 22x22/word-boundary.png 16x16/non-word-boundary.png 16x16/unknown-character.png 24x24/non-word-boundary.png 16x16/word-boundary.png 24x24/unknown-character.png 22x22/non-word-boundary.png 24x24/word-boundary.png 22x22/unknown-character.png goo.png google.png wikipedia.png book_green.png 
 all: all-am
 
 .SUFFIXES:
@@ -310,6 +329,12 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(am__aclocal_m4_deps):
+
+mostlyclean-libtool:
+	-rm -f *.lo
+
+clean-libtool:
+	-rm -rf .libs _libs
 install-data16DATA: $(data16_DATA)
 	@$(NORMAL_INSTALL)
 	test -z "$(data16dir)" || $(MKDIR_P) "$(DESTDIR)$(data16dir)"
@@ -450,6 +475,26 @@ uninstall-datanonwordboundary24DATA:
 	test -n "$$files" || exit 0; \
 	echo " ( cd '$(DESTDIR)$(datanonwordboundary24dir)' && rm -f" $$files ")"; \
 	cd "$(DESTDIR)$(datanonwordboundary24dir)" && rm -f $$files
+install-datascalableDATA: $(datascalable_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(datascalabledir)" || $(MKDIR_P) "$(DESTDIR)$(datascalabledir)"
+	@list='$(datascalable_DATA)'; test -n "$(datascalabledir)" || list=; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(datascalabledir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(datascalabledir)" || exit $$?; \
+	done
+
+uninstall-datascalableDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(datascalable_DATA)'; test -n "$(datascalabledir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	test -n "$$files" || exit 0; \
+	echo " ( cd '$(DESTDIR)$(datascalabledir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(datascalabledir)" && rm -f $$files
 install-dataunknowncharacter16DATA: $(dataunknowncharacter16_DATA)
 	@$(NORMAL_INSTALL)
 	test -z "$(dataunknowncharacter16dir)" || $(MKDIR_P) "$(DESTDIR)$(dataunknowncharacter16dir)"
@@ -631,7 +676,7 @@ check-am: all-am
 check: check-am
 all-am: Makefile $(DATA)
 installdirs:
-	for dir in "$(DESTDIR)$(data16dir)" "$(DESTDIR)$(data24dir)" "$(DESTDIR)$(data32dir)" "$(DESTDIR)$(data48dir)" "$(DESTDIR)$(datanonwordboundary16dir)" "$(DESTDIR)$(datanonwordboundary22dir)" "$(DESTDIR)$(datanonwordboundary24dir)" "$(DESTDIR)$(dataunknowncharacter16dir)" "$(DESTDIR)$(dataunknowncharacter22dir)" "$(DESTDIR)$(dataunknowncharacter24dir)" "$(DESTDIR)$(datawordboundary16dir)" "$(DESTDIR)$(datawordboundary22dir)" "$(DESTDIR)$(datawordboundary24dir)" "$(DESTDIR)$(pkgdatadir)"; do \
+	for dir in "$(DESTDIR)$(data16dir)" "$(DESTDIR)$(data24dir)" "$(DESTDIR)$(data32dir)" "$(DESTDIR)$(data48dir)" "$(DESTDIR)$(datanonwordboundary16dir)" "$(DESTDIR)$(datanonwordboundary22dir)" "$(DESTDIR)$(datanonwordboundary24dir)" "$(DESTDIR)$(datascalabledir)" "$(DESTDIR)$(dataunknowncharacter16dir)" "$(DESTDIR)$(dataunknowncharacter22dir)" "$(DESTDIR)$(dataunknowncharacter24dir)" "$(DESTDIR)$(datawordboundary16dir)" "$(DESTDIR)$(datawordboundary22dir)" "$(DESTDIR)$(datawordboundary24dir)" "$(DESTDIR)$(pkgdatadir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -661,7 +706,7 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-am
 
-clean-am: clean-generic mostlyclean-am
+clean-am: clean-generic clean-libtool mostlyclean-am
 
 distclean: distclean-am
 	-rm -f Makefile
@@ -683,7 +728,7 @@ install-data-am: install-data16DATA install-data24DATA \
 	install-data32DATA install-data48DATA \
 	install-datanonwordboundary16DATA \
 	install-datanonwordboundary22DATA \
-	install-datanonwordboundary24DATA \
+	install-datanonwordboundary24DATA install-datascalableDATA \
 	install-dataunknowncharacter16DATA \
 	install-dataunknowncharacter22DATA \
 	install-dataunknowncharacter24DATA \
@@ -723,7 +768,7 @@ maintainer-clean-am: distclean-am maintainer-clean-generic
 
 mostlyclean: mostlyclean-am
 
-mostlyclean-am: mostlyclean-generic
+mostlyclean-am: mostlyclean-generic mostlyclean-libtool
 
 pdf: pdf-am
 
@@ -737,7 +782,7 @@ uninstall-am: uninstall-data16DATA uninstall-data24DATA \
 	uninstall-data32DATA uninstall-data48DATA \
 	uninstall-datanonwordboundary16DATA \
 	uninstall-datanonwordboundary22DATA \
-	uninstall-datanonwordboundary24DATA \
+	uninstall-datanonwordboundary24DATA uninstall-datascalableDATA \
 	uninstall-dataunknowncharacter16DATA \
 	uninstall-dataunknowncharacter22DATA \
 	uninstall-dataunknowncharacter24DATA \
@@ -748,14 +793,14 @@ uninstall-am: uninstall-data16DATA uninstall-data24DATA \
 	$(MAKE) $(AM_MAKEFLAGS) uninstall-hook
 .MAKE: install-am install-data-am install-strip uninstall-am
 
-.PHONY: all all-am check check-am clean clean-generic distclean \
-	distclean-generic distdir dvi dvi-am html html-am info info-am \
-	install install-am install-data install-data-am \
-	install-data-hook install-data16DATA install-data24DATA \
-	install-data32DATA install-data48DATA \
-	install-datanonwordboundary16DATA \
+.PHONY: all all-am check check-am clean clean-generic clean-libtool \
+	distclean distclean-generic distclean-libtool distdir dvi \
+	dvi-am html html-am info info-am install install-am \
+	install-data install-data-am install-data-hook \
+	install-data16DATA install-data24DATA install-data32DATA \
+	install-data48DATA install-datanonwordboundary16DATA \
 	install-datanonwordboundary22DATA \
-	install-datanonwordboundary24DATA \
+	install-datanonwordboundary24DATA install-datascalableDATA \
 	install-dataunknowncharacter16DATA \
 	install-dataunknowncharacter22DATA \
 	install-dataunknowncharacter24DATA \
@@ -766,11 +811,12 @@ uninstall-am: uninstall-data16DATA uninstall-data24DATA \
 	install-pdf-am install-pkgdataDATA install-ps install-ps-am \
 	install-strip installcheck installcheck-am installdirs \
 	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-generic pdf pdf-am ps ps-am uninstall uninstall-am \
-	uninstall-data16DATA uninstall-data24DATA uninstall-data32DATA \
-	uninstall-data48DATA uninstall-datanonwordboundary16DATA \
+	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
+	uninstall uninstall-am uninstall-data16DATA \
+	uninstall-data24DATA uninstall-data32DATA uninstall-data48DATA \
+	uninstall-datanonwordboundary16DATA \
 	uninstall-datanonwordboundary22DATA \
-	uninstall-datanonwordboundary24DATA \
+	uninstall-datanonwordboundary24DATA uninstall-datascalableDATA \
 	uninstall-dataunknowncharacter16DATA \
 	uninstall-dataunknowncharacter22DATA \
 	uninstall-dataunknowncharacter24DATA \
@@ -783,9 +829,14 @@ uninstall-am: uninstall-data16DATA uninstall-data24DATA \
 install-data-hook: update-icon-cache
 uninstall-hook: update-icon-cache
 
-@GCONF_SCHEMAS_INSTALL_TRUE@update-icon-cache:
-@GCONF_SCHEMAS_INSTALL_TRUE@	gtk-update-icon-cache $(datadir)/icons/hicolor || true
-@GCONF_SCHEMAS_INSTALL_FALSE@update-icon-cache:
+update-icon-cache:
+	if test -z "$(DESTDIR)"; then \
+		echo "Updating Gtk icon cache."; \
+		$(gtk_update_icon_cache); \
+	else \
+		echo "*** Icon cache not updated.  After (un)install, run this:"; \
+		echo "***   $(gtk_update_icon_cache)"; \
+	fi
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
