@@ -11,32 +11,40 @@ src/libwaei/searchitem.c
 src/libwaei/utilities.c
 
 src/waei/console.c
-src/waei/ncurses.c
+src/waei/console-callbacks.c
 src/waei/waei.c
 
-[type: gettext/glade] src/gwaei/ui/dictionaryinstall.ui
-[type: gettext/glade] src/gwaei/ui/installprogress.ui
-[type: gettext/glade] src/gwaei/ui/main.ui
-[type: gettext/glade] src/gwaei/ui/radicals.ui
-[type: gettext/glade] src/gwaei/ui/settings.ui
-[type: gettext/glade] src/gwaei/ui/kanjipad.ui
+[type: gettext/glade] src/gwaei/dictionaryinstallwindow.ui
+[type: gettext/glade] src/gwaei/installprogresswindow.ui
+[type: gettext/glade] src/gwaei/searchwindow.ui
+[type: gettext/glade] src/gwaei/radicalswindow.ui
+[type: gettext/glade] src/gwaei/settingswindow.ui
+[type: gettext/glade] src/gwaei/kanjipadwindow.ui
 
-src/gwaei/common.c
-src/gwaei/installprogress.c
-src/gwaei/dictionaryinstall.c
-src/gwaei/dictionarymanager.c
+src/gwaei/application-callbacks.c
+src/gwaei/application.c
+src/gwaei/dictinfolist-callbacks.c
+src/gwaei/dictinfolist.c
+src/gwaei/dictionaryinstallwindow-callbacks.c
+src/gwaei/dictionaryinstallwindow.c
 src/gwaei/gwaei.c
-src/gwaei/libunique.c
-src/gwaei/main.c
-src/gwaei/main-callbacks.c
-src/gwaei/main-tabs.c
-src/gwaei/pluginmanager.c
+src/gwaei/installprogresswindow-callbacks.c
+src/gwaei/installprogresswindow.c
+src/gwaei/kanjipad-candidatearea.c
+src/gwaei/kanjipad-drawingarea.c
+src/gwaei/kanjipadwindow-callbacks.c
+src/gwaei/kanjipadwindow.c
 src/gwaei/printing.c
-src/gwaei/radsearchtool.c
-src/gwaei/radsearchtool-callbacks.c
-src/gwaei/settings.c
-src/gwaei/settings-callbacks.c
-src/gwaei/settings-listeners.c
-src/gwaei/output-callbacks.c
+src/gwaei/radicalswindow-callbacks.c
+src/gwaei/radicalswindow.c
+src/gwaei/search-data.c
+src/gwaei/searchwindow-callbacks.c
+src/gwaei/searchwindow-output.c
+src/gwaei/searchwindow.c
+src/gwaei/settingswindow-callbacks.c
+src/gwaei/settingswindow.c
+src/gwaei/spellcheck-callbacks.c
+src/gwaei/spellcheck.c
+src/gwaei/window.c
 
 src/desktop/gwaei.desktop.in

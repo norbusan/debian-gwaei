@@ -34,6 +34,8 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
+@OS_MINGW_TRUE@am__append_1 = -Wl,-subsystem,windows $(MINGW_LIBS)
+@OS_MINGW_TRUE@am__append_2 = $(MINGW_CFLAGS) $(MINGW_DEFS)
 subdir = src/libwaei
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(srcdir)/doxyfile.in
@@ -76,10 +78,10 @@ libwaei_la_LIBADD =
 am_libwaei_la_OBJECTS = libwaei_la-libwaei.lo libwaei_la-dictinfo.lo \
 	libwaei_la-dictinfolist.lo libwaei_la-dictinst.lo \
 	libwaei_la-dictinstlist.lo libwaei_la-queryline.lo \
-	libwaei_la-engine.lo libwaei_la-utilities.lo libwaei_la-io.lo \
-	libwaei_la-regex.lo libwaei_la-searchitem.lo \
-	libwaei_la-historylist.lo libwaei_la-resultline.lo \
-	libwaei_la-preferences.lo
+	libwaei_la-engine.lo libwaei_la-engine-data.lo \
+	libwaei_la-utilities.lo libwaei_la-io.lo libwaei_la-regex.lo \
+	libwaei_la-searchitem.lo libwaei_la-history.lo \
+	libwaei_la-resultline.lo libwaei_la-preferences.lo
 libwaei_la_OBJECTS = $(am_libwaei_la_OBJECTS)
 libwaei_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
@@ -148,8 +150,6 @@ AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
-BASE_CFLAGS = @BASE_CFLAGS@
-BASE_LIBS = @BASE_LIBS@
 CATALOGS = @CATALOGS@
 CATOBJEXT = @CATOBJEXT@
 CC = @CC@
@@ -164,7 +164,6 @@ DEPDIR = @DEPDIR@
 DISTCHECK_CONFIGURE_FLAGS = @DISTCHECK_CONFIGURE_FLAGS@
 DLLTOOL = @DLLTOOL@
 DOC_USER_FORMATS = @DOC_USER_FORMATS@
-DPKG_DEB = @DPKG_DEB@
 DSYMUTIL = @DSYMUTIL@
 DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
@@ -178,10 +177,10 @@ GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
 GLIB_COMPILE_SCHEMAS = @GLIB_COMPILE_SCHEMAS@
 GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
-GNOME_CFLAGS = @GNOME_CFLAGS@
-GNOME_LIBS = @GNOME_LIBS@
 GREP = @GREP@
 GSETTINGS_DISABLE_SCHEMAS_COMPILE = @GSETTINGS_DISABLE_SCHEMAS_COMPILE@
+GWAEI_CFLAGS = @GWAEI_CFLAGS@
+GWAEI_LIBS = @GWAEI_LIBS@
 GWAEI_LOCALEDIR = @GWAEI_LOCALEDIR@
 GZIP = @GZIP@
 HELP_DIR = @HELP_DIR@
@@ -196,15 +195,14 @@ INTLTOOL_EXTRACT = @INTLTOOL_EXTRACT@
 INTLTOOL_MERGE = @INTLTOOL_MERGE@
 INTLTOOL_PERL = @INTLTOOL_PERL@
 INTLTOOL_UPDATE = @INTLTOOL_UPDATE@
-KILLALL = @KILLALL@
 LD = @LD@
 LDFLAGS = @LDFLAGS@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LIBTOOL = @LIBTOOL@
 LIBTOOL_DEPS = @LIBTOOL_DEPS@
-LIBUNIQUE_CFLAGS = @LIBUNIQUE_CFLAGS@
-LIBUNIQUE_LIBS = @LIBUNIQUE_LIBS@
+LIBWAEI_CFLAGS = @LIBWAEI_CFLAGS@
+LIBWAEI_LIBS = @LIBWAEI_LIBS@
 LIPO = @LIPO@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
@@ -215,7 +213,6 @@ MKINSTALLDIRS = @MKINSTALLDIRS@
 MSGFMT = @MSGFMT@
 MSGFMT_OPTS = @MSGFMT_OPTS@
 MSGMERGE = @MSGMERGE@
-NCURSES_LIBS = @NCURSES_LIBS@
 NM = @NM@
 NMEDIT = @NMEDIT@
 OBJDUMP = @OBJDUMP@
@@ -241,8 +238,6 @@ PO_IN_DATADIR_FALSE = @PO_IN_DATADIR_FALSE@
 PO_IN_DATADIR_TRUE = @PO_IN_DATADIR_TRUE@
 RANLIB = @RANLIB@
 RELEASE = @RELEASE@
-RPMBUILD = @RPMBUILD@
-RPMDIR = @RPMDIR@
 SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -250,6 +245,8 @@ STRIP = @STRIP@
 UNZIP = @UNZIP@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
+WAEI_CFLAGS = @WAEI_CFLAGS@
+WAEI_LIBS = @WAEI_LIBS@
 XGETTEXT = @XGETTEXT@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
@@ -287,7 +284,7 @@ infodir = @infodir@
 install_sh = @install_sh@
 libdir = @libdir@
 libexecdir = @libexecdir@
-localedir = $(datadir)/locale
+localedir = @localedir@
 localstatedir = @localstatedir@
 mandir = @mandir@
 mkdir_p = @mkdir_p@
@@ -305,13 +302,17 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 SUBDIRS = include/libwaei
-LIBRARY_VERSION = 1:0:0
+LIBRARY_VERSION = 2:0:0
 ACLOCAL_AMFLAGS = -I m4
-DEFINITIONS = -DVERSION=\"$(VERSION)\" -DPACKAGE=\"$(PACKAGE)\" -DUNZIP=\"$(UNZIP)\" -DGZIP=\"$(GZIP)\" -DLOCALEDIR=\"$(localedir)\" -DDATADIR2=\"$(datadir)\" -DGLIB_DISABLE_DEPRECATED -DG_SEAL_ENABLE -DGWAEI_LOCALEDIR=\"${GWAEI_LOCALEDIR}\"
+DEFINITIONS = -DGZIP=\"$(GZIP)\" -DDATADIR2=\"$(datadir)\" -DGWAEI_LOCALEDIR=\"$(GWAEI_LOCALEDIR)\" -DG_SEAL_ENABLE -Wall 
 lib_LTLIBRARIES = libwaei.la
-libwaei_la_SOURCES = libwaei.c dictinfo.c dictinfolist.c dictinst.c dictinstlist.c queryline.c engine.c utilities.c io.c regex.c searchitem.c historylist.c resultline.c preferences.c
-libwaei_la_LDFLAGS = -version-info $(LIBRARY_VERSION)  $(BASE_LIBS) -gall
-libwaei_la_CPPFLAGS = $(BASE_CFLAGS) -I$(top_srcdir)/src/libwaei/include $(DEFINITIONS)
+libwaei_la_SOURCES = libwaei.c dictinfo.c dictinfolist.c dictinst.c dictinstlist.c queryline.c engine.c engine-data.c utilities.c io.c regex.c searchitem.c history.c resultline.c preferences.c
+libwaei_la_LDFLAGS = -version-info $(LIBRARY_VERSION) $(LIBWAEI_LIBS) \
+	$(am__append_1)
+libwaei_la_CPPFLAGS = $(LIBWAEI_CFLAGS) \
+	-I$(top_srcdir)/src/libwaei/include $(DEFINITIONS) \
+	$(am__append_2)
+@OS_MINGW_TRUE@MINGW_DEFS = -DCURL_STATICLIB 
 all: all-recursive
 
 .SUFFIXES:
@@ -392,8 +393,9 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libwaei_la-dictinfolist.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libwaei_la-dictinst.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libwaei_la-dictinstlist.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libwaei_la-engine-data.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libwaei_la-engine.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libwaei_la-historylist.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libwaei_la-history.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libwaei_la-io.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libwaei_la-libwaei.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libwaei_la-preferences.Plo@am__quote@
@@ -473,6 +475,13 @@ libwaei_la-engine.lo: engine.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libwaei_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libwaei_la-engine.lo `test -f 'engine.c' || echo '$(srcdir)/'`engine.c
 
+libwaei_la-engine-data.lo: engine-data.c
+@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libwaei_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libwaei_la-engine-data.lo -MD -MP -MF $(DEPDIR)/libwaei_la-engine-data.Tpo -c -o libwaei_la-engine-data.lo `test -f 'engine-data.c' || echo '$(srcdir)/'`engine-data.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libwaei_la-engine-data.Tpo $(DEPDIR)/libwaei_la-engine-data.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='engine-data.c' object='libwaei_la-engine-data.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libwaei_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libwaei_la-engine-data.lo `test -f 'engine-data.c' || echo '$(srcdir)/'`engine-data.c
+
 libwaei_la-utilities.lo: utilities.c
 @am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libwaei_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libwaei_la-utilities.lo -MD -MP -MF $(DEPDIR)/libwaei_la-utilities.Tpo -c -o libwaei_la-utilities.lo `test -f 'utilities.c' || echo '$(srcdir)/'`utilities.c
 @am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libwaei_la-utilities.Tpo $(DEPDIR)/libwaei_la-utilities.Plo
@@ -501,12 +510,12 @@ libwaei_la-searchitem.lo: searchitem.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libwaei_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libwaei_la-searchitem.lo `test -f 'searchitem.c' || echo '$(srcdir)/'`searchitem.c
 
-libwaei_la-historylist.lo: historylist.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libwaei_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libwaei_la-historylist.lo -MD -MP -MF $(DEPDIR)/libwaei_la-historylist.Tpo -c -o libwaei_la-historylist.lo `test -f 'historylist.c' || echo '$(srcdir)/'`historylist.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libwaei_la-historylist.Tpo $(DEPDIR)/libwaei_la-historylist.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='historylist.c' object='libwaei_la-historylist.lo' libtool=yes @AMDEPBACKSLASH@
+libwaei_la-history.lo: history.c
+@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libwaei_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libwaei_la-history.lo -MD -MP -MF $(DEPDIR)/libwaei_la-history.Tpo -c -o libwaei_la-history.lo `test -f 'history.c' || echo '$(srcdir)/'`history.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libwaei_la-history.Tpo $(DEPDIR)/libwaei_la-history.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='history.c' object='libwaei_la-history.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libwaei_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libwaei_la-historylist.lo `test -f 'historylist.c' || echo '$(srcdir)/'`historylist.c
+@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libwaei_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libwaei_la-history.lo `test -f 'history.c' || echo '$(srcdir)/'`history.c
 
 libwaei_la-resultline.lo: resultline.c
 @am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libwaei_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libwaei_la-resultline.lo -MD -MP -MF $(DEPDIR)/libwaei_la-resultline.Tpo -c -o libwaei_la-resultline.lo `test -f 'resultline.c' || echo '$(srcdir)/'`resultline.c

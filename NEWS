@@ -1,4 +1,2 @@
-2010-07-16: gWaei 3.0.2
-  Fixed warning coming from a tooltip window not being empting when adding an
-  hbox to it. Tweaks to the mutexes that were causing the program to freeze and
-  choppy query input.
+2010-09-08: gWaei 3.1.0b2
+gWaei now requires gtk+-3.2 to run.  The Windows have been rewritten to extend GtkWindow instead of just contain a GtkWindow.  libunique is no longer a dependancy, GtkApplication from gtk is now used instead.  gWaei nows has dependancies on dbus (though you still don't need it for waei.)  The program now handles large amounts of results better so it no longer truncates them as early.  Dictionary lines are no longer counted on startup, which makes it much quicker.  mingw32 is now automatically detected instead of requiring an option during configure.  Unfortunately, it is still not supported as gtk3/dbus don't run well on Windows yet.

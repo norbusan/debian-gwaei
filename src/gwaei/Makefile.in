@@ -15,6 +15,7 @@
 
 @SET_MAKE@
 
+
 VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
@@ -35,11 +36,8 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 bin_PROGRAMS = gwaei$(EXEEXT)
-@ENABLE_WIN32_TRUE@am__append_1 = $(WIN32_LIBS) 
-@ENABLE_WIN32_TRUE@am__append_2 = $(WIN32_CFLAGS) $(WIN32_DEFS) -I$(WIN_PREFIX)/include
-@WITH_LIBUNIQUE_TRUE@am__append_3 = libunique.c
-@WITH_LIBUNIQUE_TRUE@am__append_4 = $(LIBUNIQUE_LIBS)
-@WITH_LIBUNIQUE_TRUE@am__append_5 = $(LIBUNIQUE_CFLAGS)$(LIBUNIQUE_DEFS)
+@OS_MINGW_TRUE@am__append_1 = $(MINGW_LIBS) 
+@OS_MINGW_TRUE@am__append_2 = $(MINGW_CFLAGS) $(MINGW_DEFS)
 subdir = src/gwaei
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(srcdir)/doxyfile.in
@@ -55,36 +53,32 @@ mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES = doxyfile
 CONFIG_CLEAN_VPATH_FILES =
-am__installdirs = "$(DESTDIR)$(bindir)"
+am__installdirs = "$(DESTDIR)$(bindir)" "$(DESTDIR)$(pkgdatadir)"
 PROGRAMS = $(bin_PROGRAMS)
-am__gwaei_SOURCES_DIST = gwaei.c common.c main.c main-callbacks.c \
-	settings-callbacks.c settings.c radsearchtool.c \
-	radsearchtool-callbacks.c printing.c main-tabs.c \
-	dictionaryinstall.c installprogress.c dictionarymanager.c \
-	settings-listeners.c pluginmanager.c spellcheck.c \
-	output-callbacks.c kanjipad.c kanjipad-candidatearea.c \
-	kanjipad-callbacks.c kanjipad-drawingarea.c libunique.c
-@WITH_LIBUNIQUE_TRUE@am__objects_1 = gwaei-libunique.$(OBJEXT)
-am_gwaei_OBJECTS = gwaei-gwaei.$(OBJEXT) gwaei-common.$(OBJEXT) \
-	gwaei-main.$(OBJEXT) gwaei-main-callbacks.$(OBJEXT) \
-	gwaei-settings-callbacks.$(OBJEXT) gwaei-settings.$(OBJEXT) \
-	gwaei-radsearchtool.$(OBJEXT) \
-	gwaei-radsearchtool-callbacks.$(OBJEXT) \
-	gwaei-printing.$(OBJEXT) gwaei-main-tabs.$(OBJEXT) \
-	gwaei-dictionaryinstall.$(OBJEXT) \
-	gwaei-installprogress.$(OBJEXT) \
-	gwaei-dictionarymanager.$(OBJEXT) \
-	gwaei-settings-listeners.$(OBJEXT) \
-	gwaei-pluginmanager.$(OBJEXT) gwaei-spellcheck.$(OBJEXT) \
-	gwaei-output-callbacks.$(OBJEXT) gwaei-kanjipad.$(OBJEXT) \
+am_gwaei_OBJECTS = gwaei-gwaei.$(OBJEXT) gwaei-application.$(OBJEXT) \
+	gwaei-application-callbacks.$(OBJEXT) gwaei-window.$(OBJEXT) \
+	gwaei-dictinfolist.$(OBJEXT) \
+	gwaei-dictinfolist-callbacks.$(OBJEXT) \
+	gwaei-searchwindow.$(OBJEXT) \
+	gwaei-searchwindow-callbacks.$(OBJEXT) \
+	gwaei-searchwindow-output.$(OBJEXT) \
+	gwaei-search-data.$(OBJEXT) gwaei-spellcheck.$(OBJEXT) \
+	gwaei-spellcheck-callbacks.$(OBJEXT) gwaei-printing.$(OBJEXT) \
+	gwaei-radicalswindow.$(OBJEXT) \
+	gwaei-radicalswindow-callbacks.$(OBJEXT) \
+	gwaei-kanjipadwindow-callbacks.$(OBJEXT) \
+	gwaei-kanjipad-drawingarea.$(OBJEXT) \
 	gwaei-kanjipad-candidatearea.$(OBJEXT) \
-	gwaei-kanjipad-callbacks.$(OBJEXT) \
-	gwaei-kanjipad-drawingarea.$(OBJEXT) $(am__objects_1)
+	gwaei-kanjipadwindow.$(OBJEXT) gwaei-settingswindow.$(OBJEXT) \
+	gwaei-settingswindow-callbacks.$(OBJEXT) \
+	gwaei-dictionaryinstallwindow.$(OBJEXT) \
+	gwaei-dictionaryinstallwindow-callbacks.$(OBJEXT) \
+	gwaei-installprogresswindow.$(OBJEXT) \
+	gwaei-installprogresswindow-callbacks.$(OBJEXT)
 gwaei_OBJECTS = $(am_gwaei_OBJECTS)
 am__DEPENDENCIES_1 =
-@WITH_LIBUNIQUE_TRUE@am__DEPENDENCIES_2 = $(am__DEPENDENCIES_1)
 gwaei_DEPENDENCIES = $(am__DEPENDENCIES_1) ../libwaei/libwaei.la \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2)
+	$(am__DEPENDENCIES_1)
 gwaei_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(gwaei_LDFLAGS) \
 	$(LDFLAGS) -o $@
@@ -102,7 +96,7 @@ LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
 SOURCES = $(gwaei_SOURCES)
-DIST_SOURCES = $(am__gwaei_SOURCES_DIST)
+DIST_SOURCES = $(gwaei_SOURCES)
 RECURSIVE_TARGETS = all-recursive check-recursive dvi-recursive \
 	html-recursive info-recursive install-data-recursive \
 	install-dvi-recursive install-exec-recursive \
@@ -110,6 +104,28 @@ RECURSIVE_TARGETS = all-recursive check-recursive dvi-recursive \
 	install-pdf-recursive install-ps-recursive install-recursive \
 	installcheck-recursive installdirs-recursive pdf-recursive \
 	ps-recursive uninstall-recursive
+am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
+am__vpath_adj = case $$p in \
+    $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
+    *) f=$$p;; \
+  esac;
+am__strip_dir = f=`echo $$p | sed -e 's|^.*/||'`;
+am__install_max = 40
+am__nobase_strip_setup = \
+  srcdirstrip=`echo "$(srcdir)" | sed 's/[].[^$$\\*|]/\\\\&/g'`
+am__nobase_strip = \
+  for p in $$list; do echo "$$p"; done | sed -e "s|$$srcdirstrip/||"
+am__nobase_list = $(am__nobase_strip_setup); \
+  for p in $$list; do echo "$$p $$p"; done | \
+  sed "s| $$srcdirstrip/| |;"' / .*\//!s/ .*/ ./; s,\( .*\)/[^/]*$$,\1,' | \
+  $(AWK) 'BEGIN { files["."] = "" } { files[$$2] = files[$$2] " " $$1; \
+    if (++n[$$2] == $(am__install_max)) \
+      { print $$2, files[$$2]; n[$$2] = 0; files[$$2] = "" } } \
+    END { for (dir in files) print dir, files[dir] }'
+am__base_list = \
+  sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
+  sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
+DATA = $(pkgdata_DATA)
 RECURSIVE_CLEAN_TARGETS = mostlyclean-recursive clean-recursive	\
   distclean-recursive maintainer-clean-recursive
 AM_RECURSIVE_TARGETS = $(RECURSIVE_TARGETS:-recursive=) \
@@ -152,8 +168,6 @@ AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
-BASE_CFLAGS = @BASE_CFLAGS@
-BASE_LIBS = @BASE_LIBS@
 CATALOGS = @CATALOGS@
 CATOBJEXT = @CATOBJEXT@
 CC = @CC@
@@ -168,7 +182,6 @@ DEPDIR = @DEPDIR@
 DISTCHECK_CONFIGURE_FLAGS = @DISTCHECK_CONFIGURE_FLAGS@
 DLLTOOL = @DLLTOOL@
 DOC_USER_FORMATS = @DOC_USER_FORMATS@
-DPKG_DEB = @DPKG_DEB@
 DSYMUTIL = @DSYMUTIL@
 DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
@@ -182,10 +195,10 @@ GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
 GLIB_COMPILE_SCHEMAS = @GLIB_COMPILE_SCHEMAS@
 GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
-GNOME_CFLAGS = @GNOME_CFLAGS@
-GNOME_LIBS = @GNOME_LIBS@
 GREP = @GREP@
 GSETTINGS_DISABLE_SCHEMAS_COMPILE = @GSETTINGS_DISABLE_SCHEMAS_COMPILE@
+GWAEI_CFLAGS = @GWAEI_CFLAGS@
+GWAEI_LIBS = @GWAEI_LIBS@
 GWAEI_LOCALEDIR = @GWAEI_LOCALEDIR@
 GZIP = @GZIP@
 HELP_DIR = @HELP_DIR@
@@ -200,15 +213,14 @@ INTLTOOL_EXTRACT = @INTLTOOL_EXTRACT@
 INTLTOOL_MERGE = @INTLTOOL_MERGE@
 INTLTOOL_PERL = @INTLTOOL_PERL@
 INTLTOOL_UPDATE = @INTLTOOL_UPDATE@
-KILLALL = @KILLALL@
 LD = @LD@
 LDFLAGS = @LDFLAGS@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LIBTOOL = @LIBTOOL@
 LIBTOOL_DEPS = @LIBTOOL_DEPS@
-LIBUNIQUE_CFLAGS = @LIBUNIQUE_CFLAGS@
-LIBUNIQUE_LIBS = @LIBUNIQUE_LIBS@
+LIBWAEI_CFLAGS = @LIBWAEI_CFLAGS@
+LIBWAEI_LIBS = @LIBWAEI_LIBS@
 LIPO = @LIPO@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
@@ -219,7 +231,6 @@ MKINSTALLDIRS = @MKINSTALLDIRS@
 MSGFMT = @MSGFMT@
 MSGFMT_OPTS = @MSGFMT_OPTS@
 MSGMERGE = @MSGMERGE@
-NCURSES_LIBS = @NCURSES_LIBS@
 NM = @NM@
 NMEDIT = @NMEDIT@
 OBJDUMP = @OBJDUMP@
@@ -245,8 +256,6 @@ PO_IN_DATADIR_FALSE = @PO_IN_DATADIR_FALSE@
 PO_IN_DATADIR_TRUE = @PO_IN_DATADIR_TRUE@
 RANLIB = @RANLIB@
 RELEASE = @RELEASE@
-RPMBUILD = @RPMBUILD@
-RPMDIR = @RPMDIR@
 SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -254,6 +263,8 @@ STRIP = @STRIP@
 UNZIP = @UNZIP@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
+WAEI_CFLAGS = @WAEI_CFLAGS@
+WAEI_LIBS = @WAEI_LIBS@
 XGETTEXT = @XGETTEXT@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
@@ -291,7 +302,7 @@ infodir = @infodir@
 install_sh = @install_sh@
 libdir = @libdir@
 libexecdir = @libexecdir@
-localedir = $(datadir)/locale
+localedir = @localedir@
 localstatedir = @localstatedir@
 mandir = @mandir@
 mkdir_p = @mkdir_p@
@@ -308,26 +319,18 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-SUBDIRS = include/gwaei ui help
+SUBDIRS = include/gwaei help
 ACLOCAL_AMFLAGS = -I m4
-DEFINITIONS = -DLOCALEDIR=\"$(localedir)\" -DVERSION=\"$(VERSION)\" -DPACKAGE=\"$(PACKAGE)\" -DDATADIR2=\"$(datadir)\" -DLIBDIR=\"$(libdir)\" -DENCHANT=\"$(ENCHANT)\" -DGWAEI_LOCALEDIR=\"${GWAEI_LOCALEDIR}\" -DGTK_DISABLE_DEPRECATED -DG_SEAL_ENABLE
-gwaei_SOURCES = gwaei.c common.c main.c main-callbacks.c \
-	settings-callbacks.c settings.c radsearchtool.c \
-	radsearchtool-callbacks.c printing.c main-tabs.c \
-	dictionaryinstall.c installprogress.c dictionarymanager.c \
-	settings-listeners.c pluginmanager.c spellcheck.c \
-	output-callbacks.c kanjipad.c kanjipad-candidatearea.c \
-	kanjipad-callbacks.c kanjipad-drawingarea.c $(am__append_3)
-gwaei_LDADD = $(GNOME_LIBS) ../libwaei/libwaei.la $(am__append_1) \
-	$(am__append_4)
-gwaei_CPPFLAGS = $(DEFINITIONS) $(GNOME_CFLAGS) $(GNOME_DEFS) \
+DEFINITIONS = -DDATADIR2=\"$(datadir)\" -DLIBDIR=\"$(libdir)\" -DENCHANT=\"$(ENCHANT)\" -DGWAEI_LOCALEDIR=\"$(GWAEI_LOCALEDIR)\" -DGTK_DISABLE_DEPRECATED -DG_SEAL_ENABLE -Wall
+gwaei_SOURCES = gwaei.c application.c application-callbacks.c window.c dictinfolist.c dictinfolist-callbacks.c searchwindow.c searchwindow-callbacks.c searchwindow-output.c search-data.c spellcheck.c spellcheck-callbacks.c printing.c radicalswindow.c radicalswindow-callbacks.c kanjipadwindow-callbacks.c kanjipad-drawingarea.c kanjipad-candidatearea.c  kanjipadwindow.c settingswindow.c settingswindow-callbacks.c dictionaryinstallwindow.c dictionaryinstallwindow-callbacks.c  installprogresswindow.c installprogresswindow-callbacks.c
+gwaei_LDADD = $(GWAEI_LIBS) ../libwaei/libwaei.la $(am__append_1)
+gwaei_CPPFLAGS = $(DEFINITIONS) $(GWAEI_CFLAGS) $(GWAEI_DEFS) \
 	-I$(top_srcdir)/src/libwaei/include \
-	-I$(top_srcdir)/src/gwaei/include $(am__append_2) \
-	$(am__append_5)
-@ENABLE_WIN32_TRUE@gwaei_LDFLAGS = -Wl,-subsystem,windows 
-@ENABLE_WIN32_TRUE@WIN_PREFIX = /mingw/usr
-@ENABLE_WIN32_TRUE@WIN32_DEFS = -DENABLE_WIN32 -DLC_MESSAGES=\"C\" -DCURL_STATICLIB 
-@WITH_LIBUNIQUE_TRUE@LIBUNIQUE_DEFS = -DWITH_LIBUNIQUE
+	-I$(top_srcdir)/src/gwaei/include $(am__append_2)
+@OS_MINGW_TRUE@gwaei_LDFLAGS = -Wl,-subsystem,windows 
+@OS_MINGW_TRUE@MINGW_DEFS = -DCURL_STATICLIB 
+pkgdata_DATA = searchwindow.ui radicalswindow.ui settingswindow.ui dictionaryinstallwindow.ui installprogresswindow.ui kanjipadwindow.ui
+EXTRA_DIST = searchwindow.ui radicalswindow.ui settingswindow.ui dictionaryinstallwindow.ui installprogresswindow.ui kanjipadwindow.ui
 all: all-recursive
 
 .SUFFIXES:
@@ -417,28 +420,31 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-common.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-dictionaryinstall.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-dictionarymanager.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-application-callbacks.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-application.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-dictinfolist-callbacks.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-dictinfolist.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-dictionaryinstallwindow-callbacks.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-dictionaryinstallwindow.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-gwaei.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-installprogress.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-kanjipad-callbacks.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-installprogresswindow-callbacks.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-installprogresswindow.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-kanjipad-candidatearea.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-kanjipad-drawingarea.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-kanjipad.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-libunique.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-main-callbacks.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-main-tabs.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-main.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-output-callbacks.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-pluginmanager.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-kanjipadwindow-callbacks.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-kanjipadwindow.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-printing.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-radsearchtool-callbacks.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-radsearchtool.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-settings-callbacks.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-settings-listeners.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-settings.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-radicalswindow-callbacks.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-radicalswindow.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-search-data.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-searchwindow-callbacks.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-searchwindow-output.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-searchwindow.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-settingswindow-callbacks.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-settingswindow.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-spellcheck-callbacks.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-spellcheck.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gwaei-window.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -475,201 +481,131 @@ gwaei-gwaei.obj: gwaei.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-gwaei.obj `if test -f 'gwaei.c'; then $(CYGPATH_W) 'gwaei.c'; else $(CYGPATH_W) '$(srcdir)/gwaei.c'; fi`
 
-gwaei-common.o: common.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-common.o -MD -MP -MF $(DEPDIR)/gwaei-common.Tpo -c -o gwaei-common.o `test -f 'common.c' || echo '$(srcdir)/'`common.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-common.Tpo $(DEPDIR)/gwaei-common.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='common.c' object='gwaei-common.o' libtool=no @AMDEPBACKSLASH@
+gwaei-application.o: application.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-application.o -MD -MP -MF $(DEPDIR)/gwaei-application.Tpo -c -o gwaei-application.o `test -f 'application.c' || echo '$(srcdir)/'`application.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-application.Tpo $(DEPDIR)/gwaei-application.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='application.c' object='gwaei-application.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-common.o `test -f 'common.c' || echo '$(srcdir)/'`common.c
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-application.o `test -f 'application.c' || echo '$(srcdir)/'`application.c
 
-gwaei-common.obj: common.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-common.obj -MD -MP -MF $(DEPDIR)/gwaei-common.Tpo -c -o gwaei-common.obj `if test -f 'common.c'; then $(CYGPATH_W) 'common.c'; else $(CYGPATH_W) '$(srcdir)/common.c'; fi`
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-common.Tpo $(DEPDIR)/gwaei-common.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='common.c' object='gwaei-common.obj' libtool=no @AMDEPBACKSLASH@
+gwaei-application.obj: application.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-application.obj -MD -MP -MF $(DEPDIR)/gwaei-application.Tpo -c -o gwaei-application.obj `if test -f 'application.c'; then $(CYGPATH_W) 'application.c'; else $(CYGPATH_W) '$(srcdir)/application.c'; fi`
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-application.Tpo $(DEPDIR)/gwaei-application.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='application.c' object='gwaei-application.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-common.obj `if test -f 'common.c'; then $(CYGPATH_W) 'common.c'; else $(CYGPATH_W) '$(srcdir)/common.c'; fi`
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-application.obj `if test -f 'application.c'; then $(CYGPATH_W) 'application.c'; else $(CYGPATH_W) '$(srcdir)/application.c'; fi`
 
-gwaei-main.o: main.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-main.o -MD -MP -MF $(DEPDIR)/gwaei-main.Tpo -c -o gwaei-main.o `test -f 'main.c' || echo '$(srcdir)/'`main.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-main.Tpo $(DEPDIR)/gwaei-main.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='main.c' object='gwaei-main.o' libtool=no @AMDEPBACKSLASH@
+gwaei-application-callbacks.o: application-callbacks.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-application-callbacks.o -MD -MP -MF $(DEPDIR)/gwaei-application-callbacks.Tpo -c -o gwaei-application-callbacks.o `test -f 'application-callbacks.c' || echo '$(srcdir)/'`application-callbacks.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-application-callbacks.Tpo $(DEPDIR)/gwaei-application-callbacks.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='application-callbacks.c' object='gwaei-application-callbacks.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-main.o `test -f 'main.c' || echo '$(srcdir)/'`main.c
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-application-callbacks.o `test -f 'application-callbacks.c' || echo '$(srcdir)/'`application-callbacks.c
 
-gwaei-main.obj: main.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-main.obj -MD -MP -MF $(DEPDIR)/gwaei-main.Tpo -c -o gwaei-main.obj `if test -f 'main.c'; then $(CYGPATH_W) 'main.c'; else $(CYGPATH_W) '$(srcdir)/main.c'; fi`
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-main.Tpo $(DEPDIR)/gwaei-main.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='main.c' object='gwaei-main.obj' libtool=no @AMDEPBACKSLASH@
+gwaei-application-callbacks.obj: application-callbacks.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-application-callbacks.obj -MD -MP -MF $(DEPDIR)/gwaei-application-callbacks.Tpo -c -o gwaei-application-callbacks.obj `if test -f 'application-callbacks.c'; then $(CYGPATH_W) 'application-callbacks.c'; else $(CYGPATH_W) '$(srcdir)/application-callbacks.c'; fi`
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-application-callbacks.Tpo $(DEPDIR)/gwaei-application-callbacks.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='application-callbacks.c' object='gwaei-application-callbacks.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-main.obj `if test -f 'main.c'; then $(CYGPATH_W) 'main.c'; else $(CYGPATH_W) '$(srcdir)/main.c'; fi`
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-application-callbacks.obj `if test -f 'application-callbacks.c'; then $(CYGPATH_W) 'application-callbacks.c'; else $(CYGPATH_W) '$(srcdir)/application-callbacks.c'; fi`
 
-gwaei-main-callbacks.o: main-callbacks.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-main-callbacks.o -MD -MP -MF $(DEPDIR)/gwaei-main-callbacks.Tpo -c -o gwaei-main-callbacks.o `test -f 'main-callbacks.c' || echo '$(srcdir)/'`main-callbacks.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-main-callbacks.Tpo $(DEPDIR)/gwaei-main-callbacks.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='main-callbacks.c' object='gwaei-main-callbacks.o' libtool=no @AMDEPBACKSLASH@
+gwaei-window.o: window.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-window.o -MD -MP -MF $(DEPDIR)/gwaei-window.Tpo -c -o gwaei-window.o `test -f 'window.c' || echo '$(srcdir)/'`window.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-window.Tpo $(DEPDIR)/gwaei-window.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='window.c' object='gwaei-window.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-main-callbacks.o `test -f 'main-callbacks.c' || echo '$(srcdir)/'`main-callbacks.c
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-window.o `test -f 'window.c' || echo '$(srcdir)/'`window.c
 
-gwaei-main-callbacks.obj: main-callbacks.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-main-callbacks.obj -MD -MP -MF $(DEPDIR)/gwaei-main-callbacks.Tpo -c -o gwaei-main-callbacks.obj `if test -f 'main-callbacks.c'; then $(CYGPATH_W) 'main-callbacks.c'; else $(CYGPATH_W) '$(srcdir)/main-callbacks.c'; fi`
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-main-callbacks.Tpo $(DEPDIR)/gwaei-main-callbacks.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='main-callbacks.c' object='gwaei-main-callbacks.obj' libtool=no @AMDEPBACKSLASH@
+gwaei-window.obj: window.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-window.obj -MD -MP -MF $(DEPDIR)/gwaei-window.Tpo -c -o gwaei-window.obj `if test -f 'window.c'; then $(CYGPATH_W) 'window.c'; else $(CYGPATH_W) '$(srcdir)/window.c'; fi`
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-window.Tpo $(DEPDIR)/gwaei-window.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='window.c' object='gwaei-window.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-main-callbacks.obj `if test -f 'main-callbacks.c'; then $(CYGPATH_W) 'main-callbacks.c'; else $(CYGPATH_W) '$(srcdir)/main-callbacks.c'; fi`
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-window.obj `if test -f 'window.c'; then $(CYGPATH_W) 'window.c'; else $(CYGPATH_W) '$(srcdir)/window.c'; fi`
 
-gwaei-settings-callbacks.o: settings-callbacks.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-settings-callbacks.o -MD -MP -MF $(DEPDIR)/gwaei-settings-callbacks.Tpo -c -o gwaei-settings-callbacks.o `test -f 'settings-callbacks.c' || echo '$(srcdir)/'`settings-callbacks.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-settings-callbacks.Tpo $(DEPDIR)/gwaei-settings-callbacks.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='settings-callbacks.c' object='gwaei-settings-callbacks.o' libtool=no @AMDEPBACKSLASH@
+gwaei-dictinfolist.o: dictinfolist.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-dictinfolist.o -MD -MP -MF $(DEPDIR)/gwaei-dictinfolist.Tpo -c -o gwaei-dictinfolist.o `test -f 'dictinfolist.c' || echo '$(srcdir)/'`dictinfolist.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-dictinfolist.Tpo $(DEPDIR)/gwaei-dictinfolist.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='dictinfolist.c' object='gwaei-dictinfolist.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-settings-callbacks.o `test -f 'settings-callbacks.c' || echo '$(srcdir)/'`settings-callbacks.c
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-dictinfolist.o `test -f 'dictinfolist.c' || echo '$(srcdir)/'`dictinfolist.c
 
-gwaei-settings-callbacks.obj: settings-callbacks.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-settings-callbacks.obj -MD -MP -MF $(DEPDIR)/gwaei-settings-callbacks.Tpo -c -o gwaei-settings-callbacks.obj `if test -f 'settings-callbacks.c'; then $(CYGPATH_W) 'settings-callbacks.c'; else $(CYGPATH_W) '$(srcdir)/settings-callbacks.c'; fi`
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-settings-callbacks.Tpo $(DEPDIR)/gwaei-settings-callbacks.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='settings-callbacks.c' object='gwaei-settings-callbacks.obj' libtool=no @AMDEPBACKSLASH@
+gwaei-dictinfolist.obj: dictinfolist.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-dictinfolist.obj -MD -MP -MF $(DEPDIR)/gwaei-dictinfolist.Tpo -c -o gwaei-dictinfolist.obj `if test -f 'dictinfolist.c'; then $(CYGPATH_W) 'dictinfolist.c'; else $(CYGPATH_W) '$(srcdir)/dictinfolist.c'; fi`
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-dictinfolist.Tpo $(DEPDIR)/gwaei-dictinfolist.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='dictinfolist.c' object='gwaei-dictinfolist.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-settings-callbacks.obj `if test -f 'settings-callbacks.c'; then $(CYGPATH_W) 'settings-callbacks.c'; else $(CYGPATH_W) '$(srcdir)/settings-callbacks.c'; fi`
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-dictinfolist.obj `if test -f 'dictinfolist.c'; then $(CYGPATH_W) 'dictinfolist.c'; else $(CYGPATH_W) '$(srcdir)/dictinfolist.c'; fi`
 
-gwaei-settings.o: settings.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-settings.o -MD -MP -MF $(DEPDIR)/gwaei-settings.Tpo -c -o gwaei-settings.o `test -f 'settings.c' || echo '$(srcdir)/'`settings.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-settings.Tpo $(DEPDIR)/gwaei-settings.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='settings.c' object='gwaei-settings.o' libtool=no @AMDEPBACKSLASH@
+gwaei-dictinfolist-callbacks.o: dictinfolist-callbacks.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-dictinfolist-callbacks.o -MD -MP -MF $(DEPDIR)/gwaei-dictinfolist-callbacks.Tpo -c -o gwaei-dictinfolist-callbacks.o `test -f 'dictinfolist-callbacks.c' || echo '$(srcdir)/'`dictinfolist-callbacks.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-dictinfolist-callbacks.Tpo $(DEPDIR)/gwaei-dictinfolist-callbacks.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='dictinfolist-callbacks.c' object='gwaei-dictinfolist-callbacks.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-settings.o `test -f 'settings.c' || echo '$(srcdir)/'`settings.c
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-dictinfolist-callbacks.o `test -f 'dictinfolist-callbacks.c' || echo '$(srcdir)/'`dictinfolist-callbacks.c
 
-gwaei-settings.obj: settings.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-settings.obj -MD -MP -MF $(DEPDIR)/gwaei-settings.Tpo -c -o gwaei-settings.obj `if test -f 'settings.c'; then $(CYGPATH_W) 'settings.c'; else $(CYGPATH_W) '$(srcdir)/settings.c'; fi`
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-settings.Tpo $(DEPDIR)/gwaei-settings.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='settings.c' object='gwaei-settings.obj' libtool=no @AMDEPBACKSLASH@
+gwaei-dictinfolist-callbacks.obj: dictinfolist-callbacks.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-dictinfolist-callbacks.obj -MD -MP -MF $(DEPDIR)/gwaei-dictinfolist-callbacks.Tpo -c -o gwaei-dictinfolist-callbacks.obj `if test -f 'dictinfolist-callbacks.c'; then $(CYGPATH_W) 'dictinfolist-callbacks.c'; else $(CYGPATH_W) '$(srcdir)/dictinfolist-callbacks.c'; fi`
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-dictinfolist-callbacks.Tpo $(DEPDIR)/gwaei-dictinfolist-callbacks.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='dictinfolist-callbacks.c' object='gwaei-dictinfolist-callbacks.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-settings.obj `if test -f 'settings.c'; then $(CYGPATH_W) 'settings.c'; else $(CYGPATH_W) '$(srcdir)/settings.c'; fi`
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-dictinfolist-callbacks.obj `if test -f 'dictinfolist-callbacks.c'; then $(CYGPATH_W) 'dictinfolist-callbacks.c'; else $(CYGPATH_W) '$(srcdir)/dictinfolist-callbacks.c'; fi`
 
-gwaei-radsearchtool.o: radsearchtool.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-radsearchtool.o -MD -MP -MF $(DEPDIR)/gwaei-radsearchtool.Tpo -c -o gwaei-radsearchtool.o `test -f 'radsearchtool.c' || echo '$(srcdir)/'`radsearchtool.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-radsearchtool.Tpo $(DEPDIR)/gwaei-radsearchtool.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='radsearchtool.c' object='gwaei-radsearchtool.o' libtool=no @AMDEPBACKSLASH@
+gwaei-searchwindow.o: searchwindow.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-searchwindow.o -MD -MP -MF $(DEPDIR)/gwaei-searchwindow.Tpo -c -o gwaei-searchwindow.o `test -f 'searchwindow.c' || echo '$(srcdir)/'`searchwindow.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-searchwindow.Tpo $(DEPDIR)/gwaei-searchwindow.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='searchwindow.c' object='gwaei-searchwindow.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-radsearchtool.o `test -f 'radsearchtool.c' || echo '$(srcdir)/'`radsearchtool.c
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-searchwindow.o `test -f 'searchwindow.c' || echo '$(srcdir)/'`searchwindow.c
 
-gwaei-radsearchtool.obj: radsearchtool.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-radsearchtool.obj -MD -MP -MF $(DEPDIR)/gwaei-radsearchtool.Tpo -c -o gwaei-radsearchtool.obj `if test -f 'radsearchtool.c'; then $(CYGPATH_W) 'radsearchtool.c'; else $(CYGPATH_W) '$(srcdir)/radsearchtool.c'; fi`
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-radsearchtool.Tpo $(DEPDIR)/gwaei-radsearchtool.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='radsearchtool.c' object='gwaei-radsearchtool.obj' libtool=no @AMDEPBACKSLASH@
+gwaei-searchwindow.obj: searchwindow.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-searchwindow.obj -MD -MP -MF $(DEPDIR)/gwaei-searchwindow.Tpo -c -o gwaei-searchwindow.obj `if test -f 'searchwindow.c'; then $(CYGPATH_W) 'searchwindow.c'; else $(CYGPATH_W) '$(srcdir)/searchwindow.c'; fi`
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-searchwindow.Tpo $(DEPDIR)/gwaei-searchwindow.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='searchwindow.c' object='gwaei-searchwindow.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-radsearchtool.obj `if test -f 'radsearchtool.c'; then $(CYGPATH_W) 'radsearchtool.c'; else $(CYGPATH_W) '$(srcdir)/radsearchtool.c'; fi`
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-searchwindow.obj `if test -f 'searchwindow.c'; then $(CYGPATH_W) 'searchwindow.c'; else $(CYGPATH_W) '$(srcdir)/searchwindow.c'; fi`
 
-gwaei-radsearchtool-callbacks.o: radsearchtool-callbacks.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-radsearchtool-callbacks.o -MD -MP -MF $(DEPDIR)/gwaei-radsearchtool-callbacks.Tpo -c -o gwaei-radsearchtool-callbacks.o `test -f 'radsearchtool-callbacks.c' || echo '$(srcdir)/'`radsearchtool-callbacks.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-radsearchtool-callbacks.Tpo $(DEPDIR)/gwaei-radsearchtool-callbacks.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='radsearchtool-callbacks.c' object='gwaei-radsearchtool-callbacks.o' libtool=no @AMDEPBACKSLASH@
+gwaei-searchwindow-callbacks.o: searchwindow-callbacks.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-searchwindow-callbacks.o -MD -MP -MF $(DEPDIR)/gwaei-searchwindow-callbacks.Tpo -c -o gwaei-searchwindow-callbacks.o `test -f 'searchwindow-callbacks.c' || echo '$(srcdir)/'`searchwindow-callbacks.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-searchwindow-callbacks.Tpo $(DEPDIR)/gwaei-searchwindow-callbacks.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='searchwindow-callbacks.c' object='gwaei-searchwindow-callbacks.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-radsearchtool-callbacks.o `test -f 'radsearchtool-callbacks.c' || echo '$(srcdir)/'`radsearchtool-callbacks.c
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-searchwindow-callbacks.o `test -f 'searchwindow-callbacks.c' || echo '$(srcdir)/'`searchwindow-callbacks.c
 
-gwaei-radsearchtool-callbacks.obj: radsearchtool-callbacks.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-radsearchtool-callbacks.obj -MD -MP -MF $(DEPDIR)/gwaei-radsearchtool-callbacks.Tpo -c -o gwaei-radsearchtool-callbacks.obj `if test -f 'radsearchtool-callbacks.c'; then $(CYGPATH_W) 'radsearchtool-callbacks.c'; else $(CYGPATH_W) '$(srcdir)/radsearchtool-callbacks.c'; fi`
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-radsearchtool-callbacks.Tpo $(DEPDIR)/gwaei-radsearchtool-callbacks.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='radsearchtool-callbacks.c' object='gwaei-radsearchtool-callbacks.obj' libtool=no @AMDEPBACKSLASH@
+gwaei-searchwindow-callbacks.obj: searchwindow-callbacks.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-searchwindow-callbacks.obj -MD -MP -MF $(DEPDIR)/gwaei-searchwindow-callbacks.Tpo -c -o gwaei-searchwindow-callbacks.obj `if test -f 'searchwindow-callbacks.c'; then $(CYGPATH_W) 'searchwindow-callbacks.c'; else $(CYGPATH_W) '$(srcdir)/searchwindow-callbacks.c'; fi`
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-searchwindow-callbacks.Tpo $(DEPDIR)/gwaei-searchwindow-callbacks.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='searchwindow-callbacks.c' object='gwaei-searchwindow-callbacks.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-radsearchtool-callbacks.obj `if test -f 'radsearchtool-callbacks.c'; then $(CYGPATH_W) 'radsearchtool-callbacks.c'; else $(CYGPATH_W) '$(srcdir)/radsearchtool-callbacks.c'; fi`
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-searchwindow-callbacks.obj `if test -f 'searchwindow-callbacks.c'; then $(CYGPATH_W) 'searchwindow-callbacks.c'; else $(CYGPATH_W) '$(srcdir)/searchwindow-callbacks.c'; fi`
 
-gwaei-printing.o: printing.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-printing.o -MD -MP -MF $(DEPDIR)/gwaei-printing.Tpo -c -o gwaei-printing.o `test -f 'printing.c' || echo '$(srcdir)/'`printing.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-printing.Tpo $(DEPDIR)/gwaei-printing.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='printing.c' object='gwaei-printing.o' libtool=no @AMDEPBACKSLASH@
+gwaei-searchwindow-output.o: searchwindow-output.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-searchwindow-output.o -MD -MP -MF $(DEPDIR)/gwaei-searchwindow-output.Tpo -c -o gwaei-searchwindow-output.o `test -f 'searchwindow-output.c' || echo '$(srcdir)/'`searchwindow-output.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-searchwindow-output.Tpo $(DEPDIR)/gwaei-searchwindow-output.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='searchwindow-output.c' object='gwaei-searchwindow-output.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-printing.o `test -f 'printing.c' || echo '$(srcdir)/'`printing.c
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-searchwindow-output.o `test -f 'searchwindow-output.c' || echo '$(srcdir)/'`searchwindow-output.c
 
-gwaei-printing.obj: printing.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-printing.obj -MD -MP -MF $(DEPDIR)/gwaei-printing.Tpo -c -o gwaei-printing.obj `if test -f 'printing.c'; then $(CYGPATH_W) 'printing.c'; else $(CYGPATH_W) '$(srcdir)/printing.c'; fi`
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-printing.Tpo $(DEPDIR)/gwaei-printing.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='printing.c' object='gwaei-printing.obj' libtool=no @AMDEPBACKSLASH@
+gwaei-searchwindow-output.obj: searchwindow-output.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-searchwindow-output.obj -MD -MP -MF $(DEPDIR)/gwaei-searchwindow-output.Tpo -c -o gwaei-searchwindow-output.obj `if test -f 'searchwindow-output.c'; then $(CYGPATH_W) 'searchwindow-output.c'; else $(CYGPATH_W) '$(srcdir)/searchwindow-output.c'; fi`
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-searchwindow-output.Tpo $(DEPDIR)/gwaei-searchwindow-output.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='searchwindow-output.c' object='gwaei-searchwindow-output.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-printing.obj `if test -f 'printing.c'; then $(CYGPATH_W) 'printing.c'; else $(CYGPATH_W) '$(srcdir)/printing.c'; fi`
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-searchwindow-output.obj `if test -f 'searchwindow-output.c'; then $(CYGPATH_W) 'searchwindow-output.c'; else $(CYGPATH_W) '$(srcdir)/searchwindow-output.c'; fi`
 
-gwaei-main-tabs.o: main-tabs.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-main-tabs.o -MD -MP -MF $(DEPDIR)/gwaei-main-tabs.Tpo -c -o gwaei-main-tabs.o `test -f 'main-tabs.c' || echo '$(srcdir)/'`main-tabs.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-main-tabs.Tpo $(DEPDIR)/gwaei-main-tabs.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='main-tabs.c' object='gwaei-main-tabs.o' libtool=no @AMDEPBACKSLASH@
+gwaei-search-data.o: search-data.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-search-data.o -MD -MP -MF $(DEPDIR)/gwaei-search-data.Tpo -c -o gwaei-search-data.o `test -f 'search-data.c' || echo '$(srcdir)/'`search-data.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-search-data.Tpo $(DEPDIR)/gwaei-search-data.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='search-data.c' object='gwaei-search-data.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-main-tabs.o `test -f 'main-tabs.c' || echo '$(srcdir)/'`main-tabs.c
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-search-data.o `test -f 'search-data.c' || echo '$(srcdir)/'`search-data.c
 
-gwaei-main-tabs.obj: main-tabs.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-main-tabs.obj -MD -MP -MF $(DEPDIR)/gwaei-main-tabs.Tpo -c -o gwaei-main-tabs.obj `if test -f 'main-tabs.c'; then $(CYGPATH_W) 'main-tabs.c'; else $(CYGPATH_W) '$(srcdir)/main-tabs.c'; fi`
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-main-tabs.Tpo $(DEPDIR)/gwaei-main-tabs.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='main-tabs.c' object='gwaei-main-tabs.obj' libtool=no @AMDEPBACKSLASH@
+gwaei-search-data.obj: search-data.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-search-data.obj -MD -MP -MF $(DEPDIR)/gwaei-search-data.Tpo -c -o gwaei-search-data.obj `if test -f 'search-data.c'; then $(CYGPATH_W) 'search-data.c'; else $(CYGPATH_W) '$(srcdir)/search-data.c'; fi`
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-search-data.Tpo $(DEPDIR)/gwaei-search-data.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='search-data.c' object='gwaei-search-data.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-main-tabs.obj `if test -f 'main-tabs.c'; then $(CYGPATH_W) 'main-tabs.c'; else $(CYGPATH_W) '$(srcdir)/main-tabs.c'; fi`
-
-gwaei-dictionaryinstall.o: dictionaryinstall.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-dictionaryinstall.o -MD -MP -MF $(DEPDIR)/gwaei-dictionaryinstall.Tpo -c -o gwaei-dictionaryinstall.o `test -f 'dictionaryinstall.c' || echo '$(srcdir)/'`dictionaryinstall.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-dictionaryinstall.Tpo $(DEPDIR)/gwaei-dictionaryinstall.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='dictionaryinstall.c' object='gwaei-dictionaryinstall.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-dictionaryinstall.o `test -f 'dictionaryinstall.c' || echo '$(srcdir)/'`dictionaryinstall.c
-
-gwaei-dictionaryinstall.obj: dictionaryinstall.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-dictionaryinstall.obj -MD -MP -MF $(DEPDIR)/gwaei-dictionaryinstall.Tpo -c -o gwaei-dictionaryinstall.obj `if test -f 'dictionaryinstall.c'; then $(CYGPATH_W) 'dictionaryinstall.c'; else $(CYGPATH_W) '$(srcdir)/dictionaryinstall.c'; fi`
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-dictionaryinstall.Tpo $(DEPDIR)/gwaei-dictionaryinstall.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='dictionaryinstall.c' object='gwaei-dictionaryinstall.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-dictionaryinstall.obj `if test -f 'dictionaryinstall.c'; then $(CYGPATH_W) 'dictionaryinstall.c'; else $(CYGPATH_W) '$(srcdir)/dictionaryinstall.c'; fi`
-
-gwaei-installprogress.o: installprogress.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-installprogress.o -MD -MP -MF $(DEPDIR)/gwaei-installprogress.Tpo -c -o gwaei-installprogress.o `test -f 'installprogress.c' || echo '$(srcdir)/'`installprogress.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-installprogress.Tpo $(DEPDIR)/gwaei-installprogress.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='installprogress.c' object='gwaei-installprogress.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-installprogress.o `test -f 'installprogress.c' || echo '$(srcdir)/'`installprogress.c
-
-gwaei-installprogress.obj: installprogress.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-installprogress.obj -MD -MP -MF $(DEPDIR)/gwaei-installprogress.Tpo -c -o gwaei-installprogress.obj `if test -f 'installprogress.c'; then $(CYGPATH_W) 'installprogress.c'; else $(CYGPATH_W) '$(srcdir)/installprogress.c'; fi`
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-installprogress.Tpo $(DEPDIR)/gwaei-installprogress.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='installprogress.c' object='gwaei-installprogress.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-installprogress.obj `if test -f 'installprogress.c'; then $(CYGPATH_W) 'installprogress.c'; else $(CYGPATH_W) '$(srcdir)/installprogress.c'; fi`
-
-gwaei-dictionarymanager.o: dictionarymanager.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-dictionarymanager.o -MD -MP -MF $(DEPDIR)/gwaei-dictionarymanager.Tpo -c -o gwaei-dictionarymanager.o `test -f 'dictionarymanager.c' || echo '$(srcdir)/'`dictionarymanager.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-dictionarymanager.Tpo $(DEPDIR)/gwaei-dictionarymanager.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='dictionarymanager.c' object='gwaei-dictionarymanager.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-dictionarymanager.o `test -f 'dictionarymanager.c' || echo '$(srcdir)/'`dictionarymanager.c
-
-gwaei-dictionarymanager.obj: dictionarymanager.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-dictionarymanager.obj -MD -MP -MF $(DEPDIR)/gwaei-dictionarymanager.Tpo -c -o gwaei-dictionarymanager.obj `if test -f 'dictionarymanager.c'; then $(CYGPATH_W) 'dictionarymanager.c'; else $(CYGPATH_W) '$(srcdir)/dictionarymanager.c'; fi`
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-dictionarymanager.Tpo $(DEPDIR)/gwaei-dictionarymanager.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='dictionarymanager.c' object='gwaei-dictionarymanager.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-dictionarymanager.obj `if test -f 'dictionarymanager.c'; then $(CYGPATH_W) 'dictionarymanager.c'; else $(CYGPATH_W) '$(srcdir)/dictionarymanager.c'; fi`
-
-gwaei-settings-listeners.o: settings-listeners.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-settings-listeners.o -MD -MP -MF $(DEPDIR)/gwaei-settings-listeners.Tpo -c -o gwaei-settings-listeners.o `test -f 'settings-listeners.c' || echo '$(srcdir)/'`settings-listeners.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-settings-listeners.Tpo $(DEPDIR)/gwaei-settings-listeners.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='settings-listeners.c' object='gwaei-settings-listeners.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-settings-listeners.o `test -f 'settings-listeners.c' || echo '$(srcdir)/'`settings-listeners.c
-
-gwaei-settings-listeners.obj: settings-listeners.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-settings-listeners.obj -MD -MP -MF $(DEPDIR)/gwaei-settings-listeners.Tpo -c -o gwaei-settings-listeners.obj `if test -f 'settings-listeners.c'; then $(CYGPATH_W) 'settings-listeners.c'; else $(CYGPATH_W) '$(srcdir)/settings-listeners.c'; fi`
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-settings-listeners.Tpo $(DEPDIR)/gwaei-settings-listeners.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='settings-listeners.c' object='gwaei-settings-listeners.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-settings-listeners.obj `if test -f 'settings-listeners.c'; then $(CYGPATH_W) 'settings-listeners.c'; else $(CYGPATH_W) '$(srcdir)/settings-listeners.c'; fi`
-
-gwaei-pluginmanager.o: pluginmanager.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-pluginmanager.o -MD -MP -MF $(DEPDIR)/gwaei-pluginmanager.Tpo -c -o gwaei-pluginmanager.o `test -f 'pluginmanager.c' || echo '$(srcdir)/'`pluginmanager.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-pluginmanager.Tpo $(DEPDIR)/gwaei-pluginmanager.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='pluginmanager.c' object='gwaei-pluginmanager.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-pluginmanager.o `test -f 'pluginmanager.c' || echo '$(srcdir)/'`pluginmanager.c
-
-gwaei-pluginmanager.obj: pluginmanager.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-pluginmanager.obj -MD -MP -MF $(DEPDIR)/gwaei-pluginmanager.Tpo -c -o gwaei-pluginmanager.obj `if test -f 'pluginmanager.c'; then $(CYGPATH_W) 'pluginmanager.c'; else $(CYGPATH_W) '$(srcdir)/pluginmanager.c'; fi`
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-pluginmanager.Tpo $(DEPDIR)/gwaei-pluginmanager.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='pluginmanager.c' object='gwaei-pluginmanager.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-pluginmanager.obj `if test -f 'pluginmanager.c'; then $(CYGPATH_W) 'pluginmanager.c'; else $(CYGPATH_W) '$(srcdir)/pluginmanager.c'; fi`
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-search-data.obj `if test -f 'search-data.c'; then $(CYGPATH_W) 'search-data.c'; else $(CYGPATH_W) '$(srcdir)/search-data.c'; fi`
 
 gwaei-spellcheck.o: spellcheck.c
 @am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-spellcheck.o -MD -MP -MF $(DEPDIR)/gwaei-spellcheck.Tpo -c -o gwaei-spellcheck.o `test -f 'spellcheck.c' || echo '$(srcdir)/'`spellcheck.c
@@ -685,61 +621,75 @@ gwaei-spellcheck.obj: spellcheck.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-spellcheck.obj `if test -f 'spellcheck.c'; then $(CYGPATH_W) 'spellcheck.c'; else $(CYGPATH_W) '$(srcdir)/spellcheck.c'; fi`
 
-gwaei-output-callbacks.o: output-callbacks.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-output-callbacks.o -MD -MP -MF $(DEPDIR)/gwaei-output-callbacks.Tpo -c -o gwaei-output-callbacks.o `test -f 'output-callbacks.c' || echo '$(srcdir)/'`output-callbacks.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-output-callbacks.Tpo $(DEPDIR)/gwaei-output-callbacks.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='output-callbacks.c' object='gwaei-output-callbacks.o' libtool=no @AMDEPBACKSLASH@
+gwaei-spellcheck-callbacks.o: spellcheck-callbacks.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-spellcheck-callbacks.o -MD -MP -MF $(DEPDIR)/gwaei-spellcheck-callbacks.Tpo -c -o gwaei-spellcheck-callbacks.o `test -f 'spellcheck-callbacks.c' || echo '$(srcdir)/'`spellcheck-callbacks.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-spellcheck-callbacks.Tpo $(DEPDIR)/gwaei-spellcheck-callbacks.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='spellcheck-callbacks.c' object='gwaei-spellcheck-callbacks.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-output-callbacks.o `test -f 'output-callbacks.c' || echo '$(srcdir)/'`output-callbacks.c
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-spellcheck-callbacks.o `test -f 'spellcheck-callbacks.c' || echo '$(srcdir)/'`spellcheck-callbacks.c
 
-gwaei-output-callbacks.obj: output-callbacks.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-output-callbacks.obj -MD -MP -MF $(DEPDIR)/gwaei-output-callbacks.Tpo -c -o gwaei-output-callbacks.obj `if test -f 'output-callbacks.c'; then $(CYGPATH_W) 'output-callbacks.c'; else $(CYGPATH_W) '$(srcdir)/output-callbacks.c'; fi`
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-output-callbacks.Tpo $(DEPDIR)/gwaei-output-callbacks.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='output-callbacks.c' object='gwaei-output-callbacks.obj' libtool=no @AMDEPBACKSLASH@
+gwaei-spellcheck-callbacks.obj: spellcheck-callbacks.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-spellcheck-callbacks.obj -MD -MP -MF $(DEPDIR)/gwaei-spellcheck-callbacks.Tpo -c -o gwaei-spellcheck-callbacks.obj `if test -f 'spellcheck-callbacks.c'; then $(CYGPATH_W) 'spellcheck-callbacks.c'; else $(CYGPATH_W) '$(srcdir)/spellcheck-callbacks.c'; fi`
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-spellcheck-callbacks.Tpo $(DEPDIR)/gwaei-spellcheck-callbacks.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='spellcheck-callbacks.c' object='gwaei-spellcheck-callbacks.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-output-callbacks.obj `if test -f 'output-callbacks.c'; then $(CYGPATH_W) 'output-callbacks.c'; else $(CYGPATH_W) '$(srcdir)/output-callbacks.c'; fi`
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-spellcheck-callbacks.obj `if test -f 'spellcheck-callbacks.c'; then $(CYGPATH_W) 'spellcheck-callbacks.c'; else $(CYGPATH_W) '$(srcdir)/spellcheck-callbacks.c'; fi`
 
-gwaei-kanjipad.o: kanjipad.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-kanjipad.o -MD -MP -MF $(DEPDIR)/gwaei-kanjipad.Tpo -c -o gwaei-kanjipad.o `test -f 'kanjipad.c' || echo '$(srcdir)/'`kanjipad.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-kanjipad.Tpo $(DEPDIR)/gwaei-kanjipad.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='kanjipad.c' object='gwaei-kanjipad.o' libtool=no @AMDEPBACKSLASH@
+gwaei-printing.o: printing.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-printing.o -MD -MP -MF $(DEPDIR)/gwaei-printing.Tpo -c -o gwaei-printing.o `test -f 'printing.c' || echo '$(srcdir)/'`printing.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-printing.Tpo $(DEPDIR)/gwaei-printing.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='printing.c' object='gwaei-printing.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-kanjipad.o `test -f 'kanjipad.c' || echo '$(srcdir)/'`kanjipad.c
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-printing.o `test -f 'printing.c' || echo '$(srcdir)/'`printing.c
 
-gwaei-kanjipad.obj: kanjipad.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-kanjipad.obj -MD -MP -MF $(DEPDIR)/gwaei-kanjipad.Tpo -c -o gwaei-kanjipad.obj `if test -f 'kanjipad.c'; then $(CYGPATH_W) 'kanjipad.c'; else $(CYGPATH_W) '$(srcdir)/kanjipad.c'; fi`
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-kanjipad.Tpo $(DEPDIR)/gwaei-kanjipad.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='kanjipad.c' object='gwaei-kanjipad.obj' libtool=no @AMDEPBACKSLASH@
+gwaei-printing.obj: printing.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-printing.obj -MD -MP -MF $(DEPDIR)/gwaei-printing.Tpo -c -o gwaei-printing.obj `if test -f 'printing.c'; then $(CYGPATH_W) 'printing.c'; else $(CYGPATH_W) '$(srcdir)/printing.c'; fi`
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-printing.Tpo $(DEPDIR)/gwaei-printing.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='printing.c' object='gwaei-printing.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-kanjipad.obj `if test -f 'kanjipad.c'; then $(CYGPATH_W) 'kanjipad.c'; else $(CYGPATH_W) '$(srcdir)/kanjipad.c'; fi`
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-printing.obj `if test -f 'printing.c'; then $(CYGPATH_W) 'printing.c'; else $(CYGPATH_W) '$(srcdir)/printing.c'; fi`
 
-gwaei-kanjipad-candidatearea.o: kanjipad-candidatearea.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-kanjipad-candidatearea.o -MD -MP -MF $(DEPDIR)/gwaei-kanjipad-candidatearea.Tpo -c -o gwaei-kanjipad-candidatearea.o `test -f 'kanjipad-candidatearea.c' || echo '$(srcdir)/'`kanjipad-candidatearea.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-kanjipad-candidatearea.Tpo $(DEPDIR)/gwaei-kanjipad-candidatearea.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='kanjipad-candidatearea.c' object='gwaei-kanjipad-candidatearea.o' libtool=no @AMDEPBACKSLASH@
+gwaei-radicalswindow.o: radicalswindow.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-radicalswindow.o -MD -MP -MF $(DEPDIR)/gwaei-radicalswindow.Tpo -c -o gwaei-radicalswindow.o `test -f 'radicalswindow.c' || echo '$(srcdir)/'`radicalswindow.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-radicalswindow.Tpo $(DEPDIR)/gwaei-radicalswindow.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='radicalswindow.c' object='gwaei-radicalswindow.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-kanjipad-candidatearea.o `test -f 'kanjipad-candidatearea.c' || echo '$(srcdir)/'`kanjipad-candidatearea.c
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-radicalswindow.o `test -f 'radicalswindow.c' || echo '$(srcdir)/'`radicalswindow.c
 
-gwaei-kanjipad-candidatearea.obj: kanjipad-candidatearea.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-kanjipad-candidatearea.obj -MD -MP -MF $(DEPDIR)/gwaei-kanjipad-candidatearea.Tpo -c -o gwaei-kanjipad-candidatearea.obj `if test -f 'kanjipad-candidatearea.c'; then $(CYGPATH_W) 'kanjipad-candidatearea.c'; else $(CYGPATH_W) '$(srcdir)/kanjipad-candidatearea.c'; fi`
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-kanjipad-candidatearea.Tpo $(DEPDIR)/gwaei-kanjipad-candidatearea.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='kanjipad-candidatearea.c' object='gwaei-kanjipad-candidatearea.obj' libtool=no @AMDEPBACKSLASH@
+gwaei-radicalswindow.obj: radicalswindow.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-radicalswindow.obj -MD -MP -MF $(DEPDIR)/gwaei-radicalswindow.Tpo -c -o gwaei-radicalswindow.obj `if test -f 'radicalswindow.c'; then $(CYGPATH_W) 'radicalswindow.c'; else $(CYGPATH_W) '$(srcdir)/radicalswindow.c'; fi`
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-radicalswindow.Tpo $(DEPDIR)/gwaei-radicalswindow.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='radicalswindow.c' object='gwaei-radicalswindow.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-kanjipad-candidatearea.obj `if test -f 'kanjipad-candidatearea.c'; then $(CYGPATH_W) 'kanjipad-candidatearea.c'; else $(CYGPATH_W) '$(srcdir)/kanjipad-candidatearea.c'; fi`
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-radicalswindow.obj `if test -f 'radicalswindow.c'; then $(CYGPATH_W) 'radicalswindow.c'; else $(CYGPATH_W) '$(srcdir)/radicalswindow.c'; fi`
 
-gwaei-kanjipad-callbacks.o: kanjipad-callbacks.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-kanjipad-callbacks.o -MD -MP -MF $(DEPDIR)/gwaei-kanjipad-callbacks.Tpo -c -o gwaei-kanjipad-callbacks.o `test -f 'kanjipad-callbacks.c' || echo '$(srcdir)/'`kanjipad-callbacks.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-kanjipad-callbacks.Tpo $(DEPDIR)/gwaei-kanjipad-callbacks.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='kanjipad-callbacks.c' object='gwaei-kanjipad-callbacks.o' libtool=no @AMDEPBACKSLASH@
+gwaei-radicalswindow-callbacks.o: radicalswindow-callbacks.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-radicalswindow-callbacks.o -MD -MP -MF $(DEPDIR)/gwaei-radicalswindow-callbacks.Tpo -c -o gwaei-radicalswindow-callbacks.o `test -f 'radicalswindow-callbacks.c' || echo '$(srcdir)/'`radicalswindow-callbacks.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-radicalswindow-callbacks.Tpo $(DEPDIR)/gwaei-radicalswindow-callbacks.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='radicalswindow-callbacks.c' object='gwaei-radicalswindow-callbacks.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-kanjipad-callbacks.o `test -f 'kanjipad-callbacks.c' || echo '$(srcdir)/'`kanjipad-callbacks.c
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-radicalswindow-callbacks.o `test -f 'radicalswindow-callbacks.c' || echo '$(srcdir)/'`radicalswindow-callbacks.c
 
-gwaei-kanjipad-callbacks.obj: kanjipad-callbacks.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-kanjipad-callbacks.obj -MD -MP -MF $(DEPDIR)/gwaei-kanjipad-callbacks.Tpo -c -o gwaei-kanjipad-callbacks.obj `if test -f 'kanjipad-callbacks.c'; then $(CYGPATH_W) 'kanjipad-callbacks.c'; else $(CYGPATH_W) '$(srcdir)/kanjipad-callbacks.c'; fi`
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-kanjipad-callbacks.Tpo $(DEPDIR)/gwaei-kanjipad-callbacks.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='kanjipad-callbacks.c' object='gwaei-kanjipad-callbacks.obj' libtool=no @AMDEPBACKSLASH@
+gwaei-radicalswindow-callbacks.obj: radicalswindow-callbacks.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-radicalswindow-callbacks.obj -MD -MP -MF $(DEPDIR)/gwaei-radicalswindow-callbacks.Tpo -c -o gwaei-radicalswindow-callbacks.obj `if test -f 'radicalswindow-callbacks.c'; then $(CYGPATH_W) 'radicalswindow-callbacks.c'; else $(CYGPATH_W) '$(srcdir)/radicalswindow-callbacks.c'; fi`
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-radicalswindow-callbacks.Tpo $(DEPDIR)/gwaei-radicalswindow-callbacks.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='radicalswindow-callbacks.c' object='gwaei-radicalswindow-callbacks.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-kanjipad-callbacks.obj `if test -f 'kanjipad-callbacks.c'; then $(CYGPATH_W) 'kanjipad-callbacks.c'; else $(CYGPATH_W) '$(srcdir)/kanjipad-callbacks.c'; fi`
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-radicalswindow-callbacks.obj `if test -f 'radicalswindow-callbacks.c'; then $(CYGPATH_W) 'radicalswindow-callbacks.c'; else $(CYGPATH_W) '$(srcdir)/radicalswindow-callbacks.c'; fi`
+
+gwaei-kanjipadwindow-callbacks.o: kanjipadwindow-callbacks.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-kanjipadwindow-callbacks.o -MD -MP -MF $(DEPDIR)/gwaei-kanjipadwindow-callbacks.Tpo -c -o gwaei-kanjipadwindow-callbacks.o `test -f 'kanjipadwindow-callbacks.c' || echo '$(srcdir)/'`kanjipadwindow-callbacks.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-kanjipadwindow-callbacks.Tpo $(DEPDIR)/gwaei-kanjipadwindow-callbacks.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='kanjipadwindow-callbacks.c' object='gwaei-kanjipadwindow-callbacks.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-kanjipadwindow-callbacks.o `test -f 'kanjipadwindow-callbacks.c' || echo '$(srcdir)/'`kanjipadwindow-callbacks.c
+
+gwaei-kanjipadwindow-callbacks.obj: kanjipadwindow-callbacks.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-kanjipadwindow-callbacks.obj -MD -MP -MF $(DEPDIR)/gwaei-kanjipadwindow-callbacks.Tpo -c -o gwaei-kanjipadwindow-callbacks.obj `if test -f 'kanjipadwindow-callbacks.c'; then $(CYGPATH_W) 'kanjipadwindow-callbacks.c'; else $(CYGPATH_W) '$(srcdir)/kanjipadwindow-callbacks.c'; fi`
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-kanjipadwindow-callbacks.Tpo $(DEPDIR)/gwaei-kanjipadwindow-callbacks.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='kanjipadwindow-callbacks.c' object='gwaei-kanjipadwindow-callbacks.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-kanjipadwindow-callbacks.obj `if test -f 'kanjipadwindow-callbacks.c'; then $(CYGPATH_W) 'kanjipadwindow-callbacks.c'; else $(CYGPATH_W) '$(srcdir)/kanjipadwindow-callbacks.c'; fi`
 
 gwaei-kanjipad-drawingarea.o: kanjipad-drawingarea.c
 @am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-kanjipad-drawingarea.o -MD -MP -MF $(DEPDIR)/gwaei-kanjipad-drawingarea.Tpo -c -o gwaei-kanjipad-drawingarea.o `test -f 'kanjipad-drawingarea.c' || echo '$(srcdir)/'`kanjipad-drawingarea.c
@@ -755,25 +705,143 @@ gwaei-kanjipad-drawingarea.obj: kanjipad-drawingarea.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-kanjipad-drawingarea.obj `if test -f 'kanjipad-drawingarea.c'; then $(CYGPATH_W) 'kanjipad-drawingarea.c'; else $(CYGPATH_W) '$(srcdir)/kanjipad-drawingarea.c'; fi`
 
-gwaei-libunique.o: libunique.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-libunique.o -MD -MP -MF $(DEPDIR)/gwaei-libunique.Tpo -c -o gwaei-libunique.o `test -f 'libunique.c' || echo '$(srcdir)/'`libunique.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-libunique.Tpo $(DEPDIR)/gwaei-libunique.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='libunique.c' object='gwaei-libunique.o' libtool=no @AMDEPBACKSLASH@
+gwaei-kanjipad-candidatearea.o: kanjipad-candidatearea.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-kanjipad-candidatearea.o -MD -MP -MF $(DEPDIR)/gwaei-kanjipad-candidatearea.Tpo -c -o gwaei-kanjipad-candidatearea.o `test -f 'kanjipad-candidatearea.c' || echo '$(srcdir)/'`kanjipad-candidatearea.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-kanjipad-candidatearea.Tpo $(DEPDIR)/gwaei-kanjipad-candidatearea.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='kanjipad-candidatearea.c' object='gwaei-kanjipad-candidatearea.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-libunique.o `test -f 'libunique.c' || echo '$(srcdir)/'`libunique.c
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-kanjipad-candidatearea.o `test -f 'kanjipad-candidatearea.c' || echo '$(srcdir)/'`kanjipad-candidatearea.c
 
-gwaei-libunique.obj: libunique.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-libunique.obj -MD -MP -MF $(DEPDIR)/gwaei-libunique.Tpo -c -o gwaei-libunique.obj `if test -f 'libunique.c'; then $(CYGPATH_W) 'libunique.c'; else $(CYGPATH_W) '$(srcdir)/libunique.c'; fi`
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-libunique.Tpo $(DEPDIR)/gwaei-libunique.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='libunique.c' object='gwaei-libunique.obj' libtool=no @AMDEPBACKSLASH@
+gwaei-kanjipad-candidatearea.obj: kanjipad-candidatearea.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-kanjipad-candidatearea.obj -MD -MP -MF $(DEPDIR)/gwaei-kanjipad-candidatearea.Tpo -c -o gwaei-kanjipad-candidatearea.obj `if test -f 'kanjipad-candidatearea.c'; then $(CYGPATH_W) 'kanjipad-candidatearea.c'; else $(CYGPATH_W) '$(srcdir)/kanjipad-candidatearea.c'; fi`
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-kanjipad-candidatearea.Tpo $(DEPDIR)/gwaei-kanjipad-candidatearea.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='kanjipad-candidatearea.c' object='gwaei-kanjipad-candidatearea.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-libunique.obj `if test -f 'libunique.c'; then $(CYGPATH_W) 'libunique.c'; else $(CYGPATH_W) '$(srcdir)/libunique.c'; fi`
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-kanjipad-candidatearea.obj `if test -f 'kanjipad-candidatearea.c'; then $(CYGPATH_W) 'kanjipad-candidatearea.c'; else $(CYGPATH_W) '$(srcdir)/kanjipad-candidatearea.c'; fi`
+
+gwaei-kanjipadwindow.o: kanjipadwindow.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-kanjipadwindow.o -MD -MP -MF $(DEPDIR)/gwaei-kanjipadwindow.Tpo -c -o gwaei-kanjipadwindow.o `test -f 'kanjipadwindow.c' || echo '$(srcdir)/'`kanjipadwindow.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-kanjipadwindow.Tpo $(DEPDIR)/gwaei-kanjipadwindow.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='kanjipadwindow.c' object='gwaei-kanjipadwindow.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-kanjipadwindow.o `test -f 'kanjipadwindow.c' || echo '$(srcdir)/'`kanjipadwindow.c
+
+gwaei-kanjipadwindow.obj: kanjipadwindow.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-kanjipadwindow.obj -MD -MP -MF $(DEPDIR)/gwaei-kanjipadwindow.Tpo -c -o gwaei-kanjipadwindow.obj `if test -f 'kanjipadwindow.c'; then $(CYGPATH_W) 'kanjipadwindow.c'; else $(CYGPATH_W) '$(srcdir)/kanjipadwindow.c'; fi`
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-kanjipadwindow.Tpo $(DEPDIR)/gwaei-kanjipadwindow.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='kanjipadwindow.c' object='gwaei-kanjipadwindow.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-kanjipadwindow.obj `if test -f 'kanjipadwindow.c'; then $(CYGPATH_W) 'kanjipadwindow.c'; else $(CYGPATH_W) '$(srcdir)/kanjipadwindow.c'; fi`
+
+gwaei-settingswindow.o: settingswindow.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-settingswindow.o -MD -MP -MF $(DEPDIR)/gwaei-settingswindow.Tpo -c -o gwaei-settingswindow.o `test -f 'settingswindow.c' || echo '$(srcdir)/'`settingswindow.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-settingswindow.Tpo $(DEPDIR)/gwaei-settingswindow.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='settingswindow.c' object='gwaei-settingswindow.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-settingswindow.o `test -f 'settingswindow.c' || echo '$(srcdir)/'`settingswindow.c
+
+gwaei-settingswindow.obj: settingswindow.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-settingswindow.obj -MD -MP -MF $(DEPDIR)/gwaei-settingswindow.Tpo -c -o gwaei-settingswindow.obj `if test -f 'settingswindow.c'; then $(CYGPATH_W) 'settingswindow.c'; else $(CYGPATH_W) '$(srcdir)/settingswindow.c'; fi`
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-settingswindow.Tpo $(DEPDIR)/gwaei-settingswindow.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='settingswindow.c' object='gwaei-settingswindow.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-settingswindow.obj `if test -f 'settingswindow.c'; then $(CYGPATH_W) 'settingswindow.c'; else $(CYGPATH_W) '$(srcdir)/settingswindow.c'; fi`
+
+gwaei-settingswindow-callbacks.o: settingswindow-callbacks.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-settingswindow-callbacks.o -MD -MP -MF $(DEPDIR)/gwaei-settingswindow-callbacks.Tpo -c -o gwaei-settingswindow-callbacks.o `test -f 'settingswindow-callbacks.c' || echo '$(srcdir)/'`settingswindow-callbacks.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-settingswindow-callbacks.Tpo $(DEPDIR)/gwaei-settingswindow-callbacks.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='settingswindow-callbacks.c' object='gwaei-settingswindow-callbacks.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-settingswindow-callbacks.o `test -f 'settingswindow-callbacks.c' || echo '$(srcdir)/'`settingswindow-callbacks.c
+
+gwaei-settingswindow-callbacks.obj: settingswindow-callbacks.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-settingswindow-callbacks.obj -MD -MP -MF $(DEPDIR)/gwaei-settingswindow-callbacks.Tpo -c -o gwaei-settingswindow-callbacks.obj `if test -f 'settingswindow-callbacks.c'; then $(CYGPATH_W) 'settingswindow-callbacks.c'; else $(CYGPATH_W) '$(srcdir)/settingswindow-callbacks.c'; fi`
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-settingswindow-callbacks.Tpo $(DEPDIR)/gwaei-settingswindow-callbacks.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='settingswindow-callbacks.c' object='gwaei-settingswindow-callbacks.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-settingswindow-callbacks.obj `if test -f 'settingswindow-callbacks.c'; then $(CYGPATH_W) 'settingswindow-callbacks.c'; else $(CYGPATH_W) '$(srcdir)/settingswindow-callbacks.c'; fi`
+
+gwaei-dictionaryinstallwindow.o: dictionaryinstallwindow.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-dictionaryinstallwindow.o -MD -MP -MF $(DEPDIR)/gwaei-dictionaryinstallwindow.Tpo -c -o gwaei-dictionaryinstallwindow.o `test -f 'dictionaryinstallwindow.c' || echo '$(srcdir)/'`dictionaryinstallwindow.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-dictionaryinstallwindow.Tpo $(DEPDIR)/gwaei-dictionaryinstallwindow.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='dictionaryinstallwindow.c' object='gwaei-dictionaryinstallwindow.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-dictionaryinstallwindow.o `test -f 'dictionaryinstallwindow.c' || echo '$(srcdir)/'`dictionaryinstallwindow.c
+
+gwaei-dictionaryinstallwindow.obj: dictionaryinstallwindow.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-dictionaryinstallwindow.obj -MD -MP -MF $(DEPDIR)/gwaei-dictionaryinstallwindow.Tpo -c -o gwaei-dictionaryinstallwindow.obj `if test -f 'dictionaryinstallwindow.c'; then $(CYGPATH_W) 'dictionaryinstallwindow.c'; else $(CYGPATH_W) '$(srcdir)/dictionaryinstallwindow.c'; fi`
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-dictionaryinstallwindow.Tpo $(DEPDIR)/gwaei-dictionaryinstallwindow.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='dictionaryinstallwindow.c' object='gwaei-dictionaryinstallwindow.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-dictionaryinstallwindow.obj `if test -f 'dictionaryinstallwindow.c'; then $(CYGPATH_W) 'dictionaryinstallwindow.c'; else $(CYGPATH_W) '$(srcdir)/dictionaryinstallwindow.c'; fi`
+
+gwaei-dictionaryinstallwindow-callbacks.o: dictionaryinstallwindow-callbacks.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-dictionaryinstallwindow-callbacks.o -MD -MP -MF $(DEPDIR)/gwaei-dictionaryinstallwindow-callbacks.Tpo -c -o gwaei-dictionaryinstallwindow-callbacks.o `test -f 'dictionaryinstallwindow-callbacks.c' || echo '$(srcdir)/'`dictionaryinstallwindow-callbacks.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-dictionaryinstallwindow-callbacks.Tpo $(DEPDIR)/gwaei-dictionaryinstallwindow-callbacks.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='dictionaryinstallwindow-callbacks.c' object='gwaei-dictionaryinstallwindow-callbacks.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-dictionaryinstallwindow-callbacks.o `test -f 'dictionaryinstallwindow-callbacks.c' || echo '$(srcdir)/'`dictionaryinstallwindow-callbacks.c
+
+gwaei-dictionaryinstallwindow-callbacks.obj: dictionaryinstallwindow-callbacks.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-dictionaryinstallwindow-callbacks.obj -MD -MP -MF $(DEPDIR)/gwaei-dictionaryinstallwindow-callbacks.Tpo -c -o gwaei-dictionaryinstallwindow-callbacks.obj `if test -f 'dictionaryinstallwindow-callbacks.c'; then $(CYGPATH_W) 'dictionaryinstallwindow-callbacks.c'; else $(CYGPATH_W) '$(srcdir)/dictionaryinstallwindow-callbacks.c'; fi`
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-dictionaryinstallwindow-callbacks.Tpo $(DEPDIR)/gwaei-dictionaryinstallwindow-callbacks.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='dictionaryinstallwindow-callbacks.c' object='gwaei-dictionaryinstallwindow-callbacks.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-dictionaryinstallwindow-callbacks.obj `if test -f 'dictionaryinstallwindow-callbacks.c'; then $(CYGPATH_W) 'dictionaryinstallwindow-callbacks.c'; else $(CYGPATH_W) '$(srcdir)/dictionaryinstallwindow-callbacks.c'; fi`
+
+gwaei-installprogresswindow.o: installprogresswindow.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-installprogresswindow.o -MD -MP -MF $(DEPDIR)/gwaei-installprogresswindow.Tpo -c -o gwaei-installprogresswindow.o `test -f 'installprogresswindow.c' || echo '$(srcdir)/'`installprogresswindow.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-installprogresswindow.Tpo $(DEPDIR)/gwaei-installprogresswindow.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='installprogresswindow.c' object='gwaei-installprogresswindow.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-installprogresswindow.o `test -f 'installprogresswindow.c' || echo '$(srcdir)/'`installprogresswindow.c
+
+gwaei-installprogresswindow.obj: installprogresswindow.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-installprogresswindow.obj -MD -MP -MF $(DEPDIR)/gwaei-installprogresswindow.Tpo -c -o gwaei-installprogresswindow.obj `if test -f 'installprogresswindow.c'; then $(CYGPATH_W) 'installprogresswindow.c'; else $(CYGPATH_W) '$(srcdir)/installprogresswindow.c'; fi`
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-installprogresswindow.Tpo $(DEPDIR)/gwaei-installprogresswindow.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='installprogresswindow.c' object='gwaei-installprogresswindow.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-installprogresswindow.obj `if test -f 'installprogresswindow.c'; then $(CYGPATH_W) 'installprogresswindow.c'; else $(CYGPATH_W) '$(srcdir)/installprogresswindow.c'; fi`
+
+gwaei-installprogresswindow-callbacks.o: installprogresswindow-callbacks.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-installprogresswindow-callbacks.o -MD -MP -MF $(DEPDIR)/gwaei-installprogresswindow-callbacks.Tpo -c -o gwaei-installprogresswindow-callbacks.o `test -f 'installprogresswindow-callbacks.c' || echo '$(srcdir)/'`installprogresswindow-callbacks.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-installprogresswindow-callbacks.Tpo $(DEPDIR)/gwaei-installprogresswindow-callbacks.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='installprogresswindow-callbacks.c' object='gwaei-installprogresswindow-callbacks.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-installprogresswindow-callbacks.o `test -f 'installprogresswindow-callbacks.c' || echo '$(srcdir)/'`installprogresswindow-callbacks.c
+
+gwaei-installprogresswindow-callbacks.obj: installprogresswindow-callbacks.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gwaei-installprogresswindow-callbacks.obj -MD -MP -MF $(DEPDIR)/gwaei-installprogresswindow-callbacks.Tpo -c -o gwaei-installprogresswindow-callbacks.obj `if test -f 'installprogresswindow-callbacks.c'; then $(CYGPATH_W) 'installprogresswindow-callbacks.c'; else $(CYGPATH_W) '$(srcdir)/installprogresswindow-callbacks.c'; fi`
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/gwaei-installprogresswindow-callbacks.Tpo $(DEPDIR)/gwaei-installprogresswindow-callbacks.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='installprogresswindow-callbacks.c' object='gwaei-installprogresswindow-callbacks.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gwaei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gwaei-installprogresswindow-callbacks.obj `if test -f 'installprogresswindow-callbacks.c'; then $(CYGPATH_W) 'installprogresswindow-callbacks.c'; else $(CYGPATH_W) '$(srcdir)/installprogresswindow-callbacks.c'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo
 
 clean-libtool:
 	-rm -rf .libs _libs
+install-pkgdataDATA: $(pkgdata_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(pkgdatadir)" || $(MKDIR_P) "$(DESTDIR)$(pkgdatadir)"
+	@list='$(pkgdata_DATA)'; test -n "$(pkgdatadir)" || list=; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(pkgdatadir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(pkgdatadir)" || exit $$?; \
+	done
+
+uninstall-pkgdataDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(pkgdata_DATA)'; test -n "$(pkgdatadir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	test -n "$$files" || exit 0; \
+	echo " ( cd '$(DESTDIR)$(pkgdatadir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(pkgdatadir)" && rm -f $$files
 
 # This directory's subdirectories are mostly independent; you can cd
 # into them and run `make' without going through this Makefile.
@@ -970,10 +1038,10 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-recursive
-all-am: Makefile $(PROGRAMS)
+all-am: Makefile $(PROGRAMS) $(DATA)
 installdirs: installdirs-recursive
 installdirs-am:
-	for dir in "$(DESTDIR)$(bindir)"; do \
+	for dir in "$(DESTDIR)$(bindir)" "$(DESTDIR)$(pkgdatadir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-recursive
@@ -1023,7 +1091,7 @@ info: info-recursive
 
 info-am:
 
-install-data-am:
+install-data-am: install-pkgdataDATA
 
 install-dvi: install-dvi-recursive
 
@@ -1069,7 +1137,7 @@ ps: ps-recursive
 
 ps-am:
 
-uninstall-am: uninstall-binPROGRAMS
+uninstall-am: uninstall-binPROGRAMS uninstall-pkgdataDATA
 
 .MAKE: $(RECURSIVE_CLEAN_TARGETS) $(RECURSIVE_TARGETS) ctags-recursive \
 	install-am install-strip tags-recursive
@@ -1083,12 +1151,12 @@ uninstall-am: uninstall-binPROGRAMS
 	install-data-am install-dvi install-dvi-am install-exec \
 	install-exec-am install-html install-html-am install-info \
 	install-info-am install-man install-pdf install-pdf-am \
-	install-ps install-ps-am install-strip installcheck \
-	installcheck-am installdirs installdirs-am maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-compile \
-	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	tags tags-recursive uninstall uninstall-am \
-	uninstall-binPROGRAMS
+	install-pkgdataDATA install-ps install-ps-am install-strip \
+	installcheck installcheck-am installdirs installdirs-am \
+	maintainer-clean maintainer-clean-generic mostlyclean \
+	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
+	pdf pdf-am ps ps-am tags tags-recursive uninstall uninstall-am \
+	uninstall-binPROGRAMS uninstall-pkgdataDATA
 
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

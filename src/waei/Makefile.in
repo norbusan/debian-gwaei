@@ -35,11 +35,8 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 bin_PROGRAMS = waei$(EXEEXT)
-@ENABLE_WIN32_TRUE@am__append_1 = $(WIN32_LIBS)
-@ENABLE_WIN32_TRUE@am__append_2 = $(WIN32_CFLAGS) $(WIN32_DEFS) -I$(WIN_PREFIX)/include
-@WITH_NCURSES_TRUE@am__append_3 = ncurses.c
-@WITH_NCURSES_TRUE@am__append_4 = $(NCURSES_LIBS)
-@WITH_NCURSES_TRUE@am__append_5 = $(NCURSES_DEFS)
+@OS_MINGW_TRUE@am__append_1 = $(MINGW_LIBS)
+@OS_MINGW_TRUE@am__append_2 = $(MINGW_CFLAGS) $(MINGW_DEFS)
 subdir = src/waei
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(srcdir)/doxyfile.in
@@ -57,15 +54,13 @@ CONFIG_CLEAN_FILES = doxyfile
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am__waei_SOURCES_DIST = waei.c console.c ncurses.c
-@WITH_NCURSES_TRUE@am__objects_1 = waei-ncurses.$(OBJEXT)
-am_waei_OBJECTS = waei-waei.$(OBJEXT) waei-console.$(OBJEXT) \
-	$(am__objects_1)
+am_waei_OBJECTS = waei-waei.$(OBJEXT) waei-application.$(OBJEXT) \
+	waei-search-data.$(OBJEXT) waei-console.$(OBJEXT) \
+	waei-console-output.$(OBJEXT) waei-console-callbacks.$(OBJEXT)
 waei_OBJECTS = $(am_waei_OBJECTS)
 am__DEPENDENCIES_1 =
-@WITH_NCURSES_TRUE@am__DEPENDENCIES_2 = $(am__DEPENDENCIES_1)
 waei_DEPENDENCIES = $(am__DEPENDENCIES_1) ../libwaei/libwaei.la \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2)
+	$(am__DEPENDENCIES_1)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -80,7 +75,7 @@ LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
 SOURCES = $(waei_SOURCES)
-DIST_SOURCES = $(am__waei_SOURCES_DIST)
+DIST_SOURCES = $(waei_SOURCES)
 RECURSIVE_TARGETS = all-recursive check-recursive dvi-recursive \
 	html-recursive info-recursive install-data-recursive \
 	install-dvi-recursive install-exec-recursive \
@@ -130,8 +125,6 @@ AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
-BASE_CFLAGS = @BASE_CFLAGS@
-BASE_LIBS = @BASE_LIBS@
 CATALOGS = @CATALOGS@
 CATOBJEXT = @CATOBJEXT@
 CC = @CC@
@@ -146,7 +139,6 @@ DEPDIR = @DEPDIR@
 DISTCHECK_CONFIGURE_FLAGS = @DISTCHECK_CONFIGURE_FLAGS@
 DLLTOOL = @DLLTOOL@
 DOC_USER_FORMATS = @DOC_USER_FORMATS@
-DPKG_DEB = @DPKG_DEB@
 DSYMUTIL = @DSYMUTIL@
 DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
@@ -160,10 +152,10 @@ GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
 GLIB_COMPILE_SCHEMAS = @GLIB_COMPILE_SCHEMAS@
 GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
-GNOME_CFLAGS = @GNOME_CFLAGS@
-GNOME_LIBS = @GNOME_LIBS@
 GREP = @GREP@
 GSETTINGS_DISABLE_SCHEMAS_COMPILE = @GSETTINGS_DISABLE_SCHEMAS_COMPILE@
+GWAEI_CFLAGS = @GWAEI_CFLAGS@
+GWAEI_LIBS = @GWAEI_LIBS@
 GWAEI_LOCALEDIR = @GWAEI_LOCALEDIR@
 GZIP = @GZIP@
 HELP_DIR = @HELP_DIR@
@@ -178,15 +170,14 @@ INTLTOOL_EXTRACT = @INTLTOOL_EXTRACT@
 INTLTOOL_MERGE = @INTLTOOL_MERGE@
 INTLTOOL_PERL = @INTLTOOL_PERL@
 INTLTOOL_UPDATE = @INTLTOOL_UPDATE@
-KILLALL = @KILLALL@
 LD = @LD@
 LDFLAGS = @LDFLAGS@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LIBTOOL = @LIBTOOL@
 LIBTOOL_DEPS = @LIBTOOL_DEPS@
-LIBUNIQUE_CFLAGS = @LIBUNIQUE_CFLAGS@
-LIBUNIQUE_LIBS = @LIBUNIQUE_LIBS@
+LIBWAEI_CFLAGS = @LIBWAEI_CFLAGS@
+LIBWAEI_LIBS = @LIBWAEI_LIBS@
 LIPO = @LIPO@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
@@ -197,7 +188,6 @@ MKINSTALLDIRS = @MKINSTALLDIRS@
 MSGFMT = @MSGFMT@
 MSGFMT_OPTS = @MSGFMT_OPTS@
 MSGMERGE = @MSGMERGE@
-NCURSES_LIBS = @NCURSES_LIBS@
 NM = @NM@
 NMEDIT = @NMEDIT@
 OBJDUMP = @OBJDUMP@
@@ -223,8 +213,6 @@ PO_IN_DATADIR_FALSE = @PO_IN_DATADIR_FALSE@
 PO_IN_DATADIR_TRUE = @PO_IN_DATADIR_TRUE@
 RANLIB = @RANLIB@
 RELEASE = @RELEASE@
-RPMBUILD = @RPMBUILD@
-RPMDIR = @RPMDIR@
 SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -232,6 +220,8 @@ STRIP = @STRIP@
 UNZIP = @UNZIP@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
+WAEI_CFLAGS = @WAEI_CFLAGS@
+WAEI_LIBS = @WAEI_LIBS@
 XGETTEXT = @XGETTEXT@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
@@ -269,7 +259,7 @@ infodir = @infodir@
 install_sh = @install_sh@
 libdir = @libdir@
 libexecdir = @libexecdir@
-localedir = $(datadir)/locale
+localedir = @localedir@
 localstatedir = @localstatedir@
 mandir = @mandir@
 mkdir_p = @mkdir_p@
@@ -288,17 +278,13 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 SUBDIRS = include/waei 
 ACLOCAL_AMFLAGS = -I m4
-DEFINITIONS = -DLOCALEDIR=\"$(localedir)\" -DVERSION=\"$(VERSION)\" -DPACKAGE=\"$(PACKAGE)\" -DBINDIR=\"$(bindir)\" -DUNZIP=\"$(UNZIP)\" -DGUNZIP=\"$(GUNZIP)\" -DDATADIR2=\"$(datadir)\" -DLIBDIR=\"$(libdir)\" -DGTK_DISABLE_DEPRECATED -DG_SEAL_ENABLE
-waei_SOURCES = waei.c console.c $(am__append_3)
-waei_LDADD = $(BASE_LIBS) ../libwaei/libwaei.la $(am__append_1) \
-	$(am__append_4)
-waei_CPPFLAGS = $(DEFINITIONS) $(BASE_CFLAGS) $(BASE_DEFS) \
+DEFINITIONS = -DDATADIR2=\"$(datadir)\" -DLIBDIR=\"$(libdir)\" -DGWAEI_LOCALEDIR=\"$(GWAEI_LOCALEDIR)\" -DG_SEAL_ENABLE -Wall 
+waei_SOURCES = waei.c application.c search-data.c console.c console-output.c console-callbacks.c
+waei_LDADD = $(WAEI_LIBS) ../libwaei/libwaei.la $(am__append_1)
+waei_CPPFLAGS = $(DEFINITIONS) $(WAEI_CFLAGS) $(WAEI_DEFS) \
 	-I$(top_srcdir)/src/libwaei/include \
-	-I$(top_srcdir)/src/waei/include $(am__append_2) \
-	$(am__append_5)
-@ENABLE_WIN32_TRUE@WIN_PREFIX = /mingw/usr
-@ENABLE_WIN32_TRUE@WIN32_DEFS = -DENABLE_WIN32 -DLC_MESSAGES=\"C\" -DCURL_STATICLIB 
-@WITH_NCURSES_TRUE@NCURSES_DEFS = -DWITH_NCURSES
+	-I$(top_srcdir)/src/waei/include $(am__append_2)
+@OS_MINGW_TRUE@MINGW_DEFS = -DCURL_STATICLIB 
 all: all-recursive
 
 .SUFFIXES:
@@ -388,8 +374,11 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/waei-application.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/waei-console-callbacks.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/waei-console-output.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/waei-console.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/waei-ncurses.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/waei-search-data.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/waei-waei.Po@am__quote@
 
 .c.o:
@@ -427,6 +416,34 @@ waei-waei.obj: waei.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(waei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o waei-waei.obj `if test -f 'waei.c'; then $(CYGPATH_W) 'waei.c'; else $(CYGPATH_W) '$(srcdir)/waei.c'; fi`
 
+waei-application.o: application.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(waei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT waei-application.o -MD -MP -MF $(DEPDIR)/waei-application.Tpo -c -o waei-application.o `test -f 'application.c' || echo '$(srcdir)/'`application.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/waei-application.Tpo $(DEPDIR)/waei-application.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='application.c' object='waei-application.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(waei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o waei-application.o `test -f 'application.c' || echo '$(srcdir)/'`application.c
+
+waei-application.obj: application.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(waei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT waei-application.obj -MD -MP -MF $(DEPDIR)/waei-application.Tpo -c -o waei-application.obj `if test -f 'application.c'; then $(CYGPATH_W) 'application.c'; else $(CYGPATH_W) '$(srcdir)/application.c'; fi`
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/waei-application.Tpo $(DEPDIR)/waei-application.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='application.c' object='waei-application.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(waei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o waei-application.obj `if test -f 'application.c'; then $(CYGPATH_W) 'application.c'; else $(CYGPATH_W) '$(srcdir)/application.c'; fi`
+
+waei-search-data.o: search-data.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(waei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT waei-search-data.o -MD -MP -MF $(DEPDIR)/waei-search-data.Tpo -c -o waei-search-data.o `test -f 'search-data.c' || echo '$(srcdir)/'`search-data.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/waei-search-data.Tpo $(DEPDIR)/waei-search-data.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='search-data.c' object='waei-search-data.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(waei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o waei-search-data.o `test -f 'search-data.c' || echo '$(srcdir)/'`search-data.c
+
+waei-search-data.obj: search-data.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(waei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT waei-search-data.obj -MD -MP -MF $(DEPDIR)/waei-search-data.Tpo -c -o waei-search-data.obj `if test -f 'search-data.c'; then $(CYGPATH_W) 'search-data.c'; else $(CYGPATH_W) '$(srcdir)/search-data.c'; fi`
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/waei-search-data.Tpo $(DEPDIR)/waei-search-data.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='search-data.c' object='waei-search-data.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(waei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o waei-search-data.obj `if test -f 'search-data.c'; then $(CYGPATH_W) 'search-data.c'; else $(CYGPATH_W) '$(srcdir)/search-data.c'; fi`
+
 waei-console.o: console.c
 @am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(waei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT waei-console.o -MD -MP -MF $(DEPDIR)/waei-console.Tpo -c -o waei-console.o `test -f 'console.c' || echo '$(srcdir)/'`console.c
 @am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/waei-console.Tpo $(DEPDIR)/waei-console.Po
@@ -441,19 +458,33 @@ waei-console.obj: console.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(waei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o waei-console.obj `if test -f 'console.c'; then $(CYGPATH_W) 'console.c'; else $(CYGPATH_W) '$(srcdir)/console.c'; fi`
 
-waei-ncurses.o: ncurses.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(waei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT waei-ncurses.o -MD -MP -MF $(DEPDIR)/waei-ncurses.Tpo -c -o waei-ncurses.o `test -f 'ncurses.c' || echo '$(srcdir)/'`ncurses.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/waei-ncurses.Tpo $(DEPDIR)/waei-ncurses.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='ncurses.c' object='waei-ncurses.o' libtool=no @AMDEPBACKSLASH@
+waei-console-output.o: console-output.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(waei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT waei-console-output.o -MD -MP -MF $(DEPDIR)/waei-console-output.Tpo -c -o waei-console-output.o `test -f 'console-output.c' || echo '$(srcdir)/'`console-output.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/waei-console-output.Tpo $(DEPDIR)/waei-console-output.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='console-output.c' object='waei-console-output.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(waei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o waei-ncurses.o `test -f 'ncurses.c' || echo '$(srcdir)/'`ncurses.c
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(waei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o waei-console-output.o `test -f 'console-output.c' || echo '$(srcdir)/'`console-output.c
 
-waei-ncurses.obj: ncurses.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(waei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT waei-ncurses.obj -MD -MP -MF $(DEPDIR)/waei-ncurses.Tpo -c -o waei-ncurses.obj `if test -f 'ncurses.c'; then $(CYGPATH_W) 'ncurses.c'; else $(CYGPATH_W) '$(srcdir)/ncurses.c'; fi`
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/waei-ncurses.Tpo $(DEPDIR)/waei-ncurses.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='ncurses.c' object='waei-ncurses.obj' libtool=no @AMDEPBACKSLASH@
+waei-console-output.obj: console-output.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(waei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT waei-console-output.obj -MD -MP -MF $(DEPDIR)/waei-console-output.Tpo -c -o waei-console-output.obj `if test -f 'console-output.c'; then $(CYGPATH_W) 'console-output.c'; else $(CYGPATH_W) '$(srcdir)/console-output.c'; fi`
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/waei-console-output.Tpo $(DEPDIR)/waei-console-output.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='console-output.c' object='waei-console-output.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(waei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o waei-ncurses.obj `if test -f 'ncurses.c'; then $(CYGPATH_W) 'ncurses.c'; else $(CYGPATH_W) '$(srcdir)/ncurses.c'; fi`
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(waei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o waei-console-output.obj `if test -f 'console-output.c'; then $(CYGPATH_W) 'console-output.c'; else $(CYGPATH_W) '$(srcdir)/console-output.c'; fi`
+
+waei-console-callbacks.o: console-callbacks.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(waei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT waei-console-callbacks.o -MD -MP -MF $(DEPDIR)/waei-console-callbacks.Tpo -c -o waei-console-callbacks.o `test -f 'console-callbacks.c' || echo '$(srcdir)/'`console-callbacks.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/waei-console-callbacks.Tpo $(DEPDIR)/waei-console-callbacks.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='console-callbacks.c' object='waei-console-callbacks.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(waei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o waei-console-callbacks.o `test -f 'console-callbacks.c' || echo '$(srcdir)/'`console-callbacks.c
+
+waei-console-callbacks.obj: console-callbacks.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(waei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT waei-console-callbacks.obj -MD -MP -MF $(DEPDIR)/waei-console-callbacks.Tpo -c -o waei-console-callbacks.obj `if test -f 'console-callbacks.c'; then $(CYGPATH_W) 'console-callbacks.c'; else $(CYGPATH_W) '$(srcdir)/console-callbacks.c'; fi`
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/waei-console-callbacks.Tpo $(DEPDIR)/waei-console-callbacks.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='console-callbacks.c' object='waei-console-callbacks.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(waei_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o waei-console-callbacks.obj `if test -f 'console-callbacks.c'; then $(CYGPATH_W) 'console-callbacks.c'; else $(CYGPATH_W) '$(srcdir)/console-callbacks.c'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo

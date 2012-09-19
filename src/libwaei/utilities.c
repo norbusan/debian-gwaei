@@ -20,11 +20,7 @@
 *******************************************************************************/
 
 //!
-//! @file src/utilities.c
-//!
-//! @brief Generic utility functions
-//!
-//! Holds some basic functions that are extremely handy for gWaei.
+//! @file utilities.c
 //!
 
 
@@ -36,81 +32,150 @@
 #include <glib.h>
 #include <glib/gstdio.h>
 
+#include <libwaei/dict.h>
 #include <libwaei/libwaei.h>
 
 
-static char *_paths[GW_PATH_TOTAL];
-static gboolean _paths_initialized = FALSE;
-
-
 //!
-//! @brief Gets the location of the gwaei dictionary folder and various subfolders
-//!
+//! @brief Creates an allocated path to a file.  If the FILENAME is NULL,
+//!        then it is just a path to a directory.  It must be freed with
+//!        g_free
 //! @param PATH Used to determine which folder path to return
-//! @return Returns a constant string that should not be freed
+//! @param FILENAME The filename to be appended to the path or NULL
+//! @returns Returns a constant that should be freed with g_free
 //!
-const char* lw_util_get_directory (const LwFolderPath PATH) 
+gchar* 
+lw_util_build_filename (const LwFolderPath PATH, const char *FILENAME) 
 {
-    g_assert (PATH >= 0 & PATH < GW_PATH_TOTAL);
+    g_assert (PATH >= 0 && PATH < TOTAL_LW_PATHS);
 
-    LwEngine i;
-
-    if (!_paths_initialized)
+    //Declarations
+    char *base;
+    char *folder;
+    char *path;
+    
+    base = g_build_filename (g_get_user_config_dir (), PACKAGE, NULL);
+    switch (PATH)
     {
-      _paths[GW_PATH_BASE] = g_build_filename (g_get_user_config_dir (), PACKAGE, NULL);
-      _paths[GW_PATH_DICTIONARY] = g_build_filename (_paths[GW_PATH_BASE], "dictionaries", NULL);
-      _paths[GW_PATH_PLUGIN] = g_build_filename (_paths[GW_PATH_BASE], "plugins", NULL);
-      _paths[GW_PATH_CACHE] = g_build_filename (_paths[GW_PATH_BASE], "cache", NULL);
-
-      for (i = 0; i < GW_ENGINE_TOTAL; i++)
-      {
-        if (_paths[GW_PATH_DICTIONARY_EDICT + i] != NULL)
-        {
-          printf("The LwEngine and LwPath variables are not syncing.  Make sure "
-                 "you sync the engines between them when adding or removing engines.\n");
-          g_assert(FALSE);
-        }
-        _paths[GW_PATH_DICTIONARY_EDICT + i] = g_build_filename (_paths[GW_PATH_DICTIONARY],
-                                                                 lw_util_get_engine_name(i), NULL);
-      }
-
-      _paths_initialized = TRUE;
-    }
-
-    g_mkdir_with_parents (_paths[PATH], 0755);
-    return _paths[PATH];
-}
-
-const char* lw_util_get_engine_name (const LwEngine ENGINE)
-{
-    switch (ENGINE)
-    {
-      case GW_ENGINE_EDICT:
-        return "edict";
-      case GW_ENGINE_KANJI:
-        return "kanji";
-      case GW_ENGINE_EXAMPLES:
-        return "examples";
-      case GW_ENGINE_UNKNOWN:
-        return "unknown";
+      case LW_PATH_BASE:
+        folder = g_strdup (base);
+        path = g_strdup (base);
+        break;
+      case LW_PATH_DICTIONARY:
+        folder = g_build_filename (base, "dictionaries", NULL);
+        path = g_build_filename (base, "dictionaries", FILENAME, NULL);
+        break;
+      case LW_PATH_DICTIONARY_EDICT:
+        folder = g_build_filename (base, "dictionaries", lw_util_dicttype_to_string (LW_DICTTYPE_EDICT), NULL);
+        path = g_build_filename (base, "dictionaries", lw_util_dicttype_to_string (LW_DICTTYPE_EDICT), FILENAME, NULL);
+        break;
+      case LW_PATH_DICTIONARY_KANJI:
+        folder = g_build_filename (base, "dictionaries", lw_util_dicttype_to_string (LW_DICTTYPE_KANJI), NULL);
+        path = g_build_filename (base, "dictionaries", lw_util_dicttype_to_string (LW_DICTTYPE_KANJI), FILENAME, NULL);
+        break;
+      case LW_PATH_DICTIONARY_EXAMPLES:
+        folder = g_build_filename (base, "dictionaries", lw_util_dicttype_to_string (LW_DICTTYPE_EXAMPLES), NULL);
+        path = g_build_filename (base, "dictionaries", lw_util_dicttype_to_string (LW_DICTTYPE_EXAMPLES), FILENAME, NULL);
+        break;
+      case LW_PATH_DICTIONARY_UNKNOWN:
+        folder = g_build_filename (base, "dictionaries", lw_util_dicttype_to_string (LW_DICTTYPE_UNKNOWN), NULL);
+        path = g_build_filename (base, "dictionaries", lw_util_dicttype_to_string (LW_DICTTYPE_UNKNOWN), FILENAME, NULL);
+        break;
+      case LW_PATH_PLUGIN:
+        folder = g_build_filename (base, "plugins", NULL);
+        path = g_build_filename (base, "plugins", FILENAME, NULL);
+        break;
+      case LW_PATH_CACHE:
+        folder = g_build_filename (base, "cache", NULL);
+        path = g_build_filename (base, "cache", FILENAME, NULL);
+        break;
       default:
-        return NULL;
+        g_assert_not_reached ();
+        folder = NULL;
+        path = NULL;
+        break;
     }
+    g_free (base);
+
+    g_mkdir_with_parents (folder, 0755);
+
+    g_free (folder);
+
+    return path;
 }
 
-LwEngine lw_util_get_engine_from_enginename (const char *enginename)
+
+//!
+//! @brief Converts a LwDictType to its string equivalent
+//! @param DICTTYPE The LwDictType that you want the string version of
+//! @returns A constant string that shouldn't be freed
+//!
+const char* 
+lw_util_dicttype_to_string (const LwDictType DICTTYPE)
 {
-  char *lower = g_utf8_strdown (enginename, -1);
-  LwEngine engine = -1;
+    char *name;
+
+    switch (DICTTYPE)
+    {
+      case LW_DICTTYPE_EDICT:
+        name = "edict";
+        break;
+      case LW_DICTTYPE_KANJI:
+        name = "kanji";
+        break;
+      case LW_DICTTYPE_EXAMPLES:
+        name = "examples";
+        break;
+      case LW_DICTTYPE_UNKNOWN:
+        name = "unknown";
+        break;
+      default:
+        g_assert_not_reached ();
+        name = NULL;
+        break;
+    }
+
+    return name;
+}
+
+
+//!
+//! @brief Parses the dicttype from a string
+//! @param ENGINENAME The LwDictType in string form
+//! @returns A LwDictType value or -1 if it is invalid
+//!
+LwDictType 
+lw_util_get_dicttype_from_string (const char *ENGINENAME)
+{
+  //Declarations
+  char *lower;
+  LwDictType engine;
+
+  //Initializations
+  lower = g_utf8_strdown (ENGINENAME, -1);
+  engine = -1;
 
   if (strcmp(lower, "edict") == 0)
-    engine = GW_ENGINE_EDICT;
+  {
+    engine = LW_DICTTYPE_EDICT;
+  }
   else if (strcmp(lower, "kanji") == 0)
-    engine = GW_ENGINE_KANJI;
+  {
+    engine = LW_DICTTYPE_KANJI;
+  }
   else if (strcmp(lower, "examples") == 0)
-    engine = GW_ENGINE_EXAMPLES;
+  {
+    engine = LW_DICTTYPE_EXAMPLES;
+  }
   else if (strcmp(lower, "unknown") == 0)
-    engine = GW_ENGINE_UNKNOWN;
+  {
+    engine = LW_DICTTYPE_UNKNOWN;
+  }
+  else
+  {
+    g_assert_not_reached ();
+    engine = -1;
+  }
 
   g_free (lower);
   lower = NULL;
@@ -119,75 +184,117 @@ LwEngine lw_util_get_engine_from_enginename (const char *enginename)
 }
 
 
-
 //!
 //! @brief Gets a dictionary folder path for the given engine
+//! @param DICTTYPE A LwDictType to build the base directory structure
+//! @param FILENAME The name to prefix to the directory
+//! @return Returns a constant string that should be freed with g_free
 //!
-//! @param ENGINE A LwEngine to get the dictinary folder for
-//! @return Returns a constant string that should not be freed
-//!
-const char* lw_util_get_directory_for_engine (const LwEngine ENGINE)
+gchar* 
+lw_util_build_filename_by_dicttype (const LwDictType DICTTYPE, const char* FILENAME)
 {
-    switch (ENGINE)
+    g_assert (DICTTYPE >= 0 && DICTTYPE < TOTAL_LW_DICTTYPES);
+
+    gchar *path;
+
+    switch (DICTTYPE)
     {
-      case GW_ENGINE_EDICT:
-        return lw_util_get_directory (GW_PATH_DICTIONARY_EDICT);
-      case GW_ENGINE_KANJI:
-        return lw_util_get_directory (GW_PATH_DICTIONARY_KANJI);
-      case GW_ENGINE_EXAMPLES:
-        return lw_util_get_directory (GW_PATH_DICTIONARY_EXAMPLES);
-      case GW_ENGINE_UNKNOWN:
-        return lw_util_get_directory (GW_PATH_DICTIONARY_UNKNOWN);
+      case LW_DICTTYPE_EDICT:
+        path = lw_util_build_filename (LW_PATH_DICTIONARY_EDICT, FILENAME);
+        break;
+      case LW_DICTTYPE_KANJI:
+        path = lw_util_build_filename (LW_PATH_DICTIONARY_KANJI, FILENAME);
+        break;
+      case LW_DICTTYPE_EXAMPLES:
+        path = lw_util_build_filename (LW_PATH_DICTIONARY_EXAMPLES, FILENAME);
+        break;
+      case LW_DICTTYPE_UNKNOWN:
+        path = lw_util_build_filename (LW_PATH_DICTIONARY_UNKNOWN, FILENAME);
+        break;
       default:
-        printf("Engine doesn't exist. in lw_util_get_directory_for_engine\n");
-        g_assert_not_reached();
-        return NULL;
+        g_assert_not_reached ();
+        path = NULL;
+        break;
     }
+
+    return path;
 }
 
 
-const char* lw_util_get_compression_name (const LwCompression COMPRESSION)
+//!
+//! @brief Gets the compression type as a string
+//! @param COMPRESSION The LwCompression type to use
+//! @returns A constant string that should not be freed
+//!
+const char* 
+lw_util_get_compression_name (const LwCompression COMPRESSION)
 {
+    char *type;
+
     switch (COMPRESSION)
     {
 /*
-      case GW_COMPRESSION_ZIP:
+      case LW_COMPRESSION_ZIP:
         g_error ("currently unsupported compression type\n");
         return "zip";
 */
-      case GW_COMPRESSION_GZIP:
-        return "gz";
+      case LW_COMPRESSION_GZIP:
+        type = "gz";
+        break;
+      case LW_COMPRESSION_NONE:
+        type = "uncompressed";
+        break;
       default:
-        return "uncompressed";
+        g_assert_not_reached ();
+        type = NULL;
+        break;
     }
+
+    return type;
 }
 
-const char* lw_util_get_encoding_name (const LwEncoding ENCODING)
+
+//!
+//! @brief Gets the encoding type as a string
+//! @param ENCODING The LwEncoding type to use
+//! @returns A constant string that should not be freed
+//!
+const char* 
+lw_util_get_encoding_name (const LwEncoding ENCODING)
 {
+    char *type;
+
     switch (ENCODING)
     {
-      case GW_ENCODING_EUC_JP:
-        return "EUC-JP";
-      case GW_ENCODING_SHIFT_JS:
-        return "Shift-JS";
-      case GW_ENCODING_UTF8:
-        return "UTF-8";
+      case LW_ENCODING_EUC_JP:
+        type = "EUC-JP";
+        break;
+      case LW_ENCODING_SHIFT_JS:
+        type = "Shift-JS";
+        break;
+      case LW_ENCODING_UTF8:
+        type = "UTF-8";
+        break;
       default:
-        g_error ("Unsupported encoding\n");
+        g_assert_not_reached ();
+        type = NULL;
+        break;
     }
+
+    return type;
 }
 
 
 //!
 //! @brief Convenience function for seeing if a string is hiragana
-//!
 //! @param input The string to check
 //! @return Returns true if it is in the range
 //! @see lw_util_is_katakana_str ()
 //! @see lw_util_is_kanji_str ()
 //! @see lw_util_is_romaji_str ()
 //!
-gboolean lw_util_is_hiragana_str (const char *input)
+gboolean 
+lw_util_is_hiragana_str (const char *input)
 {
     //Declarations
     gboolean is_consistant;
@@ -214,14 +321,14 @@ gboolean lw_util_is_hiragana_str (const char *input)
 
 //!
 //! @brief Convenience function for seeing if a string is katakana
-//!
 //! @param input The string to check
 //! @return Returns true if it is in the range
 //! @see lw_util_is_hiragana_str ()
 //! @see lw_util_is_kanji_str ()
 //! @see lw_util_is_romaji_str ()
 //!
-gboolean lw_util_is_katakana_str (const char *input)
+gboolean 
+lw_util_is_katakana_str (const char *input)
 {
     //Declarations
     gboolean is_consistant;
@@ -248,16 +355,14 @@ gboolean lw_util_is_katakana_str (const char *input)
 
 //!
 //! @brief Convenience function for seeing if a string is furigana
-//!
-//! Furigana are the characters containing both hiragana and katakana.
-//!
 //! @param input The string to check
 //! @return Returns true if it is in the range
 //! @see lw_util_is_hiragana_str ()
 //! @see lw_util_is_kanji_str ()
 //! @see lw_util_is_romaji_str ()
 //!
-gboolean lw_util_is_furigana_str (const char *input)
+gboolean 
+lw_util_is_furigana_str (const char *input)
 {
     return (lw_util_is_katakana_str (input) || lw_util_is_hiragana_str (input));
 }
@@ -266,17 +371,14 @@ gboolean lw_util_is_furigana_str (const char *input)
 
 //!
 //! @brief Convenience function for seeing if a string *starts* with kanji
-//!
-//! The point of the function is to find a word that starts with kanji but
-//! may also have hiragana in it somewheres.
-//!
 //! @param input The string to check
 //! @return Returns true if the function things this is a kanji string
 //! @see lw_util_is_hiragana_str ()
 //! @see lw_util_is_katakana_str ()
 //! @see lw_util_is_romaji_str ()
 //!
-gboolean lw_util_is_kanji_ish_str (const char *input)
+gboolean 
+lw_util_is_kanji_ish_str (const char *input)
 {
     //Declarations
     gboolean is_consistant;
@@ -304,14 +406,14 @@ gboolean lw_util_is_kanji_ish_str (const char *input)
 
 //!
 //! @brief Convenience function for seeing if a string is kanji
-//!
 //! @param input The string to check
 //! @return Returns true if it is in the range
 //! @see lw_util_is_hiragana_str ()
 //! @see lw_util_is_katakana_str ()
 //! @see lw_util_is_romaji_str ()
 //!
-gboolean lw_util_is_kanji_str (const char *input)
+gboolean 
+lw_util_is_kanji_str (const char *input)
 {
     //Declarations
     gboolean is_consistant;
@@ -338,14 +440,14 @@ gboolean lw_util_is_kanji_str (const char *input)
 
 //!
 //! @brief Convenience function for seeing if a string is romaji
-//!
 //! @param input The string to check
 //! @return Returns true if it is in the range
 //! @see lw_util_is_hiragana_str ()
 //! @see lw_util_is_katakana_str ()
 //! @see lw_util_is_kanji_str ()
 //!
-gboolean lw_util_is_romaji_str (const char *input)
+gboolean 
+lw_util_is_romaji_str (const char *input)
 {
     //Declarations
     gboolean is_consistant;
@@ -370,23 +472,27 @@ gboolean lw_util_is_romaji_str (const char *input)
 }
 
 
-gboolean lw_util_is_yojijukugo_str (const char* input)
+//!
+//! @brief Checks if a given string is yojijukugo (a four kanji phrase)
+//! @param INPUT
+//! @returns Returns TRUE if the text looks to be yojijukugo.  FALSE if it isn't.
+//!
+gboolean 
+lw_util_is_yojijukugo_str (const char* INPUT)
 {
-  return (g_utf8_strlen (input, -1) == 4 && lw_util_is_kanji_str (input));
+  return (g_utf8_strlen (INPUT, -1) == 4 && lw_util_is_kanji_str (INPUT));
 }
 
 
 //!
 //! @brief Shifts the characters in a specific direction
-//!
-//! This function is used for hiragana to katakana conversions and vice versa.
-//!
 //! @param input The string to shift
 //! @param shift How much to shift by
 //! @see lw_util_str_shift_hira_to_kata ()
 //! @see lw_util_str_shift_kata_to_hira ()
 //!
-void lw_util_shift_all_chars_in_str_by (char *input, int shift)
+void 
+lw_util_shift_all_chars_in_str_by (char *input, int shift)
 {
     //Setup
     char *input_ptr;
@@ -426,7 +532,8 @@ void lw_util_shift_all_chars_in_str_by (char *input, int shift)
 //! @see lw_util_shift_all_chars_in_str_by ()
 //! @see lw_util_str_shift_kata_to_hira ()
 //!
-void lw_util_str_shift_hira_to_kata (char input[])
+void 
+lw_util_str_shift_hira_to_kata (char input[])
 {
     lw_util_shift_all_chars_in_str_by (input, (L'ア' - L'あ'));
 }
@@ -439,7 +546,8 @@ void lw_util_str_shift_hira_to_kata (char input[])
 //! @see lw_util_shift_all_chars_in_str_by ()
 //! @see lw_util_str_shift_hira_to_kata ()
 //!
-void lw_util_str_shift_kata_to_hira (char input[])
+void 
+lw_util_str_shift_kata_to_hira (char input[])
 {
     lw_util_shift_all_chars_in_str_by (input, (L'あ' - L'ア'));
 }
@@ -454,9 +562,10 @@ void lw_util_str_shift_kata_to_hira (char input[])
 //! @param input The string to jump around
 //! @return where the next hiragana equivalent character would start
 //!
-char* lw_util_next_hira_char_from_roma (char *input)
+const char* 
+lw_util_next_hira_char_from_roma (const char *input)
 {
-    char *input_ptr;
+    const char *input_ptr;
     input_ptr = input;
 
     int total_n = 0;
@@ -523,17 +632,15 @@ char* lw_util_next_hira_char_from_roma (char *input)
 
 //!
 //! @brief Converts a romaji string to hiragana.
-//!
-//! Attempts to convert a romaji string to hiragana.
-//!
 //! @param input The source romaji string
-//! @param input The string to write the hiragana equivalent to
+//! @param output The string to write the hiragana equivalent to
 //! @return Returns null on error/end
 //!
-char* lw_util_roma_char_to_hira (char *input, char *output)
+char* 
+lw_util_roma_char_to_hira (const char *input, char *output)
 {
     //Set up the input pointer
-    char *input_ptr;
+    const char *input_ptr;
     input_ptr = input;
 
     //Make sure the output pointer is initialized
@@ -914,14 +1021,17 @@ char* lw_util_roma_char_to_hira (char *input, char *output)
 //!
 //! @brief Convenience function to convert romaji to hiragana
 //!
-//! @param input The string to shift
+//! @param input The string to shift.
+//! @param output the string to output the changes to.
+//! @param max The max length of the string to output to.
 //! @see lw_util_shift_all_chars_in_str_by ()
 //! @see lw_util_str_shift_hira_to_kata ()
 //!
-gboolean lw_util_str_roma_to_hira (char* input, char* output, int max)
+gboolean 
+lw_util_str_roma_to_hira (const char* input, char* output, int max)
 {
     //Declarations
-    char *input_ptr;
+    const char *input_ptr;
     char *kana_ptr;
     int leftover;
 
@@ -955,11 +1065,12 @@ gboolean lw_util_str_roma_to_hira (char* input, char* output, int max)
 //!  * Check for badly encoded UTF-8 or invalid character
 //!  * Replace halfwidth japanese characters with their normal wide counterpart
 //!
-//! @param text an utf8 encoded string to prepare
+//! @param input an utf8 encoded string to prepare
 //! @param strip if true remove leading and trailing spaces
 //! @return a newly allocated utf8 encoded string or NULL if text was too.
 //!         If the result is non-NULL it must be freed with g_free().
-gchar* lw_util_prepare_query (const char* input, gboolean strip)
+gchar* 
+lw_util_prepare_query (const char* input, gboolean strip)
 {
     //Sanity check
     g_assert (input != NULL);
@@ -973,7 +1084,7 @@ gchar* lw_util_prepare_query (const char* input, gboolean strip)
 
     if(lw_util_contains_halfwidth_japanese (output) == TRUE)
     {
-      buffer == output;
+      buffer = output;
       output = lw_util_enlarge_halfwidth_japanese (buffer);
       g_free (buffer);
     }
@@ -995,7 +1106,8 @@ gchar* lw_util_prepare_query (const char* input, gboolean strip)
 //! @return a newly allocated sanitized utf8 encoded string or NULL if text was too.
 //!         If the result is non-NULL it must be freed with g_free(). 
 //!
-gchar* lw_util_sanitize_input (const char *text, gboolean strip)
+gchar* 
+lw_util_sanitize_input (const char *text, gboolean strip)
 {
     //Sanity Check
     g_assert (text != NULL);
@@ -1037,7 +1149,8 @@ gchar* lw_util_sanitize_input (const char *text, gboolean strip)
 //! @param text an utf8 encoded string
 //! @return TRUE if the string contains is not null and contains a halfwidth japanese char
 //!
-gboolean lw_util_contains_halfwidth_japanese (const gchar* text)
+gboolean 
+lw_util_contains_halfwidth_japanese (const gchar* text)
 {
     //Sanity check
     if(text == NULL)
@@ -1072,7 +1185,8 @@ gboolean lw_util_contains_halfwidth_japanese (const gchar* text)
 //! @return a newly allocated utf8 encoded string without halfwidth japanese char ; or NULL if text was too.
 //!         If the result is non-NULL it must be freed with g_free().
 //!
-gchar* lw_util_enlarge_halfwidth_japanese (const gchar* text)
+gchar* 
+lw_util_enlarge_halfwidth_japanese (const gchar* text)
 {
     if(text == NULL)
         return NULL;
@@ -1115,33 +1229,20 @@ gchar* lw_util_enlarge_halfwidth_japanese (const gchar* text)
 //! @returns A boolean stating whether the locale is a Japanese utf8 one
 //! @return Returns true if it is a japanese local
 //!
-gboolean lw_util_is_japanese_locale ()
+gboolean 
+lw_util_is_japanese_locale ()
 {
-    return ( setlocale(LC_MESSAGES, NULL) != NULL &&
+    return (setlocale(LC_ALL, NULL) != NULL &&
              (
-               strcmp(setlocale(LC_MESSAGES, NULL), "ja_JP.UTF8")  == 0 ||
-               strcmp(setlocale(LC_MESSAGES, NULL), "ja_JP.UTF-8") == 0 ||
-               strcmp(setlocale(LC_MESSAGES, NULL), "ja_JP.utf8")  == 0 ||
-               strcmp(setlocale(LC_MESSAGES, NULL), "ja_JP.utf-8") == 0 ||
-               strcmp(setlocale(LC_MESSAGES, NULL), "ja_JP")       == 0 ||
-               strcmp(setlocale(LC_MESSAGES, NULL), "ja")          == 0 ||
-               strcmp(setlocale(LC_MESSAGES, NULL), "japanese")    == 0
+               strcmp(setlocale(LC_ALL, NULL), "ja_JP.UTF8")  == 0 ||
+               strcmp(setlocale(LC_ALL, NULL), "ja_JP.UTF-8") == 0 ||
+               strcmp(setlocale(LC_ALL, NULL), "ja_JP.utf8")  == 0 ||
+               strcmp(setlocale(LC_ALL, NULL), "ja_JP.utf-8") == 0 ||
+               strcmp(setlocale(LC_ALL, NULL), "ja_JP")       == 0 ||
+               strcmp(setlocale(LC_ALL, NULL), "ja")          == 0 ||
+               strcmp(setlocale(LC_ALL, NULL), "japanese")    == 0
              )
            );
-}
-
-static gboolean _is_script_type (const char* type, GUnicodeScript script)
-{
-    if (strcmp(type, "kanji") == 0)
-      return (script == G_UNICODE_SCRIPT_HAN);
-    else if (strcmp(type, "kanjiish") == 0)
-      return (script == G_UNICODE_SCRIPT_HAN || script == G_UNICODE_SCRIPT_HIRAGANA);
-    else if (strcmp(type, "furigana") == 0)
-      return (script == G_UNICODE_SCRIPT_KATAKANA || script == G_UNICODE_SCRIPT_HIRAGANA);
-    else if (strcmp(type, "romaji") == 0)
-      return (script == G_UNICODE_SCRIPT_LATIN);
-
-    g_assert_not_reached ();
 }
 
 
@@ -1150,7 +1251,8 @@ static gboolean _is_script_type (const char* type, GUnicodeScript script)
 //! @param string The string to get the furigana atoms from
 //! @returns An allocated array of strings that should be freed with g_strfreev()
 //!
-char** lw_util_get_romaji_atoms_from_string (const char *string)
+char** 
+lw_util_get_romaji_atoms_from_string (const char *string)
 {
     //Declarations
     gunichar character;
@@ -1159,7 +1261,6 @@ char** lw_util_get_romaji_atoms_from_string (const char *string)
     const char *string_ptr;
     char *buffer_ptr;
     const char* delimitor;
-    char *buffer_delimitor_ptr;
     char **string_array;
     gboolean new_atom_start;
     int offset;
@@ -1206,7 +1307,7 @@ char** lw_util_get_romaji_atoms_from_string (const char *string)
     *buffer_ptr = '\0';
 
     //Convert the string into an array of strings
-    string_array = g_strsplit (buffer, delimitor, GW_QUERYLINE_MAX_ATOMS);
+    string_array = g_strsplit (buffer, delimitor, LW_QUERYLINE_MAX_ATOMS);
     
     //Cleanup
     free(buffer);
@@ -1221,7 +1322,8 @@ char** lw_util_get_romaji_atoms_from_string (const char *string)
 //! @param string The string to get the furigana atoms from
 //! @returns An allocated array of strings that should be freed with g_strfreev()
 //!
-char** lw_util_get_furigana_atoms_from_string (const char *string)
+char** 
+lw_util_get_furigana_atoms_from_string (const char *string)
 {
     //Declarations
     gunichar character;
@@ -1230,7 +1332,6 @@ char** lw_util_get_furigana_atoms_from_string (const char *string)
     const char *string_ptr;
     char *buffer_ptr;
     const char* delimitor;
-    char *buffer_delimitor_ptr;
     char **string_array;
     int offset;
     gboolean new_atom_start;
@@ -1269,7 +1370,7 @@ char** lw_util_get_furigana_atoms_from_string (const char *string)
     *buffer_ptr = '\0';
 
     //Convert the string into an array of strings
-    string_array = g_strsplit (buffer, delimitor, GW_QUERYLINE_MAX_ATOMS);
+    string_array = g_strsplit (buffer, delimitor, LW_QUERYLINE_MAX_ATOMS);
     
     //Cleanup
     free(buffer);
@@ -1285,7 +1386,8 @@ char** lw_util_get_furigana_atoms_from_string (const char *string)
 //! @param argv The argv argument passed to main
 //! @returns An allocated string that must be freed with g_free
 //!
-gchar* lw_util_get_query_from_args (int argc, char** argv)
+gchar* 
+lw_util_get_query_from_args (int argc, char** argv)
 {
     //Sanity check
     if (argc < 2) return NULL;

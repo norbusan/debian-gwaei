@@ -1,5 +1,2 @@
-2011-07-16  Zachary Dovel <pizzach@gmail.com>
-	* Fixed warning coming from a tooltip window not being empting when adding
-	  an hbox to it.
-	* Tweaks to the mutexes that were causing the program to freeze and
-	  choppy query input.
+2011-11-18  Zachary Dovel  <pizzach@gmail.com>
+	* Updated the change log.  You would be best off looking at the git log.

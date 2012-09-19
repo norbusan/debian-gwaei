@@ -7,27 +7,17 @@ ACLOCAL_AMFLAGS = -I m4
 bin_PROGRAMS = waei
 
 datadir = @datadir@
-localedir = $(datadir)/locale
-DEFINITIONS =-DLOCALEDIR=\"$(localedir)\" -DVERSION=\"$(VERSION)\" -DPACKAGE=\"$(PACKAGE)\" -DBINDIR=\"$(bindir)\" -DUNZIP=\"$(UNZIP)\" -DGUNZIP=\"$(GUNZIP)\" -DDATADIR2=\"$(datadir)\" -DLIBDIR=\"$(libdir)\" -DGTK_DISABLE_DEPRECATED -DG_SEAL_ENABLE
+DEFINITIONS =-DDATADIR2=\"$(datadir)\" -DLIBDIR=\"$(libdir)\" -DGWAEI_LOCALEDIR=\"$(GWAEI_LOCALEDIR)\" -DG_SEAL_ENABLE -Wall 
 
-waei_SOURCES = waei.c console.c
-waei_LDADD =  $(BASE_LIBS) ../libwaei/libwaei.la
-waei_CPPFLAGS = $(DEFINITIONS) $(BASE_CFLAGS) $(BASE_DEFS) -I$(top_srcdir)/src/libwaei/include -I$(top_srcdir)/src/waei/include
+waei_SOURCES = waei.c application.c search-data.c console.c console-output.c console-callbacks.c
+waei_LDADD =  $(WAEI_LIBS) ../libwaei/libwaei.la
+waei_CPPFLAGS = $(DEFINITIONS) $(WAEI_CFLAGS) $(WAEI_DEFS) -I$(top_srcdir)/src/libwaei/include -I$(top_srcdir)/src/waei/include
 
 
-##WINDOWS SETUP
-if ENABLE_WIN32
-WIN_PREFIX = /mingw/usr
-WIN32_DEFS = -DENABLE_WIN32 -DLC_MESSAGES=\"C\" -DCURL_STATICLIB 
-waei_LDADD += $(WIN32_LIBS)
-waei_CPPFLAGS += $(WIN32_CFLAGS) $(WIN32_DEFS) -I$(WIN_PREFIX)/include
+if OS_MINGW
+MINGW_DEFS =-DCURL_STATICLIB 
+waei_LDADD +=$(MINGW_LIBS)
+waei_CPPFLAGS +=$(MINGW_CFLAGS) $(MINGW_DEFS)
 endif
 
-##LINUX/UNIX/BSD SETUP
-if WITH_NCURSES
-NCURSES_DEFS =-DWITH_NCURSES
-waei_SOURCES += ncurses.c
-waei_LDADD += $(NCURSES_LIBS)
-waei_CPPFLAGS +=$(NCURSES_DEFS)
-endif
 
