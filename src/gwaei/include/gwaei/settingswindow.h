@@ -32,6 +32,7 @@ GType gw_settingswindow_get_type (void) G_GNUC_CONST;
 void gw_settingswindow_update_interface (GwSettingsWindow*);
 
 void gw_settingswindow_initialize_dictionary_order_list (GwSettingsWindow*);
+void gw_settingswindow_map_actions (GActionMap*, GwSettingsWindow*);
 void gw_settings_set_dictionary_source (GtkWidget*, const char*);
 void gw_settingswindow_update_global_font_label (GwSettingsWindow*, const char*);
 void gw_settingswindow_update_custom_font_button (GwSettingsWindow*, const char*);

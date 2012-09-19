@@ -25,9 +25,6 @@
 //! @brief To be written
 //!
 
-
-#include "../private.h"
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -36,12 +33,14 @@
 #include <glib/gstdio.h>
 #include <gtk/gtk.h>
 
+#include <gwaei/gettext.h>
 #include <libwaei/libwaei.h>
 
 #include <gwaei/vocabularyliststore-private.h>
 #include <gwaei/vocabularyliststore.h>
 
 void gw_vocabularyliststore_wordstore_changed_cb (GwVocabularyWordStore*, gpointer);
+void gw_vocabularyliststore_sync_menumodel_cb (GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer);
 
 G_DEFINE_TYPE (GwVocabularyListStore, gw_vocabularyliststore, GTK_TYPE_LIST_STORE)
 
@@ -73,18 +72,26 @@ gw_vocabularyliststore_init (GwVocabularyListStore *store)
     store->priv = GW_VOCABULARYLISTSTORE_GET_PRIVATE (store);
     memset(store->priv, 0, sizeof(GwVocabularyListStorePrivate));
 
-    gw_vocabularyliststore_revert_all (store);
+    store->priv->menumodel = G_MENU_MODEL (g_menu_new ());
+
+    gw_vocabularyliststore_load (store);
+
+    g_signal_connect (store, "row-changed", G_CALLBACK (gw_vocabularyliststore_sync_menumodel_cb), NULL);
+    g_signal_connect (store, "row-deleted", G_CALLBACK (gw_vocabularyliststore_sync_menumodel_cb), NULL);
+    g_signal_connect (store, "rows-reordered", G_CALLBACK (gw_vocabularyliststore_sync_menumodel_cb), NULL);
 }
 
 
 static void 
 gw_vocabularyliststore_finalize (GObject *object)
 {
-/*
     GwVocabularyListStore *store;
+    GwVocabularyListStorePrivate *priv;
 
     store = GW_VOCABULARYLISTSTORE (object);
-*/
+    priv = store->priv;
+
+    if (priv->menumodel != NULL) g_object_unref (priv->menumodel); priv->menumodel = NULL;
 
     G_OBJECT_CLASS (gw_vocabularyliststore_parent_class)->finalize (object);
 }
@@ -112,6 +119,40 @@ gw_vocabularyliststore_class_init (GwVocabularyListStoreClass *klass)
         G_TYPE_NONE, 0
     );
 }
+
+
+void
+gw_vocabularyliststore_load (GwVocabularyListStore *store)
+{
+    gchar **lists;
+    GtkListStore *liststore;
+    GtkListStore *wordstore;
+    GtkTreeIter treeiter;
+    gint i;
+
+    lists = lw_vocabulary_get_lists ();
+    liststore = GTK_LIST_STORE (store);
+
+    if (lists != NULL)
+    {
+      for (i = 0; lists[i] != NULL; i++)
+      {
+        gtk_list_store_append (liststore, &treeiter);
+        wordstore = gw_vocabularywordstore_new (lists[i]);
+        gtk_list_store_set (
+          liststore, &treeiter, 
+          GW_VOCABULARYLISTSTORE_COLUMN_NAME, lists[i],
+          GW_VOCABULARYLISTSTORE_COLUMN_CHANGED, FALSE,
+          GW_VOCABULARYLISTSTORE_COLUMN_OBJECT, wordstore,
+          -1);
+        g_signal_connect (wordstore, "changed", G_CALLBACK (gw_vocabularyliststore_wordstore_changed_cb), store);
+        g_object_unref (wordstore); wordstore = NULL;
+      }
+
+      g_strfreev (lists); lists = NULL;
+    }
+}
+
 
 gchar*
 gw_vocabularyliststore_get_name_by_iter (GwVocabularyListStore *store, GtkTreeIter *iter)
@@ -210,7 +251,7 @@ gw_vocabularyliststore_get_wordstore_by_name (GwVocabularyListStore *store, cons
         GW_VOCABULARYLISTSTORE_COLUMN_CHANGED, PANGO_WEIGHT_SEMIBOLD,
         GW_VOCABULARYLISTSTORE_COLUMN_OBJECT,  wordstore,
         -1);
-      g_signal_connect (G_OBJECT (wordstore), "changed", G_CALLBACK (gw_vocabularyliststore_wordstore_changed_cb), store);
+      g_signal_connect (wordstore, "changed", G_CALLBACK (gw_vocabularyliststore_wordstore_changed_cb), store);
       gw_vocabularywordstore_set_has_changes (GW_VOCABULARYWORDSTORE (wordstore), TRUE);
       g_object_unref (wordstore);
     }
@@ -220,7 +261,7 @@ gw_vocabularyliststore_get_wordstore_by_name (GwVocabularyListStore *store, cons
 
 
 //!
-//! @brief Deletes files that have to coresponding vocabulary list
+//! @brief Deletes files that have to coresponding word list
 //!
 void
 gw_vocabularyliststore_clean_files (GwVocabularyListStore *store)
@@ -421,35 +462,72 @@ gw_vocabularyliststore_load_list_order (GwVocabularyListStore *store, LwPreferen
 
 
 void
+gw_vocabularyliststore_save (GwVocabularyListStore *store, GtkTreeIter *treeiter)
+{
+    //Declarations
+    GtkListStore *wordstore;
+    GtkTreeModel *treemodel;
+
+    //Initializations
+    gw_vocabularyliststore_clean_files (store);
+    treemodel = GTK_TREE_MODEL (store);
+
+    gtk_tree_model_get (treemodel, treeiter, GW_VOCABULARYLISTSTORE_COLUMN_OBJECT, &wordstore, -1);
+    if (wordstore != NULL)
+    {
+      gw_vocabularywordstore_save (GW_VOCABULARYWORDSTORE (wordstore), NULL);
+      gw_vocabularywordstore_set_has_changes (GW_VOCABULARYWORDSTORE (wordstore), FALSE);
+      g_object_unref (wordstore); wordstore = NULL;
+    }
+}
+
+
+void
 gw_vocabularyliststore_save_all (GwVocabularyListStore *store)
 {
     //Declarations
-    GwVocabularyListStorePrivate *priv;
-    GtkTreeModel *model;
-    GtkListStore *wordstore;
+    GtkTreeModel *listmodel;
     GtkTreeIter iter;
     gboolean valid;
 
-
+    //Initializations
     gw_vocabularyliststore_clean_files (store);
-    priv = store->priv;
+    listmodel = GTK_TREE_MODEL (store);
     valid = gtk_tree_model_get_iter_first (GTK_TREE_MODEL (store), &iter);
-    model = GTK_TREE_MODEL (store);
 
     while (valid)
     {
-      gtk_tree_model_get (model, &iter, GW_VOCABULARYLISTSTORE_COLUMN_OBJECT, &wordstore, -1);
-      if (wordstore != NULL)
-      {
-        gw_vocabularywordstore_save (GW_VOCABULARYWORDSTORE (wordstore), NULL);
-        gw_vocabularywordstore_set_has_changes (GW_VOCABULARYWORDSTORE (wordstore), FALSE);
-        g_object_unref (wordstore); wordstore = NULL;
-      }
-      valid = gtk_tree_model_iter_next (model, &iter);
+      gw_vocabularyliststore_save (store, &iter);
+      valid = gtk_tree_model_iter_next (listmodel, &iter);
+    }
+}
+
+
+void
+gw_vocabularyliststore_revert (GwVocabularyListStore* store, GtkTreeIter *treeiter)
+{
+    //Declarations
+    gchar *filename;
+    GtkListStore *liststore;
+    GwVocabularyWordStore *wordstore;
+    GtkTreeModel *treemodel;
+
+    //Initializations
+    liststore = GTK_LIST_STORE (store);
+    treemodel = GTK_TREE_MODEL (liststore);
+
+    gtk_tree_model_get (treemodel, treeiter, GW_VOCABULARYLISTSTORE_COLUMN_OBJECT, &wordstore, -1);
+    gtk_tree_model_get (treemodel, treeiter, GW_VOCABULARYLISTSTORE_COLUMN_NAME, &filename, -1);
+    gtk_list_store_set (liststore, treeiter, GW_VOCABULARYLISTSTORE_COLUMN_CHANGED, PANGO_WEIGHT_NORMAL, -1);
+    
+    if (wordstore != NULL && filename != NULL)
+    {
+      gw_vocabularywordstore_reset (wordstore);
+      gw_vocabularywordstore_load (wordstore, filename);
+      gw_vocabularywordstore_set_has_changes (wordstore, FALSE);
     }
 
-    priv->has_removed_lists = FALSE;
-    gw_vocabularyliststore_set_has_changes (store, FALSE);
+    if (filename != NULL) g_free (filename); filename = NULL;
 }
 
 
@@ -457,39 +535,20 @@ void
 gw_vocabularyliststore_revert_all (GwVocabularyListStore* store)
 {
     //Declarations
-    GwVocabularyListStorePrivate *priv;
+    GtkTreeModel *listmodel;
     GtkTreeIter iter;
-    gchar **lists;
-    int i;
-    GtkListStore *liststore;
-    GtkListStore *wordstore;
+    gboolean valid;
 
     //Initializations
-    priv = store->priv;
-    liststore = GTK_LIST_STORE (store);
+    gw_vocabularyliststore_clean_files (store);
+    listmodel = GTK_TREE_MODEL (store);
+    valid = gtk_tree_model_get_iter_first (GTK_TREE_MODEL (store), &iter);
 
-    gtk_list_store_clear (liststore);
-
-    if ((lists = lw_vocabularylist_get_lists ()) != NULL)
+    while (valid)
     {
-      for (i = 0; lists[i] != NULL; i++)
-      {
-        wordstore = gw_vocabularywordstore_new (lists[i]);
-        gtk_list_store_append (liststore, &iter);
-        gtk_list_store_set (liststore, &iter, 
-          GW_VOCABULARYLISTSTORE_COLUMN_NAME, lists[i],
-          GW_VOCABULARYLISTSTORE_COLUMN_CHANGED, PANGO_WEIGHT_NORMAL,
-          GW_VOCABULARYLISTSTORE_COLUMN_OBJECT, wordstore,
-          -1);
-        gw_vocabularywordstore_set_has_changes (GW_VOCABULARYWORDSTORE (wordstore), FALSE);
-        g_signal_connect (G_OBJECT (wordstore), "changed", G_CALLBACK (gw_vocabularyliststore_wordstore_changed_cb), store);
-        g_object_unref (wordstore);
-      }
-      g_strfreev (lists); lists = NULL;
+      gw_vocabularyliststore_revert (store, &iter);
+      valid = gtk_tree_model_iter_next (listmodel, &iter);
     }
-
-    priv->has_removed_lists = FALSE;
-    gw_vocabularyliststore_set_has_changes (store, FALSE);
 }
 
 
@@ -530,7 +589,7 @@ gw_vocabularyliststore_new_list (GwVocabularyListStore *store, GtkTreeIter *iter
         GW_VOCABULARYLISTSTORE_COLUMN_OBJECT, wordstore,
     -1);
 
-    g_signal_connect (G_OBJECT (wordstore), "changed", G_CALLBACK (gw_vocabularyliststore_wordstore_changed_cb), store);
+    g_signal_connect (wordstore, "changed", G_CALLBACK (gw_vocabularyliststore_wordstore_changed_cb), store);
     gw_vocabularywordstore_set_has_changes (GW_VOCABULARYWORDSTORE (wordstore), TRUE);
     g_object_unref (wordstore);
 
@@ -542,15 +601,9 @@ void
 gw_vocabularyliststore_remove_path_list (GwVocabularyListStore *store, GList *list)
 {
     //Declarations
-    GwVocabularyListStorePrivate *priv;
     GList *link;
     GtkTreeIter iter;
     GtkTreePath *path;
-    gboolean modified;
-
-    //Initializations
-    priv = store->priv;
-    modified = (list != NULL);
 
     //Convert the tree paths to row references
     for (link = g_list_last (list); link != NULL; link = link->prev)
@@ -558,12 +611,6 @@ gw_vocabularyliststore_remove_path_list (GwVocabularyListStore *store, GList *li
       path = (GtkTreePath*) link->data;
       gtk_tree_model_get_iter (GTK_TREE_MODEL (store), &iter, path);
       gtk_list_store_remove (GTK_LIST_STORE (store), &iter);
-    }
-
-    if (modified)
-    {
-      priv->has_removed_lists = TRUE;
-      gw_vocabularyliststore_set_has_changes (store, TRUE);
     }
 }
 
@@ -592,17 +639,17 @@ gw_vocabularyliststore_wordstore_changed_cb (GwVocabularyWordStore *wordstore, g
 
     while (valid)
     {
-        gtk_tree_model_get (listmodel, &iter, GW_VOCABULARYLISTSTORE_COLUMN_OBJECT, &temp_wordstore, -1);
-        if (temp_wordstore != NULL)
+      gtk_tree_model_get (listmodel, &iter, GW_VOCABULARYLISTSTORE_COLUMN_OBJECT, &temp_wordstore, -1);
+      if (temp_wordstore != NULL)
+      {
+        if (gw_vocabularywordstore_has_changes (temp_wordstore)) list_has_changes = TRUE;
+        if (temp_wordstore == wordstore)
         {
-          if (gw_vocabularywordstore_has_changes (temp_wordstore)) list_has_changes = TRUE;
-          if (temp_wordstore == wordstore)
-          {
-            gtk_list_store_set (GTK_LIST_STORE (liststore), &iter, GW_VOCABULARYLISTSTORE_COLUMN_CHANGED, weight, -1);
-          }
-          g_object_unref (temp_wordstore); temp_wordstore = NULL;
+          gtk_list_store_set (GTK_LIST_STORE (liststore), &iter, GW_VOCABULARYLISTSTORE_COLUMN_CHANGED, weight, -1);
         }
-        valid = gtk_tree_model_iter_next (listmodel, &iter);
+        g_object_unref (temp_wordstore); temp_wordstore = NULL;
+      }
+      valid = gtk_tree_model_iter_next (listmodel, &iter);
     }
 
     gw_vocabularyliststore_set_has_changes (liststore, list_has_changes);
@@ -616,14 +663,64 @@ gw_vocabularyliststore_set_has_changes (GwVocabularyListStore *store, gboolean h
 
     klass = GW_VOCABULARYLISTSTORE_CLASS (G_OBJECT_GET_CLASS (store));
     store->priv->has_changes = has_changes;
-    g_signal_emit (G_OBJECT (store), klass->signalid[GW_VOCABULARYLISTSTORE_CLASS_SIGNALID_CHANGED], 0);
+    g_signal_emit (store, klass->signalid[GW_VOCABULARYLISTSTORE_CLASS_SIGNALID_CHANGED], 0);
 }
 
 
 gboolean
 gw_vocabularyliststore_has_changes (GwVocabularyListStore *store)
 {
-    return (store->priv->has_changes || store->priv->has_removed_lists); 
+    return (store->priv->has_changes); 
 }
+
+
+GMenuModel*
+gw_vocabularyliststore_get_menumodel (GwVocabularyListStore *store)
+{
+    return store->priv->menumodel;
+}
+
+
+void
+gw_vocabularyliststore_sync_menumodel_cb (GtkTreeModel *treemodel, 
+                                          GtkTreePath  *path, 
+                                          GtkTreeIter  *iter, 
+                                          gpointer      data)
+{
+    //Declarations
+    GwVocabularyListStore *liststore;
+    GMenuModel *menumodel;
+    GMenu *menu;
+    gchar *label;
+    gchar *action;
+    GtkTreeIter treeiter;
+    gboolean valid;
+    gint index;
+
+    //Initializations
+    liststore = GW_VOCABULARYLISTSTORE (treemodel);
+    menumodel = gw_vocabularyliststore_get_menumodel (liststore);
+    menu = G_MENU (menumodel);
+    valid = gtk_tree_model_get_iter_first (treemodel, &treeiter);
+    index = g_menu_model_get_n_items (menumodel);
+
+    //Clear out the old list
+    while (index--) g_menu_remove (menu, 0);
+
+    //Create the new list
+    while (valid)
+    {
+      gtk_tree_model_get (treemodel, &treeiter, GW_VOCABULARYLISTSTORE_COLUMN_NAME, &label, -1);
+      action = g_strdup_printf ("app.show-vocabulary-index::%d", ++index);
+
+      if (label && action) g_menu_append (menu, label, action);
+
+      if (label != NULL) g_free (label); label = NULL;
+      if (action != NULL) g_free (action); action = NULL;
+
+      valid = gtk_tree_model_iter_next (treemodel, &treeiter);
+    }
+}
+
 
 

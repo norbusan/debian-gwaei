@@ -1,0 +1,52 @@
+<interface>
+  <menu id='menu'>
+    <section>
+      <item>
+        <attribute name='label' translatable='yes'>_Kanji→Definition Flashcards</attribute>
+        <attribute name='action'>win.show-kanji-definition-flashcards</attribute>
+      </item>
+      <item>
+        <attribute name='label' translatable='yes'>_Definition→Kanji Flashcards</attribute>
+        <attribute name='action'>win.show-definition-kanji-flashcards</attribute>
+      </item>
+    </section>
+
+    <section>
+      <item>
+        <attribute name='label' translatable='yes'>_Furigana→Definition Flashcards</attribute>
+        <attribute name='action'>win.show-furigana-definition-flashcards</attribute>
+      </item>
+      <item>
+        <attribute name='label' translatable='yes'>_Definition→Furigana Flashcards</attribute>
+        <attribute name='action'>win.show-definition-furigana-flashcards</attribute>
+      </item>
+    </section>
+
+    <section>
+      <item>
+        <attribute name='label' translatable='yes'>_Kanji→Furigana Flashcards</attribute>
+        <attribute name='action'>win.show-furigana-definition-flashcards</attribute>
+      </item>
+      <item>
+        <attribute name='label' translatable='yes'>_Furigana→Kanji Flashcards</attribute>
+        <attribute name='action'>win.show-definition-furigana-flashcards</attribute>
+      </item>
+    </section>
+
+    <section>
+      <item>
+        <attribute name='label' translatable='yes'>_Shuffle Flashcards</attribute>
+        <attribute name='action'>win.toggle-shuffle</attribute>
+      </item>
+      <item>
+        <attribute name='label' translatable='yes'>_Trim Flashcards</attribute>
+        <attribute name='action'>win.toggle-trim</attribute>
+      </item>
+      <item>
+        <attribute name='label' translatable='yes'>_Track Results</attribute>
+        <attribute name='action'>win.toggle-track-results</attribute>
+      </item>
+    </section>
+  </menu>
+</interface>
+

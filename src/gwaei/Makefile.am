@@ -7,9 +7,9 @@ ACLOCAL_AMFLAGS = -I m4
 bin_PROGRAMS = gwaei 
 
 datadir = @datadir@
-DEFINITIONS =-DDATADIR2=\"$(datadir)\" -DLIBDIR=\"$(libdir)\" -DGWAEI_LOCALEDIR=\"$(GWAEI_LOCALEDIR)\" -Wall 
+DEFINITIONS =-DDATADIR2=\"$(datadir)\" -DLIBDIR=\"$(libdir)\" -DGWAEI_LOCALEDIR=\"$(GWAEI_LOCALEDIR)\"
 
-gwaei_SOURCES = gwaei.c application.c application-callbacks.c window.c window-callbacks.c dictionarystore.c dictionarystore-callbacks.c searchwindow.c searchwindow-callbacks.c searchwindow-output.c search-data.c printing.c radicalswindow.c radicalswindow-callbacks.c kanjipadwindow-callbacks.c kanjipad-drawingarea.c kanjipad-candidatearea.c  kanjipadwindow.c settingswindow.c settingswindow-callbacks.c dictionaryinstallwindow.c dictionaryinstallwindow-callbacks.c  installprogresswindow.c installprogresswindow-callbacks.c vocabularywindow.c vocabularywindow-callbacks.c vocabularywordstore.c vocabularyliststore.c addvocabularywindow.c addvocabularywindow-callbacks.c flashcardwindow.c flashcardwindow-callbacks.c flashcardstore.c texttagtable.c
+gwaei_SOURCES = gwaei.c application.c application-callbacks.c window.c window-callbacks.c dictionarylist.c dictionarylist-callbacks.c searchwindow.c searchwindow-callbacks.c searchwindow-output.c search-data.c printing.c radicalswindow.c radicalswindow-callbacks.c kanjipadwindow-callbacks.c kanjipad-drawingarea.c kanjipad-candidatearea.c  kanjipadwindow.c settingswindow.c settingswindow-callbacks.c dictionaryinstallwindow.c dictionaryinstallwindow-callbacks.c  installprogresswindow.c installprogresswindow-callbacks.c vocabularywindow.c vocabularywindow-callbacks.c vocabularywordstore.c vocabularyliststore.c addvocabularywindow.c addvocabularywindow-callbacks.c flashcardwindow.c flashcardwindow-callbacks.c flashcardstore.c texttagtable.c history.c
 
 gwaei_LDADD =  $(GWAEI_LIBS) ../libwaei/libwaei.la
 gwaei_CPPFLAGS = $(DEFINITIONS) $(GWAEI_CFLAGS) $(GWAEI_DEFS) -I$(top_srcdir)/src/libwaei/include -I$(top_srcdir)/src/gwaei/include
@@ -36,6 +36,6 @@ gwaei_LDADD +=$(MINGW_LIBS) mingw/gwaei.res
 gwaei_CPPFLAGS +=$(MINGW_CFLAGS) $(MINGW_DEFS)
 endif
 
-pkgdata_DATA = addvocabularywindow.ui dictionaryinstallwindow.ui installprogresswindow.ui kanjipadwindow.ui radicalswindow.ui searchwindow.ui settingswindow.ui vocabularywindow.ui flashcardwindow.ui
-EXTRA_DIST = addvocabularywindow.ui dictionaryinstallwindow.ui installprogresswindow.ui kanjipadwindow.ui radicalswindow.ui searchwindow.ui settingswindow.ui vocabularywindow.ui flashcardwindow.ui
+pkgdata_DATA = addvocabularywindow.ui dictionaryinstallwindow.ui installprogresswindow.ui kanjipadwindow.ui radicalswindow.ui searchwindow.ui settingswindow.ui vocabularywindow.ui vocabularywindow-menumodel-gnome.ui vocabularywindow-menumodel-standard.ui vocabularywindow-menumodel-macosx.ui vocabularywindow-menumodel-flashcards.ui flashcardwindow.ui application-menumodel-gnome.ui searchwindow-menumodel-button.ui searchwindow-menumodel-macosx.ui application-menumodel-macosx.ui searchwindow-menumodel-gnome.ui searchwindow-menumodel-standard.ui searchwindow-menumodel-toolbar.ui
+EXTRA_DIST = addvocabularywindow.ui dictionaryinstallwindow.ui installprogresswindow.ui kanjipadwindow.ui radicalswindow.ui searchwindow.ui settingswindow.ui vocabularywindow.ui vocabularywindow-menumodel-gnome.ui vocabularywindow-menumodel-standard.ui vocabularywindow-menumodel-macosx.ui vocabularywindow-menumodel-flashcards.ui flashcardwindow.ui application-menumodel-gnome.ui searchwindow-menumodel-button.ui searchwindow-menumodel-macosx.ui application-menumodel-macosx.ui searchwindow-menumodel-gnome.ui searchwindow-menumodel-standard.ui searchwindow-menumodel-toolbar.ui
 

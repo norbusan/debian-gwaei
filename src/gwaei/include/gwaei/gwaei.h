@@ -5,10 +5,13 @@
 
 #include <gtk/gtk.h>
 
+#include <gwaei/dictionarylist.h>
+#include <gwaei/history.h>
+
 #include <gwaei/application.h>
 
+
 #include <gwaei/texttagtable.h>
-#include <gwaei/dictionarystore.h>
 #include <gwaei/spellcheck.h>
 #include <gwaei/printing.h>
 

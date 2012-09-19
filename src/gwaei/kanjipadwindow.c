@@ -28,8 +28,6 @@
 //!
 
 
-#include "../private.h"
-
 #include <ctype.h>
 #include <errno.h>
 #include <stdlib.h>
@@ -39,9 +37,15 @@
 
 #include <gtk/gtk.h>
 
+#ifdef HAVE_CONFIG_H
+#include "../../config.h"
+#endif
+
 #include <libwaei/libwaei.h>
+#include <gwaei/gettext.h>
 #include <gwaei/kanjipadwindow.h>
 #include <gwaei/kanjipadwindow-private.h>
+#include <gwaei/kanjipadwindow-callbacks.h>
 
 #define BUFLEN 256
 
@@ -141,6 +145,20 @@ gw_kanjipadwindow_finalize (GObject *object)
 }
 
 
+void
+gw_kanjipadwindow_map_actions (GActionMap *map, GwKanjipadWindow *window)
+{
+    //Sanity checks
+    g_return_if_fail (map != NULL);
+    g_return_if_fail (window != NULL);
+
+    static GActionEntry entries[] = {
+      { "close", gw_kanjipadwindow_close_cb, NULL, NULL, NULL }
+    };
+    g_action_map_add_action_entries (map, entries, G_N_ELEMENTS (entries), window);
+}
+
+
 static void 
 gw_kanjipadwindow_constructed (GObject *object)
 {
@@ -156,6 +174,8 @@ gw_kanjipadwindow_constructed (GObject *object)
     window = GW_KANJIPADWINDOW (object);
     priv = window->priv;
     accelgroup = gw_window_get_accel_group (GW_WINDOW (window));
+
+    gw_kanjipadwindow_map_actions (G_ACTION_MAP (window), window);
 
     gtk_window_set_title (GTK_WINDOW (window), gettext("gWaei Kanjipad"));
     gtk_window_set_resizable (GTK_WINDOW (window), FALSE);
@@ -174,9 +194,8 @@ gw_kanjipadwindow_constructed (GObject *object)
     _kanjipadwindow_initialize_engine (window);
 
     gtk_widget_add_accelerator (GTK_WIDGET (priv->close_button), "activate", 
-      accelgroup, (GDK_KEY_W), GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
-    gtk_widget_add_accelerator (GTK_WIDGET (priv->close_button), "activate", 
       accelgroup, (GDK_KEY_Escape), 0, GTK_ACCEL_VISIBLE);
+    gtk_actionable_set_detailed_action_name (GTK_ACTIONABLE (priv->close_button), "win.close");
 
     gw_window_unload_xml (GW_WINDOW (window));
 }

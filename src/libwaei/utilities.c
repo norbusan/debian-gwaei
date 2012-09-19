@@ -24,8 +24,6 @@
 //!
 
 
-#include "../private.h"
-
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -34,7 +32,10 @@
 #include <glib.h>
 #include <glib/gstdio.h>
 
-#include <libwaei/dict.h>
+#ifdef HAVE_CONFIG_H
+#include "../../config.h"
+#endif
+
 #include <libwaei/libwaei.h>
 
 
@@ -70,22 +71,6 @@ lw_util_build_filename (const LwFolderPath PATH, const char *FILENAME)
         folder = g_build_filename (base, "dictionaries", NULL);
         path = g_build_filename (base, "dictionaries", FILENAME, NULL);
         break;
-      case LW_PATH_DICTIONARY_EDICT:
-        folder = g_build_filename (base, "dictionaries", lw_util_dicttype_to_string (LW_DICTTYPE_EDICT), NULL);
-        path = g_build_filename (base, "dictionaries", lw_util_dicttype_to_string (LW_DICTTYPE_EDICT), FILENAME, NULL);
-        break;
-      case LW_PATH_DICTIONARY_KANJI:
-        folder = g_build_filename (base, "dictionaries", lw_util_dicttype_to_string (LW_DICTTYPE_KANJI), NULL);
-        path = g_build_filename (base, "dictionaries", lw_util_dicttype_to_string (LW_DICTTYPE_KANJI), FILENAME, NULL);
-        break;
-      case LW_PATH_DICTIONARY_EXAMPLES:
-        folder = g_build_filename (base, "dictionaries", lw_util_dicttype_to_string (LW_DICTTYPE_EXAMPLES), NULL);
-        path = g_build_filename (base, "dictionaries", lw_util_dicttype_to_string (LW_DICTTYPE_EXAMPLES), FILENAME, NULL);
-        break;
-      case LW_PATH_DICTIONARY_UNKNOWN:
-        folder = g_build_filename (base, "dictionaries", lw_util_dicttype_to_string (LW_DICTTYPE_UNKNOWN), NULL);
-        path = g_build_filename (base, "dictionaries", lw_util_dicttype_to_string (LW_DICTTYPE_UNKNOWN), FILENAME, NULL);
-        break;
       case LW_PATH_VOCABULARY:
         folder = g_build_filename (base, "vocabulary", NULL);
         path = g_build_filename (base, "vocabulary", FILENAME, NULL);
@@ -97,6 +82,10 @@ lw_util_build_filename (const LwFolderPath PATH, const char *FILENAME)
       case LW_PATH_CACHE:
         folder = g_build_filename (base, "cache", NULL);
         path = g_build_filename (base, "cache", FILENAME, NULL);
+        break;
+      case LW_PATH_INDEX:
+        folder = g_build_filename (base, "index", NULL);
+        path = g_build_filename (base, "index", FILENAME, NULL);
         break;
       default:
         g_assert_not_reached ();
@@ -115,128 +104,12 @@ lw_util_build_filename (const LwFolderPath PATH, const char *FILENAME)
 
 
 //!
-//! @brief Converts a LwDictType to its string equivalent
-//! @param DICTTYPE The LwDictType that you want the string version of
-//! @returns A constant string that shouldn't be freed
-//!
-const char* 
-lw_util_dicttype_to_string (const LwDictType DICTTYPE)
-{
-    char *name;
-
-    switch (DICTTYPE)
-    {
-      case LW_DICTTYPE_EDICT:
-        name = "edict";
-        break;
-      case LW_DICTTYPE_KANJI:
-        name = "kanji";
-        break;
-      case LW_DICTTYPE_EXAMPLES:
-        name = "examples";
-        break;
-      case LW_DICTTYPE_UNKNOWN:
-        name = "unknown";
-        break;
-      default:
-        g_assert_not_reached ();
-        name = NULL;
-        break;
-    }
-
-    return name;
-}
-
-
-//!
-//! @brief Parses the dicttype from a string
-//! @param ENGINENAME The LwDictType in string form
-//! @returns A LwDictType value or -1 if it is invalid
-//!
-LwDictType 
-lw_util_get_dicttype_from_string (const char *ENGINENAME)
-{
-  //Declarations
-  char *lower;
-  LwDictType engine;
-
-  //Initializations
-  lower = g_utf8_strdown (ENGINENAME, -1);
-  engine = -1;
-
-  if (strcmp(lower, "edict") == 0)
-  {
-    engine = LW_DICTTYPE_EDICT;
-  }
-  else if (strcmp(lower, "kanji") == 0)
-  {
-    engine = LW_DICTTYPE_KANJI;
-  }
-  else if (strcmp(lower, "examples") == 0)
-  {
-    engine = LW_DICTTYPE_EXAMPLES;
-  }
-  else if (strcmp(lower, "unknown") == 0)
-  {
-    engine = LW_DICTTYPE_UNKNOWN;
-  }
-  else
-  {
-    g_assert_not_reached ();
-    engine = -1;
-  }
-
-  g_free (lower);
-  lower = NULL;
-
-  return engine;
-}
-
-
-//!
-//! @brief Gets a dictionary folder path for the given engine
-//! @param DICTTYPE A LwDictType to build the base directory structure
-//! @param FILENAME The name to prefix to the directory
-//! @return Returns a constant string that should be freed with g_free
-//!
-gchar* 
-lw_util_build_filename_by_dicttype (const LwDictType DICTTYPE, const char* FILENAME)
-{
-    g_assert (DICTTYPE >= 0 && DICTTYPE < TOTAL_LW_DICTTYPES);
-
-    gchar *path;
-
-    switch (DICTTYPE)
-    {
-      case LW_DICTTYPE_EDICT:
-        path = lw_util_build_filename (LW_PATH_DICTIONARY_EDICT, FILENAME);
-        break;
-      case LW_DICTTYPE_KANJI:
-        path = lw_util_build_filename (LW_PATH_DICTIONARY_KANJI, FILENAME);
-        break;
-      case LW_DICTTYPE_EXAMPLES:
-        path = lw_util_build_filename (LW_PATH_DICTIONARY_EXAMPLES, FILENAME);
-        break;
-      case LW_DICTTYPE_UNKNOWN:
-        path = lw_util_build_filename (LW_PATH_DICTIONARY_UNKNOWN, FILENAME);
-        break;
-      default:
-        g_assert_not_reached ();
-        path = NULL;
-        break;
-    }
-
-    return path;
-}
-
-
-//!
 //! @brief Gets the compression type as a string
 //! @param COMPRESSION The LwCompression type to use
 //! @returns A constant string that should not be freed
 //!
 const char* 
-lw_util_get_compression_name (const LwCompression COMPRESSION)
+lw_util_get_compressionname (const LwCompression COMPRESSION)
 {
     char *type;
 
@@ -269,7 +142,7 @@ lw_util_get_compression_name (const LwCompression COMPRESSION)
 //! @returns A constant string that should not be freed
 //!
 const char* 
-lw_util_get_encoding_name (const LwEncoding ENCODING)
+lw_util_get_encodingname (const LwEncoding ENCODING)
 {
     char *type;
 
@@ -649,8 +522,8 @@ lw_util_next_hira_char_from_roma (const char *input)
 //! @param output The string to write the hiragana equivalent to
 //! @return Returns null on error/end
 //!
-char* 
-lw_util_roma_char_to_hira (const char *input, char *output)
+gchar* 
+lw_util_roma_char_to_hira (const gchar *input, gchar *output)
 {
     //Set up the input pointer
     const char *input_ptr;
@@ -1025,7 +898,11 @@ lw_util_roma_char_to_hira (const char *input, char *output)
     else if (strcmp(buffer_ptr, "-") == 0)
        strcpy(output, "ー");
 
-    else return NULL;
+    else
+    {
+      input_ptr = NULL;
+      return NULL;
+    }
 
     return output;
 }
@@ -1041,12 +918,16 @@ lw_util_roma_char_to_hira (const char *input, char *output)
 //! @see lw_util_str_shift_hira_to_kata ()
 //!
 gboolean 
-lw_util_str_roma_to_hira (const char* input, char* output, int max)
+lw_util_str_roma_to_hira (const gchar* input, gchar* output, gint max)
 {
+    //Sanity checks
+    g_return_val_if_fail (input != NULL, FALSE);
+    g_return_val_if_fail (output != NULL, FALSE);
+
     //Declarations
-    const char *input_ptr;
-    char *kana_ptr;
-    int leftover;
+    const gchar *input_ptr;
+    gchar *kana_ptr;
+    gint leftover;
 
     //Initializations
     input_ptr = input;
@@ -1321,7 +1202,7 @@ lw_util_get_romaji_atoms_from_string (const char *string)
     *buffer_ptr = '\0';
 
     //Convert the string into an array of strings
-    string_array = g_strsplit (buffer, delimitor, LW_QUERYLINE_MAX_ATOMS);
+    string_array = g_strsplit (buffer, delimitor, -1);
     
     //Cleanup
     free(buffer);
@@ -1385,7 +1266,7 @@ lw_util_get_furigana_atoms_from_string (const char *string)
     *buffer_ptr = '\0';
 
     //Convert the string into an array of strings
-    string_array = g_strsplit (buffer, delimitor, LW_QUERYLINE_MAX_ATOMS);
+    string_array = g_strsplit (buffer, delimitor, -1);
     
     //Cleanup
     free(buffer);
@@ -1442,7 +1323,7 @@ lw_util_get_query_from_args (int argc, char** argv)
       ptr += strlen(" ");
     }
 
-   	query = lw_util_prepare_query (text, FALSE);
+     query = lw_util_prepare_query (text, FALSE);
 
     //Cleanup
     if (text != NULL) free (text);
@@ -1536,4 +1417,234 @@ lw_util_collapse_string (const gchar *text)
 
     return buffer;
 }
+
+
+static gboolean
+lw_util_script_changed (GUnicodeScript p, GUnicodeScript n, gboolean split_kanji_furigana)
+{
+    //Declarations
+    gboolean has_common;
+    gboolean has_changed;
+    gboolean is_japanese_p;
+    gboolean is_japanese_n;
+    gboolean is_japanese_change;
+
+    
+    //Initializations;
+    has_common = (p == G_UNICODE_SCRIPT_INVALID_CODE ||	n == G_UNICODE_SCRIPT_COMMON || p == G_UNICODE_SCRIPT_COMMON);
+    has_changed = (p != n && !has_common);
+    is_japanese_p = (p == G_UNICODE_SCRIPT_HAN || p == G_UNICODE_SCRIPT_HIRAGANA || p == G_UNICODE_SCRIPT_KATAKANA);
+    is_japanese_n = (n == G_UNICODE_SCRIPT_HAN || n == G_UNICODE_SCRIPT_HIRAGANA || n == G_UNICODE_SCRIPT_KATAKANA);
+    is_japanese_change = (is_japanese_p && is_japanese_n  && p != n);
+
+
+    if (is_japanese_change) return (split_kanji_furigana);
+    else return (has_changed);
+}
+
+
+gchar*
+lw_util_delimit_script_changes (const gchar *DELIMITOR, const gchar* TEXT, gboolean split_kanji_furigana)
+{
+    //Sanity check
+    g_return_val_if_fail (DELIMITOR != NULL && TEXT != NULL, NULL);
+
+    //Declarations
+    gchar *buffer;
+    gint count;
+    const gchar *source_ptr;
+    gchar *target_ptr;
+    GUnicodeScript this_script, previous_script;
+    gunichar c;
+    gboolean script_changed;
+    gint delimitor_length;
+
+    //Initializations
+    count = 0;
+    delimitor_length = strlen (DELIMITOR);
+    this_script = previous_script = G_UNICODE_SCRIPT_INVALID_CODE;
+    for (source_ptr = TEXT; *source_ptr != '\0'; source_ptr = g_utf8_next_char (source_ptr))
+    {
+      c = g_utf8_get_char (source_ptr);
+      this_script = g_unichar_get_script (c);
+      script_changed = lw_util_script_changed (previous_script, this_script, split_kanji_furigana);
+
+      if (script_changed)
+      {
+				count++;
+      }
+
+      previous_script = this_script;
+    }
+
+    buffer = g_new (gchar, strlen(TEXT) + (delimitor_length * count) + 1);
+		if (buffer != NULL)
+		{
+      target_ptr = buffer;
+			*buffer = '\0';
+			this_script = previous_script = G_UNICODE_SCRIPT_INVALID_CODE;
+			for (source_ptr = TEXT; *source_ptr != '\0'; source_ptr = g_utf8_next_char (source_ptr))
+			{
+				c = g_utf8_get_char (source_ptr);
+				this_script = g_unichar_get_script (c);
+        script_changed = lw_util_script_changed (previous_script, this_script, split_kanji_furigana);
+
+        if (script_changed)
+				{
+					strcpy(target_ptr, DELIMITOR);
+					target_ptr += delimitor_length;
+				}
+        target_ptr += g_unichar_to_utf8 (c, target_ptr);
+        *target_ptr = '\0';
+
+				previous_script = this_script;
+			}
+		}
+
+    return buffer;
+}
+
+
+gchar*
+lw_util_delimit_whitespace (const gchar *DELIMITOR, const gchar* TEXT)
+{
+    //Sanity check
+    g_return_val_if_fail (DELIMITOR != NULL && TEXT != NULL, NULL);
+
+    //Declarations
+    gchar *buffer;
+    gint count;
+    const gchar *source_ptr;
+    gchar *target_ptr;
+    gunichar c;
+    gint delimitor_length;
+    gboolean inserted_delimitor;
+    gboolean is_whitespace;
+
+    //Initializations
+    count = 0;
+    delimitor_length = strlen(DELIMITOR);
+    inserted_delimitor = FALSE;
+    for (source_ptr = TEXT; *source_ptr != '\0'; source_ptr = g_utf8_next_char (source_ptr))
+    {
+      c = g_utf8_get_char (source_ptr);
+      is_whitespace = g_unichar_isspace(c);
+
+      if (is_whitespace)
+      {
+        count++;
+      }
+    }
+    buffer = g_new (gchar, strlen(TEXT) + (delimitor_length * count) + 1);
+    target_ptr = buffer;
+
+    //Create the delimited string
+    if (buffer != NULL)
+    {
+      for (source_ptr = TEXT; *source_ptr != '\0'; source_ptr = g_utf8_next_char (source_ptr))
+      {
+        c = g_utf8_get_char (source_ptr);
+        is_whitespace = g_unichar_isspace(c);
+
+        if (is_whitespace && !inserted_delimitor)
+        {
+          strcpy(target_ptr, DELIMITOR);
+          target_ptr += delimitor_length;
+          inserted_delimitor = TRUE;
+        }
+        else if (!is_whitespace)
+        {
+          target_ptr += g_unichar_to_utf8 (c, target_ptr);
+          *target_ptr = '\0';
+          inserted_delimitor = FALSE;
+        }
+      }
+    }
+
+    return buffer;
+}
+
+
+gchar*
+lw_util_delimit_radicals (const gchar *DELIMITOR, const gchar* TEXT)
+{
+    //Sanity check
+    g_return_val_if_fail (DELIMITOR != NULL && TEXT != NULL, NULL);
+
+    //Declarations
+    gchar *buffer;
+    gint count;
+    const gchar *source_ptr;
+    gchar *target_ptr;
+    gunichar c;
+    gint delimitor_length;
+    GUnicodeScript script;
+    GUnicodeScript previous_script;
+
+    //Initializations
+    count = 0;
+    delimitor_length = strlen(DELIMITOR);
+    previous_script = G_UNICODE_SCRIPT_INVALID_CODE;
+
+    for (source_ptr = TEXT; *source_ptr != '\0'; source_ptr = g_utf8_next_char (source_ptr))
+    {
+      c = g_utf8_get_char (source_ptr);
+      script = g_unichar_get_script (c);
+
+      if (previous_script == G_UNICODE_SCRIPT_HAN && script == previous_script)
+      {
+        count++;
+      }
+      previous_script = script;
+    }
+
+    buffer = g_new (gchar, strlen(TEXT) + (delimitor_length * count) + 1);
+    target_ptr = buffer;
+    previous_script = G_UNICODE_SCRIPT_INVALID_CODE;
+
+    //Create the delimited string
+    if (buffer != NULL)
+    {
+      for (source_ptr = TEXT; *source_ptr != '\0'; source_ptr = g_utf8_next_char (source_ptr))
+      {
+        c = g_utf8_get_char (source_ptr);
+        script = g_unichar_get_script (c);
+
+        if (previous_script == G_UNICODE_SCRIPT_HAN && script == previous_script)
+        {
+          strcpy(target_ptr, DELIMITOR);
+          target_ptr += delimitor_length;
+        }
+
+        target_ptr += g_unichar_to_utf8 (c, target_ptr);
+        *target_ptr = '\0';
+
+        previous_script = script;
+      }
+    }
+
+    return buffer;
+}
+
+
+GRegex*
+lw_regex_new (const gchar *PATTERN, const gchar *EXPRESSION, GError **error)
+{
+    //Declarations
+    GRegex *regex;
+    gchar *expression;
+
+    //Initializations
+    expression = g_strdup_printf (PATTERN, EXPRESSION);
+    regex = NULL;
+
+    if (expression != NULL)
+    {
+      regex = g_regex_new (expression,  (G_REGEX_CASELESS | G_REGEX_OPTIMIZE), 0, error);
+      g_free (expression); expression = NULL;
+    }
+
+    return regex;
+}
+
 

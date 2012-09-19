@@ -16,6 +16,8 @@ G_BEGIN_DECLS
 /////////////////////////
 #define LW_SCHEMA_BASE               "org.gnome.gwaei"
 #define LW_KEY_WINDOW_SIZE           "window-size"
+#define LW_KEY_TABBAR_SHOW           "tabbar-show"
+#define LW_KEY_MENUBAR_SHOW          "menubar-show"
 #define LW_KEY_TOOLBAR_SHOW          "toolbar-show"
 #define LW_KEY_STATUSBAR_SHOW        "statusbar-show"
 #define LW_KEY_LESS_RELEVANT_SHOW    "less-relevant-results-show"

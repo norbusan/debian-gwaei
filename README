@@ -16,7 +16,7 @@ TABLE OF CONTENTS
 
 1.0 PREREQUISITES:
 
-  To run gWaei 3.4.x, an environment with at least gtk+-3.3.x/glib-2.31.x,
+  To run gWaei 3.6.x, an environment with at least gtk+-3.3.x/glib-2.31.x,
   curl 7.20.0, gnome-doc-utils-0.14.0, and gsettings-desktop-schemas are
   required. Additionally, you will want to have hunspell, mecab, and
   ttf-kanjistrokeorders available.
@@ -27,28 +27,37 @@ TABLE OF CONTENTS
   * mecab <http://code.google.com/p/mecab/>
   * gtk/gnome <http://www.gtk.org/> or <ftp://ftp.gnome.org/pub/gnome/sources/>
 
-  An example of a command that Ubuntu/Debian users might use to get the
-  required runtime dependancies is:
-
-  sudo apt-get install libcurl4-gnutls libgtk-3 gnome-doc-utils \
-  ttf-kanjistrokeorder hunspell mecab gsettings-desktop-schemas
-
   To compile the program, you will have to have the dev files for GTK+, CURL3,
   hunspell and mecab available. Users with binary based distributions should install the 
   approprate "dev" or "devel" files for the above dependencies using their
   package manager. Automake and GCC will come in handy too, as they are 
   standard build tools for GNU systems.
 
-  An example of a command that Ubuntu/Debian users might use to get the
-  required compilation dependancies is:
+  Debian/Ubuntu build Depandancies:
+    sudo apt-get install gcc autoconf automake make intltool gettext \
+    rarian-compat gnome-doc-utils dconf gsettings-desktop-schemas \
+    imagemagick libcurl4-gnutls-dev libhunspell-dev libmecab-dev libgtk-3-dev 
 
-  sudo apt-get install libcurl4-gnutls-dev libgtk-3-dev gnome-doc-utils \
-  imagemagick intltool  rarian-compat mecab-dev hunspell-dev gsettings-desktop-schemas
+  Debian/Ubuntu optional runtime dependancies:
+    sudo apt-get install hunspell-en-us mecab-ipadic fonts-kanjistrokeorders \
+    gnome-icon-theme-symbolic
 
-  Arch Linux users will do something like the below:
+  Fedora build dependancies:
+    sudo yum install gcc autoconf automake make intltool gettext rarian-compat \
+    gnome-doc-utils dconf gsettings-desktop-schemas libcurl-devel hunspell-devel \
+    mecab-devel gtk3-devel libstdc++-devel
 
-  sudo pacman -S autoconf automake make gnome-doc-utils pkg-config curl \
-  gtk3 rarian gsettings-desktop-schemas dconf hunspell mecab
+  Fedora optional runtime dependancies:
+    sudo yum install hunspell-en-US mecab-ipadic kanjistrokeorders-fonts \
+    gnome-icon-theme-symbolic
+
+  Arch build depandancies:
+    sudo pacman -S gcc autoconf automake make intltool gettext rarian \
+    gnome-doc-utils pkg-config dconf gsettings-desktop-schemas curl hunspell \
+    mecab gtk3
+
+  Arch optional runtime depandancies (other packages must be installed from AUR)
+    sudo pacman -S hunspell-en gnome-icon-theme-symbolic
 
   For inputing Japanese queries, installing some software for Japanese
   conversion is highly recommended.  Currently, the three main linux methods are
@@ -60,7 +69,6 @@ TABLE OF CONTENTS
   Hunpsell and mecab require the approriate dictionaries to be installed. Hunspell will usually
   use the myspell dictionaries.  mecab will use ipadict from
   <http://sourceforge.net/projects/mecab/files/mecab-ipadic/>
-
 
 
 2.0 CONFIGURATION AND INSTALLATION:

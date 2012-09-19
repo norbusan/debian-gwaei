@@ -4,9 +4,9 @@
 G_BEGIN_DECLS
 
 struct _GwVocabularyListStorePrivate {
+  GMenuModel *menumodel;
   gboolean has_changes;
   gint list_new_index;
-  gboolean has_removed_lists;
 };
 
 #define GW_VOCABULARYLISTSTORE_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), GW_TYPE_VOCABULARYLISTSTORE, GwVocabularyListStorePrivate))

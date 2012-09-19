@@ -25,18 +25,16 @@
 //! @brief To be written
 //!
 
-
-#include "../private.h"
-
 #include <string.h>
 #include <stdlib.h>
 
 #include <gtk/gtk.h>
 
 #include <gwaei/gwaei.h>
+#include <gwaei/gettext.h>
 #include <gwaei/installprogresswindow-private.h>
 
-static gpointer _installprogresswindow_install_thread (gpointer);
+static gpointer gw_installprogresswindow_install_thread (gpointer);
 
 G_DEFINE_TYPE (GwInstallProgressWindow, gw_installprogresswindow, GW_TYPE_WINDOW)
 
@@ -83,6 +81,7 @@ gw_installprogresswindow_finalize (GObject *object)
     priv->label = NULL;
     priv->sublabel = NULL;
     priv->progressbar = NULL;
+    if (priv->cancellable != NULL) g_object_unref (priv->cancellable); priv->cancellable = NULL;
 
     G_OBJECT_CLASS (gw_installprogresswindow_parent_class)->finalize (object);
 }
@@ -110,6 +109,7 @@ gw_installprogresswindow_constructed (GObject *object)
     priv->sublabel = GTK_LABEL (gw_window_get_object (GW_WINDOW (window), "sub_progress_label"));
     priv->progressbar = GTK_PROGRESS_BAR (gw_window_get_object (GW_WINDOW (window), "progress_progressbar"));
     priv->cancel_button = GTK_BUTTON (gw_window_get_object (GW_WINDOW (window), "cancel_button"));
+    priv->cancellable = g_cancellable_new ();
 
     gtk_window_set_title (GTK_WINDOW (window), gettext("Installing Dictionaries..."));
     gtk_window_set_resizable (GTK_WINDOW (window), TRUE);
@@ -168,7 +168,7 @@ gw_installprogresswindow_start (GwInstallProgressWindow *window)
     //Set the new window
     g_thread_try_new (
       "gwaei-install-thread", 
-      _installprogresswindow_install_thread, 
+      gw_installprogresswindow_install_thread, 
       window, 
       &error
     );
@@ -177,37 +177,47 @@ gw_installprogresswindow_start (GwInstallProgressWindow *window)
 }
 
 
-static gpointer _installprogresswindow_install_thread (gpointer data)
+static gpointer 
+gw_installprogresswindow_install_thread (gpointer data)
 {
     //Declarations
     GwInstallProgressWindow *window;
     GwInstallProgressWindowPrivate *priv;
     GwApplication *application;
-    LwDictInstList *dictinstlist;
-    GList *iter;
-    LwDictInst *di;
+    GwDictionaryList *dictionarylist;
+    GList *link;
+    LwDictionary *dictionary;
     GError *error;
+    gulong signalid;
+    GCancellable *cancellable;
 
     //Initializations
     window = GW_INSTALLPROGRESSWINDOW (data);
     if (window == NULL) return NULL;
     priv = window->priv;
     application = gw_window_get_application (GW_WINDOW (window));
-    dictinstlist = gw_application_get_dictinstlist (application);
+    dictionarylist = gw_application_get_installable_dictionarylist (application);
+    cancellable = priv->cancellable;
     error = NULL;
+    link = lw_dictionarylist_get_list (LW_DICTIONARYLIST (dictionarylist));
 
     //Do the installation
     g_timeout_add (100, gw_installprogresswindow_update_ui_timeout, window);
-    for (iter = dictinstlist->list; iter != NULL && error == NULL; iter = iter->next)
+    while (link != NULL && error == NULL)
     {
-      di = LW_DICTINST (iter->data);
-      if (di->selected)
+      dictionary = LW_DICTIONARY (link->data);
+      if (dictionary != NULL && lw_dictionary_is_selected (dictionary))
       {
         g_mutex_lock (&priv->mutex);
-        priv->di = di;
+        priv->dictionary = dictionary;
         g_mutex_unlock (&priv->mutex);
-        lw_dictinst_install (di, gw_installprogresswindow_update_dictinst_cb, window, &error);
+        signalid = g_signal_connect (dictionary, "progress-changed", G_CALLBACK (gw_installprogresswindow_update_dictionary_cb), window);
+        lw_dictionary_install (dictionary, cancellable, &error);
+        if (g_signal_handler_is_connected (dictionary, signalid))
+          g_signal_handler_disconnect (dictionary, signalid);
       }
+
+      link = link->next;
     }
 
     gw_application_set_error (application, error);
@@ -215,7 +225,7 @@ static gpointer _installprogresswindow_install_thread (gpointer data)
 
     g_mutex_lock (&priv->mutex);
     //This will clue the progress window to close itself
-    priv->di = NULL;
+    priv->dictionary = NULL;
     g_mutex_unlock (&priv->mutex);
 
     return NULL;

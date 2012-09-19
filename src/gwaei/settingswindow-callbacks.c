@@ -26,14 +26,13 @@
 //!
 
 
-#include "../private.h"
-
 #include <string.h>
 #include <stdlib.h>
 
 #include <gtk/gtk.h>
 
 #include <gwaei/gwaei.h>
+#include <gwaei/gettext.h>
 #include <gwaei/settingswindow-private.h>
 
 
@@ -334,8 +333,10 @@ gw_settingswindow_sync_global_document_font_cb (GSettings *settings, gchar *KEY,
     GwSettingsWindowPrivate *priv;
     GwApplication *application;
     LwPreferences *preferences;
-    char font[50];
-    char *text;
+    gchar font[50];
+    gchar *font2;
+    gchar *text;
+    PangoFontDescription *desc;
 
     //Initializations
     window = GW_SETTINGSWINDOW (data);
@@ -344,7 +345,12 @@ gw_settingswindow_sync_global_document_font_cb (GSettings *settings, gchar *KEY,
     application = gw_window_get_application (GW_WINDOW (window));
     preferences = gw_application_get_preferences (application);
     lw_preferences_get_string_by_schema (preferences, font, LW_SCHEMA_GNOME_INTERFACE, LW_KEY_DOCUMENT_FONT_NAME, 50);
-    text = g_strdup_printf (gettext("_Use the System Document Font (%s)"), font);
+    desc = pango_font_description_from_string (font);
+    pango_font_description_set_family (desc, "Serif");
+    font2 = pango_font_description_to_string (desc);
+    if (font2) text = g_strdup_printf (gettext("_Use the System Document Font (%s)"), font2);
+    g_free (font2); font2 = NULL;
+    pango_font_description_free (desc); desc = NULL;
 
     if (text != NULL) 
     {
@@ -430,24 +436,18 @@ gw_settingswindow_close_cb (GtkWidget *widget, gpointer data)
     //Declarations
     GwSettingsWindow *window;
     GwApplication *application;
-    GtkListStore *dictionarystore;
-    LwDictInfoList *dictinfolist;
-    LwPreferences *preferences;
+    GwDictionaryList *dictionarylist;
     
     //Initializations
     window = GW_SETTINGSWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_SETTINGSWINDOW));
     g_return_if_fail (window != NULL);
     application = gw_window_get_application (GW_WINDOW (window));
-    preferences = gw_application_get_preferences (application);
-    dictionarystore = gw_application_get_dictionarystore (application);
-    dictinfolist = gw_dictionarystore_get_dictinfolist (GW_DICTIONARYSTORE (dictionarystore));
+    dictionarylist = gw_application_get_installed_dictionarylist (application);
 
     gtk_widget_destroy (GTK_WIDGET (window));
 
-    if (lw_dictinfolist_get_total (dictinfolist) == 0)
+    if (lw_dictionarylist_get_total (LW_DICTIONARYLIST (dictionarylist)) == 0)
       gw_application_quit (application);
-
-    gw_dictionarystore_save_order (GW_DICTIONARYSTORE (dictionarystore), preferences);
 }
 
 
@@ -581,20 +581,20 @@ gw_settingswindow_delete_event_action_cb (GtkWidget *widget, GdkEvent *event, gp
 }
 
 
-G_MODULE_EXPORT void 
-gw_settingswindow_remove_dictinfo_cb (GtkWidget *widget, gpointer data)
+void 
+gw_settingswindow_remove_dictionary_cb (GSimpleAction *action, 
+                                        GVariant      *parameter,
+                                        gpointer       data)
 {
     //Declarations
     GwSettingsWindow *window;
     GwSettingsWindowPrivate *priv;
     GwApplication *application;
-    GtkListStore *dictionarystore;
-    LwDictInfoList *dictinfolist;
-    LwPreferences *preferences;
+    GwDictionaryList *dictionarylist;
 
     GtkTreePath *path;
     GtkTreeIter iter;
-    LwDictInfo *di;
+    LwDictionary *dictionary;
     GError *error;
     GtkTreeSelection *selection;
     GtkTreeModel *model;
@@ -603,17 +603,14 @@ gw_settingswindow_remove_dictinfo_cb (GtkWidget *widget, gpointer data)
     GtkTreeView *view;
 
     //Initializations
-    window = GW_SETTINGSWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_SETTINGSWINDOW));
-    g_return_if_fail (window != NULL);
+    window = GW_SETTINGSWINDOW (data);
     priv = window->priv;
     application = gw_window_get_application (GW_WINDOW (window));
-    dictionarystore = gw_application_get_dictionarystore (application);
-    dictinfolist = gw_dictionarystore_get_dictinfolist (GW_DICTIONARYSTORE (dictionarystore));
+    dictionarylist = gw_application_get_installed_dictionarylist (application);
     view = priv->manage_dictionaries_treeview;
     selection = gtk_tree_view_get_selection (view);
-    model = GTK_TREE_MODEL (dictionarystore);
+    model = GTK_TREE_MODEL (gw_dictionarylist_get_liststore (dictionarylist));
     has_selection = gtk_tree_selection_get_selected (selection, &model, &iter);
-    preferences = gw_application_get_preferences (application);
     error = NULL;
 
     //Sanity check
@@ -621,30 +618,36 @@ gw_settingswindow_remove_dictinfo_cb (GtkWidget *widget, gpointer data)
 
     path = gtk_tree_model_get_path (model, &iter);
     indices = gtk_tree_path_get_indices (path);
-    di = lw_dictinfolist_get_dictinfo_by_load_position (dictinfolist, *indices);
+    dictionary = lw_dictionarylist_remove_by_position (LW_DICTIONARYLIST (dictionarylist), *indices);
 
-    if (di != NULL)
+    if (dictionary != NULL)
     {
-      lw_dictinfo_uninstall (di, NULL, &error);
-      gw_dictionarystore_reload (GW_DICTIONARYSTORE (dictionarystore), preferences);
+      lw_dictionary_uninstall (dictionary, NULL, &error);
     }
 
     //Cleanup
     gtk_tree_path_free (path); path = NULL;
 
+    if (error != NULL)
+    {
+      gw_application_handle_error (application, GTK_WINDOW (window), TRUE, &error);
+      exit(EXIT_SUCCESS);
+    }
+
     gw_settingswindow_check_for_dictionaries (window);
 }
 
 
-G_MODULE_EXPORT void 
-gw_settingswindow_open_dictionaryinstallwindow_cb (GtkWidget *widget, gpointer data)
+void 
+gw_settingswindow_add_dictionary_cb (GSimpleAction *action, 
+                                     GVariant      *parameter,
+                                     gpointer       data)
 {
     GwSettingsWindow *window;
     GtkWindow *dictionaryinstallwindow;
     GwApplication *application;
 
-    window = GW_SETTINGSWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_SETTINGSWINDOW));
-    g_return_if_fail (window != NULL);
+    window = GW_SETTINGSWINDOW (data);
     application = gw_window_get_application (GW_WINDOW (window));
 
     dictionaryinstallwindow = gw_dictionaryinstallwindow_new (GTK_APPLICATION (application));

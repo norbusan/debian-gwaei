@@ -25,9 +25,6 @@
 //! @brief To be written
 //!
 
-
-#include "../private.h"
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -37,10 +34,14 @@
 
 #include <gtk/gtk.h>
 
+#ifdef HAVE_CONFIG_H
+#include "../../config.h"
+#endif
+
 #include <gwaei/gwaei.h>
 #include <gwaei/window-private.h>
 
-G_DEFINE_TYPE (GwWindow, gw_window, GTK_TYPE_WINDOW)
+G_DEFINE_ABSTRACT_TYPE (GwWindow, gw_window, GTK_TYPE_APPLICATION_WINDOW)
 
 typedef enum
 {
@@ -83,6 +84,8 @@ gw_window_constructed (GObject *object)
 {
     GwWindow *window;
     GwWindowPrivate *priv;
+    gboolean os_shows_app_menu;
+    GtkSettings *settings;
 
     //Chain the parent class
     {
@@ -91,6 +94,9 @@ gw_window_constructed (GObject *object)
 
     window = GW_WINDOW (object);
     priv = window->priv;
+    settings = gtk_settings_get_default ();
+    g_object_get (settings, "gtk-shell-shows-app-menu", &os_shows_app_menu, NULL);
+    gtk_widget_add_events (GTK_WIDGET (window), GDK_FOCUS_CHANGE_MASK);
 
     priv->accelgroup = gtk_accel_group_new ();
     gtk_window_add_accel_group (GTK_WINDOW (window), priv->accelgroup);
@@ -99,7 +105,10 @@ gw_window_constructed (GObject *object)
     gw_window_load_ui_xml (window, priv->ui_xml);
     priv->toplevel = GTK_WIDGET (gw_window_get_object (GW_WINDOW (window), "toplevel"));
 
+    gtk_application_window_set_show_menubar (GTK_APPLICATION_WINDOW (window), FALSE);
+
     g_signal_connect (G_OBJECT (window), "configure-event", G_CALLBACK (gw_window_configure_event_cb), NULL);
+    g_signal_connect (window, "focus-in-event", G_CALLBACK (gw_window_focus_in_event_cb), NULL);
 }
 
 
@@ -206,9 +215,10 @@ gw_window_load_ui_xml (GwWindow *window, const char *filename)
     //Declarations
     GwWindowPrivate *priv;
     GtkWidget *toplevel;
-    char *paths[4];
-    char **iter;
-    char *path;
+    GtkWidget *unused;
+    gchar *paths[4];
+    gchar **iter;
+    gchar *path;
     gboolean loaded;
 
     //Initializations
@@ -227,9 +237,15 @@ gw_window_load_ui_xml (GwWindow *window, const char *filename)
       {
         gtk_builder_connect_signals (priv->builder, NULL);
 
+        unused = GTK_WIDGET (gtk_builder_get_object (priv->builder, "unused"));
         toplevel = GTK_WIDGET (gtk_builder_get_object (priv->builder, "toplevel"));
-        g_assert (toplevel != NULL);
-        gtk_widget_reparent (toplevel, GTK_WIDGET (window));
+        g_assert (unused != NULL && toplevel != NULL);
+        g_object_ref(toplevel);
+        gtk_container_remove (GTK_CONTAINER (unused), toplevel);
+        gtk_container_add (GTK_CONTAINER (window), toplevel);
+        g_object_unref(toplevel);
+  
+        gtk_widget_destroy (unused); unused = NULL;
 
         loaded = TRUE;
       }
@@ -439,4 +455,111 @@ gw_window_save_size (GwWindow *window)
     }
 }
 
+
+void
+gw_window_load_menubar (GwWindow *window, const gchar* BASE_NAME)
+{
+    //Declarations
+    GwWindowPrivate *priv;
+    GtkBuilder *builder;
+    GtkApplication *application;
+    GMenuModel *win_menu_model;
+    gboolean loaded;
+    gboolean os_shows_app_menu;
+    gboolean os_shows_win_menu;
+    gchar *filename;
+    GtkWidget *menubar;
+    GtkSettings *settings;
+    
+    //Initializations
+    priv = window->priv;
+    application = GTK_APPLICATION (gw_window_get_application (window));
+    menubar = NULL;
+    loaded = FALSE;
+    builder = NULL;
+    filename = NULL;
+    win_menu_model = NULL;
+
+    settings = gtk_settings_get_default ();
+    g_object_get (settings, "gtk-shell-shows-app-menu", &os_shows_app_menu, NULL);
+    g_object_get (settings, "gtk-shell-shows-menubar", &os_shows_win_menu, NULL);
+
+    builder = gtk_builder_new (); 
+    if (builder == NULL) goto errored;
+
+    if (os_shows_app_menu && os_shows_win_menu) //Mac OS X style
+    {
+      filename = g_strjoin ("-", BASE_NAME, "menumodel", "macosx.ui", NULL);
+      if (filename == NULL) goto errored;
+    }
+    else if (os_shows_app_menu != os_shows_win_menu) //Gnome 3 style
+    {
+      filename = g_strjoin ("-", BASE_NAME, "menumodel", "gnome.ui", NULL);
+      if (filename == NULL) goto errored;
+    }
+    else //Windows style
+    {
+      filename = g_strjoin ("-", BASE_NAME, "menumodel", "standard.ui", NULL);
+      if (filename == NULL) goto errored;
+    }
+
+    loaded = gw_application_load_xml (builder, filename); 
+    if (loaded == FALSE) goto errored;
+    win_menu_model = G_MENU_MODEL (gtk_builder_get_object (builder, "menu")); 
+    if (win_menu_model == NULL) goto errored;
+
+    //Set the whole menu to the window if appropriate
+    if (os_shows_win_menu == FALSE)
+    {
+      menubar = gtk_menu_bar_new_from_model (win_menu_model);
+      if (menubar == NULL) goto errored;
+      gtk_box_pack_end (GTK_BOX (priv->toplevel), menubar, FALSE, FALSE, 0);
+      gtk_widget_show_all (menubar);
+    }
+
+    //Set the menubar to the application
+    gw_application_set_win_menubar (GW_APPLICATION (application), win_menu_model); //FIXME
+
+    //Save the menu objects in the window
+    if (priv->menu_model != NULL) g_object_unref (priv->menu_model);
+    priv->menu_model = win_menu_model; win_menu_model = NULL;
+    if (priv->menubar != NULL) gtk_widget_destroy (GTK_WIDGET (priv->menubar)); 
+    priv->menubar = GTK_MENU_BAR (menubar); menubar = NULL;
+
+errored:
+    if (builder != NULL) g_object_unref (builder); builder = NULL;
+    if (filename != NULL) g_free (filename); filename = NULL;
+    if (win_menu_model != NULL) g_object_unref (G_OBJECT (win_menu_model));
+    if (menubar != NULL) { g_object_ref_sink (menubar); gtk_widget_destroy (menubar); };
+}
+
+
+GMenuModel*
+gw_window_get_menumodel (GwWindow *window)
+{
+    //Sanity checks
+    g_return_val_if_fail (window != NULL, NULL);
+
+    return window->priv->menu_model;
+}
+
+
+void 
+gw_window_show_menubar (GwWindow *window, gboolean show)
+{
+    //Sanity checks
+    g_return_if_fail (window != NULL);
+    if (window->priv->menubar == NULL) return;
+
+    //Declarations
+    GwWindowPrivate *priv;
+
+    //Initializations
+    priv = window->priv;
+
+    if (show == TRUE)
+      gtk_widget_show (GTK_WIDGET (priv->menubar));
+    else
+      gtk_widget_hide (GTK_WIDGET (priv->menubar));
+}
 

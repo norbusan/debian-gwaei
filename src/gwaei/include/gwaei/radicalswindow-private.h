@@ -5,7 +5,7 @@ G_BEGIN_DECLS
 
 struct _GwRadicalsWindowPrivate {
   GtkToggleButton *strokes_checkbutton;
-  GtkGrid *radicals_grid;
+  GtkToolPalette *toolpalette;
   GtkSpinButton *strokes_spinbutton;
 
   char cache[300 * 4];

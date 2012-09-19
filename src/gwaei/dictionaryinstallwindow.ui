@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires gtk+ 3.0 -->
-  <object class="GtkSizeGroup" id="left_sizegroup">
-    <widgets>
-      <widget name="treeview"/>
-      <widget name="show_dictionary_detail_checkbutton"/>
-      <widget name="linkbutton1"/>
-    </widgets>
-  </object>
   <object class="GtkWindow" id="unused">
     <property name="can_focus">False</property>
     <property name="modal">True</property>
@@ -36,13 +29,12 @@
               <object class="GtkBox" id="hbox1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="orientation">horizontal</property>
                 <child>
                   <object class="GtkBox" id="vbox2">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="spacing">2</property>
                     <property name="orientation">vertical</property>
+                    <property name="spacing">2</property>
                     <child>
                       <object class="GtkScrolledWindow" id="scrolledwindow1">
                         <property name="visible">True</property>
@@ -73,7 +65,6 @@
                       <object class="GtkBox" id="hbox4">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="orientation">horizontal</property>
                         <child>
                           <object class="GtkCheckButton" id="show_dictionary_detail_checkbutton">
                             <property name="label" translatable="yes">Show Dictionary Install Details</property>
@@ -116,13 +107,12 @@
                       <object class="GtkBox" id="details_hbox">
                         <property name="can_focus">False</property>
                         <property name="border_width">6</property>
-                        <property name="spacing">8</property>
                         <property name="orientation">vertical</property>
+                        <property name="spacing">8</property>
                         <child>
                           <object class="GtkBox" id="hbox2">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="orientation">horizontal</property>
                             <child>
                               <object class="GtkLabel" id="details_title_label">
                                 <property name="visible">True</property>
@@ -147,7 +137,6 @@
                           <object class="GtkBox" id="hbox3">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="orientation">horizontal</property>
                             <child>
                               <object class="GtkBox" id="box2">
                                 <property name="visible">True</property>
@@ -184,7 +173,6 @@
                           <object class="GtkBox" id="details_control_hbox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="orientation">horizontal</property>
                             <child>
                               <placeholder/>
                             </child>
@@ -222,7 +210,6 @@
           <object class="GtkBox" id="hbox7">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="orientation">horizontal</property>
             <child>
               <object class="GtkLinkButton" id="linkbutton1">
                 <property name="label" translatable="yes">Where can I get other dictionaries?</property>
@@ -300,5 +287,12 @@
         </child>
       </object>
     </child>
+  </object>
+  <object class="GtkSizeGroup" id="left_sizegroup">
+    <widgets>
+      <widget name="treeview"/>
+      <widget name="show_dictionary_detail_checkbutton"/>
+      <widget name="linkbutton1"/>
+    </widgets>
   </object>
 </interface>

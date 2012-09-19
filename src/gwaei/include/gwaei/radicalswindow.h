@@ -38,11 +38,11 @@ struct _GwRadicalsWindowClass {
 GtkWindow* gw_radicalswindow_new (GtkApplication*);
 GType gw_radicalswindow_get_type (void) G_GNUC_CONST;
 
-char* gw_radicalswindow_strdup_all_selected (GwRadicalsWindow*);
+gchar* gw_radicalswindow_strdup_selected (GwRadicalsWindow*);
 char* gw_radicalswindow_strdup_prefered_stroke_count (GwRadicalsWindow*);
-void gw_radicalswindow_deselect_all_radicals (GwRadicalsWindow*);
+void gw_radicalswindow_deselect (GwRadicalsWindow*);
 void gw_radicalswindow_set_strokes_checkbox_state (GwRadicalsWindow*, gboolean);
-void gw_radicalswindow_set_button_sensitive_when_label_is (GwRadicalsWindow*, const char*);
+void gw_radicalswindow_update_sensitivities (GwRadicalsWindow*, const gchar*);
 void gw_radicalswindow_update_strokes_checkbox_state (GwRadicalsWindow*);
 
 #include "radicalswindow-callbacks.h"

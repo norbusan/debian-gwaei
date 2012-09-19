@@ -25,51 +25,104 @@
 //! @brief To be written
 //!
 
-
-#include "../private.h"
-
 #include <stdlib.h>
 #include <string.h>
 
 #include <gdk/gdk.h>
 #include <gtk/gtk.h>
 
+#include <gwaei/gettext.h>
 #include <gwaei/gwaei.h>
 #include <gwaei/vocabularyliststore.h>
 #include <gwaei/vocabularywindow-private.h>
 
 
-G_MODULE_EXPORT void
-gw_vocabularywindow_new_list_cb (GtkWidget *widget, gpointer data)
+void
+gw_vocabularywindow_new_list_cb (GSimpleAction *action, 
+                                 GVariant      *parameter, 
+                                 gpointer       data)
 {
     //Declarations
     GwVocabularyWindow *window;
-    GwVocabularyWindowPrivate *priv;
-    GwApplication *application;
-    GtkListStore *liststore, *wordstore;
-    GtkTreeSelection *selection;
-    GtkTreeIter iter;
 
     //Initializations
-    window = GW_VOCABULARYWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_VOCABULARYWINDOW));
-    g_return_if_fail (window != NULL);
-    priv = window->priv;
-    application = gw_window_get_application (GW_WINDOW (window));
-    liststore = gw_application_get_vocabularyliststore (application);
-    selection = gtk_tree_view_get_selection (priv->list_treeview);
+    window = GW_VOCABULARYWINDOW (data);
 
-    gw_vocabularyliststore_new_list (GW_VOCABULARYLISTSTORE (liststore), &iter);
-    gtk_tree_selection_select_iter (selection, &iter);
-    wordstore = gw_vocabularyliststore_get_wordstore_by_iter (GW_VOCABULARYLISTSTORE (liststore), &iter);
-    gtk_tree_view_set_model (priv->word_treeview, GTK_TREE_MODEL (wordstore));
-    gtk_tree_view_set_search_column (priv->word_treeview, GW_VOCABULARYWORDSTORE_COLUMN_DEFINITIONS);
-    gw_vocabularywindow_update_flashcard_menu_sensitivities (window);
-    gw_vocabularywindow_show_vocabulary_list (window, TRUE);
+    gw_vocabularywindow_new_list (window);
+}
+
+
+static GtkWidget*
+gw_vocabularywindow_get_remove_list_confirm_dialog (GwVocabularyWindow *window, GList *list)
+{
+    GwVocabularyWindowPrivate *priv;
+    GtkWidget *dialog;
+    const gchar *TITLE;
+
+    GtkTreePath *treepath;
+    GtkTreeIter treeiter;
+    GList *link;
+    gchar *listname;
+    GtkTreeModel *treemodel;
+    
+
+
+    priv = window->priv;
+    treemodel = gtk_tree_view_get_model (priv->list_treeview);
+    TITLE = ngettext ("Perminently remove this list?", "Perminently remove these lists?", g_list_length (list));
+    dialog = gtk_dialog_new ();
+    
+    gtk_dialog_add_buttons (GTK_DIALOG (dialog), 
+                            GTK_STOCK_CANCEL,
+                            GTK_RESPONSE_REJECT,
+                            GTK_STOCK_REMOVE,
+                            GTK_RESPONSE_ACCEPT,
+                            NULL);
+
+    {
+      GtkWidget *content_area, *box, *image, *label;
+      GString *text;
+
+      content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
+      box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 16);
+      image = gtk_image_new_from_stock (GTK_STOCK_DIALOG_WARNING, GTK_ICON_SIZE_DIALOG);
+      label = gtk_label_new (NULL);
+      text = g_string_new ("");
+
+      g_string_append_printf (text, "<big><b>%s</b></big>\n\n", TITLE);
+      for (link = list; link != NULL; link = link->next)
+      {
+        treepath = (GtkTreePath*) link->data;
+        gtk_tree_model_get_iter (treemodel, &treeiter, treepath);
+        gtk_tree_model_get (treemodel, &treeiter, GW_VOCABULARYLISTSTORE_COLUMN_NAME, &listname, -1);
+        if (listname != NULL)
+        {
+          g_string_append_printf (text, "%s\n", listname);
+          g_free (listname); listname = NULL;
+        }
+      }
+      gtk_label_set_markup (GTK_LABEL (label), text->str);
+
+      gtk_misc_set_padding (GTK_MISC (label), 0, 8);
+      gtk_box_pack_start (GTK_BOX (box), image, FALSE, FALSE, 0);
+      gtk_box_pack_start (GTK_BOX (box), label, TRUE, TRUE, 0);
+      gtk_widget_show_all (box);
+
+      gtk_container_add (GTK_CONTAINER (content_area), box);
+      gtk_container_set_border_width (GTK_CONTAINER (box), 8);
+      gtk_container_set_border_width (GTK_CONTAINER (dialog), 6);
+
+      g_string_free (text, TRUE); text = NULL;
+    }
+
+    return dialog;
 }
 
 
 G_MODULE_EXPORT void
-gw_vocabularywindow_remove_list_cb (GtkWidget *widget, gpointer data)
+gw_vocabularywindow_remove_list_cb (GSimpleAction *action, 
+                                    GVariant      *parameter,
+                                    gpointer       data)
 {
     //Declarations
     GwVocabularyWindow *window;
@@ -77,36 +130,37 @@ gw_vocabularywindow_remove_list_cb (GtkWidget *widget, gpointer data)
     GtkTreeSelection *selection;
     GtkTreeModel *model;
     GList *rowlist;
-    GtkListStore *store;
-    GtkTreeIter iter;
     GtkTreePath *path;
-    gboolean valid;
+    gint response;
 
     //Initializations
-    window = GW_VOCABULARYWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_VOCABULARYWINDOW));
+    window = GW_VOCABULARYWINDOW (data);
     g_return_if_fail (window != NULL);
+
     priv = window->priv;
     selection = gtk_tree_view_get_selection (priv->list_treeview);
     model = gtk_tree_view_get_model (priv->list_treeview);
     rowlist = gtk_tree_selection_get_selected_rows (selection, &model);
+    if (rowlist == NULL) return;
 
-    gw_vocabularyliststore_remove_path_list (GW_VOCABULARYLISTSTORE (model), rowlist);
+    {
+      GtkWidget *dialog;
+      dialog = gw_vocabularywindow_get_remove_list_confirm_dialog (window, rowlist);
+      gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (window));
+      response = gtk_dialog_run (GTK_DIALOG (dialog));
+      gtk_widget_destroy (GTK_WIDGET (dialog));
+      
+    }
+
+    if (response == GTK_RESPONSE_ACCEPT) 
+    {
+      gw_vocabularyliststore_remove_path_list (GW_VOCABULARYLISTSTORE (model), rowlist);
+    }
 
     path = (GtkTreePath*) rowlist->data;
     gtk_tree_path_prev (path);
-    valid = gtk_tree_model_get_iter (model, &iter, path);
 
-    if (valid)
-    {
-      gtk_tree_selection_select_iter (selection, &iter);
-      store = gw_vocabularyliststore_get_wordstore_by_iter (GW_VOCABULARYLISTSTORE (model), &iter);
-      gtk_tree_view_set_model (priv->word_treeview, GTK_TREE_MODEL (store));
-      gtk_tree_view_set_search_column (priv->word_treeview, GW_VOCABULARYWORDSTORE_COLUMN_DEFINITIONS);
-    }
-    else
-    {
-      gtk_tree_view_set_model (priv->word_treeview, NULL);
-    }
+    gtk_tree_view_set_cursor (priv->list_treeview, path, NULL, FALSE);
 
     g_list_foreach (rowlist, (GFunc) gtk_tree_path_free, NULL);
     g_list_free (rowlist); rowlist = NULL;
@@ -117,9 +171,10 @@ gw_vocabularywindow_remove_list_cb (GtkWidget *widget, gpointer data)
 }
 
 
-static void
+G_MODULE_EXPORT void
 gw_vocabularywindow_select_new_word_from_dialog_cb (GtkWidget *widget, gpointer data)
 {
+    //Declarations
     GwVocabularyWindow *window;
     GwVocabularyWindowPrivate *priv;
     GwAddVocabularyWindow *avw;
@@ -127,6 +182,7 @@ gw_vocabularywindow_select_new_word_from_dialog_cb (GtkWidget *widget, gpointer 
     GtkTreeSelection *selection;
     gboolean valid;
 
+    //Initializations
     window = GW_VOCABULARYWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_VOCABULARYWINDOW));
     g_return_if_fail (window != NULL);
     priv = window->priv;
@@ -142,47 +198,71 @@ gw_vocabularywindow_select_new_word_from_dialog_cb (GtkWidget *widget, gpointer 
 }
 
 
-G_MODULE_EXPORT void
-gw_vocabularywindow_new_word_cb (GtkWidget *widget, gpointer data)
+void
+gw_vocabularywindow_new_word_cb (GSimpleAction *action,
+                                 GVariant      *parameter,
+                                 gpointer       data)
 {
     GwVocabularyWindow *window;
-    GwVocabularyWindowPrivate *priv;
-    GwApplication *application;
-    GtkWindow *avw;
-    GtkTreeModel *model;
-    GtkTreeSelection *selection;
-    GtkTreeIter iter;
-    gboolean valid;
-    gchar *list;
 
-    window = GW_VOCABULARYWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_VOCABULARYWINDOW));
-    g_return_if_fail (window != NULL);
-    priv = window->priv;
-    application = gw_window_get_application (GW_WINDOW (window));
-    model = gtk_tree_view_get_model (priv->list_treeview);
-    if (model == NULL) return;
-    selection = gtk_tree_view_get_selection (priv->list_treeview);
-    valid = gtk_tree_selection_get_selected (selection, &model, &iter);
+    window = GW_VOCABULARYWINDOW (data);
 
-    if (valid)
+    gw_vocabularywindow_new_word (window);
+    gw_vocabularywindow_sync_has_changes (window);
+}
+
+
+static GtkWidget*
+gw_vocabularywindow_get_remove_word_confirm_dialog (GwVocabularyWindow *window, GList *list)
+{
+    //Declarations
+    GtkWidget *dialog;
+    const gchar *TITLE;
+
+    //Initializations
+    TITLE = ngettext ("Remove this word?", "Remove all selected words?", g_list_length (list));
+    dialog = gtk_dialog_new ();
+    
+    gtk_dialog_add_buttons (GTK_DIALOG (dialog), 
+                            GTK_STOCK_CANCEL,
+                            GTK_RESPONSE_REJECT,
+                            GTK_STOCK_REMOVE,
+                            GTK_RESPONSE_ACCEPT,
+                            NULL);
+
     {
-      avw = gw_addvocabularywindow_new (GTK_APPLICATION (application));
-      list = gw_vocabularyliststore_get_name_by_iter (GW_VOCABULARYLISTSTORE (model), &iter);
-      if (list != NULL)
-      {
-        gw_addvocabularywindow_set_list (GW_ADDVOCABULARYWINDOW (avw), list);
-        gw_addvocabularywindow_set_focus (GW_ADDVOCABULARYWINDOW (avw), GW_ADDVOCABULARYWINDOW_FOCUS_KANJI);
-        g_free (list);
-      }
-      gtk_window_set_transient_for (avw, GTK_WINDOW (window));
-      g_signal_connect (G_OBJECT (avw), "word-added", G_CALLBACK (gw_vocabularywindow_select_new_word_from_dialog_cb), window);
-      gtk_widget_show (GTK_WIDGET (avw));
+      GtkWidget *content_area, *box, *image, *label;
+      GString *text;
+
+      content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
+      box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 16);
+      image = gtk_image_new_from_stock (GTK_STOCK_DIALOG_WARNING, GTK_ICON_SIZE_DIALOG);
+      label = gtk_label_new (NULL);
+      text = g_string_new ("");
+
+      g_string_append_printf (text, "<big><b>%s</b></big>\n\n", TITLE);
+      gtk_label_set_markup (GTK_LABEL (label), text->str);
+
+      gtk_misc_set_padding (GTK_MISC (label), 0, 8);
+      gtk_box_pack_start (GTK_BOX (box), image, FALSE, FALSE, 0);
+      gtk_box_pack_start (GTK_BOX (box), label, TRUE, TRUE, 0);
+      gtk_widget_show_all (box);
+
+      gtk_container_add (GTK_CONTAINER (content_area), box);
+      gtk_container_set_border_width (GTK_CONTAINER (box), 8);
+      gtk_container_set_border_width (GTK_CONTAINER (dialog), 6);
+
+      g_string_free (text, TRUE); text = NULL;
     }
+
+    return dialog;
 }
 
 
 G_MODULE_EXPORT void
-gw_vocabularywindow_remove_word_cb (GtkWidget *widget, gpointer data)
+gw_vocabularywindow_remove_word_cb (GSimpleAction *action, 
+                                    GVariant      *parameter,
+                                    gpointer       data)
 {
     //Declarations
     GwVocabularyWindow *window;
@@ -190,6 +270,7 @@ gw_vocabularywindow_remove_word_cb (GtkWidget *widget, gpointer data)
     GtkTreeSelection *selection;
     GtkTreeModel *model;
     GList *rowlist;
+    gint response;
 
     //Initializations
     window = GW_VOCABULARYWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_VOCABULARYWINDOW));
@@ -199,7 +280,19 @@ gw_vocabularywindow_remove_word_cb (GtkWidget *widget, gpointer data)
     model = gtk_tree_view_get_model (priv->word_treeview);
     rowlist = gtk_tree_selection_get_selected_rows (selection, &model);
 
-    gw_vocabularywordstore_remove_path_list (GW_VOCABULARYWORDSTORE (model), rowlist);
+    {
+      GtkWidget *dialog;
+      dialog = gw_vocabularywindow_get_remove_word_confirm_dialog (window, rowlist);
+      gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (window));
+      response = gtk_dialog_run (GTK_DIALOG (dialog));
+      gtk_widget_destroy (GTK_WIDGET (dialog));
+      
+    }
+
+    if (response == GTK_RESPONSE_ACCEPT) 
+    {
+      gw_vocabularywordstore_remove_path_list (GW_VOCABULARYWORDSTORE (model), rowlist);
+    }
 
     g_list_foreach (rowlist, (GFunc) gtk_tree_path_free, NULL);
     g_list_free (rowlist); rowlist = NULL;
@@ -209,6 +302,9 @@ gw_vocabularywindow_remove_word_cb (GtkWidget *widget, gpointer data)
 G_MODULE_EXPORT void
 gw_vocabularywindow_list_selection_changed_cb (GtkTreeView *view, gpointer data)
 {
+    //Sanity checks
+    g_return_if_fail (view != NULL);
+
     //Declarations
     GwVocabularyWindow *window;
     GwVocabularyWindowPrivate *priv;
@@ -217,7 +313,6 @@ gw_vocabularywindow_list_selection_changed_cb (GtkTreeView *view, gpointer data)
     GtkListStore *liststore, *wordstore;
     GtkTreeSelection *selection;
     GtkTreeIter iter;
-    gboolean has_changes;
     gchar *title;
     const gchar *name;
     gboolean valid;
@@ -240,17 +335,12 @@ gw_vocabularywindow_list_selection_changed_cb (GtkTreeView *view, gpointer data)
       gtk_tree_view_set_model (priv->word_treeview, GTK_TREE_MODEL (wordstore));
       gtk_tree_view_set_search_column (priv->word_treeview, GW_VOCABULARYWORDSTORE_COLUMN_DEFINITIONS);
 
-      has_changes = gw_vocabularywindow_current_wordstore_has_changes (window);
-      gtk_action_set_sensitive (priv->revert_action, has_changes);
-
-      gw_vocabularywindow_update_flashcard_menu_sensitivities (window);
-
       name = gw_vocabularywordstore_get_name (GW_VOCABULARYWORDSTORE (wordstore));
-      title = g_strdup_printf ("%s - %s", name, gettext("gWaei Vocabulary Manager"));
+      title = g_strdup_printf ("%s - %s", name, gettext("gWaei Vocabulary"));
     }
     else
     {
-      title = g_strdup_printf (gettext("gWaei Vocabulary Manager"));
+      title = g_strdup_printf (gettext("gWaei Vocabulary"));
     }
 
     if (title != NULL)
@@ -258,6 +348,9 @@ gw_vocabularywindow_list_selection_changed_cb (GtkTreeView *view, gpointer data)
       gtk_window_set_title (GTK_WINDOW (window), title);
       g_free (title); title = NULL;
     }
+
+    gw_vocabularywindow_update_flashcard_menu_sensitivities (window);
+    gw_vocabularywindow_sync_has_changes (window);
 }
 
 
@@ -333,75 +426,103 @@ gw_vocabularywindow_list_cell_edited_cb (GtkCellRendererText *renderer,
 }
 
 
-G_MODULE_EXPORT void
-gw_vocabularywindow_save_cb (GtkAction *action, gpointer data)
-{
-    //Declarations
-    GwVocabularyWindow *window;
-    GwApplication *application;
-    LwPreferences *preferences;
-    GtkListStore *liststore;
-
-    //Initializations
-    window = GW_VOCABULARYWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_VOCABULARYWINDOW));
-    g_return_if_fail (window != NULL);
-    application = gw_window_get_application (GW_WINDOW (window));
-    preferences = gw_application_get_preferences (application);
-    liststore = gw_application_get_vocabularyliststore (application);
-
-    gw_vocabularyliststore_save_all (GW_VOCABULARYLISTSTORE (liststore));
-    gw_vocabularyliststore_save_list_order (GW_VOCABULARYLISTSTORE (liststore), preferences);
-}
-
-
-G_MODULE_EXPORT void
-gw_vocabularywindow_reset_cb (GtkWidget *widget, gpointer data)
+void
+gw_vocabularywindow_save_cb (GSimpleAction *action, 
+                             GVariant      *parameter,
+                             gpointer       data)
 {
     //Declarations
     GwVocabularyWindow *window;
     GwVocabularyWindowPrivate *priv;
     GwApplication *application;
     LwPreferences *preferences;
-    GtkListStore *liststore, *wordstore;
-    GtkTreeIter iter;
-    GtkTreeModel *model;
-    GtkTreeSelection *selection;
+    GtkTreeView *treeview;
+    GtkTreeSelection *treeselection;
+    GtkListStore *liststore;
+    GtkTreePath *treepath;
+    GtkTreeIter treeiter;
+    GtkTreeModel *treemodel;
+    gboolean valid;
+    GList *rowlink, *rowlist;
 
     //Initializations
-    window = GW_VOCABULARYWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_VOCABULARYWINDOW));
-    g_return_if_fail (window != NULL);
+    window = GW_VOCABULARYWINDOW (data);
     priv = window->priv;
     application = gw_window_get_application (GW_WINDOW (window));
     preferences = gw_application_get_preferences (application);
+    treeview = priv->list_treeview;
     liststore = gw_application_get_vocabularyliststore (application);
-    model = GTK_TREE_MODEL (liststore);
-    selection = gtk_tree_view_get_selection (priv->list_treeview);
+    treemodel = GTK_TREE_MODEL (liststore);
 
-    gw_vocabularyliststore_revert_all (GW_VOCABULARYLISTSTORE (liststore));
-    gw_vocabularyliststore_load_list_order (GW_VOCABULARYLISTSTORE (liststore), preferences);
+    treeselection = gtk_tree_view_get_selection (treeview);
+    rowlink = rowlist = gtk_tree_selection_get_selected_rows (treeselection, &treemodel);
 
-    if (!gtk_tree_selection_get_selected (selection, &model, NULL))
+    while (rowlink != NULL)
     {
-      gtk_tree_model_get_iter_first (model, &iter);
-      gtk_tree_selection_select_iter (selection, &iter);
-      wordstore = gw_vocabularyliststore_get_wordstore_by_iter (GW_VOCABULARYLISTSTORE (liststore), &iter);
-      gtk_tree_view_set_model (priv->word_treeview, GTK_TREE_MODEL (wordstore));
-      gtk_tree_view_set_search_column (priv->word_treeview, GW_VOCABULARYWORDSTORE_COLUMN_DEFINITIONS);
+      treepath = (GtkTreePath*) rowlink->data;
+      if (treepath != NULL)
+      {
+        valid = gtk_tree_model_get_iter (treemodel, &treeiter, treepath);
+        if (valid)
+        {
+          gw_vocabularyliststore_save (GW_VOCABULARYLISTSTORE (liststore), &treeiter);
+        }
+      }
+      rowlink = rowlink->next;
+    }
+    gw_vocabularyliststore_save_list_order (GW_VOCABULARYLISTSTORE (liststore), preferences);
+}
+
+
+void
+gw_vocabularywindow_revert_cb (GSimpleAction *action,
+                               GVariant      *variant,
+                               gpointer       data)
+{
+    //Declarations
+    GwVocabularyWindow *window;
+    GwVocabularyWindowPrivate *priv;
+    GwApplication *application;
+    GtkTreeView *treeview;
+    GtkTreeSelection *treeselection;
+    GtkListStore *liststore;
+    GtkTreePath *treepath;
+    GtkTreeIter treeiter;
+    GtkTreeModel *treemodel;
+    gboolean valid;
+    GList *rowlink, *rowlist;
+
+    //Initializations
+    window = GW_VOCABULARYWINDOW (data);
+    priv = window->priv;
+    treeview = priv->list_treeview;
+    application = gw_window_get_application (GW_WINDOW (window));
+    liststore = gw_application_get_vocabularyliststore (application);
+    treemodel = GTK_TREE_MODEL (liststore);
+
+    treeselection = gtk_tree_view_get_selection (treeview);
+    rowlink = rowlist = gtk_tree_selection_get_selected_rows (treeselection, &treemodel);
+
+    while (rowlink != NULL)
+    {
+      treepath = (GtkTreePath*) rowlink->data;
+      if (treepath != NULL)
+      {
+        valid = gtk_tree_model_get_iter (treemodel, &treeiter, treepath);
+        if (valid)
+        {
+          gw_vocabularyliststore_revert (GW_VOCABULARYLISTSTORE (liststore), &treeiter);
+        }
+      }
+      rowlink = rowlink->next;
     }
 }
 
 
-G_MODULE_EXPORT gboolean
-gw_vocabularywindow_delete_event_cb (GtkWidget *widget, GdkEvent *event, gpointer data)
-{
-    gw_vocabularywindow_close_cb (widget, data);
-
-    return TRUE;
-}
-
-
-G_MODULE_EXPORT void
-gw_vocabularywindow_close_cb (GtkWidget *widget, gpointer data)
+void
+gw_vocabularywindow_close_cb (GSimpleAction *action, 
+                              GVariant      *parameter, 
+                              gpointer       data)
 {
     //Declarations
     GwVocabularyWindow *window;
@@ -411,8 +532,7 @@ gw_vocabularywindow_close_cb (GtkWidget *widget, gpointer data)
     gint count;
 
     //Initializations
-    window = GW_VOCABULARYWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_VOCABULARYWINDOW));
-    g_return_if_fail (window != NULL);
+    window = GW_VOCABULARYWINDOW (data);
     application = gw_window_get_application (GW_WINDOW (window));
     link = gtk_application_get_windows (GTK_APPLICATION (application));
     count = 0;
@@ -441,8 +561,10 @@ gw_vocabularywindow_close_cb (GtkWidget *widget, gpointer data)
 }
 
 
-G_MODULE_EXPORT void
-gw_vocabularywindow_export_cb (GtkAction *action, gpointer data)
+void
+gw_vocabularywindow_export_cb (GSimpleAction *action, 
+                               GVariant      *parameter,
+                               gpointer       data)
 {
     //Declarations
     GwVocabularyWindow *window;
@@ -493,8 +615,10 @@ gw_vocabularywindow_export_cb (GtkAction *action, gpointer data)
 }
 
 
-G_MODULE_EXPORT void
-gw_vocabularywindow_import_cb (GtkWidget *widget, gpointer data)
+void
+gw_vocabularywindow_import_cb (GSimpleAction *action, 
+                               GVariant      *parameter,
+                               gpointer       data)
 {
     //Declarations
     GwVocabularyWindow *window;
@@ -519,7 +643,7 @@ gw_vocabularywindow_import_cb (GtkWidget *widget, gpointer data)
         path = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
         if (path != NULL && g_file_test (path, G_FILE_TEST_IS_REGULAR))
         {
-          gw_vocabularywindow_new_list_cb (GTK_WIDGET (window), window);
+          gw_vocabularywindow_new_list_cb (NULL, NULL, window);
           store = gw_vocabularywindow_get_selected_wordstore (window);
           gw_vocabularywordstore_load (GW_VOCABULARYWORDSTORE (store), path);
           g_free (path);
@@ -534,16 +658,83 @@ gw_vocabularywindow_import_cb (GtkWidget *widget, gpointer data)
 }
 
 
-G_MODULE_EXPORT void
-gw_vocabularywindow_delete_cb (GtkWidget *widget, gpointer data)
+void
+gw_vocabularywindow_delete_cb (GSimpleAction *action, 
+                               GVariant      *parameter,
+                               gpointer       data)
 {
     //Declarations
     GwVocabularyWindow *window;
     GwVocabularyWindowPrivate *priv;
-    GtkTreeSelection *selection;
-    GtkTreeModel *model;
-    GList *rowlist;
+    GtkWidget *focus;
 
+    //Initializations
+    window = GW_VOCABULARYWINDOW (data);
+    priv = window->priv;
+    focus = gtk_window_get_focus (GTK_WINDOW (window));
+
+    if (focus == GTK_WIDGET (priv->word_treeview))
+    {
+      gw_vocabularywindow_remove_word_cb (action, parameter, data);
+    }
+    else if (focus == GTK_WIDGET (priv->list_treeview))
+    {
+      gw_vocabularywindow_remove_list_cb (action, parameter, data);
+    }
+}
+
+
+void
+gw_vocabularywindow_cut_cb (GSimpleAction *action, 
+                            GVariant      *parameter,
+                            gpointer       data)
+{
+    //Declarations
+    GwVocabularyWindow *window;
+    GwVocabularyWindowPrivate *priv;
+    GtkClipboard *clipboard;
+    gchar *text;
+    GtkTreeSelection *selection;
+    GList *rowlist;
+    GtkTreeModel *model;
+    
+    //Initializations
+    window = GW_VOCABULARYWINDOW (data);
+    priv = window->priv;
+    model = gtk_tree_view_get_model (priv->word_treeview);
+
+    if (model != NULL)
+    {
+      clipboard = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
+      selection = gtk_tree_view_get_selection (priv->word_treeview);
+      rowlist = gtk_tree_selection_get_selected_rows (selection, &model);
+      text = gw_vocabularywordstore_path_list_to_string (GW_VOCABULARYWORDSTORE (model), rowlist);
+
+      gw_vocabularywordstore_remove_path_list (GW_VOCABULARYWORDSTORE (model), rowlist);
+
+      gtk_clipboard_set_text (clipboard, text, -1);
+
+      g_list_foreach (rowlist, (GFunc) gtk_tree_path_free, NULL);
+      g_list_free (rowlist); rowlist = NULL;
+      g_free (text); text = NULL;
+    }
+}
+
+
+void
+gw_vocabularywindow_copy_cb (GSimpleAction *action, 
+                             GVariant      *variant,
+                             gpointer       data)
+{
+    //Declarations
+    GwVocabularyWindow *window;
+    GwVocabularyWindowPrivate *priv;
+    GtkClipboard *clipboard;
+    gchar *text;
+    GtkTreeSelection *selection;
+    GList *rowlist;
+    GtkTreeModel *model;
+    
     //Initializations
     window = GW_VOCABULARYWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_VOCABULARYWINDOW));
     g_return_if_fail (window != NULL);
@@ -552,69 +743,6 @@ gw_vocabularywindow_delete_cb (GtkWidget *widget, gpointer data)
 
     if (model != NULL)
     {
-      selection = gtk_tree_view_get_selection (priv->word_treeview);
-      rowlist = gtk_tree_selection_get_selected_rows (selection, &model);
-
-      gw_vocabularywordstore_remove_path_list (GW_VOCABULARYWORDSTORE (model), rowlist);
-
-      g_list_foreach (rowlist, (GFunc) gtk_tree_path_free, NULL);
-      g_list_free (rowlist); rowlist = NULL;
-    }
-}
-
-
-G_MODULE_EXPORT void
-gw_vocabularywindow_cut_cb (GtkWidget *widget, gpointer data)
-{
-    GwVocabularyWindow *window;
-    GwVocabularyWindowPrivate *priv;
-    GtkClipboard *clipboard;
-    gchar *text;
-    GtkTreeSelection *selection;
-    GList *rowlist;
-    GtkTreeModel *model;
-    
-    window = GW_VOCABULARYWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_VOCABULARYWINDOW));
-    g_return_if_fail (window != NULL);
-    priv = window->priv;
-    model = gtk_tree_view_get_model (priv->word_treeview);
-
-    if (model != NULL)
-    {
-      clipboard = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
-      selection = gtk_tree_view_get_selection (priv->word_treeview);
-      rowlist = gtk_tree_selection_get_selected_rows (selection, &model);
-      text = gw_vocabularywordstore_path_list_to_string (GW_VOCABULARYWORDSTORE (model), rowlist);
-
-      gw_vocabularywordstore_remove_path_list (GW_VOCABULARYWORDSTORE (model), rowlist);
-
-      gtk_clipboard_set_text (clipboard, text, -1);
-
-      g_list_foreach (rowlist, (GFunc) gtk_tree_path_free, NULL);
-      g_list_free (rowlist); rowlist = NULL;
-      g_free (text); text = NULL;
-    }
-}
-
-
-G_MODULE_EXPORT void
-gw_vocabularywindow_copy_cb (GtkWidget *widget, gpointer data)
-{
-    GwVocabularyWindow *window;
-    GwVocabularyWindowPrivate *priv;
-    GtkClipboard *clipboard;
-    gchar *text;
-    GtkTreeSelection *selection;
-    GList *rowlist;
-    GtkTreeModel *model;
-    
-    window = GW_VOCABULARYWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_VOCABULARYWINDOW));
-    g_return_if_fail (window != NULL);
-    priv = window->priv;
-    model = gtk_tree_view_get_model (priv->word_treeview);
-
-    if (model != NULL)
-    {
       clipboard = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
       selection = gtk_tree_view_get_selection (priv->word_treeview);
       rowlist = gtk_tree_selection_get_selected_rows (selection, &model);
@@ -629,9 +757,12 @@ gw_vocabularywindow_copy_cb (GtkWidget *widget, gpointer data)
 }
 
 
-G_MODULE_EXPORT void
-gw_vocabularywindow_paste_cb (GtkWidget *widget, gpointer data)
+void
+gw_vocabularywindow_paste_cb (GSimpleAction *action, 
+                              GVariant      *parameter,
+                              gpointer       data)
 {
+    //Declarations
     GwVocabularyWindow *window;
     GwVocabularyWindowPrivate *priv;
     GtkClipboard *clipboard;
@@ -639,6 +770,7 @@ gw_vocabularywindow_paste_cb (GtkWidget *widget, gpointer data)
     GtkTreeSelection *selection;
     gchar *text;
 
+    //Initializations
     window = GW_VOCABULARYWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_VOCABULARYWINDOW));
     g_return_if_fail (window != NULL);
     priv = window->priv;
@@ -665,25 +797,29 @@ gw_vocabularywindow_event_after_cb (GtkWidget *widget, GdkEvent *event, gpointer
     GwVocabularyWindowPrivate *priv;
     GtkWidget *focus;
     gboolean sensitive;
-    int i = 0;
+    GActionMap *map;
+    GSimpleAction *action;
 
     window = GW_VOCABULARYWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_VOCABULARYWINDOW));
     g_return_val_if_fail (window != NULL, FALSE);
     priv = window->priv;
-    GtkMenuItem *menuitem[] = { 
-      priv->copy_menuitem, 
-      priv->paste_menuitem, 
-      priv->cut_menuitem, 
-      priv->delete_menuitem, 
-      NULL };
+    map = G_ACTION_MAP (window);
+
     focus = gtk_window_get_focus (GTK_WINDOW (window));
     sensitive = (GTK_WIDGET (priv->word_treeview) == focus);
 
-    for (i = 0; menuitem[i] != NULL; i++)
-    {
-      gtk_widget_set_sensitive (GTK_WIDGET (menuitem[i]), sensitive);
-    }
+    action = G_SIMPLE_ACTION (g_action_map_lookup_action (map, "copy"));
+    g_simple_action_set_enabled (action, sensitive);
 
+    action = G_SIMPLE_ACTION (g_action_map_lookup_action (map, "paste"));
+    g_simple_action_set_enabled (action, sensitive);
+
+    action = G_SIMPLE_ACTION (g_action_map_lookup_action (map, "cut"));
+    g_simple_action_set_enabled (action, sensitive);
+
+    action = G_SIMPLE_ACTION (g_action_map_lookup_action (map, "delete"));
+    g_simple_action_set_enabled (action, sensitive);
+    
     return FALSE;
 }
 
@@ -691,13 +827,13 @@ gw_vocabularywindow_event_after_cb (GtkWidget *widget, GdkEvent *event, gpointer
 G_MODULE_EXPORT void
 gw_vocabularywindow_liststore_changed_cb (GwVocabularyListStore *store, gpointer data)
 {
+    //Declarations
     GwVocabularyWindow *window;
-    gboolean has_changes;
 
+    //Initializations
     window = GW_VOCABULARYWINDOW (data);
-    has_changes = gw_vocabularyliststore_has_changes (store);
 
-    gw_vocabularywindow_set_has_changes (window, has_changes);
+    gw_vocabularywindow_sync_has_changes (window);
     gw_vocabularywindow_update_flashcard_menu_sensitivities (window);
 }
 
@@ -705,6 +841,7 @@ gw_vocabularywindow_liststore_changed_cb (GwVocabularyListStore *store, gpointer
 G_MODULE_EXPORT void
 gw_vocabularywindow_revert_wordstore_cb (GtkWidget *widget, gpointer data)
 {
+    //Declarations
     GwVocabularyWindow *window;
     GwVocabularyWindowPrivate *priv;
     GwVocabularyListStore *liststore;
@@ -713,7 +850,8 @@ gw_vocabularywindow_revert_wordstore_cb (GtkWidget *widget, gpointer data)
     GtkTreeIter iter;
     GtkTreeModel *model;
     gboolean valid;
-
+  
+    //Initialiations
     window = GW_VOCABULARYWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_VOCABULARYWINDOW));
     g_return_if_fail (window != NULL);
     priv = window->priv;
@@ -732,20 +870,27 @@ gw_vocabularywindow_revert_wordstore_cb (GtkWidget *widget, gpointer data)
 
 
 G_MODULE_EXPORT void
-gw_vocabularywindow_toggle_editing_cb (GtkWidget *widget, gpointer data)
+gw_vocabularywindow_editable_toggled_cb (GSimpleAction *action, 
+                                         GVariant      *parameter,
+                                         gpointer       data)
 {
+    //Declarations
     GwVocabularyWindow *window;
     GwVocabularyWindowPrivate *priv;
-    gboolean state;
+    GVariant *state;
+    gboolean editable;
 
+    //Initializations
     window = GW_VOCABULARYWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_VOCABULARYWINDOW));
     g_return_if_fail (window != NULL);
     priv = window->priv;
-    state = gtk_toggle_tool_button_get_active (priv->edit_toolbutton);
+    state = g_action_get_state (G_ACTION (action));
+    editable = g_variant_get_boolean (state);
+    g_simple_action_set_state (G_SIMPLE_ACTION (action), g_variant_new_boolean (!editable));
 
-    g_object_set (G_OBJECT (priv->renderer[GW_VOCABULARYWORDSTORE_COLUMN_KANJI]), "editable", state, NULL);
-    g_object_set (G_OBJECT (priv->renderer[GW_VOCABULARYWORDSTORE_COLUMN_FURIGANA]), "editable", state, NULL);
-    g_object_set (G_OBJECT (priv->renderer[GW_VOCABULARYWORDSTORE_COLUMN_DEFINITIONS]), "editable", state, NULL);
+    g_object_set (G_OBJECT (priv->renderer[GW_VOCABULARYWORDSTORE_COLUMN_KANJI]), "editable", !editable, NULL);
+    g_object_set (G_OBJECT (priv->renderer[GW_VOCABULARYWORDSTORE_COLUMN_FURIGANA]), "editable", !editable, NULL);
+    g_object_set (G_OBJECT (priv->renderer[GW_VOCABULARYWORDSTORE_COLUMN_DEFINITIONS]), "editable", !editable, NULL);
 }
 
 
@@ -757,47 +902,51 @@ gw_vocabularywindow_set_word_tooltip_text_cb (GtkWidget  *widget,
                                               GtkTooltip *tooltip,
                                               gpointer    data)
 {
+    //Declarations
     GwVocabularyWindow *window;
     GwVocabularyWindowPrivate *priv;
     GwVocabularyWordStore *store;
-    LwVocabularyItem *item;
+    LwWord *word;
     GtkTreeIter iter;
     gchar *text;
     GtkTreePath *path;
     gboolean valid;
     gchar *markup;
 
+    //Initializations
     window = GW_VOCABULARYWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_VOCABULARYWINDOW));
     g_return_val_if_fail (window != NULL, FALSE);
     priv = window->priv;
     store = GW_VOCABULARYWORDSTORE (gtk_tree_view_get_model (priv->word_treeview));
     valid = gtk_tree_view_get_tooltip_context (priv->word_treeview, &x, &y, keyboard_mode, NULL, &path, &iter);
+
     if (valid) 
     {
       text = gw_vocabularywordstore_iter_to_string (store, &iter);
-      item = lw_vocabularyitem_new_from_string (text);
+      word = lw_word_new_from_string (text);
       markup = g_markup_printf_escaped ("<b>%s [%s]</b>\n%s", 
-        lw_vocabularyitem_get_kanji (item), 
-        lw_vocabularyitem_get_furigana (item), 
-        lw_vocabularyitem_get_definitions (item));
+        lw_word_get_kanji (word), 
+        lw_word_get_furigana (word), 
+        lw_word_get_definitions (word));
       gtk_tree_view_set_tooltip_row (priv->word_treeview, tooltip, path);
       gtk_tooltip_set_markup (tooltip, markup);
       g_free (text);
       g_free (markup);
       gtk_tree_path_free (path);
-      lw_vocabularyitem_free (item);
+      lw_word_free (word);
     }
 
     return valid;
 }
 
 
-G_MODULE_EXPORT void
-gw_vocabularywindow_kanji_definition_flashcards_cb (GtkWidget *widget, gpointer data)
+void
+gw_vocabularywindow_kanji_definition_flashcards_cb (GSimpleAction *action, 
+                                                    GVariant      *parameter,
+                                                    gpointer       data)
 {
     GwVocabularyWindow *window;
-    window = GW_VOCABULARYWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_VOCABULARYWINDOW));
-    g_return_if_fail (window != NULL);
+    window = GW_VOCABULARYWINDOW (data);
 
     gw_vocabularywindow_start_flashcards (
       window,
@@ -809,12 +958,13 @@ gw_vocabularywindow_kanji_definition_flashcards_cb (GtkWidget *widget, gpointer 
 }
 
 
-G_MODULE_EXPORT void
-gw_vocabularywindow_definition_kanji_flashcards_cb (GtkWidget *widget, gpointer data)
+void
+gw_vocabularywindow_definition_kanji_flashcards_cb (GSimpleAction *action, 
+                                                    GVariant      *parameter,
+                                                    gpointer       data)
 {
     GwVocabularyWindow *window;
-    window = GW_VOCABULARYWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_VOCABULARYWINDOW));
-    g_return_if_fail (window != NULL);
+    window = GW_VOCABULARYWINDOW (data);
 
     gw_vocabularywindow_start_flashcards (
       window,
@@ -826,12 +976,14 @@ gw_vocabularywindow_definition_kanji_flashcards_cb (GtkWidget *widget, gpointer 
 }
 
 
-G_MODULE_EXPORT void
-gw_vocabularywindow_furigana_definition_flashcards_cb (GtkWidget *widget, gpointer data)
+void
+gw_vocabularywindow_furigana_definition_flashcards_cb (GSimpleAction *action, 
+                                                       GVariant      *parameter,
+                                                       gpointer       data)
 {
     GwVocabularyWindow *window;
-    window = GW_VOCABULARYWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_VOCABULARYWINDOW));
-    g_return_if_fail (window != NULL);
+
+    window = GW_VOCABULARYWINDOW (data);
 
     gw_vocabularywindow_start_flashcards (
       window,
@@ -843,12 +995,14 @@ gw_vocabularywindow_furigana_definition_flashcards_cb (GtkWidget *widget, gpoint
 }
 
 
-G_MODULE_EXPORT void
-gw_vocabularywindow_definition_furigana_flashcards_cb (GtkWidget *widget, gpointer data)
+void
+gw_vocabularywindow_definition_furigana_flashcards_cb (GSimpleAction *action,
+                                                       GVariant      *parameter,
+                                                       gpointer data)
 {
     GwVocabularyWindow *window;
-    window = GW_VOCABULARYWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_VOCABULARYWINDOW));
-    g_return_if_fail (window != NULL);
+
+    window = GW_VOCABULARYWINDOW (data);
 
     gw_vocabularywindow_start_flashcards (
       window,
@@ -860,11 +1014,15 @@ gw_vocabularywindow_definition_furigana_flashcards_cb (GtkWidget *widget, gpoint
 }
 
 
-G_MODULE_EXPORT void
-gw_vocabularywindow_kanji_furigana_flashcards_cb (GtkWidget *widget, gpointer data)
+void
+gw_vocabularywindow_kanji_furigana_flashcards_cb (GSimpleAction *action, 
+                                                  GVariant      *parameter,
+                                                  gpointer       data)
 {
     GwVocabularyWindow *window;
-    window = GW_VOCABULARYWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_VOCABULARYWINDOW));
+
+    window = GW_VOCABULARYWINDOW (data);
+
     g_return_if_fail (window != NULL);
 
     gw_vocabularywindow_start_flashcards (
@@ -877,12 +1035,14 @@ gw_vocabularywindow_kanji_furigana_flashcards_cb (GtkWidget *widget, gpointer da
 }
 
 
-G_MODULE_EXPORT void
-gw_vocabularywindow_furigana_kanji_flashcards_cb (GtkWidget *widget, gpointer data)
+void
+gw_vocabularywindow_furigana_kanji_flashcards_cb (GSimpleAction *action, 
+                                                  GVariant      *parameter,
+                                                  gpointer       data)
 {
     GwVocabularyWindow *window;
-    window = GW_VOCABULARYWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_VOCABULARYWINDOW));
-    g_return_if_fail (window != NULL);
+
+    window = GW_VOCABULARYWINDOW (data);
 
     gw_vocabularywindow_start_flashcards (
       window,
@@ -894,8 +1054,10 @@ gw_vocabularywindow_furigana_kanji_flashcards_cb (GtkWidget *widget, gpointer da
 }
 
 
-G_MODULE_EXPORT void
-gw_vocabularywindow_shuffle_toggled_cb (GtkAction *action, gpointer data)
+void
+gw_vocabularywindow_shuffle_toggled_cb (GSimpleAction *action, 
+                                        GVariant      *parameter,
+                                        gpointer       data)
 {
     //Declarations
     GwApplication *application;
@@ -914,33 +1076,30 @@ gw_vocabularywindow_shuffle_toggled_cb (GtkAction *action, gpointer data)
 }
 
 
-G_MODULE_EXPORT void
-gw_vocabularywindow_sync_shuffle_flashcards_cb (GSettings *settings, gchar *key, gpointer data)
+void
+gw_vocabularywindow_sync_shuffle_flashcards_cb (GSettings *settings, 
+                                                gchar     *key, 
+                                                gpointer   data)
 {
     //Declarations
     GwVocabularyWindow *window;
-    GwVocabularyWindowPrivate *priv;
-    GtkWidget *toplevel;
-    GtkToggleAction *action;
-    gboolean request;
+    gboolean show;
+    GAction *action;
 
     //Initializations
     window = GW_VOCABULARYWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_VOCABULARYWINDOW));
     g_return_if_fail (window != NULL);
-    priv = window->priv;
-    toplevel = gw_window_get_toplevel (GW_WINDOW (window));
-    action = priv->shuffle_toggleaction;
-    request = lw_preferences_get_boolean (settings, key);
-    priv->shuffle = request;
+    show = (lw_preferences_get_boolean (settings, key));
+    action = g_action_map_lookup_action (G_ACTION_MAP (window), "toggle-shuffle");
 
-    G_GNUC_EXTENSION g_signal_handlers_block_by_func (action, gw_vocabularywindow_shuffle_toggled_cb, toplevel);
-    gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (action), request);
-    G_GNUC_EXTENSION g_signal_handlers_unblock_by_func (action, gw_vocabularywindow_shuffle_toggled_cb, toplevel);
+    g_simple_action_set_state (G_SIMPLE_ACTION (action), g_variant_new_boolean (show));
 }
 
 
-G_MODULE_EXPORT void
-gw_vocabularywindow_trim_toggled_cb (GtkAction *action, gpointer data)
+void
+gw_vocabularywindow_trim_toggled_cb (GSimpleAction *action, 
+                                     GVariant      *parameter,
+                                     gpointer       data)
 {
     //Declarations
     GwApplication *application;
@@ -959,34 +1118,31 @@ gw_vocabularywindow_trim_toggled_cb (GtkAction *action, gpointer data)
 }
 
 
-G_MODULE_EXPORT void
-gw_vocabularywindow_sync_trim_flashcards_cb (GSettings *settings, gchar *key, gpointer data)
+void
+gw_vocabularywindow_sync_trim_flashcards_cb (GSettings *settings, 
+                                             gchar     *key, 
+                                             gpointer   data)
 {
     //Declarations
     GwVocabularyWindow *window;
-    GwVocabularyWindowPrivate *priv;
-    GtkWidget *toplevel;
-    GtkToggleAction *action;
-    gboolean request;
+    gboolean show;
+    GAction *action;
 
     //Initializations
     window = GW_VOCABULARYWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_VOCABULARYWINDOW));
     g_return_if_fail (window != NULL);
-    priv = window->priv;
-    toplevel = gw_window_get_toplevel (GW_WINDOW (window));
-    action = priv->trim_toggleaction;
-    request = lw_preferences_get_boolean (settings, key);
-    priv->trim = request;
+    show = (lw_preferences_get_boolean (settings, key));
+    action = g_action_map_lookup_action (G_ACTION_MAP (window), "toggle-trim");
 
-    G_GNUC_EXTENSION g_signal_handlers_block_by_func (action, gw_vocabularywindow_trim_toggled_cb, toplevel);
-    gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (action), request);
-    G_GNUC_EXTENSION g_signal_handlers_unblock_by_func (action, gw_vocabularywindow_trim_toggled_cb, toplevel);
+    g_simple_action_set_state (G_SIMPLE_ACTION (action), g_variant_new_boolean (show));
 }
 
 
 
-G_MODULE_EXPORT void
-gw_vocabularywindow_track_results_toggled_cb (GtkAction *action, gpointer data)
+void
+gw_vocabularywindow_track_results_toggled_cb (GSimpleAction *action, 
+                                              GVariant      *parameter,
+                                              gpointer       data)
 {
     //Declarations
     GwApplication *application;
@@ -1005,33 +1161,30 @@ gw_vocabularywindow_track_results_toggled_cb (GtkAction *action, gpointer data)
 }
 
 
-G_MODULE_EXPORT void
-gw_vocabularywindow_sync_track_results_cb (GSettings *settings, gchar *key, gpointer data)
+void
+gw_vocabularywindow_sync_track_results_cb (GSettings *settings, 
+                                           gchar     *key, 
+                                           gpointer   data)
 {
     //Declarations
     GwVocabularyWindow *window;
-    GwVocabularyWindowPrivate *priv;
-    GtkWidget *toplevel;
-    GtkToggleAction *action;
-    gboolean request;
+    gboolean show;
+    GAction *action;
 
     //Initializations
     window = GW_VOCABULARYWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_VOCABULARYWINDOW));
     g_return_if_fail (window != NULL);
-    priv = window->priv;
-    toplevel = gw_window_get_toplevel (GW_WINDOW (window));
-    action = priv->track_results_toggleaction;
-    request = lw_preferences_get_boolean (settings, key);
-    priv->track = request;
+    show = (lw_preferences_get_boolean (settings, key));
+    action = g_action_map_lookup_action (G_ACTION_MAP (window), "toggle-track-results");
 
-    G_GNUC_EXTENSION g_signal_handlers_block_by_func (action, gw_vocabularywindow_track_results_toggled_cb, toplevel);
-    gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (action), request);
-    G_GNUC_EXTENSION g_signal_handlers_unblock_by_func (action, gw_vocabularywindow_track_results_toggled_cb, toplevel);
+    g_simple_action_set_state (G_SIMPLE_ACTION (action), g_variant_new_boolean (show));
 }
 
 
-G_MODULE_EXPORT void
-gw_vocabularywindow_sync_list_order_cb (GSettings *settings, gchar *key, gpointer data)
+void
+gw_vocabularywindow_sync_list_order_cb (GSettings *settings, 
+                                        gchar     *key, 
+                                        gpointer   data)
 {
     GwVocabularyWindow *window;
     GwApplication *application;
@@ -1049,10 +1202,9 @@ gw_vocabularywindow_sync_list_order_cb (GSettings *settings, gchar *key, gpointe
 
 
 G_MODULE_EXPORT void
-gw_vocabularywindow_drag_begin_cb (
-  GtkWidget      *widget,
-  GdkDragContext *context,
-  gpointer        data)
+gw_vocabularywindow_drag_begin_cb (GtkWidget      *widget,
+                                   GdkDragContext *context,
+                                   gpointer        data)
 {
   cairo_surface_t *surface;
   GtkTreeView *view;
@@ -1077,13 +1229,12 @@ gw_vocabularywindow_drag_begin_cb (
 
 
 G_MODULE_EXPORT void
-gw_vocabularywindow_list_drag_motion_cb (
-  GtkWidget *widget,
-  GdkDragContext *context,
-  gint x,
-  gint y,
-  guint time,
-  gpointer data)
+gw_vocabularywindow_list_drag_motion_cb (GtkWidget      *widget,
+                                         GdkDragContext *context,
+                                         gint            x,
+                                         gint            y,
+                                         guint           time,
+                                         gpointer        data)
 {
     //Declarations
     GwVocabularyWindow *window;
@@ -1285,7 +1436,7 @@ gw_vocabularywindow_list_drag_drop_cb (
     else if (source == priv->word_treeview)
       success = gw_vocabularywindow_list_drag_drop (widget, context, y, y, time, user_data);
 
-    if (success) gw_vocabularywindow_set_has_changes (window, TRUE);
+    if (success) gw_vocabularywindow_sync_has_changes (window);
     gtk_drag_finish (context, success, FALSE, time);
 
     return success;
@@ -1294,13 +1445,12 @@ gw_vocabularywindow_list_drag_drop_cb (
 
 
 static gboolean
-gw_vocabularywindow_word_drag_reorder (
-  GtkWidget *widget,
-  GdkDragContext *context,
-  gint x,
-  gint y,
-  guint time,
-  gpointer user_data)
+gw_vocabularywindow_word_drag_reorder (GtkWidget      *widget,
+                                       GdkDragContext *context,
+                                       gint            x,
+                                       gint            y,
+                                       guint           time,
+                                       gpointer        user_data)
 {
     //Declarations
     GtkTreeViewDropPosition drop_position;
@@ -1369,7 +1519,7 @@ gw_vocabularywindow_word_drag_drop_cb (
     if (source == priv->word_treeview)
       success = gw_vocabularywindow_word_drag_reorder (widget, context, x, y, time, user_data);
 
-    if (success) gw_vocabularywindow_set_has_changes (window, TRUE);
+    if (success) gw_vocabularywindow_sync_has_changes (window);
     gtk_drag_finish (context, success, FALSE, time);
 
     return success;
@@ -1419,115 +1569,129 @@ gw_vocabularywindow_word_drag_motion_cb (
 }
 
 
-G_MODULE_EXPORT void
-gw_vocabularywindow_sync_toolbar_show_cb (GSettings *settings, gchar *key, gpointer data)
+void
+gw_vocabularywindow_sync_toolbar_show_cb (GSettings *settings, 
+                                          gchar     *key, 
+                                          gpointer   data)
 {
     //Declarations
     GwVocabularyWindow *window;
     GwVocabularyWindowPrivate *priv;
-    GtkWidget *toplevel;
-    GtkToggleAction *action;
-    gboolean request;
+    gboolean show;
+    GtkToolbar *toolbar;
+    GAction *action;
 
     //Initializations
     window = GW_VOCABULARYWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_VOCABULARYWINDOW));
     g_return_if_fail (window != NULL);
     priv = window->priv;
-    toplevel = gw_window_get_toplevel (GW_WINDOW (window));
-    request = lw_preferences_get_boolean (settings, key);
-    if (request == TRUE)
-      gtk_widget_show (GTK_WIDGET (priv->study_toolbar));
+    show = lw_preferences_get_boolean (settings, key);
+    toolbar = GTK_TOOLBAR (priv->primary_toolbar);
+    action = g_action_map_lookup_action (G_ACTION_MAP (window), "toggle-toolbar-show");
+
+    if (show == TRUE)
+      gtk_widget_show (GTK_WIDGET (toolbar));
     else
-      gtk_widget_hide (GTK_WIDGET (priv->study_toolbar));
-    action = priv->show_toolbar_toggleaction;
+      gtk_widget_hide (GTK_WIDGET (toolbar));
 
-    G_GNUC_EXTENSION g_signal_handlers_block_by_func (action, gw_vocabularywindow_toolbar_toggled_cb, toplevel);
-    gtk_toggle_action_set_active (action, request);
-    G_GNUC_EXTENSION g_signal_handlers_unblock_by_func (action, gw_vocabularywindow_toolbar_toggled_cb, toplevel);
-
+    g_simple_action_set_state (G_SIMPLE_ACTION (action), g_variant_new_boolean (show));
 }
 
 
-G_MODULE_EXPORT void
-gw_vocabularywindow_sync_position_column_show_cb (GSettings *settings, gchar *key, gpointer data)
+void
+gw_vocabularywindow_sync_position_column_show_cb (GSettings *settings, 
+                                                  gchar     *key, 
+                                                  gpointer   data)
 {
     //Declarations
     GwVocabularyWindow *window;
     GwVocabularyWindowPrivate *priv;
-    GtkWidget *toplevel;
-    GtkToggleAction *action;
-    gboolean request;
+    GAction *action;
+    gboolean show;
 
     //Initializations
     window = GW_VOCABULARYWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_VOCABULARYWINDOW));
     g_return_if_fail (window != NULL);
     priv = window->priv;
-    toplevel = gw_window_get_toplevel (GW_WINDOW (window));
-    request = lw_preferences_get_boolean (settings, key);
-    action = priv->show_position_column_toggleaction;
+    show = lw_preferences_get_boolean (settings, key);
+    action = g_action_map_lookup_action (G_ACTION_MAP (window), "toggle-position-column-show");
 
-    gtk_tree_view_column_set_visible (priv->position_column, request);
-
-    G_GNUC_EXTENSION g_signal_handlers_block_by_func (action, gw_vocabularywindow_position_column_toggled_cb, toplevel);
-    gtk_toggle_action_set_active (action, request);
-    G_GNUC_EXTENSION g_signal_handlers_unblock_by_func (action, gw_vocabularywindow_position_column_toggled_cb, toplevel);
+    gtk_tree_view_column_set_visible (priv->position_column, show);
+    g_simple_action_set_state (G_SIMPLE_ACTION (action), g_variant_new_boolean (show));
 }
 
 
-G_MODULE_EXPORT void
-gw_vocabularywindow_sync_score_column_show_cb (GSettings *settings, gchar *key, gpointer data)
+void
+gw_vocabularywindow_sync_score_column_show_cb (GSettings *settings, 
+                                               gchar     *key, 
+                                               gpointer   data)
 {
     //Declarations
     GwVocabularyWindow *window;
     GwVocabularyWindowPrivate *priv;
-    GtkWidget *toplevel;
-    GtkToggleAction *action;
-    gboolean request;
+    GAction *action;
+    gboolean show;
 
     //Initializations
     window = GW_VOCABULARYWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_VOCABULARYWINDOW));
     g_return_if_fail (window != NULL);
     priv = window->priv;
-    toplevel = gw_window_get_toplevel (GW_WINDOW (window));
-    request = lw_preferences_get_boolean (settings, key);
-    action = priv->show_score_column_toggleaction;
+    show = lw_preferences_get_boolean (settings, key);
+    action = g_action_map_lookup_action (G_ACTION_MAP (window), "toggle-score-column-show");
 
-    gtk_tree_view_column_set_visible (priv->score_column, request);
-
-    G_GNUC_EXTENSION g_signal_handlers_block_by_func (action, gw_vocabularywindow_score_column_toggled_cb, toplevel);
-    gtk_toggle_action_set_active (action, request);
-    G_GNUC_EXTENSION g_signal_handlers_unblock_by_func (action, gw_vocabularywindow_score_column_toggled_cb, toplevel);
+    gtk_tree_view_column_set_visible (priv->score_column, show);
+    g_simple_action_set_state (G_SIMPLE_ACTION (action), g_variant_new_boolean (show));
 }
 
 
-G_MODULE_EXPORT void
-gw_vocabularywindow_sync_timestamp_column_show_cb (GSettings *settings, gchar *key, gpointer data)
+void
+gw_vocabularywindow_sync_timestamp_column_show_cb (GSettings *settings, 
+                                                   gchar     *key, 
+                                                   gpointer   data)
 {
     //Declarations
     GwVocabularyWindow *window;
     GwVocabularyWindowPrivate *priv;
-    GtkWidget *toplevel;
-    GtkToggleAction *action;
-    gboolean request;
+    GAction *action;
+    gboolean show;
 
     //Initializations
     window = GW_VOCABULARYWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_VOCABULARYWINDOW));
     g_return_if_fail (window != NULL);
     priv = window->priv;
-    toplevel = gw_window_get_toplevel (GW_WINDOW (window));
-    request = lw_preferences_get_boolean (settings, key);
-    action = priv->show_timestamp_column_toggleaction;
+    show = lw_preferences_get_boolean (settings, key);
+    action = g_action_map_lookup_action (G_ACTION_MAP (window), "toggle-timestamp-column-show");
 
-    gtk_tree_view_column_set_visible (priv->timestamp_column, request);
-
-    G_GNUC_EXTENSION g_signal_handlers_block_by_func (action, gw_vocabularywindow_timestamp_column_toggled_cb, toplevel);
-    gtk_toggle_action_set_active (action, request);
-    G_GNUC_EXTENSION g_signal_handlers_unblock_by_func (action, gw_vocabularywindow_timestamp_column_toggled_cb, toplevel);
+    gtk_tree_view_column_set_visible (priv->timestamp_column, show);
+    g_simple_action_set_state (G_SIMPLE_ACTION (action), g_variant_new_boolean (show));
 }
 
 
-G_MODULE_EXPORT void
-gw_vocabularywindow_toolbar_toggled_cb (GtkAction *action, gpointer data)
+void
+gw_vocabularywindow_toolbar_show_toggled_cb (GSimpleAction *action,
+                                             GVariant      *parameter,
+                                             gpointer       data)
+{
+    //Declarations
+    GwApplication *application;
+    GwVocabularyWindow *window;
+    LwPreferences *preferences;
+    gboolean show;
+
+    //Initializations
+    window = GW_VOCABULARYWINDOW (data);
+    application = gw_window_get_application (GW_WINDOW (window));
+    preferences = gw_application_get_preferences (application);
+    show = lw_preferences_get_boolean_by_schema (preferences, LW_SCHEMA_VOCABULARY, LW_KEY_TOOLBAR_SHOW);
+
+    lw_preferences_set_boolean_by_schema (preferences, LW_SCHEMA_VOCABULARY, LW_KEY_TOOLBAR_SHOW, !show);
+}
+
+
+void
+gw_vocabularywindow_position_column_toggled_cb (GSimpleAction *action, 
+                                                GVariant      *parameter,
+                                                gpointer       data)
 {
     //Declarations
     GwVocabularyWindow *window;
@@ -1540,14 +1704,16 @@ gw_vocabularywindow_toolbar_toggled_cb (GtkAction *action, gpointer data)
     g_return_if_fail (window != NULL);
     application = gw_window_get_application (GW_WINDOW (window));
     preferences = gw_application_get_preferences (application);
+    state = lw_preferences_get_boolean_by_schema (preferences, LW_SCHEMA_VOCABULARY, LW_KEY_POSITION_COLUMN_SHOW);
 
-    state = gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action));
-    lw_preferences_set_boolean_by_schema (preferences, LW_SCHEMA_VOCABULARY, LW_KEY_TOOLBAR_SHOW, state);
+    lw_preferences_set_boolean_by_schema (preferences, LW_SCHEMA_VOCABULARY, LW_KEY_POSITION_COLUMN_SHOW, !state);
 }
 
 
-G_MODULE_EXPORT void
-gw_vocabularywindow_position_column_toggled_cb (GtkAction *action, gpointer data)
+void
+gw_vocabularywindow_score_column_toggled_cb (GSimpleAction *action, 
+                                             GVariant      *parameter,
+                                             gpointer       data)
 {
     //Declarations
     GwVocabularyWindow *window;
@@ -1560,14 +1726,16 @@ gw_vocabularywindow_position_column_toggled_cb (GtkAction *action, gpointer data
     g_return_if_fail (window != NULL);
     application = gw_window_get_application (GW_WINDOW (window));
     preferences = gw_application_get_preferences (application);
+    state = lw_preferences_get_boolean_by_schema (preferences, LW_SCHEMA_VOCABULARY, LW_KEY_SCORE_COLUMN_SHOW);
 
-    state = gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action));
-    lw_preferences_set_boolean_by_schema (preferences, LW_SCHEMA_VOCABULARY, LW_KEY_POSITION_COLUMN_SHOW, state);
+    lw_preferences_set_boolean_by_schema (preferences, LW_SCHEMA_VOCABULARY, LW_KEY_SCORE_COLUMN_SHOW, !state);
 }
 
 
-G_MODULE_EXPORT void
-gw_vocabularywindow_score_column_toggled_cb (GtkAction *action, gpointer data)
+void
+gw_vocabularywindow_timestamp_column_toggled_cb (GSimpleAction *action, 
+                                                 GVariant      *parameter,
+                                                 gpointer       data)
 {
     //Declarations
     GwVocabularyWindow *window;
@@ -1580,27 +1748,64 @@ gw_vocabularywindow_score_column_toggled_cb (GtkAction *action, gpointer data)
     g_return_if_fail (window != NULL);
     application = gw_window_get_application (GW_WINDOW (window));
     preferences = gw_application_get_preferences (application);
+    state = lw_preferences_get_boolean_by_schema (preferences, LW_SCHEMA_VOCABULARY, LW_KEY_TIMESTAMP_COLUMN_SHOW);
 
-    state = gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action));
-    lw_preferences_set_boolean_by_schema (preferences, LW_SCHEMA_VOCABULARY, LW_KEY_SCORE_COLUMN_SHOW, state);
+    lw_preferences_set_boolean_by_schema (preferences, LW_SCHEMA_VOCABULARY, LW_KEY_TIMESTAMP_COLUMN_SHOW, !state);
 }
 
 
-G_MODULE_EXPORT void
-gw_vocabularywindow_timestamp_column_toggled_cb (GtkAction *action, gpointer data)
+//!
+//! @brief Syncs the gui to the preference settinging.  It should be attached to the gsettings object
+//!
+void 
+gw_vocabularywindow_sync_menubar_show_cb (GSettings *settings, 
+                                          gchar     *key, 
+                                          gpointer   data)
 {
     //Declarations
     GwVocabularyWindow *window;
-    GwApplication *application;
-    LwPreferences *preferences;
-    gboolean state;
+    gboolean show;
+    GAction *action;
+    GtkSettings *gtk_settings;
+    gboolean shell_shows_menubar;
 
     //Initializations
     window = GW_VOCABULARYWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_VOCABULARYWINDOW));
     g_return_if_fail (window != NULL);
+    gtk_settings = gtk_settings_get_default ();
+    g_object_get (G_OBJECT (gtk_settings), "gtk-shell-shows-menubar", &shell_shows_menubar, NULL);
+    show = (lw_preferences_get_boolean (settings, key));
+    action = g_action_map_lookup_action (G_ACTION_MAP (window), "toggle-menubar-show");
+
+    gw_window_show_menubar (GW_WINDOW (window), show && !shell_shows_menubar);
+    gtk_window_set_hide_titlebar_when_maximized (GTK_WINDOW (window), !show || shell_shows_menubar);
+    g_simple_action_set_state (G_SIMPLE_ACTION (action), g_variant_new_boolean (show));
+}
+
+
+//!
+//! @brief Sets the show menu boolean to match the widget
+//! @see gw_searchwindow_set_menu_show ()
+//! @param widget Unused GtkWidget pointer.
+//! @param data Unused gpointer
+//!
+void 
+gw_vocabularywindow_menubar_show_toggled_cb (GSimpleAction *action, 
+                                             GVariant      *parameter, 
+                                             gpointer       data)
+{
+    //Declarations
+    GwApplication *application;
+    GwVocabularyWindow *window;
+    LwPreferences *preferences;
+    gboolean show;
+
+    //Initializations
+    window = GW_VOCABULARYWINDOW (data);
     application = gw_window_get_application (GW_WINDOW (window));
     preferences = gw_application_get_preferences (application);
+    show = lw_preferences_get_boolean_by_schema (preferences, LW_SCHEMA_VOCABULARY, LW_KEY_MENUBAR_SHOW);
 
-    state = gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action));
-    lw_preferences_set_boolean_by_schema (preferences, LW_SCHEMA_VOCABULARY, LW_KEY_TIMESTAMP_COLUMN_SHOW, state);
+    lw_preferences_set_boolean_by_schema (preferences, LW_SCHEMA_VOCABULARY, LW_KEY_MENUBAR_SHOW, !show);
 }
+

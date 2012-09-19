@@ -28,8 +28,6 @@
 //!
 
 
-#include "../private.h"
-
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -148,7 +146,7 @@ static void _kanjipadwindow_draw_candidate_character (GwKanjipadWindow *window, 
     priv = window->priv;
     cr = cairo_create (priv->ksurface);
     allocated_width = gtk_widget_get_allocated_width (GTK_WIDGET (priv->candidates));
-    context = gtk_widget_get_style_context (GTK_WIDGET (window));
+    context = gtk_widget_get_style_context (GTK_WIDGET (priv->candidates));
 
     gtk_style_context_get_color (context, GTK_STATE_FLAG_NORMAL, &fgcolorn);
     gtk_style_context_get_background_color (context, GTK_STATE_FLAG_NORMAL, &bgcolorn);
@@ -157,11 +155,10 @@ static void _kanjipadwindow_draw_candidate_character (GwKanjipadWindow *window, 
 
     _kanjipadwindow_get_candidate_character_size (window, &char_width, &char_height);
 
-    //Rectangle Color
     if (selected >= 0)
     {
       if (selected)
-        cairo_set_source_rgba (cr, fgcolors.red, fgcolors.green, fgcolors.blue, 1.0);
+        cairo_set_source_rgba (cr, bgcolors.red, bgcolors.green, bgcolors.blue, 1.0);
       else
         cairo_set_source_rgba (cr, bgcolorn.red, bgcolorn.green, bgcolorn.blue, 1.0);
 
@@ -183,9 +180,8 @@ static void _kanjipadwindow_draw_candidate_character (GwKanjipadWindow *window, 
     layout = gtk_widget_create_pango_layout (GTK_WIDGET (priv->candidates), string_utf);
     g_free (string_utf);
     
-    //Font Color
     if (selected >= 0 && selected)
-      cairo_set_source_rgba (cr, bgcolors.red, bgcolors.green, bgcolors.blue, 1.0);
+      cairo_set_source_rgba (cr, fgcolors.red, fgcolors.green, fgcolors.blue, 1.0);
     else
       cairo_set_source_rgba (cr, fgcolorn.red, fgcolorn.green, fgcolorn.blue, 1.0);
 
@@ -389,8 +385,8 @@ G_MODULE_EXPORT gboolean gw_kanjipadwindow_candidatearea_button_press_event_cb (
       _kanjipadwindow_draw_candidate_character (window, j, 1);
       
       if (!gtk_clipboard_set_with_owner (clipboard, targets, G_N_ELEMENTS (targets),
-        _kanjipadwindow_primary_candidates_get, _kanjipadwindow_primary_candidates_clear, G_OBJECT (window)))
-      _kanjipadwindow_primary_candidates_clear (clipboard, window);
+        _kanjipadwindow_primary_candidates_get, _kanjipadwindow_primary_candidates_clear, G_OBJECT (widget)))
+      _kanjipadwindow_primary_candidates_clear (clipboard, widget);
     }
     else
     {

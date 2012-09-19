@@ -25,9 +25,6 @@
 //! @brief To be written
 //!
 
-
-#include "../private.h"
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -174,8 +171,8 @@ gw_flashcardstore_class_init (GwFlashCardStoreClass *klass)
 
 /*
     pspec = g_param_spec_string ("name",
-                                 "Name of the vocabulary list",
-                                 "Set vocabulary list's name.",
+                                 "Name of the word list",
+                                 "Set word list's name.",
                                  "Vocabulary",
                                  G_PARAM_CONSTRUCT | G_PARAM_READWRITE
     );
@@ -413,7 +410,7 @@ gw_flashcardstore_set_correct_guesses (GwFlashCardStore *store, GtkTreeIter *fla
     guess_delta = new_guesses - old_guesses;
     valid = gtk_tree_model_get_iter (GTK_TREE_MODEL (priv->store), &iter, path);
 
-    //Propagate the number change to the vocabulary list
+    //Propagate the number change to the word list
     if (record && valid)
     {
       guesses = gw_vocabularywordstore_get_correct_guesses_by_iter (priv->store, &iter);
@@ -474,7 +471,7 @@ gw_flashcardstore_set_incorrect_guesses (GwFlashCardStore *store, GtkTreeIter *f
     guess_delta = new_guesses - old_guesses;
     valid = gtk_tree_model_get_iter (GTK_TREE_MODEL (priv->store), &iter, path);
 
-    //Propagate the number change to the vocabulary list
+    //Propagate the number change to the word list
     if (record && valid)
     {
       guesses = gw_vocabularywordstore_get_incorrect_guesses_by_iter (priv->store, &iter);

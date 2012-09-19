@@ -1,0 +1,262 @@
+<interface>
+  <menu id='menu'>
+    <submenu>
+      <attribute name='label' translatable='yes'>_File</attribute>
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>New _Window</attribute>
+          <attribute name='action'>app.new-window</attribute>
+          <attribute name='accel'>&lt;Primary&gt;n</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>New _Tab</attribute>
+          <attribute name='action'>win.new-tab</attribute>
+          <attribute name='accel'>&lt;Primary&gt;t</attribute>
+        </item>
+      </section>
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>_Save</attribute>
+          <attribute name='action'>win.save</attribute>
+          <attribute name='accel'>&lt;Primary&gt;s</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>Save _As</attribute>
+          <attribute name='action'>win.save-as</attribute>
+        </item>
+      </section>
+      <submenu>
+        <attribute name='label' translatable='yes'>_Dictionary</attribute>
+        <section>
+          <item>
+            <attribute name='label'>dictionary-list-link</attribute>
+          </item>
+        </section>
+        <section>
+          <item>
+            <attribute name='label' translatable='yes'>_Next Dictionary</attribute>
+            <attribute name='action'>win.next-dictionary</attribute>
+            <attribute name='accel'>&lt;Alt&gt;Down</attribute>
+          </item>
+          <item>
+            <attribute name='label' translatable='yes'>_Previous Dictionary</attribute>
+            <attribute name='action'>win.previous-dictionary</attribute>
+            <attribute name='accel'>&lt;Alt&gt;Up</attribute>
+          </item>
+        </section>
+      </submenu>
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>_Print</attribute>
+          <attribute name='action'>win.print</attribute>
+          <attribute name='accel'>&lt;Primary&gt;p</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>Print Preview</attribute>
+          <attribute name='action'>win.print-preview</attribute>
+        </item>
+      </section>
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>_Close</attribute>
+          <attribute name='action'>win.close</attribute>
+          <attribute name='accel'>&lt;Primary&gt;w</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>_Quit</attribute>
+          <attribute name='action'>app.quit</attribute>
+          <attribute name='accel'>&lt;Primary&gt;q</attribute>
+        </item>
+      </section>
+    </submenu>
+
+    <submenu>
+      <attribute name='label' translatable='yes'>_Edit</attribute>
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>_Copy</attribute>
+          <attribute name='action'>win.copy</attribute>
+          <attribute name='accel'>&lt;Primary&gt;c</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>_Cut</attribute>
+          <attribute name='action'>win.cut</attribute>
+          <attribute name='accel'>&lt;Primary&gt;x</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>_Paste</attribute>
+          <attribute name='action'>win.paste</attribute>
+          <attribute name='accel'>&lt;Primary&gt;v</attribute>
+        </item>
+      </section>
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>_Select All</attribute>
+          <attribute name='action'>win.select-all</attribute>
+          <attribute name='accel'>&lt;Primary&gt;a</attribute>
+        </item>
+      </section>
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>_Preferences</attribute>
+          <attribute name='action'>app.show-preferences</attribute>
+          <attribute name='accel'>&lt;Primary&gt;comma</attribute>
+        </item>
+      </section>
+    </submenu>
+
+    <submenu>
+      <attribute name='label' translatable='yes'>_View</attribute>
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>_Menubar</attribute>
+          <attribute name='action'>win.toggle-menubar-show</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>_Toolbar</attribute>
+          <attribute name='action'>win.toggle-toolbar-show</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>T_ab Bar</attribute>
+          <attribute name='action'>win.toggle-tabbar-show</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>_Statusbar</attribute>
+          <attribute name='action'>win.toggle-statusbar-show</attribute>
+        </item>
+      </section>
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>Zoom Normal</attribute>
+          <attribute name='action'>win.zoom-100</attribute>
+          <attribute name='accel'>&lt;Primary&gt;0</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>Zoom In</attribute>
+          <attribute name='action'>win.zoom-in</attribute>
+          <attribute name='accel'>&lt;Primary&gt;plus</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>Zoom Out</attribute>
+          <attribute name='action'>win.zoom-out</attribute>
+          <attribute name='accel'>&lt;Primary&gt;minus</attribute>
+        </item>
+      </section>
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>_Next Tab</attribute>
+          <attribute name='action'>win.next-tab</attribute>
+          <attribute name='accel'>&lt;Primary&gt;Page_Down</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>_Previous Tab</attribute>
+          <attribute name='action'>win.previous-tab</attribute>
+          <attribute name='accel'>&lt;Primary&gt;Page_Up</attribute>
+        </item>
+      </section>
+    </submenu>
+
+    <submenu>
+      <attribute name='label' translatable='yes'>_Insert</attribute>
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>Using _Kanjipad</attribute>
+          <attribute name='action'>win.toggle-kanjipad-show</attribute>
+          <attribute name='accel'>&lt;Primary&gt;k</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>Using _Radical Table</attribute>
+          <attribute name='action'>win.toggle-radicals-show</attribute>
+          <attribute name='accel'>&lt;Primary&gt;r</attribute>
+        </item>
+      </section>
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>Word-Edge Character</attribute>
+          <attribute name='action'>win.insert-word-edge-character</attribute>
+          <attribute name='accel'>&lt;Primary&gt;b</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>Not-Word-Edge Character</attribute>
+          <attribute name='action'>win.insert-not-word-edge-character</attribute>
+          <attribute name='accel'>&lt;Primary&gt;&lt;Shift&gt;b</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>Unknown Character</attribute>
+          <attribute name='action'>win.insert-unknown-character</attribute>
+          <attribute name='accel'>&lt;Primary&gt;period</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>And Character</attribute>
+          <attribute name='action'>win.insert-and-character</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>Or Character</attribute>
+          <attribute name='action'>win.insert-or-character</attribute>
+        </item>
+      </section>
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>Clear</attribute>
+          <attribute name='action'>win.clear</attribute>
+          <attribute name='accel'>&lt;Primary&gt;l</attribute>
+        </item>
+      </section>
+    </submenu>
+
+    <submenu>
+      <attribute name='label' translatable='yes'>Hi_story</attribute>
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>Back</attribute>
+          <attribute name='action'>win.go-back</attribute>
+          <attribute name='accel'>&lt;Alt&gt;Left</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>Forward</attribute>
+          <attribute name='action'>win.go-forward</attribute>
+          <attribute name='accel'>&lt;Alt&gt;Right</attribute>
+        </item>
+      </section>
+      <section>
+        <item>
+            <attribute name='label'>history-list-link</attribute>
+        </item>
+      </section>
+    </submenu>
+
+    <submenu>
+      <attribute name='label' translatable='yes'>V_ocabulary</attribute>
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>_Manage</attribute>
+          <attribute name='action'>app.show-vocabulary</attribute>
+          <attribute name='accel'>&lt;Primary&gt;m</attribute>
+        </item>
+      </section>
+      <section>
+        <item>
+            <attribute name='label'>vocabulary-list-link</attribute>
+        </item>
+      </section>
+    </submenu>
+
+    <submenu>
+      <attribute name='label' translatable='yes'>_Help</attribute>
+      <item>
+        <attribute name='label' translatable='yes'>_About</attribute>
+        <attribute name='action'>app.show-about</attribute>
+      </item>
+      <item>
+        <attribute name='label' translatable='yes'>_Contents</attribute>
+        <attribute name='action'>app.show-help</attribute>
+        <attribute name='accel'>F1</attribute>
+      </item>
+      <item>
+        <attribute name='label' translatable='yes'>_Glossary</attribute>
+        <attribute name='action'>app.show-glossary</attribute>
+      </item>
+    </submenu>
+  </menu>
+</interface>
+

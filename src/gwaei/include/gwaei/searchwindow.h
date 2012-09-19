@@ -1,7 +1,7 @@
 #ifndef GW_SEARCHWINDOW_INCLUDED
 #define GW_SEARCHWINDOW_INCLUDED
 
-#include <libwaei/searchitem.h>
+#include <libwaei/search.h>
 
 G_BEGIN_DECLS
 
@@ -33,7 +33,7 @@ struct _GwSearchWindow {
 struct _GwSearchWindowClass {
   GwWindowClass parent_class;
   guint signalid[TOTAL_GW_SEARCHWINDOW_CLASS_SIGNALIDS];
-  void (*word_added) (GwSearchWindow* window, LwResultLine *line);
+  void (*word_added) (GwSearchWindow* window, LwResult *result);
   GtkSizeGroup *tablabel_sizegroup;
   GtkCssProvider *tablabel_cssprovider;
 };
@@ -47,29 +47,31 @@ gboolean gw_searchwindow_keep_searching_timeout (GwSearchWindow*);
 
 void gw_searchwindow_update_history_popups (GwSearchWindow*);
 void gw_searchwindow_update_toolbar_buttons (GwSearchWindow*);
-void gw_searchwindow_update_total_results_label (GwSearchWindow*, LwSearchItem*);
+void gw_searchwindow_update_total_results_label (GwSearchWindow*, LwSearch*);
 
 char* gw_searchwindow_get_text_slice_from_buffer (GwSearchWindow*, int, int, int);
 char* gw_searchwindow_get_text (GwSearchWindow*, GtkWidget*);
 
-void gw_searchwindow_cancel_search_by_searchitem (GwSearchWindow*, LwSearchItem*);
+void gw_searchwindow_cancel_search_by_searchitem (GwSearchWindow*, LwSearch*);
 void gw_searchwindow_cancel_search_by_tab_number (GwSearchWindow*, const int);
 void gw_searchwindow_cancel_search_for_current_tab (GwSearchWindow*);
 void gw_searchwindow_cancel_search_by_content (GwSearchWindow*, gpointer);
 void gw_searchwindow_cancel_all_searches (GwSearchWindow*);
 
-void gw_searchwindow_initialize_buffer_by_searchitem (GwSearchWindow*, LwSearchItem*);
+void gw_searchwindow_sync_tabbar_show (GwSearchWindow*);
+
+void gw_searchwindow_initialize_buffer_by_searchitem (GwSearchWindow*, LwSearch*);
 
 void gw_searchwindow_entry_set_text (GwSearchWindow*, const gchar*);
 void gw_searchwindow_entry_insert_text (GwSearchWindow*, const gchar*);
-void gw_searchwindow_set_entry_text_by_searchitem (GwSearchWindow*, LwSearchItem*);
-void gw_searchwindow_set_total_results_label_by_searchitem (GwSearchWindow*, LwSearchItem*);
-void gw_searchwindow_set_search_progressbar_by_searchitem (GwSearchWindow*, LwSearchItem*);
-char* gw_searchwindow_get_title_by_searchitem (GwSearchWindow*, LwSearchItem*);
-void gw_searchwindow_set_title_by_searchitem (GwSearchWindow*, LwSearchItem*);
+void gw_searchwindow_set_entry_text_by_searchitem (GwSearchWindow*, LwSearch*);
+void gw_searchwindow_set_total_results_label_by_searchitem (GwSearchWindow*, LwSearch*);
+void gw_searchwindow_set_search_progressbar_by_searchitem (GwSearchWindow*, LwSearch*);
+char* gw_searchwindow_get_title_by_searchitem (GwSearchWindow*, LwSearch*);
+void gw_searchwindow_set_title_by_searchitem (GwSearchWindow*, LwSearch*);
 
-LwDictInfo* gw_searchwindow_get_dictionary (GwSearchWindow*);
-void gw_searchwindow_set_dictionary_by_searchitem (GwSearchWindow *window, LwSearchItem*);
+LwDictionary* gw_searchwindow_get_dictionary (GwSearchWindow*);
+void gw_searchwindow_set_dictionary_by_searchitem (GwSearchWindow *window, LwSearch*);
 void gw_searchwindow_set_dictionary (GwSearchWindow*, int);
 
 void gw_searchwindow_buffer_initialize_tags (GwSearchWindow*);
@@ -94,7 +96,7 @@ gboolean gw_searchwindow_has_selection (GwSearchWindow*, GtkWidget*);
 
 void gw_searchwindow_reload_tagtable_tags (GwSearchWindow*);
 
-void gw_searchwindow_set_dictionary_by_searchitem (GwSearchWindow*, LwSearchItem*);
+void gw_searchwindow_set_dictionary_by_searchitem (GwSearchWindow*, LwSearch*);
 
 void gw_searchwindow_close_suggestion_box (GwSearchWindow*);
 void gw_searchwindow_set_katakana_hiragana_conv (GwSearchWindow*, gboolean);
@@ -118,25 +120,37 @@ void gw_searchwindow_show_current_infobar (GwSearchWindow*, char*);
 void gw_searchwindow_hide_current_infobar (GwSearchWindow*);
 void gw_searchwindow_hide_infobars (GwSearchWindow*);
 
-void gw_searchwindow_set_tab_text_by_searchitem (GwSearchWindow*, LwSearchItem*);
+void gw_searchwindow_set_tab_text_by_searchitem (GwSearchWindow*, LwSearch*);
 
 gint gw_searchwindow_get_current_tab_index (GwSearchWindow*);
-void gw_searchwindow_set_searchitem_by_index (GwSearchWindow*, gint, LwSearchItem*);
-LwSearchItem* gw_searchwindow_get_searchitem_by_index (GwSearchWindow*, gint);
-LwSearchItem* gw_searchwindow_steal_searchitem_by_index (GwSearchWindow*, gint);
+void gw_searchwindow_set_searchitem_by_index (GwSearchWindow*, gint, LwSearch*);
+LwSearch* gw_searchwindow_get_searchitem_by_index (GwSearchWindow*, gint);
+LwSearch* gw_searchwindow_steal_searchitem_by_index (GwSearchWindow*, gint);
 
 void gw_searchwindow_no_results_search_for_dictionary_cb (GtkWidget*, gpointer);
 
 int gw_searchwindow_new_tab (GwSearchWindow*);
 void gw_searchwindow_remove_tab_by_index (GwSearchWindow*, int);
 
-void gw_searchwindow_start_search (GwSearchWindow*, LwSearchItem*);
+void gw_searchwindow_start_search (GwSearchWindow*, LwSearch*);
 
-void gw_searchwindow_insert_resultpopup_button (GwSearchWindow*, LwSearchItem*, LwResultLine*, GtkTextIter*);
+void gw_searchwindow_insert_resultpopup_button (GwSearchWindow*, LwSearch*, LwResult*, GtkTextIter*);
 
-void gw_searchwindow_append_to_buffer (GwSearchWindow*, LwSearchItem*, const char *, char*, char*, int*, int*);
+void gw_searchwindow_append_to_buffer (GwSearchWindow*, LwSearch*, const char *, char*, char*, int*, int*);
+
+void gw_searchwindow_initialize_toolbar (GwSearchWindow*);
+void gw_searchwindow_initialize_search_toolbar (GwSearchWindow*);
 void gw_searchwindow_initialize_dictionary_menu (GwSearchWindow*);
+void gw_searchwindow_initialize_menu_links (GwSearchWindow*);
 void gw_searchwindow_initialize_dictionary_combobox (GwSearchWindow*);
+
+void gw_searchwindow_sync_history (GwSearchWindow*);
+
+void gw_searchwindow_go_back (GwSearchWindow*, gint);
+void gw_searchwindow_go_forward (GwSearchWindow*, gint);
+
+void gw_searchwindow_set_links (GwSearchWindow*, GMenuModel*);
+GMenuModel* gw_searchwindow_get_popup_menu (GwSearchWindow*);
 
 #include "searchwindow-callbacks.h"
 #include "searchwindow-output.h"

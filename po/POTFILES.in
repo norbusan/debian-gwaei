@@ -1,38 +1,66 @@
-src/libwaei/dictinfo.c
-src/libwaei/dictinfolist.c
-src/libwaei/dictinst.c
-src/libwaei/dictinstlist.c
-src/libwaei/engine.c
+src/libwaei/dictionary-callbacks.c
+src/libwaei/dictionary-installer.c
+src/libwaei/dictionary.c
+src/libwaei/dictionarylist.c
+src/libwaei/edictionary.c
+src/libwaei/exampledictionary.c
+src/libwaei/history.c
 src/libwaei/io.c
-src/libwaei/queryline.c
+src/libwaei/kanjidictionary.c
+src/libwaei/libwaei.c
+src/libwaei/morphology.c
+src/libwaei/preferences.c
+src/libwaei/query.c
+src/libwaei/range.c
 src/libwaei/regex.c
-src/libwaei/resultline.c
-src/libwaei/searchitem.c
+src/libwaei/result.c
+src/libwaei/search.c
+src/libwaei/unknowndictionary.c
 src/libwaei/utilities.c
-src/libwaei/vocabularyitem.c
-src/libwaei/vocabularylist.c
+src/libwaei/vocabulary.c
+src/libwaei/word.c
 
-src/waei/console.c
+src/waei/application.c
 src/waei/console-callbacks.c
+src/waei/console-output.c
+src/waei/console.c
+src/waei/search-data.c
 src/waei/waei.c
 
 [type: gettext/glade] src/gwaei/addvocabularywindow.ui
+[type: gettext/glade] src/gwaei/application-menumodel-gnome.ui
+[type: gettext/glade] src/gwaei/application-menumodel-macosx.ui
 [type: gettext/glade] src/gwaei/dictionaryinstallwindow.ui
-[type: gettext/glade] src/gwaei/installprogresswindow.ui
-[type: gettext/glade] src/gwaei/searchwindow.ui
-[type: gettext/glade] src/gwaei/radicalswindow.ui
-[type: gettext/glade] src/gwaei/settingswindow.ui
-[type: gettext/glade] src/gwaei/kanjipadwindow.ui
-[type: gettext/glade] src/gwaei/vocabularywindow.ui
 [type: gettext/glade] src/gwaei/flashcardwindow.ui
+[type: gettext/glade] src/gwaei/installprogresswindow.ui
+[type: gettext/glade] src/gwaei/kanjipadwindow.ui
+[type: gettext/glade] src/gwaei/radicalswindow.ui
+[type: gettext/glade] src/gwaei/searchwindow-menumodel-button.ui
+[type: gettext/glade] src/gwaei/searchwindow-menumodel-gnome.ui
+[type: gettext/glade] src/gwaei/searchwindow-menumodel-macosx.ui
+[type: gettext/glade] src/gwaei/searchwindow-menumodel-standard.ui
+[type: gettext/glade] src/gwaei/searchwindow-menumodel-toolbar.ui
+[type: gettext/glade] src/gwaei/searchwindow.ui
+[type: gettext/glade] src/gwaei/settingswindow.ui
+[type: gettext/glade] src/gwaei/vocabularywindow-menumodel-flashcards.ui
+[type: gettext/glade] src/gwaei/vocabularywindow-menumodel-gnome.ui
+[type: gettext/glade] src/gwaei/vocabularywindow-menumodel-macosx.ui
+[type: gettext/glade] src/gwaei/vocabularywindow-menumodel-standard.ui
+[type: gettext/glade] src/gwaei/vocabularywindow.ui
 
+src/gwaei/addvocabularywindow-callbacks.c
+src/gwaei/addvocabularywindow.c
 src/gwaei/application-callbacks.c
 src/gwaei/application.c
-src/gwaei/dictionarystore-callbacks.c
-src/gwaei/dictionarystore.c
 src/gwaei/dictionaryinstallwindow-callbacks.c
 src/gwaei/dictionaryinstallwindow.c
+src/gwaei/dictionarylist-callbacks.c
+src/gwaei/dictionarylist.c
+src/gwaei/flashcardstore.c
+src/gwaei/flashcardwindow-callbacks.c
+src/gwaei/flashcardwindow.c
 src/gwaei/gwaei.c
+src/gwaei/history.c
 src/gwaei/installprogresswindow-callbacks.c
 src/gwaei/installprogresswindow.c
 src/gwaei/kanjipad-candidatearea.c
@@ -50,12 +78,12 @@ src/gwaei/settingswindow-callbacks.c
 src/gwaei/settingswindow.c
 src/gwaei/spellcheck-callbacks.c
 src/gwaei/spellcheck.c
-src/gwaei/window.c
-src/gwaei/vocabularywindow.c
-src/gwaei/vocabularywindow-callbacks.c
+src/gwaei/texttagtable.c
 src/gwaei/vocabularyliststore.c
+src/gwaei/vocabularywindow-callbacks.c
+src/gwaei/vocabularywindow.c
 src/gwaei/vocabularywordstore.c
-src/gwaei/flashcardwindow.c
-src/gwaei/flashcardwindow-callbacks.c
+src/gwaei/window-callbacks.c
+src/gwaei/window.c
 
 src/desktop/gwaei.desktop.in

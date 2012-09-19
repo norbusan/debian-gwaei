@@ -23,9 +23,6 @@
 //! @file morphology.c
 //!
 
-
-#include "../private.h"
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -33,65 +30,49 @@
 #include <glib.h>
 
 #include <libwaei/libwaei.h>
+#include "config.h"
 
-
-static LwMorphologyItem *lw_morphologyitem_new ();
-static void lw_morphologyitem_free (LwMorphologyItem *item);
+static LwMorphology *lw_morphology_new ();
+static void lw_morphology_free (LwMorphology *morphology);
 
 static LwMorphologyEngine *_engine = NULL;
-
-//!
-//! @brief Analyses input 
-//! @param INPUT The input to study
-//! @return Returns an allocated LwMorphology object that should be freed with lw_morphology_new_free or NULL on error
-//!
-LwMorphology* 
-lw_morphology_new ()
-{
-    LwMorphology *result;
-
-    result = g_new0 (LwMorphology, 1);
-
-    return result;
-}
 
 
 //!
 //! @brief Frees an allocated LwMorphology object. 
-//! @param item The object to free
+//! @param morphology The object to free
 //!
 void 
-lw_morphology_free (LwMorphology *item)
+lw_morphologylist_free (GList *list)
 {
-    if (item->items)
-      g_list_free_full (item->items, (GDestroyNotify)lw_morphologyitem_free);
-    free(item);
+    if (list == NULL) return;
+    g_list_free_full (list, (GDestroyNotify)lw_morphology_free);
 }
 
 //!
-//! @brief Allocates a new empty LwMorphologyItem object.
+//! @brief Allocates a new empty LwMorphology object.
 //!
-static LwMorphologyItem*
-lw_morphologyitem_new ()
+static LwMorphology*
+lw_morphology_new ()
 {
-    LwMorphologyItem *item;
-    item = g_new0 (LwMorphologyItem, 1);
-    return item;
+    LwMorphology *morphology;
+    morphology = g_new0 (LwMorphology, 1);
+    return morphology;
 }
 
 //!
-//! @brief Frees an allocated LwMorphologyItem object.
+//! @brief Frees an allocated LwMorphology object.
 //!
 static void 
-lw_morphologyitem_free (LwMorphologyItem *item)
+lw_morphology_free (LwMorphology *morphology)
 {
-    if (item->word != NULL)
-      g_free (item->word); item->word = NULL;
-    if (item->base_form != NULL)
-      g_free (item->base_form); item->base_form = NULL;
-    if (item->explanation != NULL)
-      g_free (item->explanation); item->explanation = NULL;
-    free(item);
+    if (morphology->word != NULL)
+      g_free (morphology->word); morphology->word = NULL;
+    if (morphology->base_form != NULL)
+      g_free (morphology->base_form); morphology->base_form = NULL;
+    if (morphology->explanation != NULL)
+      g_free (morphology->explanation); morphology->explanation = NULL;
+    free(morphology);
 }
 
 
@@ -136,6 +117,7 @@ mecab_strerr CAUSES A SEGFAULT
         g_warning ("Failed to initialize Mecab engine: %s", mecab_strerror (NULL));
 */
       lw_morphologyengine_free (engine); engine = NULL;
+      g_message ("You may not have any mecab dictionaries installed... (Try installing mecab-ipadic?)");
     }
     g_return_val_if_fail (engine != NULL, NULL);
 
@@ -178,7 +160,7 @@ lw_morphologyengine_free (LwMorphologyEngine *engine)
 //!
 //! @brief Convert string from UTF-8 to Mecab's charset.
 //!
-gchar*
+static gchar*
 lw_morphologyengine_encode_to_mecab (LwMorphologyEngine *engine, const gchar *WORD, gint nbytes)
 {
     const mecab_dictionary_info_t *info = mecab_dictionary_info (engine->mecab);
@@ -189,7 +171,7 @@ lw_morphologyengine_encode_to_mecab (LwMorphologyEngine *engine, const gchar *WO
 //!
 //! @brief Convert string from Mecab's charset to UTF-8.
 //!
-gchar*
+static gchar*
 lw_morphologyengine_decode_from_mecab (LwMorphologyEngine *engine, const gchar *word, gint nbytes)
 {
     const mecab_dictionary_info_t *info = mecab_dictionary_info (engine->mecab);
@@ -201,18 +183,18 @@ lw_morphologyengine_decode_from_mecab (LwMorphologyEngine *engine, const gchar *
 //!
 //! @brief Morphological analysis of input using Mecab
 //!
-void
-lw_morphology_analize (LwMorphologyEngine *engine, LwMorphology *result, const gchar *INPUT_RAW)
+GList*
+lw_morphologyengine_analyze (LwMorphologyEngine *engine, const gchar *INPUT_RAW)
 {
-    if (engine == NULL) return;
-
-    g_return_if_fail (result != NULL && result->items == NULL);
+    if (engine == NULL) return NULL;
+    g_return_val_if_fail (INPUT_RAW != NULL, NULL);
 
     const mecab_node_t *node;
     gchar **fields = NULL, *surface = NULL;
     gchar *temp;
     gchar *input = NULL;
-    LwMorphologyItem *item = NULL;
+    LwMorphology *morphology = NULL;
+    GList *list = NULL;
 
     g_mutex_lock (&engine->mutex);
 
@@ -223,13 +205,13 @@ lw_morphology_analize (LwMorphologyEngine *engine, LwMorphology *result, const g
 
 #define FLUSH_ITEM                                                                            \
         do {                                                                                  \
-            if (item->explanation && !g_str_has_prefix(item->explanation, item->base_form)) { \
-                temp = g_strdup_printf("%s(%s)", item->explanation, item->base_form);         \
-                g_free(item->explanation);                                                    \
-                item->explanation = temp;                                                     \
+            if (morphology->explanation && !g_str_has_prefix(morphology->explanation, morphology->base_form)) { \
+                temp = g_strdup_printf("%s(%s)", morphology->explanation, morphology->base_form);         \
+                g_free(morphology->explanation);                                                    \
+                morphology->explanation = temp;                                                     \
             }                                                                                 \
-            result->items = g_list_prepend(result->items, item);                              \
-            item = NULL;                                                                      \
+            list = g_list_prepend(list, morphology);                              \
+            morphology = NULL;                                                                      \
         } while (0)
 
     for (; node; node = node->next) {
@@ -285,31 +267,31 @@ lw_morphology_analize (LwMorphologyEngine *engine, LwMorphology *result, const g
 
       // Process input
       if (start_word) {
-          if (item) {
+          if (morphology) {
             FLUSH_ITEM;
           }
-        item = lw_morphologyitem_new();
-        item->word = g_strdup (surface);
-        item->base_form = g_strdup (base_form);
-        item->explanation = NULL;
+        morphology = lw_morphology_new ();
+        morphology->word = g_strdup (surface);
+        morphology->base_form = g_strdup (base_form);
+        morphology->explanation = NULL;
       }
       else {
-        if (item) {
-          temp = g_strconcat (item->word, surface, NULL);
-          g_free (item->word);
-          item->word = temp;
+        if (morphology) {
+          temp = g_strconcat (morphology->word, surface, NULL);
+          g_free (morphology->word);
+          morphology->word = temp;
         }
       }
 
       // Construct explanation
-      if (item) {
-        if (item->explanation == NULL) {
-          item->explanation = g_strdup (surface);
+      if (morphology) {
+        if (morphology->explanation == NULL) {
+          morphology->explanation = g_strdup (surface);
         }
         else {
-          temp = g_strdup_printf ("%s-%s", item->explanation, surface);
-          g_free (item->explanation);
-          item->explanation = temp;
+          temp = g_strdup_printf ("%s-%s", morphology->explanation, surface);
+          g_free (morphology->explanation);
+          morphology->explanation = temp;
         }
       }
 
@@ -319,7 +301,7 @@ lw_morphology_analize (LwMorphologyEngine *engine, LwMorphology *result, const g
       surface = NULL;
     }
 
-    if (item) {
+    if (morphology) {
       FLUSH_ITEM;
     }
 
@@ -327,18 +309,19 @@ lw_morphology_analize (LwMorphologyEngine *engine, LwMorphology *result, const g
 
     g_mutex_unlock (&engine->mutex);
 
-    result->items = g_list_reverse(result->items);
+    list = g_list_reverse(list);
 
-    return;
+    return list;
 
 fail:
     g_mutex_unlock (&engine->mutex);
 
-    if (item != NULL) lw_morphologyitem_free (item);
+    if (morphology != NULL) lw_morphology_free (morphology);
     if (fields != NULL) g_strfreev (fields);
     if (surface != NULL) g_free (surface);
     if (input != NULL) g_free (input);
 
-    return;
+    return list;
 }
+
 

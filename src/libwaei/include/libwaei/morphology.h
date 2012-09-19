@@ -22,24 +22,17 @@ gboolean lw_morphologyengine_has_default (void);
 //!
 //! @brief Morphological analysis of input
 //!
-struct _LwMorphologyItem {
+struct _LwMorphology {
   gchar *word;           //!< Original word
   gchar *base_form;      //!< Deduced (most likely) dictionary form of the word. NULL if no result.
   gchar *explanation;    //!< Free-form explanation of the morphological analysis. NULL if none.
 };
-typedef struct _LwMorphologyItem LwMorphologyItem;
-#define LW_MORPHOLOGYITEM(obj) (LwMorphologyItem*)obj
-
-
-struct _LwMorphology {
-  GList *items;            //!< Morphology items found in the input
-};
 typedef struct _LwMorphology LwMorphology;
 #define LW_MORPHOLOGY(obj) (LwMorphology*)obj
 
-LwMorphology* lw_morphology_new ();
-void lw_morphology_analize (LwMorphologyEngine *engine, LwMorphology*, const gchar*);
-void lw_morphology_free (LwMorphology*);
+GList* lw_morphologyengine_analyze (LwMorphologyEngine *engine, const gchar*);
+
+void lw_morphologylist_free (GList*);
 
 G_END_DECLS
 

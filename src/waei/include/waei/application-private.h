@@ -4,12 +4,12 @@
 G_BEGIN_DECLS
 
 struct _WApplicationPrivate {
-  int* argc;
-  char*** argv;
+  gint* argc;
+  gchar*** argv;
 
   LwPreferences *preferences;
-  LwDictInfoList *dictinfolist;
-  LwDictInstList *dictinstlist;
+  LwDictionaryList *installed_dictionarylist;
+  LwDictionaryList *installable_dictionarylist;
 
   gboolean arg_quiet_switch;
   gboolean arg_exact_switch;
@@ -17,10 +17,10 @@ struct _WApplicationPrivate {
   gboolean arg_version_switch;
   gboolean arg_color_switch;
 
-  char* arg_dictionary_switch_data;
-  char* arg_install_switch_data;
-  char* arg_uninstall_switch_data;
-  char* arg_query_text_data;
+  gchar* arg_dictionary_switch_data;
+  gchar* arg_install_switch_data;
+  gchar* arg_uninstall_switch_data;
+  gchar* arg_query_text_data;
 
   GOptionContext *context;
 };

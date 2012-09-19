@@ -1,7 +1,7 @@
 #ifndef GW_ADDVOCABULARYWINDOW_INCLUDED
 #define GW_ADDVOCABULARYWINDOW_INCLUDED
 
-#include <libwaei/searchitem.h>
+#include <libwaei/search.h>
 
 G_BEGIN_DECLS
 

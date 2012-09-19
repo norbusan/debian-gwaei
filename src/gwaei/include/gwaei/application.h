@@ -1,6 +1,7 @@
 #ifndef GW_APPLICATION_INCLUDED
 #define GW_APPLICATION_INCLUDED
 
+#include <gwaei/dictionarylist.h>
 #include <gwaei/vocabularyliststore.h>
 
 G_BEGIN_DECLS
@@ -52,7 +53,6 @@ void gw_application_parse_args (GwApplication*, int*, char***);
 void gw_application_quit (GwApplication*);
 
 GtkWindow* gw_application_get_window_by_type (GwApplication *application, const GType TYPE);
-GtkWindow* gw_application_get_window_by_widget (GwApplication*, GtkWidget*);
 
 const char* gw_application_get_program_name (GwApplication*);
 void gw_application_cancel_all_searches (GwApplication*);
@@ -70,11 +70,22 @@ struct _GwSearchWindow* gw_application_get_last_focused_searchwindow (GwApplicat
 
 LwPreferences* gw_application_get_preferences (GwApplication*);
 GtkListStore* gw_application_get_dictionarystore (GwApplication*);
-struct _LwDictInstList* gw_application_get_dictinstlist (GwApplication*);
+GwDictionaryList* gw_application_get_installed_dictionarylist (GwApplication*);
+GwDictionaryList* gw_application_get_installable_dictionarylist (GwApplication*);
 GtkTextTagTable* gw_application_get_tagtable (GwApplication*);
 GtkListStore* gw_application_get_vocabularyliststore (GwApplication*);
 
 gboolean gw_application_should_quit (GwApplication *application);
+
+gboolean gw_application_load_xml (GtkBuilder*, const gchar*);
+
+void gw_application_map_actions (GActionMap*, GwApplication*);
+void gw_menumodel_set_links (GMenuModel*, const gchar*, const gchar*, const gchar*, GMenuModel*);
+
+void gw_application_show_vocabularywindow (GwApplication*, gint);
+void gw_application_spellcheck_toggled_cb (GSimpleAction*, GVariant*, gpointer);
+
+void   gw_application_set_win_menubar (GwApplication*, GMenuModel*);
 
 #include "application-callbacks.h"
 

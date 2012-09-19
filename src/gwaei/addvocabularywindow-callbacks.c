@@ -23,9 +23,7 @@
 //!  @file addvocabularywindow.c
 //!
 
-
-#include "../private.h"
-
+#include <gwaei/gettext.h>
 #include <gwaei/gwaei.h>
 #include <gwaei/addvocabularywindow-private.h>
 

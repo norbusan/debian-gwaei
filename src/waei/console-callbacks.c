@@ -26,8 +26,6 @@
 //!
 
 
-#include "../private.h"
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -36,92 +34,99 @@
 
 #include <waei/waei.h>
 
-int 
-w_console_uninstall_progress_cb (double fraction, gpointer data)
+gint 
+w_console_uninstall_progress_cb (gdouble fraction, gpointer data)
 {
-  //Declarations
-  LwDictInfo *di;
-  char *uri;
+    //Declarations
+    LwDictionary *dictionary;
+    gchar *path;
 
-  //Initializations
-  di = data;
-  uri = lw_util_build_filename_by_dicttype (di->type, di->filename);
+    //Initializations
+    dictionary = data;
+    path = lw_dictionary_get_path (dictionary);
+    
+    if (path != NULL)
+    {
+      printf("Removing %s...\n", path);
+      g_free (path); path = NULL;
+    }
 
-  printf("Removing %s...\n", uri);
-
-  g_free (uri);
-
-  return FALSE;
+    return FALSE;
 }
 
 
 
 
 static gboolean _group_index_changed = FALSE;
-static int _previous_percent = -1;
-int 
-w_console_install_progress_cb (double fraction, gpointer data)
+static gint _previous_percent = -1;
+
+void
+w_console_update_progress_cb (LwDictionary *dictionary, gpointer data)
 {
-  //Declarations
-  LwDictInst *di;
-  char *status;
-  double current_fraction;
-  int current_percent;
+    //Declarations
+    gchar *message;
+    gdouble stage_fraction;
+    gint stage_percent;
 
-  //Initializations
-  di = data;
-  current_fraction = lw_dictinst_get_process_progress (di, fraction);
-  current_percent = (int) (100.0 * current_fraction); 
+    //Initializations
+    stage_fraction = lw_dictionary_installer_get_stage_progress (dictionary);
+    stage_percent = (gint) (100.0 * stage_fraction); 
 
-  //Update the dictinst progress state only when the delta is large enough
-  if (current_percent < 100 && _group_index_changed)
-  {
-    _group_index_changed = FALSE;
-    printf("\n");
-  }
-  else if (current_percent == 100)
-  {
-    _group_index_changed = TRUE;
-  }
+    //Update the dictinst progress state only when the delta is large enough
+    if (stage_percent < 100 && _group_index_changed)
+    {
+      _group_index_changed = FALSE;
+      printf("\n");
+    }
+    else if (stage_percent == 100)
+    {
+      _group_index_changed = TRUE;
+    }
 
-  status = lw_dictinst_get_status_string (di, TRUE);
-  printf("\r [%d%%] %s", current_percent, status);
-  _previous_percent = current_percent;
-  g_free (status);
-
-  return FALSE;
+    message = lw_dictionary_installer_get_status_message (dictionary, TRUE);
+    if (message != NULL && _previous_percent != stage_percent)
+    {
+      fprintf(stdout, "\r [%d%%] %s", stage_percent, message); fflush(stdout);
+      _previous_percent = stage_percent;
+      g_free (message); message = NULL;
+    }
 }
 
 
 gboolean 
 w_console_append_result_timeout (gpointer data)
 {
-  LwSearchItem *item;
+  //Sanity checks
+  g_return_val_if_fail (data != NULL, FALSE);
+
+  //Declarations
+  LwSearch *search;
+  LwSearchStatus status;
   WSearchData *sdata;
-  int chunk;
-  int max_chunk;
-  gboolean is_still_searching;
+  gint chunk;
+  gboolean keep_appending;
 
-  item = LW_SEARCHITEM (data);
-  sdata = W_SEARCHDATA (lw_searchitem_get_data (item));
-  chunk = 0;
-  max_chunk = 50;
+  //Initializations
+  search = LW_SEARCH (data);
+  status = lw_search_get_status (search);
+  sdata = W_SEARCHDATA (lw_search_get_data (search));
+  chunk = 50;
 
-  if (item != NULL && lw_searchitem_should_check_results (item))
+  if  (status != LW_SEARCHSTATUS_IDLE)
   {
-    while (item != NULL && lw_searchitem_should_check_results (item) && chunk < max_chunk)
+    while (lw_search_has_results (search) && chunk-- > 0)
     {
-      w_console_append_result (sdata->application, item);
-      chunk++;
+      w_console_append_result (sdata->application, search);
     }
-    is_still_searching = TRUE;
+    keep_appending = TRUE;
   }
   else
   {
-      w_console_no_result (sdata->application, item);
+      w_console_no_result (sdata->application, search);
       g_main_loop_quit (sdata->loop);
-      is_still_searching = FALSE;
+      keep_appending = FALSE;
   }
 
-  return is_still_searching;
+  return keep_appending;
 }
+

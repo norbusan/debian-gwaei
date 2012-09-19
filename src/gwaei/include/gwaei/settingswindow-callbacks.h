@@ -23,4 +23,7 @@ void gw_settingswindow_sync_kata_hira_conv_cb (GSettings*, gchar*, gpointer);
 void gw_settingswindow_sync_spellcheck_cb (GSettings*, gchar*, gpointer);
 void gw_settingswindow_sync_swatch_color_cb (GSettings*, gchar*, gpointer);
 
+void gw_settingswindow_add_dictionary_cb (GSimpleAction*, GVariant*, gpointer);
+void gw_settingswindow_remove_dictionary_cb (GSimpleAction*, GVariant*, gpointer);
+
 #endif
