@@ -1,0 +1,16 @@
+[Desktop Entry]
+Version=1.0
+Name=gWaei Japanese-English Dictionary
+Name[ja]=gWaei 和英辞書
+Name[it]=gWaei Dizionario Giapponese-Inglese
+Name[fr]=gWaei Dictionnaire Japonais-Anglais
+Comment=Enter a Japanese or English word to easily get translations.
+Comment[ja]=英語か日本語の単語を入れて簡単に翻訳を調べます
+Comment[it]=Inserisci un termine Giapponese o Inglese per avere facilmente una traduzione.
+Comment[fr]=Entrer un mot en japonais ou en anglais pour facilement obtenir une traduction.
+Type=Application
+Exec=gwaei
+TryExec=gwaei
+Icon=gwaei
+#Categories=Game;Emulator;
+Categories=GNOME;GTK;Utility;

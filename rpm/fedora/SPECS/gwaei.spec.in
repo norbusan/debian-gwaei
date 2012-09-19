@@ -1,0 +1,145 @@
+Summary:   A Japanese dictionary for Gnome
+Name:      @PACKAGE@
+Version:   @VERSION@
+Release:   @RELEASE@%{?dist}
+License:   GPLv2+
+Group:     Applications/Productivity
+URL:       http://gwaei.sourceforge.net/
+Source0:   http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRequires: GConf2
+BuildRequires: gettext
+BuildRequires: gettext-devel
+BuildRequires: libcurl-devel
+BuildRequires: libgnomeui-devel
+BuildRequires: libsexy-devel
+BuildRequires: ncurses-devel
+BuildRequires: unique-devel
+BuildRequires: gnome-doc-utils
+BuildRequires: desktop-file-utils
+BuildRequires: rarian-compat
+Requires: vlgothic-fonts
+Requires(pre): GConf2
+Requires(post): GConf2
+Requires(preun): GConf2
+
+
+%description
+gWaei is an easy to use and yet powerful full-featured dictionary program
+for Japanese to English translation.
+It organizes results by relevance, supports regexp searches, tabs,
+spell checking, kanji handwriting recognition and an accompanying console
+version for searches through the terminal.
+
+The dictionary files it uses are from Jim Breen's WWWJDIC project and
+are installed separately through the program.
+
+
+%prep
+%setup -q
+./autogen.sh
+
+
+%build
+%configure --disable-schemas-install
+make %{?_smp_mflags}
+
+
+%install
+rm -rf $RPM_BUILD_ROOT
+make install DESTDIR=$RPM_BUILD_ROOT INSTALL="install -p"
+rm -rf %{buildroot}/%{_datadir}/doc/%{name}  # Fix to correct documentation path
+%find_lang %{name}
+desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
+
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+
+%pre
+%gconf_schema_prepare %{name}
+
+
+%post
+# Gconf
+%gconf_schema_upgrade %{name}
+
+# Icons
+touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
+
+
+%preun
+%gconf_schema_remove %{name}
+
+
+%postun
+if [ $1 -eq 0 ] ; then
+    touch --no-create %{_datadir}/icons/hicolor &>/dev/null
+    gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
+fi
+
+
+%posttrans
+gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
+
+
+%files -f %{name}.lang
+%defattr(-,root,root,-)
+%doc AUTHORS THANKS ChangeLog COPYING NEWS
+%{_libdir}/%{name}
+%{_bindir}/gwaei
+%{_bindir}/waei
+%{_datadir}/applications/%{name}.desktop
+%{_datadir}/%{name}
+%{_datadir}/omf/%{name}
+%{_datadir}/icons/hicolor/*/apps/*.png
+%{_datadir}/icons/hicolor/*/actions/*.png
+%{_datadir}/gnome/help/%{name}
+%{_datadir}/man/man*/*.gz
+%{_sysconfdir}/gconf/schemas/%{name}.schemas
+
+
+%changelog
+* <DATE> René Ribaud <rene.ribaud@free.fr> - @VERSION@-@RELEASE@
+- New package with @PACKAGE@ @VERSION@ release.
+
+* Thu May 27 2010 René Ribaud <rene.ribaud@free.fr> - 1.4.0-1
+- New package with gwaei 1.4.0 release.
+
+* Thu May 13 2010 René Ribaud <rene.ribaud@free.fr> - 1.3.1-1
+- New package with gwaei 1.3.1 release.
+- This version should fix Fedora bug id=589353.
+
+* Sat Apr 04 2010 René Ribaud <rene.ribaud@free.fr> - 1.3.0-3
+- Corrections after Mamoru Tasaka's review #2 of this new package.
+- Fix link to the source file.
+- Fix autogen.sh to call tools correctly and add autoheader.
+- Fix configure.ac and help/Makefile.am to avoid autotool called
+  automaticaly, thanks to Mamoru's patch.
+
+* Sat Mar 28 2010 René Ribaud <rene.ribaud@free.fr> - 1.3.0-2
+- Corrections after Mamoru Tasaka's review of this new package.
+- Add autogen script from git to fix automake building error.
+- Use new Gconf macros.
+- Fix icon cache.
+- Fix documentation path.
+
+* Sat Mar 21 2010 René Ribaud <rene.ribaud@free.fr> - 1.3.0-1
+- New package with gwaei 1.3.0 release.
+- This release corrects segfaults installing dictionnaries with F13.
+
+* Sat Feb 19 2010 René Ribaud <rene.ribaud@free.fr> - 1.2.1-5
+- Corrections after first Fedora review by Mamoru Tasaka.
+
+* Sat Feb 13 2010 René Ribaud <rene.ribaud@free.fr> - 1.2.1-4
+- Add blank lines in changelog.
+
+* Sat Feb 11 2010 René Ribaud <rene.ribaud@free.fr> - 1.2.1-3
+- Add proposed modifications from Fedora-Fr community second review.
+
+* Sat Feb 06 2010 René Ribaud <rene.ribaud@free.fr> - 1.2.1-2
+- Lots of corrections based on Fedora-Fr community rpm first review
+
+* Sat Jan 30 2010 René Ribaud <rene.ribaud@free.fr> - 1.2.1-1
+- Initial build

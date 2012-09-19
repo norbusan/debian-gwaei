@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
+               "/usr/share/sgml/docbook/dtd/xml/4.1.2/docbookx.dtd"
+               [ <!ENTITY date "15 May 2009"> ]>
+     
+<article id="index" lang="ja">
+  <articleinfo> 
+	 <title>gWaei Manual</title>
+	  <copyright>
+	    <year>2008-2009</year>
+	    <holder>Zachary Dovel</holder>
+	  </copyright>
+    <pubdate>&date;</pubdate>
+    <edition>1</edition>
+    <abstract role="description"><para><application>gWaei</application> is a dictionary program for searching dictionary files created by Jim Breen's WWWJDIC Project.</para></abstract>
+
+
+	 <authorgroup> 
+		<author role="maintainer"> 
+		  <firstname>Zachary</firstname>
+		  <surname>Dovel</surname> 
+		  <affiliation> 
+			 <address> <email>pizzach@gmail.com</email> </address>
+		  </affiliation>
+		</author>
+	 </authorgroup>
+</articleinfo>
+
+  <indexterm zone="index"> 
+    <primary>gWaei</primary> 
+  </indexterm>
+  <indexterm zone="index"> 
+    <primary>Dictionaries</primary> 
+  </indexterm>
+
+
+<!-- ============= Document Body ============================= -->
+<!-- ============= Introduction ============================= -->
+   <abstract>
+      <para>
+         <mediaobject><imageobject>
+           <imagedata fileref="@prefix@/share/@PACKAGE@/logo.png" format="PNG"/>
+        </imageobject></mediaobject>
+        <application>gWaei</application> is a program for made for searching
+        dictionary files created by Jim Breen's WWWJDIC Project.
+      </para>
+      <para>If you need help outside of what is covered in this manual, there
+        is the
+        <ulink url="http://gwaei.sourceforge.net/">gWaei homepage</ulink>
+        with the latest news and updates, and the
+        <ulink url="irc://irc.freenode.net/gwaei">gWaei IRC channel</ulink>
+        where you can ask questions.
+      </para>
+  </abstract>
+<!-- ============= Features ============================= -->
+    <sect1 id="Features">
+      <title>Features</title>
+    <para>
+	    <application>gWaei</application> has a number of features.  Many of them
+      are enabled through installing specific things. You can find out what is
+      available and how to get it working by looking at the "Features" tab in
+      the setting dialog. The major ones are listed below.
+    </para>
+
+	  <sect2>
+      <title>Searching Features</title>
+       <para>
+         <mediaobject><imageobject>
+             <imagedata fileref="@prefix@/share/@PACKAGE@/character.png" format="PNG"/>
+         </imageobject></mediaobject>
+         <application>gWaei</application> will do it's best to return the most
+         relevant results. The best ones are organized to the top.  A bit
+         farther down, example phrases are shown if available.  As you keep
+         going, much like searching in Google, the results will become more and
+         more irrelevant.
+       </para>
+       <para>
+         Most searches in <application>gWaei</application> support regular
+         expressions.  You don't need to be an expert in them to find ways to
+         put them to good use.  A way for beginners to get started is to use
+         the <emphasis>insert</emphasis> menu where descriptive names have
+         been used to the characters to to give clues what they do. For a small
+         tutorial on regular expressions, please refer to the Advanced Searching
+         section of this manual.
+       </para>
+    </sect2>
+
+	  <sect2>
+      <title>Kanjipad</title>
+      <para>
+        <ulink url="http://fishsoup.net/software/kanjipad/">Kanjipad</ulink>
+        is a very simple program for Kanji handwriting recognition. In
+        <application>gWaei</application>'s version of it, the user draws a
+        character onto the canvas of the window. With each stroke added,
+        Kanjipad makes new guess at what Kanji character you likely want. By
+        clicking the kanji that appear to the right of the canvas, they will be
+        copied to the search input for you.
+      </para>
+	  </sect2>
+
+	  <sect2>
+      <title>Kanji and Radicals Dictionary Features</title>
+       <para>
+        Each dictionary on it's own enables features in
+        <application>gWaei</application>. The Kanji dictionary allows you click
+        Kanji in the results pane to quickly look up in the Kanji
+        sidebar.  The Radicals dictionary enables the "Radical Search Tool"
+        menu item.  When both dictionaries are installed, the
+        "Radical Search Tool" also has a stroke count spinner button.
+      </para>
+     <para>
+	      The Kanji and Radicals dictionaries each provide different information
+        that the other doesn't about individual Kanji characters.  Because of
+        this, when they are both installed a file called Mix in the ~/.waei
+        folder will be created, combining the features of both into one.  When
+        doing searches from that point on, the Kanji dictionary selection will
+        now use the Mix dictionary file and the Radicals dictionary selection
+        will be hidden.
+      </para>
+	  </sect2>
+	  <sect2>
+      <title>Update Dictionary Feature</title>
+       <para>
+         When <application>Rsync</application> is installed, it is possible for
+         <application>gWaei</application> to update the installed dictionaries
+         through the EDICT Rsync servers with the click of the <emphasis>Update
+         button</emphasis>. This is preferable to doing a straight reinstall,
+         saving the EDICT server's bandwidth, thus saving the maintainers money.
+       </para>
+       <note>
+         <para>
+           Note: If the Update button in the Preferences dialog is still disabled
+           even though <application>Rsync</application> is installed, it is likely
+           <application>gWaei</application> was compiled on a machine where
+           <application>Rsync</application> was not available at build time. In
+           those cases, the dictionary update mechanism is perminently disabled.
+         </para>
+       </note>
+	  </sect2>
+
+	</sect1>
+<!-- ============= Dictionary files ============================= -->
+    <sect1 id="InstallingDictionaries">
+      <title>Installing Dictionaries</title>
+      <para>
+	      Before doing any searches, some dictionaries need to be installed. 
+		    <application>gWaei</application> will automatically pop up the
+        Preferences dialog to	help you get started if it doesn't find any
+        dictionaries in the ~/.waei directory.  If you don't install any
+        dictionaries then, closing the dialog will quit the entire applicaton.
+	    </para>
+
+	  <sect2>
+      <title>Supported Dictionary Installs</title>
+	    <para>
+	      In the Install Dictionaries tab, if you click one of the "Add" buttons,
+        <application>gWaei</application> should install that dictionary from
+        Jim Breen's WWWJDIC ftp site automatically, taking care of unzipping,
+        converting the encoding, and post-processing the file. If you want to
+        install a dictionary file manually, you will have to do these steps
+        yourself.
+       </para>
+       <para>
+        If you are in a bind without an internet connection, it is still
+        possible to install dictionaries through offline means.  If you click
+        the triangles for the dictionaries in the Preferences dialog, you can
+        change the install source. Through this method, pre-downloaded local
+        files on the hard drive are selectable.
+       </para>
+    </sect2>
+
+	  <sect2>
+      <title>Unsupported Dictionary Installs</title>
+
+       <para>
+         If you want to install a non-supported dictionary like the
+         German-Japanese dictionary made by the Wadoku Project, you will have
+         to follow a procedure similar to below.
+       </para>
+
+       <orderedlist>
+         <listitem><para>% wget ftp://ftp.monash.edu.au/pub/nihongo/edict.gz</para></listitem>
+         <listitem><para>% gunzip edict.gz</para></listitem>
+         <listitem><para>% iconv -f EUC-JP -t UTF-8 -o English edict</para></listitem>
+         <listitem><para>% mv English ~/.waei</para></listitem>
+       </orderedlist>
+
+       <para>
+         The order that you install the unsupported dictionaries determines the
+         order they appear in the list.
+       </para>
+
+       <para>
+         If you have a Kanji or Radicals dictionary of your own, you will
+         probably want to name it as such with some kind of unique identifier.
+         This will make gwaei use it's kanji search algolithms instead of it's
+         general ones.  For example, you could call it, "Kanji FR", "Kanji2".
+       </para>
+
+
+       <note>
+         <para>
+           Note: If you manually install dictionaries,
+           <application>gWaei</application> can't do any post-processing on them
+           in the normal fashion.  There are ways to hack
+           <application>gWaei</application> into creating a Mix dictionary, but
+           this is not officially supported.  When installing custom
+           dictionaries, you will probably want to avoid the default names of
+           the dictionaries, including English, Kanji, Radicals, Mix, Places and
+           Names.
+         </para>
+       </note>
+
+	     <para>
+         Please contact one of the developers if you want more support for other
+         dictionaries!
+	     </para>
+     </sect2>
+	</sect1>
+
+<!-- ============= Advanced Searching ============================= -->
+   <sect1 id="AdvancedSearching">
+      <title>Advanced Searching</title>
+      <para>
+	       <application>gWaei</application> already tries to do semi-intelligent
+         searches, placing the most relevant results at the top.  It is
+         possible to filter out even more unwanted results by understanding
+         how <application>gWaei</application> does the searches.  There are
+         basically two separate search engines the program employs depending
+         on the dictionary file that is being used. General searches and
+         Kanji/Radical searches.
+	  </para>
+<sect2>
+	<title>General Searches</title>
+	<para>
+		General searches allow the usage of regular expressions.  Even if you do
+    not type in a regular expression yourself, <application>gWaei</application>
+    still is using them in the background to categorize and move relevant
+    results to the top of the window.  Below are some examples of
+    meta-characters and phrases.
+	</para>
+
+  <itemizedlist>
+
+    <listitem>
+        <para><quote>\b</quote> is used to denote word boundaries.</para>
+    </listitem>
+
+    <listitem>
+        <para><quote>\B</quote> is used to denote non word bondaries.</para>
+    </listitem>
+
+    <listitem>
+        <para><quote>.</quote> is a wild card character.  It represents one
+        character.</para>
+    </listitem>
+
+    <listitem>
+        <para><quote>.*</quote> add a star and it means any number of the 
+        character.</para>
+    </listitem>
+
+    <listitem>
+        <para><quote>.+</quote> means at least one of the character.</para>
+    </listitem>
+
+    <listitem>
+        <para><quote>(A|B)</quote> would return results containing "A" or "B".</para>
+    </listitem>
+
+  </itemizedlist>
+
+	<note>
+    <para>
+      Example: If you search for "fish\b", results like "fish" and
+      "monkfish" would pop up. "Fishing", "fisherman", and "unselfishness"
+      would not.
+    </para>
+  </note>
+</sect2>
+
+<sect2>
+  <title>Kanji and Radical Searches</title>
+    <para>
+      These dictionaries do not accept regular expressions. Instead, 
+      <application>gWaei</application> divides the query into atoms and makes
+      sure that every one of the atoms exists in the results returned. The main
+      kind of atom you will be using with these dictionary are kanji and radical
+      characters.  The other type of atom is in the form of a capital letter and
+      a number.  Below are some example of this type.
+    </para>
+
+		<itemizedlist>
+			<listitem>
+          <para><quote>G#</quote> will make sure that only kanji of # grade level
+          are returned.</para>
+      </listitem>
+
+			<listitem>
+          <para><quote>S#</quote> will make sure only kanji of # strokes are
+          returned.</para>
+      </listitem>
+
+			<listitem>
+          <para><quote>J#</quote> returns the kanji that will appear on that level
+          of the JLPT.</para>
+      </listitem>
+
+			<listitem>
+          <para><quote>F#</quote> will return kanji with a specific appearance
+          frequency in texts.</para>
+      </listitem>
+		</itemizedlist>
+
+		<note>
+      <para>
+        Example: <quote>口田S14</quote> would return results that have
+        Kanji/radicals <quote>口</quote> and <quote>田</quote> and take
+        14 strokes do draw.  It doesn't matter if you put spaces to increase
+        readability as <application>gWaei</application> will filter them
+        out.  <quote>口田 S14</quote> will return the exact same results.  
+		  </para>
+    </note>
+	</sect2>
+</sect1>
+
+<sect1 id="ConsoleSearching">
+  <title>Searching from the Console</title>
+    <para>
+      <application>gWaei</application>, when installed, also includes a
+      symbolic link to itself named Waei.  By typing waei into a
+      terminal, most of the functionality of gWaei is accessable without a GUI.
+    </para>
+		<itemizedlist>
+			<listitem>
+          <para><quote>waei fish</quote> will search for <quote>fish</quote> in
+          the English dictionary.</para>
+      </listitem>
+			<listitem>
+          <para><quote>waei -d Kanji 語</quote> will search for
+          <quote>語</quote> in the Kanji dictionary.</para>
+      </listitem>
+			<listitem>
+          <para><quote>waei --help</quote> will show available commands.</para>
+      </listitem>
+		</itemizedlist>
+</sect1>
+
+<sect1 id="Tips">
+  <title>Tips</title>
+    <para>
+    There are a few other things to notice about <application>gWaei</application> that will make your exprience with it more enjoyable.  You will likely get them with time, but he sooner you do notice them, the more <application>gWaei</application> will grow on you.
+    </para>
+    
+    <para><application>gWaei</application> automatically moves focus where it makes sense.  If you start typing, the focus will move to the search input box.  If you press an arrow key, the focus will move to the results box.  Alt-Up and Alt-Down will cycle the installed dictionaries and the focus will move to the search input box so you can start typing.  You don't need to go clicking around the interface to do things (but you can if you want.)
+    </para>
+    <para>
+    If you install the Kanji dictionary, it is highly recommended you also install the radical dictionary.  Unless they are both installed, many of the most interesting features of the <application>gWaei</application> won't be enabled.  Don't miss out on the fun!
+    </para>
+    <para>
+    The save button has the unusual label Append.  Why might you ask?  It is so you can easily compile a list of vocabulary words in a file.  Every time you click the button, the results in the window will be added to the end of the set save file.  If you have a flash card program on your computer, you can then load those words into it using the file.  You can also open the file in a word processor and add advanced formatting.
+    </para>
+    <para>
+    For more control, you can print or save specific sections of text by highlighting it before selecting the button or menu.
+    </para>
+
+
+    </sect1>
+</article>
+
+
