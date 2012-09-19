@@ -3,11 +3,9 @@ Fix URL of google search
  src/gwaei/searchwindow-output.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Index: gwaei-3.4.3/src/gwaei/searchwindow-output.c
-===================================================================
---- gwaei-3.4.3.orig/src/gwaei/searchwindow-output.c	2012-04-03 23:26:44.000000000 +0900
-+++ gwaei-3.4.3/src/gwaei/searchwindow-output.c	2012-04-27 08:34:01.343138768 +0900
-@@ -1294,7 +1294,7 @@
+--- gwaei.git.orig/src/gwaei/searchwindow-output.c
++++ gwaei.git/src/gwaei/searchwindow-output.c
+@@ -1191,7 +1191,7 @@
  
      //Add links
      char *website_url_menuitems[] = {
