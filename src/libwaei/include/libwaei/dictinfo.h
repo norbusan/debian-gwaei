@@ -1,5 +1,5 @@
-#ifndef GW_DICTINFO_HEADER_INCLUDED
-#define GW_DICTINFO_HEADER_INCLUDED
+#ifndef LW_DICTINFO_INCLUDED
+#define LW_DICTINFO_INCLUDED
 
 /******************************************************************************
     AUTHOR:
@@ -30,30 +30,30 @@
 //! To be written.
 //!
 
+#include <libwaei/dict.h>
 #include <libwaei/resultline.h>
 
+#define LW_DICTINFO(object) (LwDictInfo*) object
 
 //!
 //! @brief Primitive for storing dictionary information
 //!
 struct _LwDictInfo
 {
-    char *filename;                   //!< name of the file in the gwaei user data folder
-    char *longname;                   //!< long name of the file (usually localized)
-    char *shortname;                  //!< short name of the file (usually localized)
-    LwEngine engine;                  //!< Path to the dictionary file
+    EXTENDS_LW_DICT
     int load_position;                //!< load position in the GUI
-    long total_lines;                 //!< total lines in the file
+    long length;                    //!< Length of the file
     LwResultLine *cached_resultlines; //!< Allocated resultline swapped with current_resultline when needed
     LwResultLine *current_resultline; //!< Allocated resultline where the current parsed result data resides
 };
 typedef struct _LwDictInfo LwDictInfo;
 
 
-LwDictInfo* lw_dictinfo_new (const LwEngine, const char*);
-void lw_dictinfo_free(LwDictInfo*);
+LwDictInfo* lw_dictinfo_new (const LwDictType, const char*);
+void lw_dictinfo_free (LwDictInfo*);
+void lw_dictinfo_init (LwDictInfo*, const LwDictType, const char*);
+void lw_dictinfo_deinit (LwDictInfo*);
 
-LwDictInfo* lw_dictinfolist_get_dictinfo_fuzzy (const char*);
 gboolean lw_dictinfo_uninstall (LwDictInfo*, LwIoProgressCallback, GError**);
 char* lw_dictinfo_get_uri (LwDictInfo*);
 

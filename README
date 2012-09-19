@@ -16,29 +16,29 @@ TABLE OF CONTENTS
 
 1.0 PREREQUISITES:
 
-  To run gWaei 3.0.x, an environment with at least gtk+-3.0.0/glib-2.25.0,
-  curl 7.19.6, gnome-doc-utils-0.14.0, libncurses5-5.7, and libunique-3.0
-  are required.  Additionally, you will want to have gunzip, unzip, and
-  enchant, and ttf-kanjistrokeorders available.
+  To run gWaei 3.1.x, an environment with at least gtk+-3.2.0/glib-2.30.0,
+  curl 7.19.6, gnome-doc-utils-0.14.0, and gsettings-desktop-schemas are
+  required. Additionally, you will want to have gunzip, enchant, and
+  ttf-kanjistrokeorders available.
 
   An example of a command that Ubuntu/Debian users might use to get the
   required runtime dependancies is:
 
   sudo apt-get install libcurl4-gnutls libgtk-3 gnome-doc-utils \
-  libunique-3.0 libncurses5 libncursesw5 ttf-kanjistrokeorder enchant
+  ttf-kanjistrokeorder enchant gsettings-desktop-schemas
 
   To compile the program, you will have to have the dev files for GTK+, CURL3,
-  LIBUNIQUE and NCURSES available. Users with binary based distributions
-  should install the approprate "dev" or "devel" files for the above dependencies
-  using their package manager. Automake and GCC will come in handy too, as they
-  are standard build tools for GNU systems.
+  available. Users with binary based distributions should install the 
+  approprate "dev" or "devel" files for the above dependencies using their
+  package manager. Automake and GCC will come in handy too, as they are 
+  standard build tools for GNU systems.
 
   An example of a command that Ubuntu/Debian users might use to get the
   required compilation dependancies is:
 
   sudo apt-get install libcurl4-gnutls-dev libgtk-3-dev gnome-doc-utils \
-  libunique-3.0-dev libncurses5-dev libncursesw5-dev imagemagick intltool \
-  rarian-compat
+  libncursesw5-dev imagemagick intltool  rarian-compat \
+  gsettings-desktop-schemas
 
   For inputing Japanese queries, installing some software for Japanese
   conversion is highly recommended.  Currently, the three main linux methods are
@@ -68,26 +68,32 @@ TABLE OF CONTENTS
 
 3.0 COMPILING ON WINDOWS:
 
-  gWaei has been tested and built on windows with some success through MinGW.
+  gWaei has been tested and built on Windows with some success through MinGW.
   Since I do not have a Windows PC of my own handy, I only get to test and
-  maintain builds sporadically.  Your success will largely depend on how well
-  you have your MinGW environment set up.
+  maintain builds sporadically through Wine.  Your success will largely depend
+  on how well you have your MinGW environment set up.
 
-  Gotchas in MinGW are in setting up pkgconfig, and the paths in the gnome dependencies.
-  They are located in /uslr/lib/pkgconfig.  You will likely have to manually compile and install
-  libcurl.  Most other dependancies should be available on the gtk website and on the sourceforge
-  page for MinGW.  Make sure you also grab gnuregex while you are there.
+  I currently test using MinGW cross compilation and Wine on Fedora.  You will have to
+  install the correct MinGW packages through yum, and download a binary of gzip and
+  the source to gnome-doc-utils manually.
 
-  The setup and installation of gWaei will look like so:
+  1. Install gnome-doc-utils using
 
-    PKG_CONFIG_PATH="/the/path/to/pkgconfig" ./configure --prefix /usr/local --enable-win32
-    make
-    make install
+       mingw32-configure
+       mingw32-make
+       sudo mingw32-make install
 
-  That's it.  If someone wants to help sort out the final issues with getting
-  the program running on Windows, please feel free to get in contact with
-  one of the developers on the gWaei homepage.  There are still various polish issues
-  that should be worked out before it is fully fledged like the other ports.
+  2. Copy the contents of the gzip binary to the bin directory of your installation.  That would
+  be /usr/i686-pc-mingw32/sys-root/mingw/bin/ for me.
+
+  3. Build gwaei by doing
+    
+      mingw32-configure --disable-scrollkeeper
+      mingw32-make
+      sudo mingw32-make install
+
+
+  The mingw32-configure script will take care of PKG_CONFIG_PATH and such for you.  You should in general compile any needed deps with --disable-scrollkeeper.
 
 
 END

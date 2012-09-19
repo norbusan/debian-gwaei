@@ -39,7 +39,7 @@
    <abstract>
       <para>
          <mediaobject><imageobject>
-           <imagedata fileref="/usr/share/gwaei/logo.png" format="PNG"/>
+           <imagedata fileref="/usr/local/share/gwaei/logo.png" format="PNG"/>
         </imageobject></mediaobject>
         <application>gWaei</application> is a program for made for searching
         dictionary files created by Jim Breen's WWWJDIC Project.
@@ -66,7 +66,7 @@
       <title>Searching Features</title>
        <para>
          <mediaobject><imageobject>
-             <imagedata fileref="/usr/share/gwaei/character.png" format="PNG"/>
+             <imagedata fileref="/usr/local/share/gwaei/character.png" format="PNG"/>
          </imageobject></mediaobject>
          <application>gWaei</application> will do it's best to return the most
          relevant results. The best ones are organized to the top.  A bit

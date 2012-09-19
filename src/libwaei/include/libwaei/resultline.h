@@ -1,5 +1,6 @@
-#ifndef GW_RESULTLINE_OBJECT_INCLUDED
-#define GW_RESULTLINE_OBJECT_INCLUDED
+#ifndef LW_RESULTLINE_INCLUDED
+#define LW_RESULTLINE_INCLUDED
+
 /******************************************************************************
     AUTHOR:
     File written and Copyrighted by Zachary Dovel. All Rights Reserved.
@@ -31,17 +32,25 @@
 
 #include <libwaei/io.h>
 
+#define LW_RESULTLINE(object) (LwResultLine*) object
+
+typedef enum {
+  LW_RESULTLINE_RELEVANCE_UNSET,
+  LW_RESULTLINE_RELEVANCE_LOW,
+  LW_RESULTLINE_RELEVANCE_MEDIUM,
+  LW_RESULTLINE_RELEVANCE_HIGH,
+  TOTAL_RESULTLINE_RELEVANCE
+} LwResultLineRelevance;
+
 //!
 //! @brief Primitive for storing lists of dictionaries
 //!
 
-
-static char *FIRST_DEFINITION_PREFIX_STR = "(1)";
-
 struct _LwResultLine {
-    char string[GW_IO_MAX_FGETS_LINE];     //!< Character array holding the result line for the pointers to reference
+    char string[LW_IO_MAX_FGETS_LINE];     //!< Character array holding the result line for the pointers to reference
 
     //General result things
+    LwResultLineRelevance relevance;
     char *def_start[50];        //!< Pointer to the definitions
     int def_total;              //!< Total definitions found for a result
     char *number[50];           //!< Pointer to the numbers of the definitions
@@ -65,14 +74,17 @@ struct _LwResultLine {
 typedef struct _LwResultLine LwResultLine;
 
 
-LwResultLine* lw_resultline_new (void );
+LwResultLine* lw_resultline_new (void);
+void lw_resultline_free (LwResultLine*);
+void lw_resultline_init (LwResultLine*);
+void lw_resultline_deinit (LwResultLine*);
+
 void lw_resultline_parse_edict_result_string (LwResultLine*);
 void lw_resultline_parse_kanjidict_result_string (LwResultLine*);
 void lw_resultline_parse_radicaldict_result_string (LwResultLine*);
 void lw_resultline_parse_examplesdict_result_string (LwResultLine*);
 void lw_resultline_parse_unknowndict_result_string (LwResultLine*);
 
-void lw_resultline_free (LwResultLine*);
-
+gboolean lw_resultline_is_similar (LwResultLine *rl1, LwResultLine *rl2);
 
 #endif

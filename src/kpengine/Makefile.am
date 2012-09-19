@@ -16,20 +16,18 @@ pkgdata_DATA = jdata.dat
 DEFS = -DLOCALEDIR=\"$(localedir)\" -DVERSION=\"$(VERSION)\" -DPACKAGE=\"$(PACKAGE)\" -DFOR_PILOT_COMPAT -DKP_LIBDIR=\"$(LIBDIR)\" -DBINDIR=\"$(LIBDIR)\"
 
 
-AM_CFLAGS = $(BASE_CFLAGS) 
+AM_CFLAGS = $(LIBWAEI_CFLAGS) 
 INCLUDES =  -I jstroke
 
 
 kpengine_SOURCES = jstroke/scoring.c jstroke/util.c kpengine.c jstroke/jstroke.h
-kpengine_LDADD =  $(BASE_LIBS) 
+kpengine_LDADD =  $(LIBWAEI_LIBS) 
 
 
-if ENABLE_WIN32
-WINLIBPREFIX = /mingw
-WIN32_REGEX_LIB = -L$(WINLIBPREFIX)/lib -lregex
-WIN32_DEFS = -DWITH_GTK -DENABLE_WIN32 -DLC_MESSAGES=\"C\" -DCURL_STATICLIB
-INCLUDES += $(WIN32_CFLAGS) $(WIN32_DEFS) -I$(WINLIBPREFIX)/include
-kpengine_LDADD += $(WIN32_LIBS) $(WIN32_REGEX_LIB)
+if OS_MINGW
+MINGW_DEFS = -DCURL_STATICLIB
+INCLUDES += $(MINGW_CFLAGS) $(MINGW_DEFS) 
+kpengine_LDADD += $(MINGW_LIBS) 
 kpengine_LDFLAGS = -Wl,-subsystem,windows 
 endif
 

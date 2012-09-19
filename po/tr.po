@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gwaei 0.15.1\n"
 "Report-Msgid-Bugs-To: pizzach@gmail.com\n"
-"POT-Creation-Date: 2011-07-16 00:27-0400\n"
+"POT-Creation-Date: 2011-11-05 16:12-0700\n"
 "PO-Revision-Date: 2010-10-25 14:50+0200\n"
 "Last-Translator: Yusuf BARAN <info@barancolor.net>\n"
 "Language-Team: none\n"
@@ -40,122 +40,122 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-Bookmarks: 65,-1,-1,-1,-1,-1,-1,-1,-1,-1\n"
 
-#: ../src/libwaei/dictinfo.c:83
+#: ../src/libwaei/dictinfo.c:107
 #, c-format
 msgid "%s Dictionary"
 msgstr "Sözlük %s "
 
-#: ../src/libwaei/dictinfo.c:128 ../src/libwaei/dictinstlist.c:61
+#: ../src/libwaei/dictinfo.c:158 ../src/libwaei/dictinstlist.c:58
 msgid "English Dictionary"
 msgstr "İngilizce Sözlük"
 
-#: ../src/libwaei/dictinfo.c:129 ../src/libwaei/dictinstlist.c:60
+#: ../src/libwaei/dictinfo.c:159 ../src/libwaei/dictinstlist.c:57
 msgid "English"
 msgstr "İngilizce"
 
-#: ../src/libwaei/dictinfo.c:134
+#: ../src/libwaei/dictinfo.c:164
 msgid "Names Dictionary"
 msgstr "İsimler Sözlüğü"
 
-#: ../src/libwaei/dictinfo.c:135
+#: ../src/libwaei/dictinfo.c:165
 msgid "Names"
 msgstr "İsimler"
 
-#: ../src/libwaei/dictinfo.c:140
+#: ../src/libwaei/dictinfo.c:170
 msgid "Places Dictionary"
 msgstr "Mekanlar Sözlüğü"
 
-#: ../src/libwaei/dictinfo.c:141
+#: ../src/libwaei/dictinfo.c:171
 msgid "Places"
 msgstr "Mekanlar"
 
-#: ../src/libwaei/dictinfo.c:149 ../src/libwaei/dictinstlist.c:77
+#: ../src/libwaei/dictinfo.c:179 ../src/libwaei/dictinstlist.c:75
 msgid "Kanji Dictionary"
 msgstr "Kanji sözlüğü"
 
-#: ../src/libwaei/dictinfo.c:150 ../src/libwaei/dictinstlist.c:76
+#: ../src/libwaei/dictinfo.c:180 ../src/libwaei/dictinstlist.c:74
 msgid "Kanji"
 msgstr "Kanji"
 
-#: ../src/libwaei/dictinfo.c:158 ../src/libwaei/dictinstlist.c:109
+#: ../src/libwaei/dictinfo.c:188 ../src/libwaei/dictinstlist.c:109
 msgid "Examples Dictionary"
 msgstr "Örnekler Sözlüğü"
 
-#: ../src/libwaei/dictinfo.c:159 ../src/libwaei/dictinstlist.c:108
+#: ../src/libwaei/dictinfo.c:189 ../src/libwaei/dictinstlist.c:108
 msgid "Examples"
 msgstr "Örnekler"
 
-#: ../src/libwaei/dictinst.c:760
+#: ../src/libwaei/dictinst.c:860
 #, c-format
 msgid "Downloading %s..."
 msgstr "İndiriliyor %s..."
 
-#: ../src/libwaei/dictinst.c:762
+#: ../src/libwaei/dictinst.c:862
 #, c-format
 msgid "Downloading..."
 msgstr "İndiriliyor..."
 
-#: ../src/libwaei/dictinst.c:766
+#: ../src/libwaei/dictinst.c:866
 #, fuzzy, c-format
 msgid "Converting the encoding of %s from %s to UTF-8..."
 msgstr "Şifreleme çevriliyor..."
 
-#: ../src/libwaei/dictinst.c:768
+#: ../src/libwaei/dictinst.c:868
 #, fuzzy, c-format
 msgid "Converting the encoding to UTF-8..."
 msgstr "Şifreleme çevriliyor..."
 
-#: ../src/libwaei/dictinst.c:772
+#: ../src/libwaei/dictinst.c:872
 #, c-format
 msgid "Decompressing %s from %s file..."
 msgstr ""
 
-#: ../src/libwaei/dictinst.c:774
+#: ../src/libwaei/dictinst.c:874
 #, fuzzy, c-format
 msgid "Decompressing..."
 msgstr "İşleniyor..."
 
-#: ../src/libwaei/dictinst.c:778
+#: ../src/libwaei/dictinst.c:878
 #, fuzzy, c-format
 msgid "Doing postprocessing on %s..."
 msgstr "İşleniyor..."
 
-#: ../src/libwaei/dictinst.c:780
+#: ../src/libwaei/dictinst.c:880
 #, c-format
 msgid "Postprocessing..."
 msgstr "İşleniyor..."
 
-#: ../src/libwaei/dictinst.c:783
+#: ../src/libwaei/dictinst.c:883
 #, fuzzy, c-format
 msgid "Finalizing installation of %s..."
 msgstr "Finalizando "
 
-#: ../src/libwaei/dictinst.c:786
+#: ../src/libwaei/dictinst.c:886
 #, fuzzy, c-format
 msgid "Installed."
 msgstr "Kurulu"
 
-#: ../src/libwaei/dictinstlist.c:62
+#: ../src/libwaei/dictinstlist.c:59
 #, fuzzy
 msgid "The venerable Japanese-English Dictionary developed by Jim Breen."
 msgstr "gWaei Japonca-İngilizce Sözlük"
 
-#: ../src/libwaei/dictinstlist.c:78
+#: ../src/libwaei/dictinstlist.c:76
 msgid ""
 "A Kanji dictionary based off of kanjidic with radical information combined."
 msgstr ""
 
-#: ../src/libwaei/dictinstlist.c:92
+#: ../src/libwaei/dictinstlist.c:91
 #, fuzzy
 msgid "Names and Places"
 msgstr "  waei -d Lugares"
 
-#: ../src/libwaei/dictinstlist.c:93
+#: ../src/libwaei/dictinstlist.c:92
 #, fuzzy
 msgid "Names and Places Dictionary"
 msgstr " del diccionario de Nombres y Lugares."
 
-#: ../src/libwaei/dictinstlist.c:94
+#: ../src/libwaei/dictinstlist.c:93
 msgid ""
 "Based off of Enamdic, but with the names split from the places for 2 "
 "separate dictionaries."
@@ -167,148 +167,76 @@ msgid ""
 "Yasuhito Tanaka at Hyogo University and his students."
 msgstr ""
 
-#: ../src/libwaei/dictinstlist.c:125
+#: ../src/libwaei/dictinstlist.c:126
 msgid "Other"
 msgstr ""
 
-#: ../src/libwaei/dictinstlist.c:126
+#: ../src/libwaei/dictinstlist.c:127
 #, fuzzy
 msgid "Other Dictionary"
 msgstr "Diğer Sözlükler"
 
-#: ../src/libwaei/dictinstlist.c:127
+#: ../src/libwaei/dictinstlist.c:128
 #, fuzzy
 msgid "Install a custom dictionary."
 msgstr "Sözlük yükleyin"
 
-#: ../src/libwaei/io.c:706
+#: ../src/libwaei/io.c:741
 msgid "Unable to read data from the input file."
 msgstr ""
 
-#: ../src/libwaei/io.c:712
+#: ../src/libwaei/io.c:747
 msgid "Unable to write to the external program's input stream."
 msgstr ""
 
-#: ../src/libwaei/io.c:754
+#: ../src/libwaei/io.c:794
 msgid "Unable to read data from the external program's pipe."
 msgstr ""
 
-#: ../src/libwaei/io.c:760
+#: ../src/libwaei/io.c:800
 msgid "Unable to write the stream's output to a file."
 msgstr ""
 
-#: ../src/waei/console.c:47 ../src/waei/console.c:49 ../src/waei/ncurses.c:115
-msgid "Other Results"
-msgstr "Diğer Sonuçlar"
-
-#: ../src/waei/console.c:58 ../src/waei/ncurses.c:71
+#: ../src/waei/console.c:46
 msgid "No results found!"
 msgstr "Sonuç Bulunamadı"
 
-#: ../src/waei/console.c:77
+#: ../src/waei/console.c:70
 #, fuzzy, c-format
 msgid "Uninstalling %s...\n"
 msgstr "Kuruluyor..."
 
-#: ../src/waei/console.c:105
+#: ../src/waei/console.c:108
 #, fuzzy, c-format
 msgid "Installing %s...\n"
 msgstr "Kuruluyor..."
 
-#. TRANSLATORS: 'Searching for "${query}" in ${dictionary long name}'
-#: ../src/waei/console.c:147
-#, c-format
-msgid "Searching for \"%s\" in %s...\n"
-msgstr "\"%s\" için %s içinde ara...\n"
-
-#: ../src/waei/console.c:157
+#: ../src/waei/console.c:148
 #, c-format
 msgid "Installable dictionaries are:\n"
 msgstr "Kurulabilir sözlükler:\n"
 
-#: ../src/waei/console.c:184 ../src/waei/console.c:218
+#: ../src/waei/console.c:175 ../src/waei/console.c:209
 msgid "none"
 msgstr "yok"
 
-#: ../src/waei/console.c:205
+#: ../src/waei/console.c:196
 #, c-format
 msgid "Available dictionaries are:\n"
 msgstr "Kullanılabilir sözlükler:\n"
 
-#: ../src/waei/console.c:283 ../src/waei/ncurses.c:566
-#: ../src/gwaei/output-callbacks.c:455 ../src/gwaei/output-callbacks.c:564
-msgid "Radicals:"
-msgstr "Radikaller:"
-
-#: ../src/waei/console.c:288 ../src/waei/ncurses.c:571
-#: ../src/gwaei/output-callbacks.c:509 ../src/gwaei/output-callbacks.c:604
-msgid "Stroke:"
-msgstr "Hat:"
-
-#: ../src/waei/console.c:296 ../src/waei/ncurses.c:579
-#: ../src/gwaei/output-callbacks.c:516 ../src/gwaei/output-callbacks.c:613
-msgid "Freq:"
-msgstr "Frek:"
-
-#: ../src/waei/console.c:304 ../src/waei/ncurses.c:587
-#: ../src/gwaei/output-callbacks.c:523 ../src/gwaei/output-callbacks.c:622
-msgid "Grade:"
-msgstr "Kademe:"
-
-#: ../src/waei/console.c:312 ../src/waei/ncurses.c:595
-#: ../src/gwaei/output-callbacks.c:529 ../src/gwaei/output-callbacks.c:631
-msgid "JLPT:"
-msgstr "JLPT:"
-
-#: ../src/waei/console.c:319 ../src/waei/ncurses.c:602
-#: ../src/gwaei/output-callbacks.c:472 ../src/gwaei/output-callbacks.c:574
-#: ../src/gwaei/output-callbacks.c:584
-msgid "Readings:"
-msgstr "Okunuş:"
-
-#: ../src/waei/console.c:321 ../src/waei/ncurses.c:604
-#: ../src/gwaei/output-callbacks.c:483
-msgid "Name:"
-msgstr "İsim:"
-
-#: ../src/waei/console.c:323 ../src/waei/ncurses.c:606
-#: ../src/gwaei/output-callbacks.c:494
-msgid "Radical Name:"
-msgstr "Radikal İsmi:"
-
-#: ../src/waei/console.c:326 ../src/waei/ncurses.c:609
-#: ../src/gwaei/output-callbacks.c:538 ../src/gwaei/output-callbacks.c:649
-msgid "Meanings:"
-msgstr "Anlamlar:"
-
-#. TRANSLATORS: The "E" stands for "English"
-#: ../src/waei/console.c:344 ../src/waei/console.c:346
-#: ../src/gwaei/output-callbacks.c:711
-msgid "E:\t"
-msgstr ""
-
-#. TRANSLATORS: The "J" stands for "Japanese"
-#: ../src/waei/console.c:353 ../src/waei/console.c:355
-#: ../src/gwaei/output-callbacks.c:722
-msgid ""
-"\n"
-"J:\t"
-msgstr ""
-
-#. TRANSLATORS: The "D" stands for "Detail"
-#: ../src/waei/console.c:362 ../src/waei/console.c:364
-#: ../src/gwaei/output-callbacks.c:733
-msgid ""
-"\n"
-"D:\t"
-msgstr ""
-
-#: ../src/waei/console.c:508
+#: ../src/waei/console.c:260
 #, c-format
 msgid "Requested dictionary not found!\n"
 msgstr "İstenen sözlük bulunamadı\n"
 
-#: ../src/waei/console.c:531 ../src/waei/ncurses.c:392 ../src/gwaei/main.c:546
+#. TRANSLATORS: 'Searching for "${query}" in ${dictionary long name}'
+#: ../src/waei/console.c:274
+#, c-format
+msgid "Searching for \"%s\" in %s...\n"
+msgstr "\"%s\" için %s içinde ara...\n"
+
+#: ../src/waei/console.c:284 ../src/gwaei/searchwindow.c:598
 #, c-format
 msgid "Found %d result"
 msgid_plural "Found %d results"
@@ -316,70 +244,93 @@ msgstr[0] "Sonuç %d bulunan"
 msgstr[1] "Bulunanlar %d sonuçlar"
 
 #. TRANSLATORS: relevant what ? It's the number of "relevant" result(s) displayed while or after searching.
-#: ../src/waei/console.c:532 ../src/waei/ncurses.c:393 ../src/gwaei/main.c:550
+#: ../src/waei/console.c:285 ../src/gwaei/searchwindow.c:602
 #, c-format
 msgid "(%d Relevant)"
 msgid_plural "(%d Relevant)"
 msgstr[0] "(%d İlgili)"
 msgstr[1] "(%d İlgili)"
 
-#. TRANSLATORS: First part of the sentence : 'Searching for "${query}" in the ${dictionary} dictionary'
-#: ../src/waei/ncurses.c:88
-msgid "Searching for \""
-msgstr "Bunun için ara \""
+#: ../src/waei/console-callbacks.c:107 ../src/gwaei/searchwindow-output.c:556
+#: ../src/gwaei/searchwindow-output.c:840
+msgid "Radicals:"
+msgstr "Radikaller:"
 
-#. TRANSLATORS: Second part of the sentence : 'Searching for "${query}" in the ${dictionary} dictionary'
-#: ../src/waei/ncurses.c:93
-msgid "\" in the "
-msgstr "\" içinde"
+#: ../src/waei/console-callbacks.c:112 ../src/gwaei/searchwindow-output.c:611
+#: ../src/gwaei/searchwindow-output.c:877
+msgid "Stroke:"
+msgstr "Hat:"
 
-#. TRANSLATORS: Third and last part of the sentence : 'Searching for "${query}" in the ${dictionary} dictionary'
-#: ../src/waei/ncurses.c:98
-msgid " dictionary..."
-msgstr "sözlük..."
+#: ../src/waei/console-callbacks.c:120 ../src/gwaei/searchwindow-output.c:618
+#: ../src/gwaei/searchwindow-output.c:886
+msgid "Freq:"
+msgstr "Frek:"
 
-#: ../src/waei/ncurses.c:226 ../src/waei/ncurses.c:300
-#: ../src/waei/ncurses.c:410
-#, fuzzy
-msgid "Search: "
-msgstr "Ara:"
+#: ../src/waei/console-callbacks.c:128 ../src/gwaei/searchwindow-output.c:625
+#: ../src/gwaei/searchwindow-output.c:895
+msgid "Grade:"
+msgstr "Kademe:"
 
-#: ../src/waei/ncurses.c:227 ../src/waei/ncurses.c:331
-#: ../src/waei/ncurses.c:396
-msgid "Results: "
-msgstr "Sounçlar:  "
+#: ../src/waei/console-callbacks.c:136 ../src/gwaei/searchwindow-output.c:631
+#: ../src/gwaei/searchwindow-output.c:904
+msgid "JLPT:"
+msgstr "JLPT:"
 
-#: ../src/waei/ncurses.c:444
-msgid "- Japanese-English dictionary program that allows regex searches"
-msgstr "- Hızlı ve düzenli arama sağlayan Japonca-İngilizce sözlük programı"
+#: ../src/waei/console-callbacks.c:143 ../src/gwaei/searchwindow-output.c:577
+#: ../src/gwaei/searchwindow-output.c:849
+#: ../src/gwaei/searchwindow-output.c:858
+msgid "Readings:"
+msgstr "Okunuş:"
 
-#: ../src/waei/ncurses.c:447 ../src/waei/waei.c:95
-msgid "Display less information"
-msgstr "Daha az bilgi göster"
+#: ../src/waei/console-callbacks.c:145 ../src/gwaei/searchwindow-output.c:587
+msgid "Name:"
+msgstr "İsim:"
 
-#: ../src/waei/ncurses.c:448 ../src/waei/waei.c:97
-msgid "Search using a chosen dictionary"
-msgstr "Seçilen sözlükten arama yap"
+#: ../src/waei/console-callbacks.c:147 ../src/gwaei/searchwindow-output.c:597
+msgid "Radical Name:"
+msgstr "Radikal İsmi:"
 
-#. TRANSLATORS: The "%s" stands for the error message
-#: ../src/waei/ncurses.c:455
-#, c-format
-msgid "Option parsing failed: %s\n"
-msgstr "Seçenek çözümleme Başarısız: %s\n"
+#: ../src/waei/console-callbacks.c:150 ../src/gwaei/searchwindow-output.c:640
+#: ../src/gwaei/searchwindow-output.c:922
+msgid "Meanings:"
+msgstr "Anlamlar:"
 
-#: ../src/waei/waei.c:70 ../src/gwaei/gwaei.c:69
+#. TRANSLATORS: The "E" stands for "English"
+#: ../src/waei/console-callbacks.c:168 ../src/waei/console-callbacks.c:170
+#: ../src/gwaei/searchwindow-output.c:685
+msgid "E:\t"
+msgstr ""
+
+#. TRANSLATORS: The "J" stands for "Japanese"
+#: ../src/waei/console-callbacks.c:177 ../src/waei/console-callbacks.c:179
+#: ../src/gwaei/searchwindow-output.c:696
+msgid ""
+"\n"
+"J:\t"
+msgstr ""
+
+#. TRANSLATORS: The "D" stands for "Detail"
+#: ../src/waei/console-callbacks.c:186 ../src/waei/console-callbacks.c:188
+#: ../src/gwaei/searchwindow-output.c:707
+msgid ""
+"\n"
+"D:\t"
+msgstr ""
+
+#: ../src/waei/console-callbacks.c:295 ../src/waei/console-callbacks.c:297
+msgid "Other Results"
+msgstr "Diğer Sonuçlar"
+
+#. Initializations
+#: ../src/waei/waei.c:155 ../src/gwaei/application.c:177
 msgid "- A dictionary program for Japanese-English translation."
 msgstr "- Japonca ingilizce çeviri yapan sözlük programı"
 
-#: ../src/waei/waei.c:71
-msgid ""
-"waei generally outputs directly to the console.  If you want to do multiple\n"
-"searches, please start gWaei with the -n switch for the multisearch mode."
+#: ../src/waei/waei.c:156
+msgid "waei generally outputs directly to the console."
 msgstr ""
-"Waei ile çoklu arama özelliğini kullanmak istiyorsanızkonsoldan\n"
-"gWaei -n modu ile programı başlatınız. "
 
-#: ../src/waei/waei.c:76
+#: ../src/waei/waei.c:159
 #, c-format
 msgid ""
 "Examples:\n"
@@ -408,461 +359,557 @@ msgstr ""
 "  waei -d Nombres %s       Busca un nombre usando el diccionario Nombres\n"
 "  waei -d Lugares %s       Busca un lugar usando el diccionario Lugares"
 
-#: ../src/waei/waei.c:92
-#, fuzzy
-msgid "Open up the multisearch window"
-msgstr "Çoklu arama penceresini açın (Beta)"
-
-#: ../src/waei/waei.c:94
+#: ../src/waei/waei.c:174
 msgid "Do not display less relevant results"
 msgstr "Daha az sonuç gösterme"
 
-#: ../src/waei/waei.c:96
+#: ../src/waei/waei.c:175
+msgid "Display less information"
+msgstr "Daha az bilgi göster"
+
+#: ../src/waei/waei.c:176
 #, fuzzy
 msgid "Display results with color"
 msgstr "Daha az bilgi göster"
 
-#: ../src/waei/waei.c:98
+#: ../src/waei/waei.c:177
+msgid "Search using a chosen dictionary"
+msgstr "Seçilen sözlükten arama yap"
+
+#: ../src/waei/waei.c:178
 msgid "Show available dictionaries for searches"
 msgstr "Aramalar için uygun sözlükleri göster"
 
-#: ../src/waei/waei.c:99
+#: ../src/waei/waei.c:179
 #, fuzzy
 msgid "Install dictionary"
 msgstr "Sözlük kaldırın"
 
-#: ../src/waei/waei.c:100
+#: ../src/waei/waei.c:180
 msgid "Uninstall dictionary"
 msgstr "Sözlük kaldırın"
 
-#: ../src/waei/waei.c:101
+#: ../src/waei/waei.c:181
 msgid "Check the waei version information"
 msgstr "Waei sürüm bilgisi"
 
-#: ../src/gwaei/ui/dictionaryinstall.ui.h:1
-#, fuzzy
-msgid "Select Dictionaries..."
-msgstr "Ana Sözlükler"
-
-#: ../src/gwaei/ui/dictionaryinstall.ui.h:2
+#: ../src/gwaei/dictionaryinstallwindow.ui.h:1
 msgid "Show Dictionary Install Details"
 msgstr ""
 
-#: ../src/gwaei/ui/dictionaryinstall.ui.h:3
+#: ../src/gwaei/dictionaryinstallwindow.ui.h:2
 msgid "Where can I get other dictionaries?"
 msgstr "Diğer sözlüklere nereden ulaşabilirim?"
 
-#: ../src/gwaei/ui/installprogress.ui.h:1
+#: ../src/gwaei/installprogresswindow.ui.h:1
 #, fuzzy
 msgid "Installing Dictionaries..."
 msgstr "Ana Sözlükler"
 
-#: ../src/gwaei/ui/installprogress.ui.h:2
-msgid "Installing..."
+#: ../src/gwaei/installprogresswindow.ui.h:2
+#, fuzzy
+msgid "Starting Install..."
 msgstr "Kuruluyor..."
 
-#: ../src/gwaei/ui/installprogress.ui.h:3
-msgid "description"
-msgstr ""
-
-#: ../src/gwaei/ui/main.ui.h:1 ../src/gwaei/main.c:2183
+#: ../src/gwaei/searchwindow.ui.h:1
 msgid "A_ppend"
 msgstr "İliştir"
 
-#: ../src/gwaei/ui/main.ui.h:2
+#: ../src/gwaei/searchwindow.ui.h:2
 msgid "Append"
 msgstr "İliştir"
 
-#: ../src/gwaei/ui/main.ui.h:3
+#: ../src/gwaei/searchwindow.ui.h:3
 msgid "Bound"
 msgstr "Limit"
 
-#: ../src/gwaei/ui/main.ui.h:4
-msgid "Click to start search"
-msgstr "Tıklayıp aramaya başlayın"
-
-#: ../src/gwaei/ui/main.ui.h:5
+#: ../src/gwaei/searchwindow.ui.h:4
 msgid "Dictionary _Terminology Glossary"
 msgstr "Açıklayıcı terimler sözlüğü"
 
-#: ../src/gwaei/ui/main.ui.h:6
+#: ../src/gwaei/searchwindow.ui.h:5
 msgid "Did you mean?"
 msgstr "Bunu mu demek istediniz?"
 
-#: ../src/gwaei/ui/main.ui.h:7
+#: ../src/gwaei/searchwindow.ui.h:6
 msgid "Enable spellcheck for searches"
 msgstr "Aramalarda dilbilgisi denetimini açın"
 
-#: ../src/gwaei/ui/main.ui.h:8
+#: ../src/gwaei/searchwindow.ui.h:7
 msgid "Enlarge"
 msgstr "Genişlet"
 
-#: ../src/gwaei/ui/main.ui.h:9
+#: ../src/gwaei/searchwindow.ui.h:8
 msgid "Get Help on I_RC"
 msgstr "IRC Yardım bölümüne git"
 
-#: ../src/gwaei/ui/main.ui.h:10
+#: ../src/gwaei/searchwindow.ui.h:9
 #, fuzzy
 msgid "Go to _Homepage"
 msgstr "Proje sayfasına git"
 
-#: ../src/gwaei/ui/main.ui.h:11
+#: ../src/gwaei/searchwindow.ui.h:10
 msgid "Go to the _Project Homepage"
 msgstr "Proje sayfasına git"
 
-#: ../src/gwaei/ui/main.ui.h:12
+#: ../src/gwaei/searchwindow.ui.h:11
 msgid "Hi_story"
 msgstr "Ge_çmiş"
 
-#: ../src/gwaei/ui/main.ui.h:13
+#: ../src/gwaei/searchwindow.ui.h:12
 #, fuzzy
 msgid "Logical _And Character"
 msgstr "Ve Karakteri"
 
-#: ../src/gwaei/ui/main.ui.h:14
+#: ../src/gwaei/searchwindow.ui.h:13
 #, fuzzy
 msgid "Logical _Or Character"
 msgstr "Veya Karakteri"
 
-#: ../src/gwaei/ui/main.ui.h:15
+#: ../src/gwaei/searchwindow.ui.h:14
 msgid "Ne_xt Tab"
 msgstr "So_nraki Sekme"
 
-#: ../src/gwaei/ui/main.ui.h:16
+#: ../src/gwaei/searchwindow.ui.h:15
 #, fuzzy
 msgid "New _Tab"
 msgstr "_Yeni Sekme"
 
-#: ../src/gwaei/ui/main.ui.h:17
+#: ../src/gwaei/searchwindow.ui.h:16
+msgid "New _Window"
+msgstr ""
+
+#: ../src/gwaei/searchwindow.ui.h:17
 msgid "Not Bound"
 msgstr "Limitsiz"
 
-#: ../src/gwaei/ui/main.ui.h:18
+#: ../src/gwaei/searchwindow.ui.h:18
 #, fuzzy
 msgid "Sear_ch:"
 msgstr "Ara:"
 
-#: ../src/gwaei/ui/main.ui.h:19
+#: ../src/gwaei/searchwindow.ui.h:19
 #, fuzzy
 msgid "Search"
 msgstr "Ara:"
 
-#: ../src/gwaei/ui/main.ui.h:20
+#: ../src/gwaei/searchwindow.ui.h:20
 msgid "Select the dictionary you want to use"
 msgstr "Kullanmak istediğiniz sözlüğü seçin"
 
-#: ../src/gwaei/ui/main.ui.h:21
+#: ../src/gwaei/searchwindow.ui.h:21
+#, fuzzy
+msgid "Show _Statusbar"
+msgstr "Araç Çubuğunu Göster"
+
+#: ../src/gwaei/searchwindow.ui.h:22
 msgid "Show _Toolbar"
 msgstr "Araç Çubuğunu Göster"
 
-#: ../src/gwaei/ui/main.ui.h:22
+#: ../src/gwaei/searchwindow.ui.h:23
 msgid "Shrink"
 msgstr "Daralt"
 
-#: ../src/gwaei/ui/main.ui.h:23
+#: ../src/gwaei/searchwindow.ui.h:24
 msgid "Unknown"
 msgstr "Tanımsız"
 
-#: ../src/gwaei/ui/main.ui.h:24
+#: ../src/gwaei/searchwindow.ui.h:25
 msgid "Using _Kanjipad"
 msgstr "_Kanjipad Kullan"
 
-#: ../src/gwaei/ui/main.ui.h:25
+#: ../src/gwaei/searchwindow.ui.h:26
 msgid "Using _Radical Search Tool"
 msgstr "_Radical Bulma Aracını Kullan"
 
-#: ../src/gwaei/ui/main.ui.h:26
+#: ../src/gwaei/searchwindow.ui.h:27
 msgid "_Contents"
 msgstr "_İçerik"
 
-#: ../src/gwaei/ui/main.ui.h:27
+#: ../src/gwaei/searchwindow.ui.h:28
 msgid "_Dictionaries"
 msgstr "_Sözlük"
 
-#: ../src/gwaei/ui/main.ui.h:28
+#: ../src/gwaei/searchwindow.ui.h:29
 msgid "_Edit"
 msgstr "_Düzen"
 
-#: ../src/gwaei/ui/main.ui.h:29
+#: ../src/gwaei/searchwindow.ui.h:30
 msgid "_Enlarge Text"
 msgstr "_Metni genişlet"
 
-#: ../src/gwaei/ui/main.ui.h:30
+#: ../src/gwaei/searchwindow.ui.h:31
 msgid "_File"
 msgstr "_Dosya"
 
-#: ../src/gwaei/ui/main.ui.h:31
+#: ../src/gwaei/searchwindow.ui.h:32
 msgid "_Help"
 msgstr "_Yardım"
 
-#: ../src/gwaei/ui/main.ui.h:32
+#: ../src/gwaei/searchwindow.ui.h:33
 msgid "_Insert"
 msgstr "_Ekle"
 
-#: ../src/gwaei/ui/main.ui.h:33
+#: ../src/gwaei/searchwindow.ui.h:34
 msgid "_Next Search"
 msgstr "_Sonraki Arama"
 
-#: ../src/gwaei/ui/main.ui.h:34
+#: ../src/gwaei/searchwindow.ui.h:35
 msgid "_Normal Size"
 msgstr "_Normal boyut"
 
-#: ../src/gwaei/ui/main.ui.h:35
+#: ../src/gwaei/searchwindow.ui.h:36
 msgid "_Not-word-edge Mark"
 msgstr "Kelime sınırı olmayanı işaretle"
 
-#: ../src/gwaei/ui/main.ui.h:36
+#: ../src/gwaei/searchwindow.ui.h:37
 msgid "_Previous Search"
 msgstr "_Önceki Arama"
 
-#: ../src/gwaei/ui/main.ui.h:37
+#: ../src/gwaei/searchwindow.ui.h:38
 msgid "_Previous Tab"
 msgstr "_Önceki Sekme"
 
-#: ../src/gwaei/ui/main.ui.h:38
+#: ../src/gwaei/searchwindow.ui.h:39
 msgid "_Shrink Text"
 msgstr "_Metni daralt"
 
-#: ../src/gwaei/ui/main.ui.h:39
+#: ../src/gwaei/searchwindow.ui.h:40
 msgid "_Unknown Character"
 msgstr "_Tanımsız Karakter"
 
-#: ../src/gwaei/ui/main.ui.h:40
+#: ../src/gwaei/searchwindow.ui.h:41
 msgid "_View"
 msgstr "_Görünüm"
 
-#: ../src/gwaei/ui/main.ui.h:41
+#: ../src/gwaei/searchwindow.ui.h:42
 msgid "_Word-edge Mark"
 msgstr "Kelime işaretle"
 
-#: ../src/gwaei/ui/main.ui.h:42 ../src/gwaei/main.c:183
+#: ../src/gwaei/searchwindow.ui.h:43 ../src/gwaei/application.c:232
 #: ../src/desktop/gwaei.desktop.in.h:2
 msgid "gWaei Japanese-English Dictionary"
 msgstr "gWaei Japonca-İngilizce Sözlük"
 
-#: ../src/gwaei/ui/main.ui.h:43
+#: ../src/gwaei/searchwindow.ui.h:44
 msgid "menuitem2"
 msgstr "menüaracı2"
 
-#: ../src/gwaei/ui/radicals.ui.h:1
+#: ../src/gwaei/radicalswindow.ui.h:1
 msgid " _strokes"
 msgstr " _vuruş"
 
-#: ../src/gwaei/ui/radicals.ui.h:2 ../src/gwaei/ui/kanjipad.ui.h:1
+#: ../src/gwaei/radicalswindow.ui.h:2 ../src/gwaei/kanjipadwindow.ui.h:1
 msgid "C_lear"
 msgstr "T_emizle"
 
-#: ../src/gwaei/ui/radicals.ui.h:3
+#: ../src/gwaei/radicalswindow.ui.h:3
 msgid "_Restrict to Kanji of"
 msgstr "_Kanji de sınırla"
 
-#: ../src/gwaei/ui/radicals.ui.h:4
+#: ../src/gwaei/radicalswindow.ui.h:4 ../src/gwaei/radicalswindow.c:379
 msgid "gWaei Radical Search Tool"
 msgstr "gWaei Radikal Arama Aracı"
 
-#: ../src/gwaei/ui/settings.ui.h:1
+#: ../src/gwaei/settingswindow.ui.h:1
 msgid "<b>Manual Dictionary Management</b>"
 msgstr "<b>El ile sözlük yönetimi</b>"
 
-#: ../src/gwaei/ui/settings.ui.h:2
+#: ../src/gwaei/settingswindow.ui.h:2
 msgid "<b>Result Window Colors</b>"
 msgstr "<b>Sonuçlar Penceresi Rengi</b>"
 
-#: ../src/gwaei/ui/settings.ui.h:3
+#: ../src/gwaei/settingswindow.ui.h:3
 msgid "<b>Result Window Fonts</b>"
 msgstr "<b>Sonuçar Penceresi Yazıtipi</b>"
 
-#: ../src/gwaei/ui/settings.ui.h:4
+#: ../src/gwaei/settingswindow.ui.h:4
 msgid "<b>Search Entry Settings</b>"
 msgstr "<b>Girdi ayarlarını ara</b>"
 
-#: ../src/gwaei/ui/settings.ui.h:5
+#: ../src/gwaei/settingswindow.ui.h:5
 msgid "Advanced"
 msgstr "Gelişmiş"
 
-#: ../src/gwaei/ui/settings.ui.h:6
+#: ../src/gwaei/settingswindow.ui.h:6
 msgid "Appearance"
 msgstr "Görünüm"
 
-#: ../src/gwaei/ui/settings.ui.h:7
+#: ../src/gwaei/settingswindow.ui.h:7
 msgid "Comment"
 msgstr "Yorum"
 
-#: ../src/gwaei/ui/settings.ui.h:8
+#: ../src/gwaei/settingswindow.ui.h:8
 msgid "Convert Hiragana to _Katakana"
 msgstr "Hiragana yı _Katakana ya çevir"
 
-#: ../src/gwaei/ui/settings.ui.h:9
+#: ../src/gwaei/settingswindow.ui.h:9
 msgid "Convert Katakana to _Hiragana"
 msgstr "Katakana yı _Hiragana ya çevir"
 
-#: ../src/gwaei/ui/settings.ui.h:10
+#: ../src/gwaei/settingswindow.ui.h:10
 msgid "Convert _Romaji to Kana: "
 msgstr "_Romaji yi Kana ya çevir:"
 
-#: ../src/gwaei/ui/settings.ui.h:11
+#: ../src/gwaei/settingswindow.ui.h:11
 msgid "Custom Font: "
 msgstr "Özel Yazıtipi:"
 
-#: ../src/gwaei/ui/settings.ui.h:12
+#: ../src/gwaei/settingswindow.ui.h:12
 #, fuzzy
 msgid "Dictionaries"
 msgstr "_Sözlük"
 
-#: ../src/gwaei/ui/settings.ui.h:13
+#: ../src/gwaei/settingswindow.ui.h:13
 msgid "Enable Spell _Checking"
 msgstr "Dil bilgisi _Kontrolünü Aç"
 
-#: ../src/gwaei/ui/settings.ui.h:14
+#: ../src/gwaei/settingswindow.ui.h:14
 msgid "Header"
 msgstr "Başlık"
 
-#: ../src/gwaei/ui/settings.ui.h:15
+#: ../src/gwaei/settingswindow.ui.h:15
 msgid "Match"
 msgstr "Eşleşme"
 
-#: ../src/gwaei/ui/settings.ui.h:16
+#: ../src/gwaei/settingswindow.ui.h:16
 msgid "Never"
 msgstr "Asla"
 
-#: ../src/gwaei/ui/settings.ui.h:17
+#: ../src/gwaei/settingswindow.ui.h:17
 msgid "Only for Non-Japanese Locals"
 msgstr "Yalnızca Japonca olmayan yereller"
 
-#: ../src/gwaei/ui/settings.ui.h:18
+#: ../src/gwaei/settingswindow.ui.h:18
 msgid "Plugins"
 msgstr ""
 
-#: ../src/gwaei/ui/settings.ui.h:19
+#: ../src/gwaei/settingswindow.ui.h:19
+msgid "Search as you Type"
+msgstr ""
+
+#: ../src/gwaei/settingswindow.ui.h:20
 msgid "When Possible"
 msgstr "İmkan Olduğunda"
 
-#: ../src/gwaei/ui/settings.ui.h:20
+#: ../src/gwaei/settingswindow.ui.h:21
 msgid "_Open the gWaei dictionary folder"
 msgstr "_gWaei sözlük dizinini aç"
 
-#: ../src/gwaei/ui/settings.ui.h:21
+#: ../src/gwaei/settingswindow.ui.h:22
 msgid "_Reset"
 msgstr "_Sıfırla"
 
-#: ../src/gwaei/ui/settings.ui.h:22
+#: ../src/gwaei/settingswindow.ui.h:23
 msgid "_Update dictionaries using Rsync"
 msgstr "_Rsync kullanarak sözlüğü güncelle"
 
-#: ../src/gwaei/ui/settings.ui.h:23
+#: ../src/gwaei/settingswindow.ui.h:24
 msgid "_Use the system document font (Sans 10)"
 msgstr "_Sistem belge yazıtipini kullan(Sans 10)"
 
-#: ../src/gwaei/ui/settings.ui.h:24
+#: ../src/gwaei/settingswindow.ui.h:25 ../src/gwaei/settingswindow.c:110
 msgid "gWaei Settings"
 msgstr "gWaei Ayarları"
 
-#: ../src/gwaei/ui/settings.ui.h:25
+#: ../src/gwaei/settingswindow.ui.h:26
 msgid "gWaei requires at least one dictionary to be installed."
 msgstr "gWaei kullanımı en az bir sözlüğün kurulu olmasını gerektirir"
 
-#: ../src/gwaei/ui/kanjipad.ui.h:2
+#: ../src/gwaei/kanjipadwindow.ui.h:2
 msgid "_Annotate Strokes"
 msgstr "_Dipnot"
 
-#: ../src/gwaei/ui/kanjipad.ui.h:3
+#: ../src/gwaei/kanjipadwindow.ui.h:3 ../src/gwaei/kanjipadwindow.c:159
 msgid "gWaei Kanjipad"
 msgstr "gWaei Kanji tahtası"
 
-#: ../src/gwaei/installprogress.c:185
-#, fuzzy, c-format
-msgid "Installing %s..."
-msgstr "Kuruluyor..."
-
-#: ../src/gwaei/installprogress.c:186
-#, fuzzy, c-format
-msgid "Installing dictionary %d of %d..."
-msgstr "Ana Sözlükler"
-
-#: ../src/gwaei/dictionaryinstall.c:68
-#, c-format
-msgid "<b>%s Install Details</b>"
+#: ../src/gwaei/vocabularywindow.ui.h:1
+msgid "Study"
 msgstr ""
 
+#: ../src/gwaei/vocabularywindow.ui.h:2
+msgid "toolbutton3"
+msgstr ""
+
+#: ../src/gwaei/vocabularywindow.ui.h:3
+msgid "toolbutton4"
+msgstr ""
+
+#: ../src/gwaei/vocabularywindow.ui.h:4
+msgid "ファイル(_F)"
+msgstr ""
+
+#: ../src/gwaei/vocabularywindow.ui.h:5
+msgid "ヘルプ(_H)"
+msgstr ""
+
+#: ../src/gwaei/vocabularywindow.ui.h:6
+msgid "編集(_E)"
+msgstr ""
+
+#: ../src/gwaei/vocabularywindow.ui.h:7
+msgid "表示(_V)"
+msgstr ""
+
+#: ../src/gwaei/application.c:168
+#, fuzzy
+msgid "Force a new instance window"
+msgstr "Çoklu arama penceresini açın (Beta)"
+
+#: ../src/gwaei/application.c:169
+#, fuzzy
+msgid "Choose the dictionary to use"
+msgstr "Kullanmak istediğiniz sözlüğü seçin"
+
+#: ../src/gwaei/application.c:170
+#, fuzzy
+msgid "Check the gWaei version information"
+msgstr "Waei sürüm bilgisi"
+
+#: ../src/gwaei/application.c:201
+#, c-format
+msgid "%s version %s"
+msgstr ""
+
+#: ../src/gwaei/dictionaryinstallwindow-callbacks.c:452
+#, fuzzy, c-format
+msgid "<b>%s Install Details</b>"
+msgstr "<b>Diccionarios</b>"
+
 #. Third row
-#: ../src/gwaei/dictionaryinstall.c:90
+#: ../src/gwaei/dictionaryinstallwindow-callbacks.c:474
 msgid "Filename: "
 msgstr ""
 
 #. Forth row
-#: ../src/gwaei/dictionaryinstall.c:102
+#: ../src/gwaei/dictionaryinstallwindow-callbacks.c:488
 msgid "Engine: "
 msgstr ""
 
 #. Fifth row
-#: ../src/gwaei/dictionaryinstall.c:120
+#: ../src/gwaei/dictionaryinstallwindow-callbacks.c:508
 #, fuzzy
 msgid "Source: "
 msgstr "Kaynak: "
 
 #. Sixth row
-#: ../src/gwaei/dictionaryinstall.c:144
+#: ../src/gwaei/dictionaryinstallwindow-callbacks.c:538
 msgid "Encoding: "
 msgstr ""
 
 #. Seventh row
-#: ../src/gwaei/dictionaryinstall.c:161
+#: ../src/gwaei/dictionaryinstallwindow-callbacks.c:557
 #, fuzzy
 msgid "Compression: "
 msgstr "Açılıyor..."
 
 #. Eighth row
-#: ../src/gwaei/dictionaryinstall.c:178
+#: ../src/gwaei/dictionaryinstallwindow-callbacks.c:576
 #, fuzzy
 msgid "Split Places from Names Dictionary"
 msgstr "Forzar la división del _Diccionario Nombres"
 
 #. Ninth row
-#: ../src/gwaei/dictionaryinstall.c:188
+#: ../src/gwaei/dictionaryinstallwindow-callbacks.c:588
 #, fuzzy
 msgid "Merge Radicals into Kanji Dictionary"
 msgstr "Radikaller Sözlüğü"
 
-#: ../src/gwaei/dictionarymanager.c:85
+#: ../src/gwaei/dictionaryinstallwindow.c:114
 #, fuzzy
-msgid "Name"
-msgstr "İsimler"
+msgid "Select Dictionaries..."
+msgstr "Ana Sözlükler"
 
-#: ../src/gwaei/dictionarymanager.c:91
-msgid "Engine"
+#: ../src/gwaei/installprogresswindow-callbacks.c:126
+#, fuzzy, c-format
+msgid "Installing %s..."
+msgstr "Kuruluyor..."
+
+#: ../src/gwaei/installprogresswindow-callbacks.c:127
+#, fuzzy, c-format
+msgid "Installing dictionary %d of %d..."
+msgstr "Ana Sözlükler"
+
+#. Initializations
+#: ../src/gwaei/printing.c:183
+#, fuzzy, c-format
+msgid "Page %d/%d"
+msgstr "Sayfa %d"
+
+#: ../src/gwaei/radicalswindow.c:463
+#, c-format
+msgid ""
+"<b>Substitution Radical:</b> %s\n"
+"<b>Actual Radical:</b> %s\n"
+"<b>Radical Name:</b> %s"
+msgstr ""
+"<b>Radical Yerine:</b> %s\n"
+"<b>Güncel Radikal:</b> %s\n"
+"<b>Radical İsmi:</b> %s"
+
+#: ../src/gwaei/searchwindow-callbacks.c:496
+msgid "Save As"
+msgstr "Farklı Kaydet"
+
+#: ../src/gwaei/searchwindow-callbacks.c:509
+msgid "vocabulary.txt"
+msgstr "sozluk.txt"
+
+#: ../src/gwaei/searchwindow-callbacks.c:985
+#, fuzzy
+msgid ""
+"Program for Japanese translation and reference. The\n"
+"dictionaries are supplied by Jim Breen's WWWJDIC.\n"
+"Special thanks to the maker of GJITEN who served as an inspiration.\n"
+" Dedicated to Chuus"
+msgstr ""
+"Bu program Japonca çeviri ve referanslar içindir. Bu\n"
+"sözlük için Jim Breen'in WWWJDIC kullanılmıştır .\n"
+"GJITEN için ilham kaynağı olanlara özel olarak teşekkürler."
+
+#. TRANSLATORS: You can add your own name to the translation of this field, it will be displayed in the "about" box when gwaei is run in your language
+#: ../src/gwaei/searchwindow-callbacks.c:989
+msgid "translator-credits"
+msgstr "çeviri"
+
+#: ../src/gwaei/searchwindow-callbacks.c:2197
+msgid "_Close Tab"
+msgstr "_Sekmeyi Kapat"
+
+#: ../src/gwaei/searchwindow-callbacks.c:2199
+msgid "_Close"
+msgstr "_Kapat"
+
+#: ../src/gwaei/searchwindow-output.c:358
+#: ../src/gwaei/searchwindow-output.c:460
+msgid "Pop"
 msgstr ""
 
-#: ../src/gwaei/dictionarymanager.c:96
-msgid "Shortcut"
-msgstr "Kısayol"
+#: ../src/gwaei/searchwindow-output.c:777
+#, c-format
+msgid "Other Result %d"
+msgid_plural "Other Results %d"
+msgstr[0] "Diğer Sonuç %d"
+msgstr[1] "Diğer Sonuçlar %d"
 
-#: ../src/gwaei/dictionarymanager.c:195
-msgid "_Cycle Up"
-msgstr "_Önceki"
+#: ../src/gwaei/searchwindow-output.c:798
+#, c-format
+msgid "Main Result %d"
+msgid_plural "Main Results %d"
+msgstr[0] "Genel Sonuç %d"
+msgstr[1] "Genel Sonuçlar %d"
 
-#: ../src/gwaei/dictionarymanager.c:201
-msgid "Cycle _Down"
-msgstr "Sonraki"
-
-#: ../src/gwaei/gwaei.c:59
+#: ../src/gwaei/searchwindow-output.c:867
 #, fuzzy
-msgid "Choose the dictionary to use"
-msgstr "Kullanmak istediğiniz sözlüğü seçin"
+msgid "Radical Name"
+msgstr "Radikal İsmi:"
 
-#: ../src/gwaei/gwaei.c:61
-msgid "Open a new instance of gWaei"
-msgstr ""
-
-#: ../src/gwaei/gwaei.c:63
-#, fuzzy
-msgid "Check the gWaei version information"
-msgstr "Waei sürüm bilgisi"
-
-#: ../src/gwaei/main.c:544
+#: ../src/gwaei/searchwindow.c:596
 msgid "Searching..."
 msgstr "Aranıyor... "
 
-#: ../src/gwaei/main.c:547
+#: ../src/gwaei/searchwindow.c:599
 #, c-format
 msgid "Searching... %d result"
 msgid_plural "Searching... %d results"
@@ -870,26 +917,26 @@ msgstr[0] "Aranıyor... %d sonuç"
 msgstr[1] "Aranıyor... %d sonuç"
 
 #. TRANSLATORS: The argument is the dictionary long name
-#: ../src/gwaei/main.c:1671
+#: ../src/gwaei/searchwindow.c:1357
 #, c-format
 msgid "Nothing found in the %s!"
 msgstr "%s burada bulunamadı!"
 
-#: ../src/gwaei/main.c:1702
+#: ../src/gwaei/searchwindow.c:1388
 msgid "Search Other Dictionary: "
 msgstr "Diğer Sözlükleri Ara: "
 
-#: ../src/gwaei/main.c:1741
+#: ../src/gwaei/searchwindow.c:1425
 msgid "Search Online: "
 msgstr "Çevrimiçi Ara:"
 
-#: ../src/gwaei/main.c:1794
+#: ../src/gwaei/searchwindow.c:1478
 #, c-format
 msgid "gWaei Usage Tip #%d: "
 msgstr "gWaei İpucu Kullan #%d: "
 
 #. Tip 1
-#: ../src/gwaei/main.c:1807
+#: ../src/gwaei/searchwindow.c:1491
 #, c-format
 msgid ""
 "Use the Unknown Character from the Insert menu or toolbar in place of "
@@ -905,15 +952,15 @@ msgstr ""
 "Kanjipadin özelliği kanji karakter çizimi girişidir. Bu giriş tipinde "
 "çizgiler vuruşlar ve noktalar çok önemlidir."
 
-#: ../src/gwaei/main.c:1814
+#: ../src/gwaei/searchwindow.c:1498
 msgid "Inputting Unknown Kanji"
 msgstr "Tanımsız Kanji Girişi"
 
-#: ../src/gwaei/main.c:1831
+#: ../src/gwaei/searchwindow.c:1515
 msgid "Getting More Exact Matches"
 msgstr "Daha Fazla Eşleşmeye Git"
 
-#: ../src/gwaei/main.c:1837
+#: ../src/gwaei/searchwindow.c:1521
 msgid ""
 "Use the Word-edge Mark and the Not-word-edge Mark from the insert menu to "
 "get more relevant results.  fish\\b will return results like fish and "
@@ -924,10 +971,10 @@ msgstr ""
 "verir."
 
 #. Tip 3
-#: ../src/gwaei/main.c:1845
-#, c-format
+#: ../src/gwaei/searchwindow.c:1529
+#, fuzzy, c-format
 msgid ""
-"Use the And Character or Or Character to search for results that contain a "
+"Use the And Character or Or Character to window for results that contain a "
 "combination of words that might not be right next to each other.  cats&dogs "
 "will return only results that contain both the words cats and dogs like %s "
 "does."
@@ -936,15 +983,15 @@ msgstr ""
 "arama yapmanıza yardımcı olur. Kediler ve köpekler %s içeren iki kelime kedi "
 "ve köpek sonuçlarını verir."
 
-#: ../src/gwaei/main.c:1851
+#: ../src/gwaei/searchwindow.c:1535
 msgid "Searching for Multiple Words"
 msgstr "Çoklu Kelimeler İçin Ara"
 
-#: ../src/gwaei/main.c:1868
+#: ../src/gwaei/searchwindow.c:1552
 msgid "Make a Vocabulary List"
 msgstr "Kelime Listesi Yap"
 
-#: ../src/gwaei/main.c:1874
+#: ../src/gwaei/searchwindow.c:1558
 msgid ""
 "Specific sections of results can be printed or saved by dragging the mouse "
 "to highlight them.  Using this in combination with the Append command from "
@@ -955,13 +1002,14 @@ msgstr ""
 "menüden iliştirme özelliğini kullanabilirsiniz. İliştir menüsü Dosya "
 "menüsünden araç çubuğuna eklenebilir, daha kolay ve hızlı kullanım sağlar."
 
-#: ../src/gwaei/main.c:1884
+#: ../src/gwaei/searchwindow.c:1568
 msgid "Why Use the Mouse?"
 msgstr "Neden Fare Kullanıyorsun?"
 
-#: ../src/gwaei/main.c:1890
+#: ../src/gwaei/searchwindow.c:1574
+#, fuzzy
 msgid ""
-"Typing something will move the focus to the search input box.  Hitting the "
+"Typing something will move the focus to the window input box.  Hitting the "
 "Up or Down arrow key will move the focus to the results pane so you can "
 "scroll the results.  Hitting Alt-Up or Alt-Down will cycle the currently "
 "installed dictionaries."
@@ -970,11 +1018,11 @@ msgstr ""
 "gezinti yapabilirsiniz, anlam ayrımı sözcüklerde Sayfa kaydır tuşlarını "
 "kullanarak anlamlar arasında gezinti yapabilirsiniz."
 
-#: ../src/gwaei/main.c:1900
+#: ../src/gwaei/searchwindow.c:1584
 msgid "Get Ready for the JLPT"
 msgstr "JLPT İçin Başlat"
 
-#: ../src/gwaei/main.c:1906
+#: ../src/gwaei/searchwindow.c:1590
 msgid ""
 "The Kanji dictionary has some hidden features.  One such one is the ability "
 "to filter out Kanji that don't meet a certain criteria.  If you are planning "
@@ -989,26 +1037,26 @@ msgstr ""
 "Belirli seviye kanfilerde J# filtresini kullanmak işlerinizi "
 "kolaylaştırabilir."
 
-#: ../src/gwaei/main.c:1920
+#: ../src/gwaei/searchwindow.c:1604
 msgid "Just drag words in!"
 msgstr "Sadece kelime içine sürükle"
 
-#: ../src/gwaei/main.c:1926
+#: ../src/gwaei/searchwindow.c:1610
 #, fuzzy
 msgid ""
-"If you drag and drop a highlighted word into gWaei's search result box, "
-"gWaei will automatically start a search using that text.  This can be a nice "
+"If you drag and drop a highlighted word into gWaei's window result box, "
+"gWaei will automatically start a window using that text.  This can be a nice "
 "way to quickly look up words while browsing webpages. "
 msgstr ""
 "Bir kelimeyi gWaei üzerine sürüklerseniz gWaei otomatik olarak bu kelimenin "
 "çevirisini yapacaktır, bu durum genellikle web sayfası çevirilerinde işe "
 "yarayan bir özelliktir."
 
-#: ../src/gwaei/main.c:1937
+#: ../src/gwaei/searchwindow.c:1621
 msgid "What does (adj-i) mean?"
 msgstr "Bunu mu Demek İstediniz (adj-i)?"
 
-#: ../src/gwaei/main.c:1943
+#: ../src/gwaei/searchwindow.c:1627
 msgid ""
 "It is part of the terminalogy used by the EDICT group of dictionaries to "
 "categorize words.  Some are obvious, but there are a number that there is no "
@@ -1020,11 +1068,11 @@ msgstr ""
 "EDICT sözlük terminolojisi hakkında bilgi sahibi olmak için terminoloji "
 "menüsüne gözatın."
 
-#: ../src/gwaei/main.c:1955
+#: ../src/gwaei/searchwindow.c:1639
 msgid "Books are Heavy"
 msgstr "Ağır Kitaplar"
 
-#: ../src/gwaei/main.c:1961
+#: ../src/gwaei/searchwindow.c:1645
 msgid ""
 "Aways wear a construction helmet when working with books.  They are "
 "dangerous heavy objects that can at any point fall on and injure you.  "
@@ -1036,123 +1084,94 @@ msgstr ""
 "sağlayacaktır. Tanıdıklarınıza gönül rahatlığı ile önerebilirsiniz, size "
 "teşekkür edeceklerdir. Gerçekten."
 
-#: ../src/gwaei/main.c:2172
-msgid "A_ppend Selected"
-msgstr "Seçilene İliştir"
-
-#: ../src/gwaei/main.c:2174
-msgid "Save Selected _As"
-msgstr "Seçileni Farklı Kaydet"
-
-#: ../src/gwaei/main.c:2176
-msgid "_Print Selected"
-msgstr "Seçileni Yazdır"
-
-#: ../src/gwaei/main-callbacks.c:504
-msgid "Save As"
-msgstr "Farklı Kaydet"
-
-#: ../src/gwaei/main-callbacks.c:517
-msgid "vocabulary.txt"
-msgstr "sozluk.txt"
-
-#: ../src/gwaei/main-callbacks.c:1112
-#, fuzzy
-msgid ""
-"Program for Japanese translation and reference. The\n"
-"dictionaries are supplied by Jim Breen's WWWJDIC.\n"
-"Special thanks to the maker of GJITEN who served as an inspiration.\n"
-" Dedicated to Chuus"
-msgstr ""
-"Bu program Japonca çeviri ve referanslar içindir. Bu\n"
-"sözlük için Jim Breen'in WWWJDIC kullanılmıştır .\n"
-"GJITEN için ilham kaynağı olanlara özel olarak teşekkürler."
-
-#. TRANSLATORS: You can add your own name to the translation of this field, it will be displayed in the "about" box when gwaei is run in your language
-#: ../src/gwaei/main-callbacks.c:1116
-msgid "translator-credits"
-msgstr "çeviri"
-
-#. TRANSLATORS: The first variable is the expression to look for, the second is the dictionary full name
-#: ../src/gwaei/main-callbacks.c:1705
-#, c-format
-msgid "Search for \"%s\" in the %s"
-msgstr "\"%s\" için %s içinde ara"
-
-#. TRANSLATORS: The variable is the expression to look for
-#: ../src/gwaei/main-callbacks.c:1707
-#, c-format
-msgid "Search for \"%s\" in a Different Dictionary"
-msgstr "\"%s\" için Farklı Dizinde Ara"
-
-#. TRANSLATORS: The variable is the expression to look for
-#: ../src/gwaei/main-callbacks.c:1709
-#, c-format
-msgid "Cross-reference \"%s\" Online"
-msgstr "Çapraz referans \"%s\" Çevrimiçi"
-
-#. if (pages > 0) gtk_menu_item_set_label (GTK_MENU_ITEM (close_menuitem), gettext("_Close Tab"));
-#. gtk_widget_set_sensitive (close_menuitem, (pages > 0));
-#: ../src/gwaei/main-tabs.c:120 ../src/gwaei/main-tabs.c:123
-msgid "_Close Tab"
-msgstr "_Sekmeyi Kapat"
-
-#: ../src/gwaei/main-tabs.c:124
-msgid "_Close"
-msgstr "_Kapat"
-
-#: ../src/gwaei/main-tabs.c:292
+#: ../src/gwaei/searchwindow.c:1972
 msgid "(Empty)"
 msgstr "(Boş)"
 
-#. Initializations
-#: ../src/gwaei/printing.c:146
-#, fuzzy, c-format
-msgid "Page %d/%d"
-msgstr "Sayfa %d"
+#: ../src/gwaei/searchwindow.c:2658
+msgid "_Cycle Up"
+msgstr "_Önceki"
 
-#: ../src/gwaei/radsearchtool.c:375
-#, c-format
-msgid ""
-"<b>Substitution Radical:</b> %s\n"
-"<b>Actual Radical:</b> %s\n"
-"<b>Radical Name:</b> %s"
-msgstr ""
-"<b>Radical Yerine:</b> %s\n"
-"<b>Güncel Radikal:</b> %s\n"
-"<b>Radical İsmi:</b> %s"
+#: ../src/gwaei/searchwindow.c:2664
+msgid "Cycle _Down"
+msgstr "Sonraki"
 
-#: ../src/gwaei/settings.c:151
+#: ../src/gwaei/settingswindow-callbacks.c:328
 #, c-format
 msgid "_Use the System Document Font (%s)"
 msgstr "_Sistem Belge Yazıtipini Kullan (%s)"
 
-#: ../src/gwaei/output-callbacks.c:288 ../src/gwaei/output-callbacks.c:387
-msgid "Pop"
+#: ../src/gwaei/settingswindow.c:416
+#, fuzzy
+msgid "Name"
+msgstr "İsimler"
+
+#: ../src/gwaei/settingswindow.c:422
+msgid "Engine"
 msgstr ""
 
-#: ../src/gwaei/output-callbacks.c:594
-#, fuzzy
-msgid "Radical Name"
-msgstr "Radikal İsmi:"
-
-#: ../src/gwaei/output-callbacks.c:788
-#, c-format
-msgid "Other Result %d"
-msgid_plural "Other Results %d"
-msgstr[0] "Diğer Sonuç %d"
-msgstr[1] "Diğer Sonuçlar %d"
-
-#: ../src/gwaei/output-callbacks.c:803
-#, c-format
-msgid "Main Result %d"
-msgid_plural "Main Results %d"
-msgstr[0] "Genel Sonuç %d"
-msgstr[1] "Genel Sonuçlar %d"
+#: ../src/gwaei/settingswindow.c:427
+msgid "Shortcut"
+msgstr "Kısayol"
 
 #: ../src/desktop/gwaei.desktop.in.h:1
 msgid "Enter a Japanese or English word to easily get translations."
 msgstr ""
+
+#~ msgid "Searching for \""
+#~ msgstr "Bunun için ara \""
+
+#~ msgid "\" in the "
+#~ msgstr "\" içinde"
+
+#~ msgid " dictionary..."
+#~ msgstr "sözlük..."
+
+#, fuzzy
+#~ msgid "Search: "
+#~ msgstr "Ara:"
+
+#~ msgid "Results: "
+#~ msgstr "Sounçlar:  "
+
+#~ msgid "- Japanese-English dictionary program that allows regex searches"
+#~ msgstr "- Hızlı ve düzenli arama sağlayan Japonca-İngilizce sözlük programı"
+
+#~ msgid "Option parsing failed: %s\n"
+#~ msgstr "Seçenek çözümleme Başarısız: %s\n"
+
+#~ msgid ""
+#~ "waei generally outputs directly to the console.  If you want to do "
+#~ "multiple\n"
+#~ "searches, please start gWaei with the -n switch for the multisearch mode."
+#~ msgstr ""
+#~ "Waei ile çoklu arama özelliğini kullanmak istiyorsanızkonsoldan\n"
+#~ "gWaei -n modu ile programı başlatınız. "
+
+#~ msgid "Click to start search"
+#~ msgstr "Tıklayıp aramaya başlayın"
+
+#~ msgid "A_ppend Selected"
+#~ msgstr "Seçilene İliştir"
+
+#~ msgid "Save Selected _As"
+#~ msgstr "Seçileni Farklı Kaydet"
+
+#~ msgid "_Print Selected"
+#~ msgstr "Seçileni Yazdır"
+
+#, fuzzy
+#~ msgid "_Print Preview Selected"
+#~ msgstr "Seçileni Yazdır"
+
+#~ msgid "Search for \"%s\" in the %s"
+#~ msgstr "\"%s\" için %s içinde ara"
+
+#~ msgid "Search for \"%s\" in a Different Dictionary"
+#~ msgstr "\"%s\" için Farklı Dizinde Ara"
+
+#~ msgid "Cross-reference \"%s\" Online"
+#~ msgstr "Çapraz referans \"%s\" Çevrimiçi"
 
 #~ msgid "Radicals"
 #~ msgstr "Radikaller"
@@ -1188,10 +1207,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "This is the example dictionary."
 #~ msgstr "Örnekler Sözlüğü"
-
-#, fuzzy
-#~ msgid "<b>Details</b>"
-#~ msgstr "<b>Diccionarios</b>"
 
 #~ msgid "Input your query here"
 #~ msgstr "Sorgunuzu buraya girin"

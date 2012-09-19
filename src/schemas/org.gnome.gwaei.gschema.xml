@@ -1,5 +1,5 @@
 <schemalist>
-  <schema id="org.gnome.gwaei" path="/desktop/gnome/gwaei/">
+  <schema id="org.gnome.gwaei" path="/org/gnome/gwaei/">
     <key name="version" type="s">
       <default>'0.0.0'</default>
       <summary>The program version</summary>
@@ -10,6 +10,12 @@
       <default>false</default>
       <summary>Toolbar show status</summary>
       <description>Determines if the toolbar is hidden or not.</description>
+    </key>
+
+    <key name="statusbar-show" type="b">
+      <default>false</default>
+      <summary>Toolbar show status</summary>
+      <description>Determines if the statusbar is hidden or not.</description>
     </key>
 
     <key name="query-katakana-to-hiragana" type="b">
@@ -36,10 +42,10 @@
       <description>Checks the spelling of search queries as the user types them in.</description>
     </key>
 
-    <key name="window-positions" type="s">
-      <default>''</default>
-      <summary>For saving window coordinates</summary>
-      <description>Used for saving the position of closed windows for when they are next opened.</description>
+    <key name="search-as-you-type" type="b">
+      <default>false</default>
+      <summary>The search updates as you type</summary>
+      <description>Searches dynamically update as you type.</description>
     </key>
 
     <child schema="org.gnome.gwaei.dictionary" name="dictionary"/>
@@ -48,7 +54,7 @@
   </schema>
 
   <!-- Dictionary settings -->
-  <schema id="org.gnome.gwaei.dictionary" path="/desktop/gnome/gwaei/dictionary/">
+  <schema id="org.gnome.gwaei.dictionary" path="/org/gnome/gwaei/dictionary/">
     <key name="load-order" type="s">
       <default>'edict/English,kanji/Kanji,edict/Names,edict/Places,examples/Examples'</default>
       <summary>Used for the styling of some titles</summary>
@@ -81,7 +87,7 @@
   </schema>
 
   <!-- Font settings -->
-  <schema id="org.gnome.gwaei.fonts" path="/desktop/gnome/gwaei/fonts/">
+  <schema id="org.gnome.gwaei.fonts" path="/org/gnome/gwaei/fonts/">
     <key name="use-global-document-font" type="b">
       <default>true</default>
       <summary>Use the global document font</summary>
@@ -102,7 +108,7 @@
   </schema>
 
   <!-- Highlighting settings -->
-  <schema id="org.gnome.gwaei.highlighting" path="/desktop/gnome/gwaei/highlighting/">
+  <schema id="org.gnome.gwaei.highlighting" path="/org/gnome/gwaei/highlighting/">
     <key name="comment-foreground" type="s">
       <default>'#2222DD'</default>
       <summary>Color for comments in dictionary files</summary>

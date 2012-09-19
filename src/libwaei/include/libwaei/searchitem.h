@@ -1,5 +1,5 @@
-#ifndef GW_SEARCHITEM_OBJECT_INCLUDED
-#define GW_SEARCHITEM_OBJECT_INCLUDED
+#ifndef LW_SEARCHITEM_INCLUDED
+#define LW_SEARCHITEM_INCLUDED
 /******************************************************************************
     AUTHOR:
     File written and Copyrighted by Zachary Dovel. All Rights Reserved.
@@ -22,15 +22,11 @@
 *******************************************************************************/
 
 //!
-//! @file src/include/libwaei/searchitem.h
+//! @file searchitem.h
 //!
 //! @brief To be written.
 //!
 //! To be written.
-//!
-
-//!
-//! Historylist targets
 //!
 
 #include <stdio.h>
@@ -40,27 +36,21 @@
 #include <libwaei/dictinfo.h>
 
 
-#define GW_HISTORY_TIME_TO_RELEVANCE 20
+#define LW_SEARCHITEM(object) (LwSearchItem*) object
+#define LW_SEARCHITEM_DATA_FREE_FUNC(object) (LwSearchItemDataFreeFunc)object
+#define LW_HISTORY_TIME_TO_RELEVANCE 20
 
 //!
-//! Search status types
+//! @brief Search status types
 //!
 typedef enum
 {
-  GW_SEARCH_IDLE,
-  GW_SEARCH_SEARCHING,
-  GW_SEARCH_FINISHING,
-  GW_SEARCH_CANCELING
-} LwSearchState;
+  LW_SEARCHSTATUS_IDLE,
+  LW_SEARCHSTATUS_SEARCHING,
+  LW_SEARCHSTATUS_CANCELING
+} LwSearchStatus;
 
-typedef enum
-{
-  GW_TARGET_RESULTS,
-  GW_TARGET_KANJI,
-  GW_TARGET_ENTRY,
-  GW_TARGET_CONSOLE
-} LwTargetOutput;
-
+typedef void(*LwSearchItemDataFreeFunc)(gpointer);
 
 //!
 //! @brief Primitive for storing search item information
@@ -74,50 +64,56 @@ struct _LwSearchItem {
     GThread *thread;                        //!< Thread the search is processed in
     GMutex *mutex;                          //!< Mutext to help ensure threadsafe operation
 
-    LwSearchState status;                   //!< Used to test if a search is in progress.
+    LwSearchStatus status;                  //!< Used to test if a search is in progress.
     char *scratch_buffer;                   //!< Scratch space
-    LwTargetOutput target;                  //!< What gui element should be outputted to
-    long current_line;                      //!< Current line in the dictionary file
-    long progress_feedback_line;            //!< Recorderd previous line for determining when to update the progresse
+    long current;                           //!< Current line in the dictionary file
     int history_relevance_idle_timer;       //!< Helps determine if something is added to the history or not
-    gboolean show_only_exact_matches;
 
     int total_relevant_results;             //!< Total results guessed to be highly relevant to the query
     int total_irrelevant_results;           //!< Total results guessed to be vaguely relevant to the query
     int total_results;                      //!< Total results returned from the search
 
+    GList *results_high;                    //!< Buffer storing mediumly relevant result for later display
     GList *results_medium;                  //!< Buffer storing mediumly relevant result for later display
     GList *results_low;                     //!< Buffer storing lowly relevant result for later display
 
     LwResultLine* resultline;               //!< Result line to store parsed result
-    LwResultLine* backup_resultline;        //!< Result line kept for comparison purposes from previosu result line
-    LwResultLine* swap_resultline;          //!< Swap space for swapping result line and backup_resultline
 
-    void (*lw_searchitem_parse_result_string)(LwResultLine*);                              //!< function pointer
-    void (*lw_searchitem_ui_append_results_to_output)(struct _LwSearchItem*);              //!< function pointer
-    void (*lw_searchitem_ui_append_less_relevant_header_to_output)(struct _LwSearchItem*); //!< function pointer
-    void (*lw_searchitem_ui_append_more_relevant_header_to_output)(struct _LwSearchItem*); //!< function pointer
-    void (*lw_searchitem_ui_pre_search_prep)(struct _LwSearchItem*);                       //!< function pointer
-    void (*lw_searchitem_ui_after_search_cleanup)(struct _LwSearchItem*);                  //!< function pointer
-
-    gpointer* target_tb;                 //!< Pointer to a buffer that stays constant unlike when the target attribute is used
-    gpointer* target_tv;                 //!< Pointer to a buffer that stays constant unlike when the target attribute is used
+    gpointer data;                 //!< Pointer to a buffer that stays constant unlike when the target attribute is used
+    LwSearchItemDataFreeFunc free_data_func;
 };
 typedef struct _LwSearchItem LwSearchItem;
 
 //Methods
-LwSearchItem* lw_searchitem_new (char*, LwDictInfo*, const int, GError **error);
+LwSearchItem* lw_searchitem_new (const char*, LwDictInfo*, LwPreferences*, GError**);
+void lw_searchitem_free (LwSearchItem*);
+void lw_searchitem_init (LwSearchItem*, const char*, LwDictInfo*, LwPreferences*, GError**);
+void lw_searchitem_deinit (LwSearchItem*);
 
-void lw_searchitem_do_post_search_clean (LwSearchItem*);
-gboolean lw_searchitem_do_pre_search_prep (LwSearchItem*);
+void lw_searchitem_cleanup_search (LwSearchItem*);
+void lw_searchitem_clear_results (LwSearchItem*);
+void lw_searchitem_prepare_search (LwSearchItem*);
 
 gboolean lw_searchitem_run_comparison (LwSearchItem*, const LwRelevance);
 gboolean lw_searchitem_is_equal (LwSearchItem*, LwSearchItem*);
-gboolean lw_searchitem_has_history_relevance (LwSearchItem*);
+gboolean lw_searchitem_has_history_relevance (LwSearchItem*, gboolean);
 void lw_searchitem_increment_history_relevance_timer (LwSearchItem*);
 
+void lw_searchitem_set_data (LwSearchItem*, gpointer, LwSearchItemDataFreeFunc);
+gpointer lw_searchitem_get_data (LwSearchItem*);
+void lw_searchitem_free_data (LwSearchItem*);
+gboolean lw_searchitem_has_data (LwSearchItem*);
 
-void lw_searchitem_free (LwSearchItem*);
+gboolean lw_searchitem_should_check_results (LwSearchItem*);
+LwResultLine* lw_searchitem_get_result (LwSearchItem*);
+void lw_searchitem_parse_result_string (LwSearchItem*);
+void lw_searchitem_cancel_search (LwSearchItem*);
+
+void lw_searchitem_lock_mutex (LwSearchItem*);
+void lw_searchitem_unlock_mutex (LwSearchItem*);
+
+double lw_searchitem_get_progress (LwSearchItem*);
+
 
 
 #endif

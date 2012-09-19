@@ -20,9 +20,7 @@
 *******************************************************************************/
 
 //!
-//!  @file src/resultline-object.c
-//!
-//!  @brief Management of result lines
+//!  @file resultline.c
 //!
 
 #include <stdio.h>
@@ -33,81 +31,95 @@
 
 #include <libwaei/libwaei.h>
 
+static char *FIRST_DEFINITION_PREFIX_STR = "(1)";
 
 
-LwResultLine* lw_resultline_new ()
+
+//!
+//! @brief Creates a new LwResultLine object
+//! @return An allocated LwResultLine that will be needed to be freed by lw_resultline_free.
+//!
+LwResultLine* 
+lw_resultline_new ()
 {
     LwResultLine* temp;
 
-    if ((temp = (LwResultLine*) malloc(sizeof(LwResultLine))) == NULL) return NULL;
+    temp = (LwResultLine*) malloc(sizeof(LwResultLine));
 
-    //A place for a copy of the raw string
-    temp->string[0] = '\0';
-    
-    //General formatting
-    temp->def_start[0] = NULL;
-    temp->def_total = 0;
-    temp->kanji_start = NULL;
-    temp->furigana_start = NULL;
-    temp->classification_start = NULL;
-    temp->important = FALSE;
-
-    //Kanji things
-    temp->strokes = NULL;
-    temp->frequency = NULL;
-    temp->readings[0] = NULL;
-    temp->readings[1] = NULL;
-    temp->readings[2] = NULL;
-    temp->meanings = NULL;
-    temp->grade = NULL;
-    temp->jlpt = NULL;
-    temp->kanji = NULL;
-    temp->radicals = NULL;
+    if (temp != NULL)
+    {
+      lw_resultline_init (temp);
+    }
 
     return temp;
 }
 
-void lw_resultline_clear_variables (LwResultLine *temp)
+//!
+//! @brief Releases a LwResultLine object from memory.
+//! @param rl A LwResultLine object created by lw_resultline_new.
+//!
+void 
+lw_resultline_free (LwResultLine *rl)
 {
-    //A place for a copy of the raw string
-    temp->string[0] = '\0';
-    
-    //General formatting
-    temp->def_start[0] = NULL;
-    temp->def_total = 0;
-    temp->kanji_start = NULL;
-    temp->furigana_start = NULL;
-    temp->classification_start = NULL;
-    temp->important = FALSE;
-
-    //Kanji things
-    temp->strokes = NULL;
-    temp->frequency = NULL;
-    temp->readings[0] = NULL;
-    temp->readings[1] = NULL;
-    temp->readings[2] = NULL;
-    temp->meanings = NULL;
-    temp->grade = NULL;
-    temp->jlpt = NULL;
-    temp->kanji = NULL;
-    temp->radicals = NULL;
+    lw_resultline_deinit (rl);
+    free (rl);
 }
 
-void lw_resultline_free (LwResultLine *item)
+
+//!
+//! @brief Used to initialize the memory inside of a new LwDictInfo
+//!        object.  Usually lw_dictinfo_new calls this for you.  It is also 
+//!        used in class implimentations that extends LwDictInfo.
+//! @param rl The LwResultline to initialize the memory of
+//!
+void 
+lw_resultline_init (LwResultLine *rl)
 {
-    free (item);
+    //A place for a copy of the raw string
+    rl->string[0] = '\0';
+
+    rl->relevance = LW_RESULTLINE_RELEVANCE_UNSET;
+    
+    //General formatting
+    rl->def_start[0] = NULL;
+    rl->def_total = 0;
+    rl->kanji_start = NULL;
+    rl->furigana_start = NULL;
+    rl->classification_start = NULL;
+    rl->important = FALSE;
+
+    //Kanji things
+    rl->strokes = NULL;
+    rl->frequency = NULL;
+    rl->readings[0] = NULL;
+    rl->readings[1] = NULL;
+    rl->readings[2] = NULL;
+    rl->meanings = NULL;
+    rl->grade = NULL;
+    rl->jlpt = NULL;
+    rl->kanji = NULL;
+    rl->radicals = NULL;
+}
+
+
+//!
+//! @brief Used to free the memory inside of a LwResultLine object.
+//!         Usually lw_dictinfo_free calls this for you.  It is also used
+//!         in class implimentations that extends LwResultLine.
+//! @param rl The LwResultLine object to have it's inner memory freed.
+//!
+void 
+lw_resultline_deinit (LwResultLine *rl)
+{
 }
 
 
 //!
 //! @brief Parses a string for a Edict format string
+//! @param rl The Resultline object this method works on
 //!
-//! String parsing for the Jim Breen Edict dictionary.
-//!
-//! @param line line
-//! @param string string
-//!
-void lw_resultline_parse_edict_result_string (LwResultLine *rl)
+void 
+lw_resultline_parse_edict_result_string (LwResultLine *rl)
 {
     //Reinitialize Variables to help prevent craziness
     rl->def_start[0] = NULL;
@@ -222,20 +234,15 @@ void lw_resultline_parse_edict_result_string (LwResultLine *rl)
 
 //!
 //! @brief Parses a string for a Kanjidic format string
+//! @param rl The Resultline object this method works on
 //!
-//! String parsing for the Jim Breen Kanji dictionary.  It also supports the
-//! gWaei custom Mix dictionary.
-//!
-//! @param line line
-//! @param string string
-//!
-void lw_resultline_parse_kanjidict_result_string (LwResultLine *rl)
+void 
+lw_resultline_parse_kanjidict_result_string (LwResultLine *rl)
 {
     GMatchInfo* match_info;
-    int start[GW_RE_TOTAL];
-    int end[GW_RE_TOTAL];
+    int start[LW_RE_TOTAL];
+    int end[LW_RE_TOTAL];
     GUnicodeScript script;
-    gunichar character;
     char *ptr = rl->string;
 
     //Reinitialize Variables to help prevent craziness
@@ -256,44 +263,44 @@ void lw_resultline_parse_kanjidict_result_string (LwResultLine *rl)
 
     //Get strokes
     rl->strokes = NULL;
-    g_regex_match (lw_re[GW_RE_STROKES], ptr, 0, &match_info);
+    g_regex_match (lw_re[LW_RE_STROKES], ptr, 0, &match_info);
     if (g_match_info_matches (match_info))
     {
-      g_match_info_fetch_pos (match_info, 0, &start[GW_RE_STROKES], &end[GW_RE_STROKES]);
-      rl->strokes = ptr + start[GW_RE_STROKES] + 1;
+      g_match_info_fetch_pos (match_info, 0, &start[LW_RE_STROKES], &end[LW_RE_STROKES]);
+      rl->strokes = ptr + start[LW_RE_STROKES] + 1;
     }
     g_match_info_free (match_info);
 
 
     //Get frequency
     rl->frequency = NULL;
-    g_regex_match (lw_re[GW_RE_FREQUENCY], ptr, 0, &match_info);
+    g_regex_match (lw_re[LW_RE_FREQUENCY], ptr, 0, &match_info);
     if (g_match_info_matches (match_info))
     {
-      g_match_info_fetch_pos (match_info, 0, &start[GW_RE_FREQUENCY], &end[GW_RE_FREQUENCY]);
-      rl->frequency = ptr + start[GW_RE_FREQUENCY] + 1;
+      g_match_info_fetch_pos (match_info, 0, &start[LW_RE_FREQUENCY], &end[LW_RE_FREQUENCY]);
+      rl->frequency = ptr + start[LW_RE_FREQUENCY] + 1;
     }
     g_match_info_free (match_info);
 
 
     //Get grade level
     rl->grade = NULL;
-    g_regex_match (lw_re[GW_RE_GRADE], ptr, 0, &match_info);
+    g_regex_match (lw_re[LW_RE_GRADE], ptr, 0, &match_info);
     if (g_match_info_matches (match_info))
     {
-      g_match_info_fetch_pos (match_info, 0, &start[GW_RE_GRADE], &end[GW_RE_GRADE]);
-      rl->grade = ptr + start[GW_RE_GRADE] + 1;
+      g_match_info_fetch_pos (match_info, 0, &start[LW_RE_GRADE], &end[LW_RE_GRADE]);
+      rl->grade = ptr + start[LW_RE_GRADE] + 1;
     }
     g_match_info_free (match_info);
 
 
     //Get JLPT level
     rl->jlpt = NULL;
-    g_regex_match (lw_re[GW_RE_JLPT], ptr, 0, &match_info);
+    g_regex_match (lw_re[LW_RE_JLPT], ptr, 0, &match_info);
     if (g_match_info_matches (match_info))
     {
-      g_match_info_fetch_pos (match_info, 0, &start[GW_RE_JLPT], &end[GW_RE_JLPT]);
-      rl->jlpt = ptr + start[GW_RE_JLPT] + 1;
+      g_match_info_fetch_pos (match_info, 0, &start[LW_RE_JLPT], &end[LW_RE_JLPT]);
+      rl->jlpt = ptr + start[LW_RE_JLPT] + 1;
     }
     g_match_info_free (match_info);
 
@@ -303,7 +310,7 @@ void lw_resultline_parse_kanjidict_result_string (LwResultLine *rl)
     ptr = g_utf8_strchr (ptr, -1, g_utf8_get_char (" "));
     if (ptr == NULL)
     {
-      printf("This dictionary is incorrectly formatted\n");
+      fprintf(stderr, "This dictionary is incorrectly formatted\n");
       exit (1);
     }
     *ptr = '\0';
@@ -317,7 +324,7 @@ void lw_resultline_parse_kanjidict_result_string (LwResultLine *rl)
       rl->radicals = ptr;
       ptr = g_utf8_next_char (ptr);
       script = g_unichar_get_script (g_utf8_get_char (ptr));
-      while (*ptr == ' ' || script != G_UNICODE_SCRIPT_LATIN && script != G_UNICODE_SCRIPT_COMMON)
+      while (*ptr == ' ' || (script != G_UNICODE_SCRIPT_LATIN && script != G_UNICODE_SCRIPT_COMMON))
       {
         ptr = g_utf8_next_char(ptr);
         script = g_unichar_get_script (g_utf8_get_char (ptr));
@@ -364,25 +371,22 @@ void lw_resultline_parse_kanjidict_result_string (LwResultLine *rl)
 
     rl->meanings = ptr;
 
-    if (ptr = g_utf8_strrchr (ptr, -1, g_utf8_get_char ("\n")))
+    if ((ptr = g_utf8_strrchr (ptr, -1, g_utf8_get_char ("\n"))) != NULL)
       *ptr = '\0';
 
-    if (rl->strokes)   *(rl->string + end[GW_RE_STROKES]) = '\0';
-    if (rl->frequency) *(rl->string + end[GW_RE_FREQUENCY]) = '\0';
-    if (rl->grade)     *(rl->string + end[GW_RE_GRADE]) = '\0';
-    if (rl->jlpt)      *(rl->string + end[GW_RE_JLPT]) = '\0';
+    if (rl->strokes)   *(rl->string + end[LW_RE_STROKES]) = '\0';
+    if (rl->frequency) *(rl->string + end[LW_RE_FREQUENCY]) = '\0';
+    if (rl->grade)     *(rl->string + end[LW_RE_GRADE]) = '\0';
+    if (rl->jlpt)      *(rl->string + end[LW_RE_JLPT]) = '\0';
 }
 
 
 //!
 //! @brief Parses a string for an example format string
+//! @param rl The Resultline object this method works on
 //!
-//! String parsing for the Jim Breen Example dictionaries.
-//!
-//! @param line line
-//! @param string string
-//!
-void lw_resultline_parse_examplesdict_result_string (LwResultLine *rl)
+void 
+lw_resultline_parse_examplesdict_result_string (LwResultLine *rl)
 {
     //Reinitialize Variables to help prevent craziness
     rl->def_start[0] = NULL;
@@ -406,8 +410,6 @@ void lw_resultline_parse_examplesdict_result_string (LwResultLine *rl)
     rl->kanji = rl->string;
 
     char *temp = NULL;
-    char *eraser = NULL;
-    int i = 0;
 
     //Normal Japanese:    B:日本語[tab]English:B:読み解説
     temp = rl->string;
@@ -466,45 +468,26 @@ void lw_resultline_parse_examplesdict_result_string (LwResultLine *rl)
 
 //!
 //! @brief Parses a string for an unknown format string
+//! @param rl The Resultline object this method works on
 //!
-//! This is the fallback format for user installed unknown dictionaries. Should be generally
-//! compatible with anything.
-//!
-//! @param line line
-//! @param string string
-//!
-void lw_resultline_parse_unknowndict_result_string (LwResultLine *rl)
+void 
+lw_resultline_parse_unknowndict_result_string (LwResultLine *rl)
 {
-/*
-    //Reinitialize Variables to help prevent craziness
-    rl->def_start[0] = NULL;
-    rl->def_total = 0;
-    rl->kanji_start = NULL;
-    rl->furigana_start = NULL;
-    rl->classification_start = NULL;
-    rl->important = FALSE;
-    rl->strokes = NULL;
-    rl->frequency = NULL;
-    rl->readings[0] = NULL;
-    rl->readings[1] = NULL;
-    rl->readings[2] = NULL;
-    rl->meanings = NULL;
-    rl->grade = NULL;
-    rl->jlpt = NULL;
-    rl->kanji = NULL;
-    rl->radicals = NULL;
+}
 
-    char *temp = NULL;
-    if (temp = g_utf8_strchr (rl->string, -1, L'\n'))
-    {
-      *temp = '\0';
-    }
 
-    rl->def_start[0] = rl->string;
-    rl->def_start[1] = NULL;
-    rl->def_total = 1;
-    rl->kanji_start = rl->string;
-    rl->furigana_start = rl->string;
-*/
+gboolean 
+lw_resultline_is_similar (LwResultLine *rl1, LwResultLine *rl2)
+{
+    //Declarations
+    gboolean same_def_totals, same_first_def;
+
+    if (rl1 == NULL || rl2 == NULL) return FALSE;
+
+    //Initializations
+    same_def_totals = (rl1->def_total == rl2->def_total);
+    same_first_def = (strcmp(rl1->def_start[0], rl2->def_start[0]) == 0);
+
+    return (same_first_def && same_def_totals);
 }
 

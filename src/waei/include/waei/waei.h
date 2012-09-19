@@ -1,14 +1,14 @@
-#ifndef GW_FRONTEND_INCLUDED
-#define GW_FRONTEND_INCLUDED
+#ifndef GW_WAEI_INCLUDED
+#define GW_WAEI_INCLUDED
+
+#ifdef HAVE_CONFIG_H
+#include "../../../../config.h"
+#endif
+#include "gettext.h"
 
 #include <libwaei/libwaei.h>
+#include <waei/application.h>
+#include <waei/search-data.h>
 #include <waei/console.h>
-#include <waei/ncurses.h>
-
-void w_initialize (int*, char**);
-void w_free (void);
-int w_start_console (int, char**);
-int w_start_ncurses (int, char**);
-gboolean w_get_color_switch (void);
 
 #endif
