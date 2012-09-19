@@ -1,4 +1,4 @@
-gwaei (3.6.0-1) unstable; urgency=low
+gwaei (3.6.0-1) experimental; urgency=low
 
   * unfuzzify patch(es)
   * new patch fix-google-translate-url to fix google search
@@ -7,8 +7,9 @@ gwaei (3.6.0-1) unstable; urgency=low
     get it working with Unity, but it breaks on Debian, so it is not
     activated by default. It might be unnecessary with new upstream
   * fixes for the rules file
+  * new recommends: mecab-ipadic, hunspell-en-us
 
- -- Norbert Preining <preining@debian.org>  Wed, 19 Sep 2012 15:00:44 +0900
+ -- Norbert Preining <preining@debian.org>  Wed, 19 Sep 2012 15:14:25 +0900
 
 gwaei (3.4.3-1) unstable; urgency=low
 
