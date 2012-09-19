@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <!-- interface-requires gtk+ 2.6 -->
+  <!-- interface-requires gtk+ 3.0 -->
   <object class="GtkImage" id="image1">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -26,33 +26,28 @@
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="border_width">8</property>
-        <property name="spacing">8</property>
         <property name="orientation">vertical</property>
+        <property name="spacing">8</property>
         <child>
           <object class="GtkBox" id="hbox1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="orientation">horizontal</property>
             <child>
-              <object class="GtkScrolledWindow" id="radical_selection_scrolledwindow">
+              <object class="GtkScrolledWindow" id="scrolledwindow">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="hscrollbar_policy">never</property>
+                <property name="vscrollbar_policy">always</property>
+                <property name="min_content_width">400</property>
+                <property name="min_content_height">400</property>
                 <child>
-                  <object class="GtkViewport" id="viewport1">
+                  <object class="GtkToolPalette" id="toolpalette">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="resize_mode">queue</property>
-                    <child>
-                      <object class="GtkGrid" id="radical_selection_grid">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="row_spacing">8</property>
-                        <child>
-                          <placeholder/>
-                        </child>
-                      </object>
-                    </child>
+                    <property name="can_focus">True</property>
+                    <property name="vexpand">True</property>
+                    <property name="border_width">5</property>
+                    <property name="orientation">vertical</property>
+                    <property name="toolbar_style">text</property>
                   </object>
                 </child>
               </object>
@@ -74,12 +69,10 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="spacing">5</property>
-            <property name="orientation">horizontal</property>
             <child>
               <object class="GtkBox" id="strokes_hbox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="orientation">horizontal</property>
                 <child>
                   <object class="GtkCheckButton" id="strokes_checkbox">
                     <property name="label" translatable="yes">_Restrict to Kanji of</property>
@@ -89,6 +82,7 @@
                     <property name="receives_default">False</property>
                     <property name="use_action_appearance">False</property>
                     <property name="use_underline">True</property>
+                    <property name="xalign">0.5</property>
                     <property name="draw_indicator">True</property>
                     <signal name="toggled" handler="gw_radicalswindow_strokes_checkbox_toggled_cb" object="toplevel" swapped="no"/>
                   </object>
@@ -173,9 +167,6 @@
                     <property name="receives_default">True</property>
                     <property name="use_action_appearance">False</property>
                     <property name="use_stock">True</property>
-                    <signal name="activate" handler="gw_radicalswindow_close_cb" object="toplevel" swapped="no"/>
-                    <signal name="activate" handler="gw_radicalswindow_clear_cb" object="toplevel" swapped="no"/>
-                    <signal name="clicked" handler="gw_radicalswindow_close_cb" object="toplevel" swapped="no"/>
                     <signal name="clicked" handler="gw_radicalswindow_clear_cb" object="toplevel" swapped="no"/>
                   </object>
                   <packing>

@@ -1,0 +1,16 @@
+#ifndef LW_DEFINITIONS_INCLUDED
+#define LW_DEFINITIONS_INCLUDED
+
+//G_BEGIN_DECLS
+
+typedef enum {
+  LW_RELEVANCE_UNSET  = -1,
+  LW_RELEVANCE_LOW    =  0,
+  LW_RELEVANCE_MEDIUM =  1,
+  LW_RELEVANCE_HIGH   =  2,
+  TOTAL_LW_RELEVANCE  =  3
+} LwRelevance;
+
+//G_END_DECLS
+
+#endif

@@ -6,14 +6,14 @@
 struct _GwSearchData {
   GtkTextView *view;
   GwSearchWindow *window;
-  LwResultLine *resultline;
+  LwResult *result;
 };
 typedef struct _GwSearchData GwSearchData;
 
 GwSearchData* gw_searchdata_new (GtkTextView*, GwSearchWindow*);
 void gw_searchdata_free (GwSearchData*);
 
-void gw_searchdata_set_resultline (GwSearchData*, LwResultLine*);
-LwResultLine* gw_searchdata_get_resultline (GwSearchData*);
+void gw_searchdata_set_result (GwSearchData*, LwResult*);
+LwResult* gw_searchdata_get_result (GwSearchData*);
 
 #endif

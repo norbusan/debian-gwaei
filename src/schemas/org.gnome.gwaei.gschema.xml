@@ -12,6 +12,18 @@
       <description>Stores the size of the window type when last closed.</description>
     </key>
 
+    <key name="tabbar-show" type="b">
+      <default>false</default>
+      <summary>Tabbar show status when there are no tabs</summary>
+      <description>Determines if the tabbar is hidden or not.</description>
+    </key>
+
+    <key name="menubar-show" type="b">
+      <default>false</default>
+      <summary>Menubar show status</summary>
+      <description>Determines if the menubar is hidden or not.</description>
+    </key>
+
     <key name="toolbar-show" type="b">
       <default>false</default>
       <summary>Toolbar show status</summary>
@@ -68,6 +80,12 @@
 
   <!-- Vocabulary settings -->
   <schema id="org.gnome.gwaei.vocabulary" path="/org/gnome/gwaei/vocabulary/">
+
+    <key name="menubar-show" type="b">
+      <default>true</default>
+      <summary>Toolbar show status</summary>
+      <description>Determines if the toolbar is hidden or not.</description>
+    </key>
 
     <key name="toolbar-show" type="b">
       <default>false</default>
@@ -129,7 +147,7 @@
   <!-- Dictionary settings -->
   <schema id="org.gnome.gwaei.dictionary" path="/org/gnome/gwaei/dictionary/">
     <key name="load-order" type="s">
-      <default>'edict/English;kanji/Kanji;edict/Names;edict/Places;examples/Examples'</default>
+      <default>'e/English;kanji/Kanji;e/Names;e/Places;example/Examples'</default>
       <summary>Used for the styling of some titles</summary>
       <description>Used as a separator for the "Other results" section. Is not always used.</description>
     </key>

@@ -26,16 +26,16 @@
 //!
 
 
-#include "../private.h"
-
 #include <string.h>
 #include <stdlib.h>
 
 #include <gtk/gtk.h>
 
 #include <libwaei/libwaei.h>
+#include <gwaei/gettext.h>
 #include <gwaei/radicalswindow.h>
 #include <gwaei/radicalswindow-private.h>
+#include <gwaei/radicalswindow-callbacks.h>
 
 static void gw_radicalswindow_fill_radicals (GwRadicalsWindow*);
 static void gw_radicalswindow_init_accelerators (GwRadicalsWindow*);
@@ -357,14 +357,26 @@ gw_radicalswindow_finalize (GObject *object)
 }
 
 
+void
+gw_radicalswindow_map_actions (GActionMap *map, GwRadicalsWindow *window)
+{
+    //Sanity checks
+    g_return_if_fail (map != NULL);
+    g_return_if_fail (window != NULL);
+
+    static GActionEntry entries[] = {
+      { "close", gw_radicalswindow_close_cb, NULL, NULL, NULL }
+    };
+    g_action_map_add_action_entries (map, entries, G_N_ELEMENTS (entries), window);
+}
+
+
 static void 
 gw_radicalswindow_constructed (GObject *object)
 {
     //Declarations
     GwRadicalsWindow *window;
     GwRadicalsWindowPrivate *priv;
-    GtkWidget *toplevel;
-    GtkWidget *scrolledwindow;
 
     //Chain the parent class
     {
@@ -374,30 +386,24 @@ gw_radicalswindow_constructed (GObject *object)
     window = GW_RADICALSWINDOW (object);
     priv = window->priv;
 
-    toplevel = GTK_WIDGET (gw_window_get_object (GW_WINDOW (window), "radical_selection_grid"));
-    gtk_widget_set_halign (toplevel, GTK_ALIGN_CENTER);
-    gtk_widget_set_valign (toplevel, GTK_ALIGN_START);
+    gw_radicalswindow_map_actions (G_ACTION_MAP (window), window);
 
-    scrolledwindow = GTK_WIDGET (gw_window_get_object (GW_WINDOW (window), "radical_selection_scrolledwindow"));
-    gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow), GTK_POLICY_NEVER, GTK_POLICY_NEVER);
-
-    g_signal_connect (G_OBJECT (window), "show", G_CALLBACK (gw_radicalswindow_show_cb), scrolledwindow);
-
-    gtk_window_set_title (GTK_WINDOW (window), gettext("gWaei Radical Search Tool"));
+    gtk_window_set_title (GTK_WINDOW (window), gettext("Radical Table - gWaei"));
     gtk_window_set_resizable (GTK_WINDOW (window), TRUE);
+    gtk_window_set_default_size (GTK_WINDOW (window), 300, 600);
     gtk_window_set_type_hint (GTK_WINDOW (window), GDK_WINDOW_TYPE_HINT_UTILITY);
     gtk_window_set_skip_taskbar_hint (GTK_WINDOW (window), TRUE);
     gtk_window_set_skip_pager_hint (GTK_WINDOW (window), TRUE);
     gtk_window_set_destroy_with_parent (GTK_WINDOW (window), TRUE);
     gtk_window_set_icon_name (GTK_WINDOW (window), "gwaei");
 
-    priv->radicals_grid = GTK_GRID (gw_window_get_object (GW_WINDOW (window), "radical_selection_grid"));
+    priv->toolpalette = GTK_TOOL_PALETTE (gw_window_get_object (GW_WINDOW (window), "toolpalette"));
     priv->strokes_checkbutton = GTK_TOGGLE_BUTTON (gw_window_get_object (GW_WINDOW (window), "strokes_checkbox"));
     priv->strokes_spinbutton = GTK_SPIN_BUTTON (gw_window_get_object (GW_WINDOW (window), "strokes_spinbutton"));
 
     gtk_spin_button_set_value (priv->strokes_spinbutton, 1.0);
     gw_radicalswindow_fill_radicals (window);
-    gtk_widget_show_all (GTK_WIDGET (priv->radicals_grid));
+    gtk_widget_show_all (GTK_WIDGET (priv->toolpalette));
 
     gw_radicalswindow_init_accelerators (window);
 
@@ -424,8 +430,7 @@ gw_radicalswindow_class_init (GwRadicalsWindowClass *klass)
         G_STRUCT_OFFSET (GwRadicalsWindowClass, query_changed),
         NULL, NULL,
         g_cclosure_marshal_VOID__VOID,
-        G_TYPE_NONE, 
-        0
+        G_TYPE_NONE, 0
     );
 }
 
@@ -439,10 +444,10 @@ gw_radicalswindow_init_accelerators (GwRadicalsWindow *window)
     accelgroup = gw_window_get_accel_group (GW_WINDOW (window));
 
     widget = GTK_WIDGET (gw_window_get_object (GW_WINDOW (window), "close_button"));
+
     gtk_widget_add_accelerator (GTK_WIDGET (widget), "activate", 
-      accelgroup, (GDK_KEY_W), GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
-    gtk_widget_add_accelerator (GTK_WIDGET (widget), "activate", 
-      accelgroup, (GDK_KEY_Escape), 0, GTK_ACCEL_VISIBLE);
+                                accelgroup, (GDK_KEY_Escape), 0, GTK_ACCEL_VISIBLE);
+    gtk_actionable_set_detailed_action_name (GTK_ACTIONABLE (widget), "win.close");
 }
 
 
@@ -451,20 +456,20 @@ gw_radicalswindow_fill_radicals (GwRadicalsWindow *window)
 {
     //Declarations
     GwRadicalsWindowPrivate *priv;
+    GtkToolPalette *toolpalette;
+    GtkToolItemGroup *toolitemgroup;
+    GtkToolItem *item;
     gint i, column, row;
     const gchar *stroke;
-    GtkWidget *button;
-    GtkWidget *label;
     gchar *tooltip;
     gchar *markup;
     const gint total_columns = 14;
 
     //Initializations
     priv = window->priv;
+    toolpalette = priv->toolpalette;
 
     stroke = NULL;
-    button = NULL;
-    label = NULL;
     i = row = column = 0;
 
     while (_radical_array[i][0] != NULL)
@@ -473,20 +478,19 @@ gw_radicalswindow_fill_radicals (GwRadicalsWindow *window)
       if (stroke == NULL || strcmp(stroke, _radical_array[i][GW_RADARRAY_STROKES]) != 0)
       {
         stroke = _radical_array[i][GW_RADARRAY_STROKES];
-        label = gtk_label_new (stroke);
-        markup = g_markup_printf_escaped ("<span color=\"red\"><b>%s</b></span>", _radical_array[i][GW_RADARRAY_STROKES]);
+        markup = g_markup_printf_escaped ("Strokes %s", _radical_array[i][GW_RADARRAY_STROKES]);
         if (markup != NULL)
         {
-          gtk_label_set_markup (GTK_LABEL (label), markup);
+          toolitemgroup = GTK_TOOL_ITEM_GROUP (gtk_tool_item_group_new (markup));
+          gtk_container_add (GTK_CONTAINER (toolpalette), GTK_WIDGET (toolitemgroup));
           g_free (markup);
         }
-        gtk_grid_attach (priv->radicals_grid, label, column, row, 1, 1);
       }
       //Add a radical button
       else
       {
-        button = gtk_toggle_button_new_with_label (_radical_array[i][GW_RADARRAY_ACTUAL]);
-        gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_HALF);
+        item = gtk_toggle_tool_button_new ();
+        gtk_tool_button_set_label (GTK_TOOL_BUTTON (item), _radical_array[i][GW_RADARRAY_ACTUAL]);
 
         tooltip = g_markup_printf_escaped (
             gettext("<b>Substitution Radical:</b> %s\n<b>Actual Radical:</b> %s\n<b>Radical Name:</b> %s"),
@@ -496,12 +500,13 @@ gw_radicalswindow_fill_radicals (GwRadicalsWindow *window)
         );
         if (tooltip != NULL)
         {
-          gtk_widget_set_tooltip_markup (GTK_WIDGET (button), tooltip);
+          gtk_widget_set_tooltip_markup (GTK_WIDGET (item), tooltip);
           g_free (tooltip); tooltip = NULL;
         }
-        gtk_buildable_set_name (GTK_BUILDABLE (button), _radical_array[i][GW_RADARRAY_REPRESENTATIVE]);
-        g_signal_connect(G_OBJECT (button), "toggled", G_CALLBACK (gw_radicalswindow_toggled_cb), window);
-        gtk_grid_attach (priv->radicals_grid, button, column, row, 1, 1);
+        gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item), tooltip);
+        g_object_set_data (G_OBJECT (item), "radical", _radical_array[i][GW_RADARRAY_REPRESENTATIVE]);
+        g_signal_connect (G_OBJECT (item), "toggled", G_CALLBACK (gw_radicalswindow_toggled_cb), window);
+        gtk_container_add (GTK_CONTAINER (toolitemgroup), GTK_WIDGET (item));
         i++;
       }
 
@@ -514,70 +519,151 @@ gw_radicalswindow_fill_radicals (GwRadicalsWindow *window)
     }
 }
 
+static gchar*
+gw_radicalswindow_get_toolitemgroup_selected (GwRadicalsWindow *window, GtkToolItemGroup *toolitemgroup)
+{
+    //Sanity checks
+    g_return_val_if_fail (window != NULL, NULL);
+    g_return_val_if_fail (toolitemgroup != NULL, NULL);
+
+    //Declarations
+    GList *itemlist, *itemlink;
+    GtkToggleToolButton *button;
+    gchar *buffer, *buffer_ptr;
+    gchar *radical_ptr;
+    gint length;
+
+    itemlist = gtk_container_get_children (GTK_CONTAINER (toolitemgroup));
+    length = 1;
+
+    //Calculate the needed length of the buffer
+    itemlink = itemlist;
+    while (itemlink != NULL)
+    {
+      button = GTK_TOGGLE_TOOL_BUTTON (itemlink->data);
+      if (button != NULL && gtk_toggle_tool_button_get_active (button))
+      {
+        radical_ptr = g_object_get_data (G_OBJECT (button), "radical");
+        if (radical_ptr != NULL) length += strlen (radical_ptr);
+      }
+      itemlink = itemlink->next;
+    }
+
+    buffer_ptr = buffer = g_new (gchar, length);
+
+    //Write out to the buffer
+    itemlink = itemlist;
+    while (itemlink != NULL)
+    {
+      button = GTK_TOGGLE_TOOL_BUTTON (itemlink->data);
+      if (button != NULL && gtk_toggle_tool_button_get_active (button))
+      {
+        radical_ptr = g_object_get_data (G_OBJECT (button), "radical");
+        if (radical_ptr != NULL) while (*radical_ptr != '\0' && length-- > 0) *(buffer_ptr++) = *(radical_ptr++);
+      }
+      itemlink = itemlink->next;
+    }
+    *buffer_ptr = '\0';
+
+    g_list_free (itemlist); itemlist = NULL;
+
+    return buffer;
+}
+
 
 //!
 //! @brief Copies all the lables of the depressed buttons in the radicals window
 //!
 //!
-char* 
-gw_radicalswindow_strdup_all_selected (GwRadicalsWindow *window)
+gchar* 
+gw_radicalswindow_strdup_selected (GwRadicalsWindow *window)
 {
     //Declarations
     GwRadicalsWindowPrivate *priv;
-    GList *list;
-    GList *iter;
-    char *temp_string;
-    char *final_string;
-    const char *label_text;
-    gboolean a_button_was_in_pressed_state;
+    GtkToolItemGroup *toolitemgroup;
+    GList *grouplist, *grouplink;
+    gchar *buffer;
+    gint buffer_offset;
+    gchar *text, *text_ptr;
+    gint length;
 
     //Initializations
     priv = window->priv;
-    list = gtk_container_get_children (GTK_CONTAINER (priv->radicals_grid));
-    temp_string = NULL;
-    final_string = NULL;
-    label_text = NULL;
-    priv->cache[0] = '\0';
-    a_button_was_in_pressed_state = FALSE;
+    length = 1;
+    buffer = (gchar*) g_malloc0 (sizeof(gchar) * length);
+    buffer_offset = 0;
+    grouplist = gtk_container_get_children (GTK_CONTAINER (priv->toolpalette));
 
     //Probe all of the active toggle buttons in the table
-    for (iter = list; iter != NULL; iter = iter->next)
+    for (grouplink = grouplist; grouplink != NULL; grouplink = grouplink->next)
     {
-      if (G_OBJECT_TYPE(iter->data) == g_type_from_name("GtkToggleButton"))
-      {
-         label_text = gtk_buildable_get_name (GTK_BUILDABLE (iter->data));
-         if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (iter->data)))
-         {
-           a_button_was_in_pressed_state = TRUE;
-           if (final_string == NULL)
-           {
-             final_string = g_strdup_printf ("%s", label_text);
-           }
-           else
-           {
-             temp_string = g_strdup_printf ("%s%s", final_string, label_text);
-             g_free (final_string);
-             final_string = temp_string;
-             temp_string = NULL;
-           }
-         }
-         else
-         {
-           gtk_widget_set_sensitive (GTK_WIDGET (iter->data), FALSE);
-         }
-         strcat (priv->cache, label_text);
-      }
+      toolitemgroup = GTK_TOOL_ITEM_GROUP (grouplink->data);
+      if (toolitemgroup == NULL) continue;
+      text_ptr = text = gw_radicalswindow_get_toolitemgroup_selected (window, toolitemgroup);
+      if (text == NULL) continue;
+
+      length += strlen (text);
+      buffer = (gchar*) g_realloc (buffer, sizeof(gchar) * length);
+      
+      while (*text_ptr != '\0' && buffer_offset < (length - 1)) *(buffer + buffer_offset++) = *(text_ptr++);
+
+      g_free (text); text = text_ptr = NULL;
     }
+    *(buffer + buffer_offset) = '\0';
 
-    if (!a_button_was_in_pressed_state)
-      gw_radicalswindow_deselect_all_radicals (window);
+/*
+    if (*buffer == '\0')
+      gw_radicalswindow_deselect (window);
+*/
 
-    if (final_string == NULL)
-      final_string = g_strdup ("");
+    if (grouplist != NULL) g_list_free (grouplist); grouplist = NULL;
 
-    g_list_free (list);
+    return buffer;
+}
 
-    return final_string;
+
+static void
+gw_radicalswindow_update_sensitivities_foreach (GwRadicalsWindow *window, 
+                                                GtkToolItemGroup *toolitemgroup, 
+                                                const gchar      *TEXT)
+{
+    //Sanity checks
+    g_return_if_fail (window != NULL);
+    g_return_if_fail (toolitemgroup != NULL);
+
+    //Declarations
+    GList *itemlist, *itemlink;
+    const gchar *RADICAL;
+    GtkToggleToolButton *button;
+    gunichar c;
+    gboolean found; 
+    gboolean has_sensitive;
+
+    itemlink = itemlist = gtk_container_get_children (GTK_CONTAINER (toolitemgroup));
+    has_sensitive = FALSE;
+
+    while (itemlink != NULL)
+    {
+      button = GTK_TOGGLE_TOOL_BUTTON (itemlink->data);
+      if (button != NULL)
+      {
+        RADICAL = g_object_get_data (G_OBJECT (button), "radical");
+        if (RADICAL != NULL)
+        {
+          c = g_utf8_get_char (RADICAL);
+          found = (TEXT != NULL && g_utf8_strchr (TEXT, -1, c) != NULL);
+          if (TEXT == NULL) gtk_widget_set_sensitive (GTK_WIDGET (button), FALSE);
+          else if (found) gtk_widget_set_sensitive (GTK_WIDGET (button), TRUE); 
+          if (gtk_widget_get_sensitive (GTK_WIDGET (button))) has_sensitive = TRUE;
+        }
+      }
+      itemlink = itemlink->next;
+    }
+ 
+    g_list_free (itemlist); itemlist = NULL;
+
+    if (TEXT != NULL) gtk_tool_item_group_set_collapsed (toolitemgroup, !has_sensitive);
+    //gtk_widget_set_sensitive (GTK_WIDGET (toolitemgroup), !has_sensitive);
 }
 
 
@@ -587,66 +673,33 @@ gw_radicalswindow_strdup_all_selected (GwRadicalsWindow *window)
 //! @param string The label to search for
 //!
 void 
-gw_radicalswindow_set_button_sensitive_when_label_is (GwRadicalsWindow *window, const char *string)
+gw_radicalswindow_update_sensitivities (GwRadicalsWindow *window, const gchar *TEXT)
 {
-    //Sanity check
-    if (string == NULL) return;
+    //Sanity checks
+    g_return_if_fail (window != NULL);
 
     //Declarations
     GwRadicalsWindowPrivate *priv;
-    GList *list;
-    GList *iter;
-    const char *label_text;
-    const char *jump;
-    char radical[4];
-    GType type;
+    GtkToolPalette *toolpalette;
+    GtkToolItemGroup *toolitemgroup;
+    GList *grouplist, *grouplink;
 
     //Initializations
     priv = window->priv;
-    label_text = NULL;
-    jump = string;
-    list = gtk_container_get_children (GTK_CONTAINER (priv->radicals_grid));
-    type = g_type_from_name ("GtkToggleButton");
+    toolpalette = priv->toolpalette;
+    grouplink = grouplist = gtk_container_get_children (GTK_CONTAINER (toolpalette));
 
-    if (jump[0] != '\0' && jump[1] != '\0' && jump[2] != '\0')
+    while (grouplink != NULL)
     {
-      radical[0] = jump[0];
-      radical[1] = jump[1];
-      radical[2] = jump[2];
-      radical[3] = '\0';
-
-      for (iter = list; iter != NULL; iter = iter->next)
+      toolitemgroup = GTK_TOOL_ITEM_GROUP (grouplink->data);
+      if (toolitemgroup != NULL)
       {
-        if (G_OBJECT_TYPE (iter->data) == type)
-        {
-           label_text = gtk_buildable_get_name (GTK_BUILDABLE (iter->data));
-           if (strcmp(label_text, radical) == 0)
-             gtk_widget_set_sensitive (GTK_WIDGET (iter->data), TRUE);
-        }
+        gw_radicalswindow_update_sensitivities_foreach (window, toolitemgroup, TEXT);
       }
+      grouplink = grouplink->next;
     }
-    while ((jump = g_utf8_strchr (jump, -1, L' ')))
-    {
-      jump++;
-      if (jump[0] != '\0' && jump[1] != '\0' && jump[2] != '\0')
-      {
-        radical[0] = jump[0];
-        radical[1] = jump[1];
-        radical[2] = jump[2];
-        radical[3] = '\0';
 
-        for (iter = list; iter != NULL; iter = iter->next)
-        {
-          if (G_OBJECT_TYPE (iter->data) == type)
-          {
-             label_text = gtk_buildable_get_name (GTK_BUILDABLE (iter->data));
-             if (strcmp(label_text, radical) == 0)
-              gtk_widget_set_sensitive (GTK_WIDGET (iter->data), TRUE);
-          }
-        }
-      }
-    }
-    g_list_free(list);
+    g_list_free (grouplist); grouplist = NULL;
 }
 
 //!
@@ -654,12 +707,15 @@ gw_radicalswindow_set_button_sensitive_when_label_is (GwRadicalsWindow *window, 
 //!
 //! @param output The string to copy the prefered stroke count to
 //! @param MAX The max characters to copy
-char* 
+gchar* 
 gw_radicalswindow_strdup_prefered_stroke_count (GwRadicalsWindow *window)
 {
+    //Sanity checks
+    g_return_val_if_fail (window != NULL, NULL);
+
     //Declarations
     GwRadicalsWindowPrivate *priv;
-    char *strokes;
+    gchar *strokes;
 
     //If the checkbox is checked, get the stroke count from the spinner
     priv = window->priv;
@@ -672,33 +728,71 @@ gw_radicalswindow_strdup_prefered_stroke_count (GwRadicalsWindow *window)
 }
 
 
+static void
+gw_radicalswindow_deselect_foreach (GwRadicalsWindow *window, GtkToolItemGroup *toolitemgroup)
+{
+    //Sanity checks
+    g_return_if_fail (window != NULL);
+    g_return_if_fail (toolitemgroup != NULL);
+
+    //Declarations
+    GList *itemlist, *itemlink;
+    GtkToggleToolButton *button;
+
+    itemlink = itemlist = gtk_container_get_children (GTK_CONTAINER (toolitemgroup));
+
+    while (itemlink != NULL)
+    {
+      button = GTK_TOGGLE_TOOL_BUTTON (itemlink->data);
+      if (button != NULL)
+      {
+        G_GNUC_EXTENSION g_signal_handlers_block_by_func (button, gw_radicalswindow_toggled_cb, window);
+        gtk_toggle_tool_button_set_active (button, FALSE);
+        gtk_widget_set_sensitive (GTK_WIDGET (button), TRUE);
+        //gtk_widget_show (GTK_WIDGET (button));
+        G_GNUC_EXTENSION g_signal_handlers_unblock_by_func (button, gw_radicalswindow_toggled_cb, window);
+      }
+      itemlink = itemlink->next;
+    }
+
+    g_list_free (itemlist); itemlist = NULL;
+}
+
+
 //!
 //! @brief Resets the states of all the radical buttons
 //!
 void 
-gw_radicalswindow_deselect_all_radicals (GwRadicalsWindow *window)
+gw_radicalswindow_deselect (GwRadicalsWindow *window)
 {
+    //Sanity checks
+    g_return_if_fail (window != NULL);
+
     //Declarations
     GwRadicalsWindowPrivate *priv;
-    GList* list, *iter;
-    GType type;
+    GtkToolPalette *toolpalette;
+    GtkToolItemGroup *toolitemgroup;
+    GList *grouplist, *grouplink;
 
     //Initializations
     priv = window->priv;
-    list = gtk_container_get_children (GTK_CONTAINER (priv->radicals_grid));
-    type = g_type_from_name ("GtkToggleButton");
+    toolpalette = priv->toolpalette;
+    grouplink = grouplist = gtk_container_get_children (GTK_CONTAINER (toolpalette));
 
     //Reset all of the toggle buttons
-    for (iter = list; iter != NULL; iter = iter->next)
+    while (grouplink != NULL)
     {
-      G_GNUC_EXTENSION g_signal_handlers_block_by_func (iter->data, gw_radicalswindow_toggled_cb, window);
-      if (G_OBJECT_TYPE (iter->data) == type)
-         gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(iter->data), FALSE);
-      G_GNUC_EXTENSION g_signal_handlers_unblock_by_func (iter->data, gw_radicalswindow_toggled_cb, window);
-      gtk_widget_set_sensitive (GTK_WIDGET (iter->data), TRUE);
+      toolitemgroup = GTK_TOOL_ITEM_GROUP (grouplink->data);
+      if (toolitemgroup != NULL)
+      {
+        gw_radicalswindow_deselect_foreach (window, toolitemgroup);
+      }
+      grouplink = grouplink->next;
+
+      gtk_tool_item_group_set_collapsed (toolitemgroup, FALSE);
     }
 
-    g_list_free (list);
+    g_list_free (grouplist); grouplist = NULL;
 }
 
 

@@ -31,6 +31,7 @@ void gw_vocabularywindow_save (GwVocabularyWindow*);
 void gw_vocabularywindow_load_selected_vocabulary (GwVocabularyWindow*);
 void gw_vocabularywindow_load_vocabulary_by_index (GwVocabularyWindow*, gint);
 void gw_vocabularywindow_new_list (GwVocabularyWindow*);
+void gw_vocabularywindow_new_word (GwVocabularyWindow*);
 void gw_vocabularywindow_remove_selected_lists (GwVocabularyWindow*);
 
 void gw_vocabularywindow_remove_selected_words (GwVocabularyWindow*);
@@ -40,7 +41,7 @@ void gw_vocabularywindow_clean_files (GwVocabularyWindow*);
 void gw_vocabularywindow_clean_lists (GwVocabularyWindow*);
 gboolean gw_vocabularywindow_list_exists (GwVocabularyWindow*, const gchar*);
 void gw_vocabularywindow_reset (GwVocabularyWindow*);
-void gw_vocabularywindow_set_has_changes (GwVocabularyWindow*, gboolean);
+void gw_vocabularywindow_sync_has_changes (GwVocabularyWindow*);
 gboolean gw_vocabularywindow_has_changes (GwVocabularyWindow*);
 gchar* gw_vocabularywindow_selected_words_to_string (GwVocabularyWindow*);
 gboolean gw_vocabularywindow_current_wordstore_has_changes (GwVocabularyWindow*);
@@ -48,9 +49,13 @@ void gw_vocabularywindow_start_flashcards (GwVocabularyWindow*, const gchar*, co
 GtkListStore* gw_vocabularywindow_get_selected_wordstore (GwVocabularyWindow*);
 void gw_searchwindow_update_vocabulary_menuitems (GwSearchWindow*);
 void gw_vocabularywindow_set_selected_list (GwVocabularyWindow*, GtkTreePath*);
+void gw_vocabularywindow_set_selected_list_by_index (GwVocabularyWindow*, gint);
 gboolean gw_vocabularywindow_show_save_dialog (GwVocabularyWindow*);
 void gw_vocabularywindow_show_vocabulary_list (GwVocabularyWindow*, gboolean);
 void gw_vocabularywindow_update_flashcard_menu_sensitivities (GwVocabularyWindow *window);
+
+void gw_vocabularywindow_map_actions (GActionMap*, GwVocabularyWindow*);
+void gw_vocabularywindow_initialize_menu_links (GwVocabularyWindow*);
 
 #include "vocabularywindow-callbacks.h"
 

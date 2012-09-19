@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <!-- interface-requires gtk+ 2.12 -->
+  <!-- interface-requires gtk+ 3.0 -->
   <object class="GtkListStore" id="romaji_to_kana_liststore">
     <columns>
       <!-- column-name query_romaji_to_kana_column -->
@@ -73,6 +73,7 @@
                                 <property name="receives_default">False</property>
                                 <property name="use_action_appearance">False</property>
                                 <property name="use_underline">True</property>
+                                <property name="xalign">0.5</property>
                                 <property name="active">True</property>
                                 <property name="draw_indicator">True</property>
                                 <signal name="toggled" handler="gw_settingswindow_use_global_document_font_toggled_cb" object="toplevel" swapped="no"/>
@@ -173,6 +174,9 @@
                                     <property name="n_columns">4</property>
                                     <property name="column_spacing">6</property>
                                     <property name="homogeneous">True</property>
+                                    <child>
+                                      <placeholder/>
+                                    </child>
                                     <child>
                                       <object class="GtkColorButton" id="comment_background_colorbutton">
                                         <property name="use_action_appearance">False</property>
@@ -334,9 +338,6 @@
                                     <child>
                                       <placeholder/>
                                     </child>
-                                    <child>
-                                      <placeholder/>
-                                    </child>
                                   </object>
                                   <packing>
                                     <property name="expand">True</property>
@@ -467,40 +468,6 @@
                         <property name="can_focus">False</property>
                         <property name="toolbar_style">icons</property>
                         <property name="icon_size">1</property>
-                        <child>
-                          <object class="GtkToolButton" id="add_dictionary_toolbutton">
-                            <property name="use_action_appearance">False</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Install a new dictionary.</property>
-                            <property name="use_action_appearance">False</property>
-                            <property name="label" translatable="yes">Add</property>
-                            <property name="use_underline">True</property>
-                            <property name="icon_name">list-add-symbolic</property>
-                            <signal name="clicked" handler="gw_settingswindow_open_dictionaryinstallwindow_cb" object="toplevel" swapped="no"/>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkToolButton" id="remove_dictionary_toolbutton">
-                            <property name="use_action_appearance">False</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Remove a dictionary.</property>
-                            <property name="use_action_appearance">False</property>
-                            <property name="label" translatable="yes">Remove</property>
-                            <property name="use_underline">True</property>
-                            <property name="icon_name">list-remove-symbolic</property>
-                            <signal name="clicked" handler="gw_settingswindow_remove_dictinfo_cb" object="toplevel" swapped="no"/>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
-                          </packing>
-                        </child>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -573,42 +540,6 @@
                         <property name="can_focus">False</property>
                         <property name="toolbar_style">icons</property>
                         <property name="icon_size">1</property>
-                        <child>
-                          <object class="GtkToolButton" id="remove_plugin_toolbutton">
-                            <property name="use_action_appearance">False</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="has_tooltip">True</property>
-                            <property name="tooltip_markup" translatable="yes">Remove a dictionary.</property>
-                            <property name="tooltip_text" translatable="yes">Remove a dictionary.</property>
-                            <property name="use_action_appearance">False</property>
-                            <property name="label" translatable="yes">Remove</property>
-                            <property name="use_underline">True</property>
-                            <property name="icon_name">list-add-symbolic</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkToolButton" id="add_plugin_toolbutton">
-                            <property name="use_action_appearance">False</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="has_tooltip">True</property>
-                            <property name="tooltip_markup" translatable="yes">Install a new dictionary.</property>
-                            <property name="tooltip_text" translatable="yes">Install a new dictionary.</property>
-                            <property name="use_action_appearance">False</property>
-                            <property name="label" translatable="yes">Add</property>
-                            <property name="use_underline">True</property>
-                            <property name="icon_name">list-remove-symbolic</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
-                          </packing>
-                        </child>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -718,6 +649,7 @@
                                 <property name="receives_default">False</property>
                                 <property name="use_action_appearance">False</property>
                                 <property name="use_underline">True</property>
+                                <property name="xalign">0.5</property>
                                 <property name="draw_indicator">True</property>
                                 <signal name="toggled" handler="gw_settingswindow_hira_kata_conv_toggled_cb" object="toplevel" swapped="no"/>
                               </object>
@@ -736,6 +668,7 @@
                                 <property name="receives_default">False</property>
                                 <property name="use_action_appearance">False</property>
                                 <property name="use_underline">True</property>
+                                <property name="xalign">0.5</property>
                                 <property name="draw_indicator">True</property>
                                 <signal name="toggled" handler="gw_settingswindow_kata_hira_conv_toggled_cb" object="toplevel" swapped="no"/>
                               </object>
@@ -754,6 +687,7 @@
                                 <property name="receives_default">False</property>
                                 <property name="use_action_appearance">False</property>
                                 <property name="use_underline">True</property>
+                                <property name="xalign">0.5</property>
                                 <property name="draw_indicator">True</property>
                                 <signal name="toggled" handler="gw_settingswindow_spellcheck_toggled_cb" object="toplevel" swapped="no"/>
                               </object>
@@ -771,6 +705,7 @@
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="use_action_appearance">False</property>
+                                <property name="xalign">0.5</property>
                                 <property name="draw_indicator">True</property>
                                 <signal name="toggled" handler="gw_settingswindow_search_as_you_type_toggled_cb" object="toplevel" swapped="no"/>
                               </object>
@@ -909,8 +844,6 @@
                 <property name="receives_default">True</property>
                 <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
-                <signal name="activate" handler="gw_searchwindow_show_help_cb" object="toplevel" swapped="no"/>
-                <signal name="clicked" handler="gw_searchwindow_show_help_cb" object="toplevel" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>

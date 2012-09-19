@@ -35,8 +35,8 @@ const char* w_application_get_program_name (WApplication*);
 void w_application_handle_error (WApplication*, GError**);
 
 LwPreferences* w_application_get_preferences (WApplication*);
-LwDictInfoList* w_application_get_dictinfolist (WApplication*);
-LwDictInstList* w_application_get_dictinstlist (WApplication*);
+LwDictionaryList* w_application_get_installed_dictionarylist (WApplication*);
+LwDictionaryList* w_application_get_installable_dictionarylist (WApplication*);
 
 gboolean w_application_get_quiet_switch (WApplication*);
 gboolean w_application_get_exact_switch (WApplication*);

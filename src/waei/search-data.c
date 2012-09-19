@@ -25,9 +25,6 @@
 //! @brief To be written
 //!
 
-
-#include "../private.h"
-
 #include <waei/waei.h>
 
 

@@ -16,6 +16,7 @@ typedef enum {
   GW_VOCABULARYWINDOW_SIGNALID_TRIM_CHANGED,
   GW_VOCABULARYWINDOW_SIGNALID_TRACK_RESULTS_CHANGED,
   GW_VOCABULARYWINDOW_SIGNALID_LIST_ORDER_CHANGED,
+  GW_VOCABULARYWINDOW_SIGNALID_MENUBAR_TOGGLED,
   GW_VOCABULARYWINDOW_SIGNALID_TOOLBAR_TOGGLED,
   GW_VOCABULARYWINDOW_SIGNALID_POSITION_COLUMN_TOGGLED,
   GW_VOCABULARYWINDOW_SIGNALID_SCORE_COLUMN_TOGGLED,
@@ -24,36 +25,15 @@ typedef enum {
 } GwVocabularyWindowSignalId;
 
 struct _GwVocabularyWindowPrivate {
+  GMenuModel *flashcard_menumodel;
   GtkTreeView  *list_treeview;
   GtkToolbar   *list_toolbar;
 
   GtkTreeView  *word_treeview;
   GtkToolbar   *word_toolbar;
-  GtkToolbar   *study_toolbar;
+  GtkToolbar   *primary_toolbar;
   GtkToggleToolButton *edit_toolbutton;
   GtkPaned     *paned;
-
-  GtkMenuItem *cut_menuitem;
-  GtkMenuItem *copy_menuitem;
-  GtkMenuItem *paste_menuitem;
-  GtkMenuItem *delete_menuitem;
-
-  GtkAction *save_action;
-  GtkAction *revert_action;
-  GtkAction *kanji_definition_flashcards_action;
-  GtkAction *definition_kanji_flashcards_action;
-  GtkAction *kanji_furigana_flashcards_action;
-  GtkAction *furigana_kanji_flashcards_action;
-  GtkAction *definition_furigana_flashcards_action;
-  GtkAction *furigana_definition_flashcards_action;
-
-  GtkToggleAction *shuffle_toggleaction;
-  GtkToggleAction *trim_toggleaction;
-  GtkToggleAction *track_results_toggleaction;
-  GtkToggleAction *show_toolbar_toggleaction;
-  GtkToggleAction *show_position_column_toggleaction;
-  GtkToggleAction *show_score_column_toggleaction;
-  GtkToggleAction *show_timestamp_column_toggleaction;
 
   gboolean has_changes;
   gboolean shuffle;

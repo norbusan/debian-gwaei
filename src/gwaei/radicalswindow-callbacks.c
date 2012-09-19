@@ -26,8 +26,6 @@
 //!
 
 
-#include "../private.h"
-
 #include <string.h>
 
 #include <gdk/gdkkeysyms.h>
@@ -56,7 +54,7 @@ gw_radicalswindow_clear_cb (GtkWidget *widget, gpointer data)
     g_return_if_fail (window != NULL);
     priv = window->priv;
 
-    gw_radicalswindow_deselect_all_radicals (window);
+    gw_radicalswindow_deselect (window);
     gtk_toggle_button_set_active (priv->strokes_checkbutton, FALSE);
 }
 
@@ -81,6 +79,8 @@ gw_radicalswindow_toggled_cb (GtkWidget *widget, gpointer data)
     window = GW_RADICALSWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_RADICALSWINDOW));
     g_return_if_fail (window != NULL);
     klass = GW_RADICALSWINDOW_CLASS (G_OBJECT_GET_CLASS (window));
+
+    gw_radicalswindow_update_sensitivities (window, NULL);
 
     g_signal_emit (
       G_OBJECT (window), 
@@ -109,6 +109,7 @@ gw_radicalswindow_strokes_checkbox_toggled_cb (GtkWidget *widget, gpointer data)
     priv = window->priv;
     request = gtk_toggle_button_get_active (priv->strokes_checkbutton);
 
+    gw_radicalswindow_update_sensitivities (window, NULL);
     gtk_widget_set_sensitive (GTK_WIDGET (priv->strokes_spinbutton), request);
 
     g_signal_emit (
@@ -120,14 +121,15 @@ gw_radicalswindow_strokes_checkbox_toggled_cb (GtkWidget *widget, gpointer data)
 
 
 G_MODULE_EXPORT void 
-gw_radicalswindow_close_cb (GtkWidget* widget, gpointer data)
+gw_radicalswindow_close_cb (GSimpleAction *action, 
+                            GVariant      *variant, 
+                            gpointer       data)
 {
     //Declarations
     GwRadicalsWindow *window;
 
     //Initializations
-    window = GW_RADICALSWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_RADICALSWINDOW));
-    g_return_if_fail (window != NULL);
+    window = GW_RADICALSWINDOW (data);
 
     gtk_widget_hide (GTK_WIDGET (window));
 }

@@ -28,8 +28,6 @@
 //!
 
 
-#include "../private.h"
-
 #include <ctype.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -129,12 +127,16 @@ G_MODULE_EXPORT void do_kanjipad_annotate_toggled (GtkWidget *widget, gpointer d
 }
 
 
-G_MODULE_EXPORT void gw_kanjipadwindow_close_cb (GtkWidget *widget, gpointer data)
+G_MODULE_EXPORT void 
+gw_kanjipadwindow_close_cb (GSimpleAction *action, 
+                            GVariant      *variant, 
+                            gpointer       data)
 {
+    //Declarations
     GwKanjipadWindow *window;
 
-    window = GW_KANJIPADWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_KANJIPADWINDOW));
-    g_return_if_fail (window != NULL);
+    //Initializations
+    window = GW_KANJIPADWINDOW (data);
    
     gtk_widget_destroy (GTK_WIDGET (window));
 }
@@ -149,7 +151,7 @@ G_MODULE_EXPORT void gw_kanjipadwindow_close_cb (GtkWidget *widget, gpointer dat
 //!
 G_MODULE_EXPORT gboolean gw_kanjipadwindow_delete_event_action_cb (GtkWidget *widget, GdkEvent *event, gpointer data)
 { 
-    gw_kanjipadwindow_close_cb (widget, data);    
+    gw_kanjipadwindow_close_cb (NULL, NULL, widget);    
     return TRUE;
 }
 

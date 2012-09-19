@@ -9,12 +9,9 @@ G_BEGIN_DECLS
 typedef enum {
   LW_PATH_BASE, 
   LW_PATH_DICTIONARY,
-  LW_PATH_DICTIONARY_EDICT,
-  LW_PATH_DICTIONARY_KANJI,
-  LW_PATH_DICTIONARY_EXAMPLES,
-  LW_PATH_DICTIONARY_UNKNOWN,
   LW_PATH_PLUGIN,
   LW_PATH_CACHE,
+  LW_PATH_INDEX,
   LW_PATH_VOCABULARY,
   TOTAL_LW_PATHS
 } LwFolderPath;
@@ -36,11 +33,8 @@ typedef enum {
 
 
 gchar* lw_util_build_filename (const LwFolderPath, const char*);
-gchar* lw_util_build_filename_by_dicttype (const LwDictType, const char*);
-const char* lw_util_dicttype_to_string (const LwDictType ENGINE);
-LwDictType lw_util_get_dicttype_from_string (const char*);
-const char* lw_util_get_compression_name (const LwCompression);
-const char* lw_util_get_encoding_name (const LwEncoding);
+const char* lw_util_get_compressionname (const LwCompression);
+const char* lw_util_get_encodingname (const LwEncoding);
 
 
 const char* lw_util_next_hira_char_from_roma (const char*);
@@ -75,6 +69,12 @@ gchar* lw_util_get_query_from_args (int, char**);
 
 gchar* lw_strjoinv (gchar, gchar**, gint);
 gchar* lw_util_collapse_string (const gchar*);
+
+gchar* lw_util_delimit_script_changes (const gchar*, const gchar*, gboolean);
+gchar* lw_util_delimit_whitespace (const gchar*, const gchar*);
+gchar* lw_util_delimit_radicals (const gchar*, const gchar*);
+
+GRegex* lw_regex_new (const gchar*, const gchar*, GError**);
 
 G_END_DECLS
 

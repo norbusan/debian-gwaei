@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gwaei 3.1.0\n"
 "Report-Msgid-Bugs-To: pizzach@gmail.com\n"
-"POT-Creation-Date: 2012-04-02 10:58-0700\n"
+"POT-Creation-Date: 2012-01-01 00:24+0100\n"
 "PO-Revision-Date: 2012-01-01 00:25+0100\n"
 "Last-Translator: Nicolas Laurent\n"
 "Language-Team: none\n"
@@ -20,48 +20,48 @@ msgstr ""
 "X-Poedit-Country: FRANCE\n"
 "X-Poedit-Basepath: /home/nicolas/dev/japanese/gwaei\n"
 
-#: ../src/libwaei/dictinfo.c:110
+#: ../src/libwaei/dictinfo.c:109
 #, c-format
 msgid "%s Dictionary"
 msgstr "Dictionnaire %s"
 
-#: ../src/libwaei/dictinfo.c:162 ../src/libwaei/dictinstlist.c:59
+#: ../src/libwaei/dictinfo.c:161 ../src/libwaei/dictinstlist.c:58
 msgid "English Dictionary"
 msgstr "Dictionnaire Anglais"
 
-#: ../src/libwaei/dictinfo.c:163 ../src/libwaei/dictinstlist.c:58
+#: ../src/libwaei/dictinfo.c:162 ../src/libwaei/dictinstlist.c:57
 msgid "English"
 msgstr "Anglais"
 
-#: ../src/libwaei/dictinfo.c:168
+#: ../src/libwaei/dictinfo.c:167
 msgid "Names Dictionary"
 msgstr "Dictionnaire des noms"
 
-#: ../src/libwaei/dictinfo.c:169
+#: ../src/libwaei/dictinfo.c:168
 msgid "Names"
 msgstr "Noms"
 
-#: ../src/libwaei/dictinfo.c:174
+#: ../src/libwaei/dictinfo.c:173
 msgid "Places Dictionary"
 msgstr "Dictionnaire des lieux"
 
-#: ../src/libwaei/dictinfo.c:175
+#: ../src/libwaei/dictinfo.c:174
 msgid "Places"
 msgstr "Lieux"
 
-#: ../src/libwaei/dictinfo.c:183 ../src/libwaei/dictinstlist.c:76
+#: ../src/libwaei/dictinfo.c:182 ../src/libwaei/dictinstlist.c:75
 msgid "Kanji Dictionary"
 msgstr "Dictionnaire des Kanji"
 
-#: ../src/libwaei/dictinfo.c:184 ../src/libwaei/dictinstlist.c:75
+#: ../src/libwaei/dictinfo.c:183 ../src/libwaei/dictinstlist.c:74
 msgid "Kanji"
 msgstr "Kanji"
 
-#: ../src/libwaei/dictinfo.c:192 ../src/libwaei/dictinstlist.c:110
+#: ../src/libwaei/dictinfo.c:191 ../src/libwaei/dictinstlist.c:109
 msgid "Examples Dictionary"
 msgstr "Dictionnaire des exemples"
 
-#: ../src/libwaei/dictinfo.c:193 ../src/libwaei/dictinstlist.c:109
+#: ../src/libwaei/dictinfo.c:192 ../src/libwaei/dictinstlist.c:108
 msgid "Examples"
 msgstr "Exemples"
 
@@ -115,26 +115,26 @@ msgstr "Finalisation de l'installation de %s ..."
 msgid "Installed."
 msgstr "Installé."
 
-#: ../src/libwaei/dictinstlist.c:60
+#: ../src/libwaei/dictinstlist.c:59
 msgid "The venerable Japanese-English Dictionary developed by Jim Breen."
 msgstr "Le vénérable dictionnaire Japonais-Anglais développé par Jim Breen."
 
-#: ../src/libwaei/dictinstlist.c:77
+#: ../src/libwaei/dictinstlist.c:76
 msgid ""
 "A Kanji dictionary based off of kanjidic with radical information combined."
 msgstr ""
 "Un dictionnaire de Kanji, combinaison de kanjidic et d'informations sur les "
 "radicaux."
 
-#: ../src/libwaei/dictinstlist.c:92
+#: ../src/libwaei/dictinstlist.c:91
 msgid "Names and Places"
 msgstr "Noms et lieux"
 
-#: ../src/libwaei/dictinstlist.c:93
+#: ../src/libwaei/dictinstlist.c:92
 msgid "Names and Places Dictionary"
 msgstr "Dictionnaire des noms et lieux"
 
-#: ../src/libwaei/dictinstlist.c:94
+#: ../src/libwaei/dictinstlist.c:93
 msgid ""
 "Based off of Enamdic, but with the names split from the places for 2 "
 "separate dictionaries."
@@ -142,7 +142,7 @@ msgstr ""
 "Basé sur Enamdic, mais en séparant les noms propres et noms de lieux en deux "
 "dictionnaires distincts."
 
-#: ../src/libwaei/dictinstlist.c:111
+#: ../src/libwaei/dictinstlist.c:110
 msgid ""
 "A collection of Japanese/English sentences initially compiled by Professor "
 "Yasuhito Tanaka at Hyogo University and his students."
@@ -150,99 +150,99 @@ msgstr ""
 "Une compilation de phrases en Anglais et Japonais, réalisée par le "
 "professeur Yasuhito Tanaka et ses étudiants de l'univerisité de Hyogo."
 
-#: ../src/libwaei/dictinstlist.c:127
+#: ../src/libwaei/dictinstlist.c:126
 msgid "Other"
 msgstr "Autre"
 
-#: ../src/libwaei/dictinstlist.c:128
+#: ../src/libwaei/dictinstlist.c:127
 msgid "Other Dictionary"
 msgstr "Autre dictionnaire"
 
-#: ../src/libwaei/dictinstlist.c:129
+#: ../src/libwaei/dictinstlist.c:128
 msgid "Install a custom dictionary."
 msgstr "Installation personnalisée d'un dictionnaire."
 
-#: ../src/libwaei/io.c:785
+#: ../src/libwaei/io.c:752
 msgid "Unable to read data from the input file."
 msgstr "Impossible de lire les données depuis le fichier."
 
-#: ../src/libwaei/io.c:791
+#: ../src/libwaei/io.c:758
 msgid "Unable to write to the external program's input stream."
 msgstr "Impossible d'envoyer les données au programme externe."
 
-#: ../src/libwaei/io.c:838
+#: ../src/libwaei/io.c:805
 msgid "Unable to read data from the external program's pipe."
 msgstr "Impossible de recevoir les données du programme externe."
 
-#: ../src/libwaei/io.c:844
+#: ../src/libwaei/io.c:811
 msgid "Unable to write the stream's output to a file."
 msgstr "Impossible d'écrire les données du flux dans un fichier."
 
-#: ../src/libwaei/vocabularyitem.c:114
+#: ../src/libwaei/vocabularyitem.c:112
 msgid "Untested"
 msgstr "Non "
 
-#: ../src/libwaei/vocabularyitem.c:177
+#: ../src/libwaei/vocabularyitem.c:175
 msgctxt "noun"
 msgid "Never"
 msgstr "Jamais"
 
-#: ../src/libwaei/vocabularyitem.c:178
+#: ../src/libwaei/vocabularyitem.c:176
 msgid "Today"
 msgstr "Aujourd'hui"
 
-#: ../src/libwaei/vocabularyitem.c:179
+#: ../src/libwaei/vocabularyitem.c:177
 msgid "Yesterday"
 msgstr "Hier"
 
-#: ../src/libwaei/vocabularyitem.c:180
+#: ../src/libwaei/vocabularyitem.c:178
 #, c-format
 msgid "%d Day Ago"
 msgid_plural "%d Days Ago"
 msgstr[0] "Il y a %d jour"
 msgstr[1] "Il y a %d jours"
 
-#: ../src/waei/console.c:70
+#: ../src/waei/console.c:65
 #, c-format
 msgid "Uninstalling %s...\n"
 msgstr "Désinstallation de %s ...\n"
 
-#: ../src/waei/console.c:113
+#: ../src/waei/console.c:108
 #, c-format
 msgid "Installing %s...\n"
 msgstr "Installation de %s ...\n"
 
-#: ../src/waei/console.c:155
+#: ../src/waei/console.c:150
 #, c-format
 msgid "Installable dictionaries are:\n"
 msgstr "Dictionnaires pouvant être installés : \n"
 
-#: ../src/waei/console.c:184 ../src/waei/console.c:221
+#: ../src/waei/console.c:179 ../src/waei/console.c:216
 msgid "none"
 msgstr "aucun"
 
-#: ../src/waei/console.c:208
+#: ../src/waei/console.c:203
 #, c-format
 msgid "Available dictionaries are:\n"
 msgstr "Dictionnaires installés : \n"
 
-#: ../src/waei/console.c:293
+#: ../src/waei/console.c:288
 #, c-format
 msgid "Requested dictionary not found!\n"
 msgstr "Le dictionnaire indiqué n'a pas été trouvé !\n"
 
 #. TRANSLATORS: 'Searching for "${query}" in ${dictionary long name}'
-#: ../src/waei/console.c:307
+#: ../src/waei/console.c:302
 #, c-format
 msgid "Searching for \"%s\" in %s...\n"
 msgstr "Recherche de \"%s\" dans le %s ...\n"
 
-#: ../src/waei/console.c:310
-#, fuzzy, c-format
-msgid "Also showing results for 「%s」\n"
-msgstr "Afficher aussi les résultats pour 「%s」"
+#: ../src/waei/console.c:304
+#, c-format
+msgid "Showing results also for \"%s\"\n"
+msgstr "Afficher aussi les résultats pour \"%s\"\n"
 
-#: ../src/waei/console.c:336 ../src/gwaei/searchwindow.c:634
+#: ../src/waei/console.c:329 ../src/gwaei/searchwindow.c:632
 #, c-format
 msgid "Found %d result"
 msgid_plural "Found %d results"
@@ -250,7 +250,7 @@ msgstr[0] "%d résultat trouvé"
 msgstr[1] "%d résultats trouvés"
 
 #. TRANSLATORS: relevant what ? It's the number of "relevant" result(s) displayed while or after searching.
-#: ../src/waei/console.c:337 ../src/gwaei/searchwindow.c:638
+#: ../src/waei/console.c:330 ../src/gwaei/searchwindow.c:636
 #, c-format
 msgid "(%d Relevant)"
 msgid_plural "(%d Relevant)"
@@ -258,24 +258,24 @@ msgstr[0] "(%d pertinent)"
 msgstr[1] "(%d pertinents)"
 
 #: ../src/gwaei/addvocabularywindow.ui.h:1
-msgid "_Add Vocabulary Word"
-msgstr "_Ajouter un mot de vocabulaire"
+msgid "Definitions:"
+msgstr "Définitions :"
 
 #: ../src/gwaei/addvocabularywindow.ui.h:2
-msgid "Vocabulary List:"
-msgstr "Liste de vocabulaire :"
+msgid "Furigana:"
+msgstr "Furigana :"
 
 #: ../src/gwaei/addvocabularywindow.ui.h:3
 msgid "Kanji:"
 msgstr "Kanji :"
 
 #: ../src/gwaei/addvocabularywindow.ui.h:4
-msgid "Furigana:"
-msgstr "Furigana :"
+msgid "Vocabulary List:"
+msgstr "Liste de vocabulaire :"
 
 #: ../src/gwaei/addvocabularywindow.ui.h:5
-msgid "Definitions:"
-msgstr "Définitions :"
+msgid "_Add Vocabulary Word"
+msgstr "_Ajouter un mot de vocabulaire"
 
 #: ../src/gwaei/dictionaryinstallwindow.ui.h:1
 msgid "Show Dictionary Install Details"
@@ -286,7 +286,7 @@ msgid "Where can I get other dictionaries?"
 msgstr "Où obtenir d'autres dictionnaires ?"
 
 #: ../src/gwaei/installprogresswindow.ui.h:1
-#: ../src/gwaei/installprogresswindow.c:112
+#: ../src/gwaei/installprogresswindow.c:111
 msgid "Installing Dictionaries..."
 msgstr "Installation des dictionnaires ..."
 
@@ -295,596 +295,585 @@ msgid "Starting Install..."
 msgstr "Début de l'installation ..."
 
 #: ../src/gwaei/searchwindow.ui.h:1
-msgid "_Append"
-msgstr "_Ajouter"
-
-#: ../src/gwaei/searchwindow.ui.h:2
-msgid "_Previous Search"
-msgstr "Recherche _précédente"
-
-#: ../src/gwaei/searchwindow.ui.h:3
-msgid "_Next Search"
-msgstr "Recherche _suivante"
-
-#: ../src/gwaei/searchwindow.ui.h:4
 msgid "Dictionary _Terminology Glossary"
 msgstr "Glossaire _terminologique du dictionnaire"
 
-#: ../src/gwaei/searchwindow.ui.h:5
-msgid "_Contents"
-msgstr "_Sommaire"
+#: ../src/gwaei/searchwindow.ui.h:2
+msgid "Enable spellcheck for searches"
+msgstr "Activer la correction orthographique pour les recherches"
 
-#: ../src/gwaei/searchwindow.ui.h:6
+#: ../src/gwaei/searchwindow.ui.h:3
+msgid "Get Help on I_RC"
+msgstr "Obtenir de l'aide sur I_RC"
+
+#: ../src/gwaei/searchwindow.ui.h:4
 msgid "Go to _Homepage"
 msgstr "Consulter le site _web du projet"
 
+#: ../src/gwaei/searchwindow.ui.h:5
+msgid "Go to the _Project Homepage"
+msgstr "Consulter sur le site _web du projet"
+
+#: ../src/gwaei/searchwindow.ui.h:6
+msgid "Hi_story"
+msgstr "_Historique"
+
 #: ../src/gwaei/searchwindow.ui.h:7
-msgid "Logical _And Character"
-msgstr "Marqueur _Et logique"
+msgid "Kanjipad"
+msgstr "Kanjipad"
 
 #: ../src/gwaei/searchwindow.ui.h:8
-msgid "_Not-word-edge Mark"
-msgstr "Indicateur de _non bordure de mot"
+msgid "Logical _And Character"
+msgstr "Marqueur _Et logique"
 
 #: ../src/gwaei/searchwindow.ui.h:9
 msgid "Logical _Or Character"
 msgstr "Marqueur _Ou logique"
 
 #: ../src/gwaei/searchwindow.ui.h:10
-msgid "_Unknown Character"
-msgstr "Caractère _inconnu"
-
-#: ../src/gwaei/searchwindow.ui.h:11
-msgid "Unknown"
-msgstr "Inconnu"
-
-#: ../src/gwaei/searchwindow.ui.h:12
-msgid "_Word-edge Mark"
-msgstr "Indicateur de _bordure de mot"
-
-#: ../src/gwaei/searchwindow.ui.h:13
-msgid "Get Help on I_RC"
-msgstr "Obtenir de l'aide sur I_RC"
-
-#: ../src/gwaei/searchwindow.ui.h:14
-msgid "New _Tab"
-msgstr "Nouvel _onglet"
-
-#: ../src/gwaei/searchwindow.ui.h:15
-msgid "New _Window"
-msgstr "Nouvelle Fe_nêtre"
-
-#: ../src/gwaei/searchwindow.ui.h:16
 msgid "Ne_xt Tab"
 msgstr "Onglet _suivant"
 
-#: ../src/gwaei/searchwindow.ui.h:17
-msgid "_Previous Tab"
-msgstr "Onglet _précédent"
+#: ../src/gwaei/searchwindow.ui.h:11
+msgid "New _Tab"
+msgstr "Nouvel _onglet"
 
-#: ../src/gwaei/searchwindow.ui.h:18
-msgid "Using _Kanjipad"
-msgstr "En utilisant _Kanjipad"
+#: ../src/gwaei/searchwindow.ui.h:12
+msgid "New _Window"
+msgstr "Nouvelle Fe_nêtre"
 
-#: ../src/gwaei/searchwindow.ui.h:19
-msgid "Kanjipad"
-msgstr "Kanjipad"
-
-#: ../src/gwaei/searchwindow.ui.h:20
-msgid "Using _Radical Search Tool"
-msgstr "Via l'outil de recherche des _radicaux"
-
-#: ../src/gwaei/searchwindow.ui.h:21
+#: ../src/gwaei/searchwindow.ui.h:13
 msgid "Radicals"
 msgstr "Radicaux"
 
-#: ../src/gwaei/searchwindow.ui.h:22
-msgid "Show _Statusbar"
-msgstr "Afficher la barre d'_état"
-
-#: ../src/gwaei/searchwindow.ui.h:23 ../src/gwaei/vocabularywindow.ui.h:23
-msgid "Show _Toolbar"
-msgstr "Afficher la barre d'_outils"
-
-#: ../src/gwaei/searchwindow.ui.h:24
-msgid "_Normal Size"
-msgstr "_Taille de texte normale"
-
-#: ../src/gwaei/searchwindow.ui.h:25
-msgid "_Enlarge Text"
-msgstr "_Agrandir la taille du texte"
-
-#: ../src/gwaei/searchwindow.ui.h:26
-msgid "_Shrink Text"
-msgstr "_Réduire la taille du texte"
-
-#: ../src/gwaei/searchwindow.ui.h:27 ../src/gwaei/application.c:308
-#: ../src/desktop/gwaei.desktop.in.h:1
-msgid "gWaei Japanese-English Dictionary"
-msgstr "Dictionnaire Japonais-Anglais gWaei"
-
-#: ../src/gwaei/searchwindow.ui.h:28 ../src/gwaei/vocabularywindow.ui.h:30
-msgid "_File"
-msgstr "_Fichier"
-
-#: ../src/gwaei/searchwindow.ui.h:29
-msgid "_Dictionaries"
-msgstr "_Dictionnaires"
-
-#: ../src/gwaei/searchwindow.ui.h:30
-msgid "menuitem2"
-msgstr "menuitem2"
-
-#: ../src/gwaei/searchwindow.ui.h:31 ../src/gwaei/vocabularywindow.ui.h:33
-msgid "_Edit"
-msgstr "É_dition"
-
-#: ../src/gwaei/searchwindow.ui.h:32 ../src/gwaei/vocabularywindow.ui.h:34
-msgid "_View"
-msgstr "_Affichage"
-
-#: ../src/gwaei/searchwindow.ui.h:33
-msgid "_Insert"
-msgstr "_Insérer"
-
-#: ../src/gwaei/searchwindow.ui.h:34
-msgid "Hi_story"
-msgstr "_Historique"
-
-#: ../src/gwaei/searchwindow.ui.h:35
-msgid "V_ocabulary"
-msgstr "V_ocabulaire"
-
-#: ../src/gwaei/searchwindow.ui.h:36
-msgid "_Add a New Word"
-msgstr "_Ajouter un nouveau mot"
-
-#: ../src/gwaei/searchwindow.ui.h:37
-msgid "_Manage and Study Vocabulary Lists"
-msgstr "_Gérer et réviser les listes de vocabulaire"
-
-#: ../src/gwaei/searchwindow.ui.h:38
-msgid "_Help"
-msgstr "Ai_de"
-
-#: ../src/gwaei/searchwindow.ui.h:39
-msgid "Go to the _Project Homepage"
-msgstr "Consulter sur le site _web du projet"
-
-#: ../src/gwaei/searchwindow.ui.h:40
-msgid "Enable spellcheck for searches"
-msgstr "Activer la correction orthographique pour les recherches"
-
-#: ../src/gwaei/searchwindow.ui.h:41
+#: ../src/gwaei/searchwindow.ui.h:14
 msgid "Sear_ch:"
 msgstr "_Rechercher :"
 
-#: ../src/gwaei/searchwindow.ui.h:42
-msgid "Select the dictionary you want to use"
-msgstr "Sélectionner le dictionnaire que vous voulez utiliser"
-
-#: ../src/gwaei/searchwindow.ui.h:43
+#: ../src/gwaei/searchwindow.ui.h:15
 msgid "Search"
 msgstr "Rechercher"
 
-#: ../src/gwaei/radicalswindow.ui.h:1 ../src/gwaei/radicalswindow.c:385
-msgid "gWaei Radical Search Tool"
-msgstr "Outil de recherche par radicaux de gWaei"
+#: ../src/gwaei/searchwindow.ui.h:16
+msgid "Select the dictionary you want to use"
+msgstr "Sélectionner le dictionnaire que vous voulez utiliser"
 
-#: ../src/gwaei/radicalswindow.ui.h:2
-msgid "_Restrict to Kanji of"
-msgstr "_Restreindre aux Kanji de "
+#: ../src/gwaei/searchwindow.ui.h:17
+msgid "Show _Statusbar"
+msgstr "Afficher la barre d'_état"
 
-#: ../src/gwaei/radicalswindow.ui.h:3
+#: ../src/gwaei/searchwindow.ui.h:18 ../src/gwaei/vocabularywindow.ui.h:28
+msgid "Show _Toolbar"
+msgstr "Afficher la barre d'_outils"
+
+#: ../src/gwaei/searchwindow.ui.h:19
+msgid "Unknown"
+msgstr "Inconnu"
+
+#: ../src/gwaei/searchwindow.ui.h:20
+msgid "Using _Kanjipad"
+msgstr "En utilisant _Kanjipad"
+
+#: ../src/gwaei/searchwindow.ui.h:21
+msgid "Using _Radical Search Tool"
+msgstr "Via l'outil de recherche des _radicaux"
+
+#: ../src/gwaei/searchwindow.ui.h:22
+msgid "V_ocabulary"
+msgstr "V_ocabulaire"
+
+#: ../src/gwaei/searchwindow.ui.h:23
+msgid "_Add a New Word"
+msgstr "_Ajouter un nouveau mot"
+
+#: ../src/gwaei/searchwindow.ui.h:24
+msgid "_Append"
+msgstr "_Ajouter"
+
+#: ../src/gwaei/searchwindow.ui.h:25
+msgid "_Contents"
+msgstr "_Sommaire"
+
+#: ../src/gwaei/searchwindow.ui.h:26
+msgid "_Dictionaries"
+msgstr "_Dictionnaires"
+
+#: ../src/gwaei/searchwindow.ui.h:27 ../src/gwaei/vocabularywindow.ui.h:34
+msgid "_Edit"
+msgstr "É_dition"
+
+#: ../src/gwaei/searchwindow.ui.h:28
+msgid "_Enlarge Text"
+msgstr "_Agrandir la taille du texte"
+
+#: ../src/gwaei/searchwindow.ui.h:29 ../src/gwaei/vocabularywindow.ui.h:36
+msgid "_File"
+msgstr "_Fichier"
+
+#: ../src/gwaei/searchwindow.ui.h:30
+msgid "_Help"
+msgstr "Ai_de"
+
+#: ../src/gwaei/searchwindow.ui.h:31
+msgid "_Insert"
+msgstr "_Insérer"
+
+#: ../src/gwaei/searchwindow.ui.h:32
+msgid "_Manage and Study Vocabulary Lists"
+msgstr "_Gérer et réviser les listes de vocabulaire"
+
+#: ../src/gwaei/searchwindow.ui.h:33
+msgid "_Next Search"
+msgstr "Recherche _suivante"
+
+#: ../src/gwaei/searchwindow.ui.h:34
+msgid "_Normal Size"
+msgstr "_Taille de texte normale"
+
+#: ../src/gwaei/searchwindow.ui.h:35
+msgid "_Not-word-edge Mark"
+msgstr "Indicateur de _non bordure de mot"
+
+#: ../src/gwaei/searchwindow.ui.h:36
+msgid "_Previous Search"
+msgstr "Recherche _précédente"
+
+#: ../src/gwaei/searchwindow.ui.h:37
+msgid "_Previous Tab"
+msgstr "Onglet _précédent"
+
+#: ../src/gwaei/searchwindow.ui.h:38
+msgid "_Shrink Text"
+msgstr "_Réduire la taille du texte"
+
+#: ../src/gwaei/searchwindow.ui.h:39
+msgid "_Unknown Character"
+msgstr "Caractère _inconnu"
+
+#: ../src/gwaei/searchwindow.ui.h:40 ../src/gwaei/vocabularywindow.ui.h:42
+msgid "_View"
+msgstr "_Affichage"
+
+#: ../src/gwaei/searchwindow.ui.h:41
+msgid "_Word-edge Mark"
+msgstr "Indicateur de _bordure de mot"
+
+#: ../src/gwaei/searchwindow.ui.h:42 ../src/gwaei/application.c:370
+#: ../src/desktop/gwaei.desktop.in.h:2
+msgid "gWaei Japanese-English Dictionary"
+msgstr "Dictionnaire Japonais-Anglais gWaei"
+
+#: ../src/gwaei/searchwindow.ui.h:43
+msgid "menuitem2"
+msgstr "menuitem2"
+
+#: ../src/gwaei/radicalswindow.ui.h:1
 msgid " _strokes"
 msgstr " _trait(s)"
 
-#: ../src/gwaei/radicalswindow.ui.h:4 ../src/gwaei/kanjipadwindow.ui.h:3
+#: ../src/gwaei/radicalswindow.ui.h:2 ../src/gwaei/kanjipadwindow.ui.h:1
 msgid "C_lear"
 msgstr "E_ffacer"
 
+#: ../src/gwaei/radicalswindow.ui.h:3
+msgid "_Restrict to Kanji of"
+msgstr "_Restreindre aux Kanji de "
+
+#: ../src/gwaei/radicalswindow.ui.h:4 ../src/gwaei/radicalswindow.c:384
+msgid "gWaei Radical Search Tool"
+msgstr "Outil de recherche par radicaux de gWaei"
+
 #: ../src/gwaei/settingswindow.ui.h:1
-msgid "When Possible"
-msgstr "Quand cela est possible"
+msgid "<b>Manual Dictionary Management</b>"
+msgstr "<b>Gestion manuelle des dictionnaires</b>"
 
 #: ../src/gwaei/settingswindow.ui.h:2
-msgid "Never"
-msgstr "Jamais"
-
-#: ../src/gwaei/settingswindow.ui.h:3
-msgid "Only for Non-Japanese Locals"
-msgstr "Si l'interface n'est pas en japonais"
-
-#: ../src/gwaei/settingswindow.ui.h:4 ../src/gwaei/settingswindow.c:151
-msgid "gWaei Settings"
-msgstr "Options de gWaei"
-
-#: ../src/gwaei/settingswindow.ui.h:5
-msgid "_Use the system document font (Sans 10)"
-msgstr "_Utiliser la police de documents du système (Sans 10)"
-
-#: ../src/gwaei/settingswindow.ui.h:6
-msgid "Custom Font: "
-msgstr "Police personnalisée:"
-
-#: ../src/gwaei/settingswindow.ui.h:7
-msgid "<b>Result Window Fonts</b>"
-msgstr "<b>Polices de la fenêtre de résultats</b>"
-
-#: ../src/gwaei/settingswindow.ui.h:8
-msgid "Match"
-msgstr "Résultat"
-
-#: ../src/gwaei/settingswindow.ui.h:9
-msgid "Header"
-msgstr "Entête"
-
-#: ../src/gwaei/settingswindow.ui.h:10
-msgid "Comment"
-msgstr "Commentaire"
-
-#: ../src/gwaei/settingswindow.ui.h:11
-msgid "_Reset"
-msgstr "_Réinitialiser"
-
-#: ../src/gwaei/settingswindow.ui.h:12
 msgid "<b>Result Window Colors</b>"
 msgstr "<b>Couleurs de la fenêtre de résultats</b>"
 
-#: ../src/gwaei/settingswindow.ui.h:13
-msgid "Appearance"
-msgstr "Apparence"
+#: ../src/gwaei/settingswindow.ui.h:3
+msgid "<b>Result Window Fonts</b>"
+msgstr "<b>Polices de la fenêtre de résultats</b>"
 
-#: ../src/gwaei/settingswindow.ui.h:14
-msgid "gWaei requires at least one dictionary to be installed."
-msgstr "gWaei nécessite d'installer au moins un dictionnaire."
+#: ../src/gwaei/settingswindow.ui.h:4
+msgid "<b>Search Entry Settings</b>"
+msgstr "<b>Options de recherche</b>"
 
-#: ../src/gwaei/settingswindow.ui.h:15
-msgid "Install a new dictionary."
-msgstr "Installer un nouveau dictionnaire."
-
-#: ../src/gwaei/settingswindow.ui.h:16 ../src/gwaei/vocabularywindow.ui.h:42
+#: ../src/gwaei/settingswindow.ui.h:5 ../src/gwaei/vocabularywindow.ui.h:1
 msgid "Add"
 msgstr "Ajouter"
 
-#: ../src/gwaei/settingswindow.ui.h:17
-msgid "Remove a dictionary."
-msgstr "Supprimer un dictionnaire."
+#: ../src/gwaei/settingswindow.ui.h:6
+msgid "Advanced"
+msgstr "Avancé"
 
-#: ../src/gwaei/settingswindow.ui.h:18 ../src/gwaei/vocabularywindow.ui.h:43
-msgid "Remove"
-msgstr "Supprimer"
+#: ../src/gwaei/settingswindow.ui.h:7
+msgid "Appearance"
+msgstr "Apparence"
 
-#: ../src/gwaei/settingswindow.ui.h:19
+#: ../src/gwaei/settingswindow.ui.h:8
+msgid "Comment"
+msgstr "Commentaire"
+
+#: ../src/gwaei/settingswindow.ui.h:9
+msgid "Convert Hiragana to _Katakana"
+msgstr "Convertir les Hiragana en _Katakana"
+
+#: ../src/gwaei/settingswindow.ui.h:10
+msgid "Convert Katakana to _Hiragana"
+msgstr "Convertir les Katakana en _Hiragana"
+
+#: ../src/gwaei/settingswindow.ui.h:11
+msgid "Convert _Romaji to Kana: "
+msgstr "Convertir le _Romaji en Kana :"
+
+#: ../src/gwaei/settingswindow.ui.h:12
+msgid "Custom Font: "
+msgstr "Police personnalisée:"
+
+#: ../src/gwaei/settingswindow.ui.h:13
 msgid "Dictionaries"
 msgstr "Dictionnaires"
+
+#: ../src/gwaei/settingswindow.ui.h:14
+msgid "Enable Spell _Checking"
+msgstr "Activer la _vérification orthographique"
+
+#: ../src/gwaei/settingswindow.ui.h:15
+msgid "Header"
+msgstr "Entête"
+
+#: ../src/gwaei/settingswindow.ui.h:16
+msgid "Install a new dictionary."
+msgstr "Installer un nouveau dictionnaire."
+
+#: ../src/gwaei/settingswindow.ui.h:17
+msgid "Match"
+msgstr "Résultat"
+
+#: ../src/gwaei/settingswindow.ui.h:18
+msgid "Never"
+msgstr "Jamais"
+
+#: ../src/gwaei/settingswindow.ui.h:19
+msgid "Only for Non-Japanese Locals"
+msgstr "Si l'interface n'est pas en japonais"
 
 #: ../src/gwaei/settingswindow.ui.h:20
 msgid "Plugins"
 msgstr "Modules externes"
 
-#: ../src/gwaei/settingswindow.ui.h:21
-msgid "Convert _Romaji to Kana: "
-msgstr "Convertir le _Romaji en Kana :"
+#: ../src/gwaei/settingswindow.ui.h:21 ../src/gwaei/vocabularywindow.ui.h:21
+msgid "Remove"
+msgstr "Supprimer"
 
 #: ../src/gwaei/settingswindow.ui.h:22
-msgid "Convert Hiragana to _Katakana"
-msgstr "Convertir les Hiragana en _Katakana"
+msgid "Remove a dictionary."
+msgstr "Supprimer un dictionnaire."
 
 #: ../src/gwaei/settingswindow.ui.h:23
-msgid "Convert Katakana to _Hiragana"
-msgstr "Convertir les Katakana en _Hiragana"
-
-#: ../src/gwaei/settingswindow.ui.h:24
-msgid "Enable Spell _Checking"
-msgstr "Activer la _vérification orthographique"
-
-#: ../src/gwaei/settingswindow.ui.h:25
 msgid "Search as you Type"
 msgstr "Rechercher pendant la saisie"
 
-#: ../src/gwaei/settingswindow.ui.h:26
-msgid "<b>Search Entry Settings</b>"
-msgstr "<b>Options de recherche</b>"
+#: ../src/gwaei/settingswindow.ui.h:24
+msgid "When Possible"
+msgstr "Quand cela est possible"
 
-#: ../src/gwaei/settingswindow.ui.h:27
+#: ../src/gwaei/settingswindow.ui.h:25
 msgid "_Open the gWaei dictionary folder"
 msgstr "_Ouvrir le dossier des dictionnaires de gWaei"
 
-#: ../src/gwaei/settingswindow.ui.h:28
+#: ../src/gwaei/settingswindow.ui.h:26
+msgid "_Reset"
+msgstr "_Réinitialiser"
+
+#: ../src/gwaei/settingswindow.ui.h:27
 msgid "_Update dictionaries using Rsync"
 msgstr "_Mettre à jour les dictionnaires installés avec Rsync"
 
-#: ../src/gwaei/settingswindow.ui.h:29
-msgid "<b>Manual Dictionary Management</b>"
-msgstr "<b>Gestion manuelle des dictionnaires</b>"
+#: ../src/gwaei/settingswindow.ui.h:28
+msgid "_Use the system document font (Sans 10)"
+msgstr "_Utiliser la police de documents du système (Sans 10)"
+
+#: ../src/gwaei/settingswindow.ui.h:29 ../src/gwaei/settingswindow.c:136
+msgid "gWaei Settings"
+msgstr "Options de gWaei"
 
 #: ../src/gwaei/settingswindow.ui.h:30
-msgid "Advanced"
-msgstr "Avancé"
-
-#: ../src/gwaei/kanjipadwindow.ui.h:1 ../src/gwaei/kanjipadwindow.c:163
-msgid "gWaei Kanjipad"
-msgstr "gWaei Kanjipad"
+msgid "gWaei requires at least one dictionary to be installed."
+msgstr "gWaei nécessite d'installer au moins un dictionnaire."
 
 #: ../src/gwaei/kanjipadwindow.ui.h:2
 msgid "_Annotate Strokes"
 msgstr "_Annoter les traits"
 
-#: ../src/gwaei/vocabularywindow.ui.h:1
-msgid "Definition→Furigana Flashcards"
-msgstr "Définitions→Cartes en Furigana"
+#: ../src/gwaei/kanjipadwindow.ui.h:3 ../src/gwaei/kanjipadwindow.c:158
+msgid "gWaei Kanjipad"
+msgstr "gWaei Kanjipad"
 
 #: ../src/gwaei/vocabularywindow.ui.h:2
-#: ../src/gwaei/vocabularywindow-callbacks.c:853
+#: ../src/gwaei/vocabularywindow-callbacks.c:844
 msgid "Definition→Furigana"
 msgstr "Définition→Furigana"
 
 #: ../src/gwaei/vocabularywindow.ui.h:3
-msgid "Definition→Kanji Flashcards"
-msgstr "Définitions→Cartes en Kanji"
+msgid "Definition→Furigana Flashcards"
+msgstr "Définitions→Cartes en Furigana"
 
 #: ../src/gwaei/vocabularywindow.ui.h:4
-#: ../src/gwaei/vocabularywindow-callbacks.c:819
+#: ../src/gwaei/vocabularywindow-callbacks.c:810
 msgid "Definition→Kanji"
 msgstr "Définition→Kanji"
 
 #: ../src/gwaei/vocabularywindow.ui.h:5
-msgid "_Export List"
-msgstr "_Exporter la liste"
+msgid "Definition→Kanji Flashcards"
+msgstr "Définitions→Cartes en Kanji"
 
 #: ../src/gwaei/vocabularywindow.ui.h:6
+msgid "Edit"
+msgstr "Édition"
+
+#: ../src/gwaei/vocabularywindow.ui.h:7
 msgid "Export"
 msgstr "Exporter"
 
-#: ../src/gwaei/vocabularywindow.ui.h:7
-msgid "Furigana→Definition Flashcards"
-msgstr "Furigana→Cartes de définitions"
-
 #: ../src/gwaei/vocabularywindow.ui.h:8
-#: ../src/gwaei/vocabularywindow-callbacks.c:836
+#: ../src/gwaei/vocabularywindow-callbacks.c:827
 msgid "Furigana→Definition"
 msgstr "Furigana→Définition"
 
 #: ../src/gwaei/vocabularywindow.ui.h:9
-msgid "Furigana→Kanji Flashcards"
-msgstr "Furigana→Cartes de Kanji"
+msgid "Furigana→Definition Flashcards"
+msgstr "Furigana→Cartes de définitions"
 
 #: ../src/gwaei/vocabularywindow.ui.h:10
-#: ../src/gwaei/vocabularywindow-callbacks.c:887
+#: ../src/gwaei/vocabularywindow-callbacks.c:878
 msgid "Furigana→Kanji"
 msgstr "Furigana→Kanji"
 
 #: ../src/gwaei/vocabularywindow.ui.h:11
-msgid "_Import List"
-msgstr "_Importer la liste"
+msgid "Furigana→Kanji Flashcards"
+msgstr "Furigana→Cartes de Kanji"
 
 #: ../src/gwaei/vocabularywindow.ui.h:12
 msgid "Import"
 msgstr "Importer"
 
 #: ../src/gwaei/vocabularywindow.ui.h:13
-msgid "Kanji→Definition Flashcards"
-msgstr "Kanji→Cartes de définitions"
+msgid "Kanji List from JLPT Level 1"
+msgstr "Liste de Kanji pour le niveau 1 du JLPT"
 
 #: ../src/gwaei/vocabularywindow.ui.h:14
-#: ../src/gwaei/vocabularywindow-callbacks.c:802
+#: ../src/gwaei/vocabularywindow-callbacks.c:793
 msgid "Kanji→Definition"
 msgstr "Kanji→Définition"
 
 #: ../src/gwaei/vocabularywindow.ui.h:15
+msgid "Kanji→Definition Flashcards"
+msgstr "Kanji→Cartes de définitions"
+
+#: ../src/gwaei/vocabularywindow.ui.h:16
 msgid "Kanji→Furigana Flashcards"
 msgstr "Kanji→Cartes de Furigana"
 
-#: ../src/gwaei/vocabularywindow.ui.h:16
-msgid "_Revert List"
-msgstr "_Revenir à la version enregistrée de la liste"
-
 #: ../src/gwaei/vocabularywindow.ui.h:17
-msgid "Revert"
-msgstr "Revenir à l'état précédent"
-
-#: ../src/gwaei/vocabularywindow.ui.h:18
-msgid "_Save All Changes"
-msgstr "_Enregistrer tous les changements"
-
-#: ../src/gwaei/vocabularywindow.ui.h:19
-msgid "Save All"
-msgstr "Tout enregistrer "
-
-#: ../src/gwaei/vocabularywindow.ui.h:20
-msgid "Show _Position Column"
-msgstr "Afficher la colonne de _position"
-
-#: ../src/gwaei/vocabularywindow.ui.h:21
-msgid "Show _Score Column"
-msgstr "Afficher la colonne de _score"
-
-#: ../src/gwaei/vocabularywindow.ui.h:22
-msgid "Show _Last Studied Column"
-msgstr "Afficher la colonne de _dernière date d'étude"
-
-#: ../src/gwaei/vocabularywindow.ui.h:24
-#, fuzzy
-msgid "_Shuffle Flashcards"
-msgstr "Mélanger les cartes"
-
-#: ../src/gwaei/vocabularywindow.ui.h:25
-msgid "Shuffle"
-msgstr "Mélanger"
-
-#: ../src/gwaei/vocabularywindow.ui.h:26
-#, fuzzy
-msgid "T_rack Score Results"
-msgstr "Suivre les scores"
-
-#: ../src/gwaei/vocabularywindow.ui.h:27 ../src/gwaei/flashcardwindow.ui.h:1
-msgid "Track Results"
-msgstr "Suivre vos résultats"
-
-#: ../src/gwaei/vocabularywindow.ui.h:28
-#, fuzzy
-msgid "_Trim Flashcards"
-msgstr "Mélanger les cartes"
-
-#: ../src/gwaei/vocabularywindow.ui.h:29
-msgid "Trim"
-msgstr ""
-
-#: ../src/gwaei/vocabularywindow.ui.h:31
-msgid "New _List"
-msgstr "Nouvelle _liste"
-
-#: ../src/gwaei/vocabularywindow.ui.h:32
-msgid "New _Word"
-msgstr "Nouveau _mot"
-
-#: ../src/gwaei/vocabularywindow.ui.h:35
-msgid "_Study"
-msgstr "_Étudier"
-
-#: ../src/gwaei/vocabularywindow.ui.h:36
-msgid "_Generate"
-msgstr "_Générer"
-
-#: ../src/gwaei/vocabularywindow.ui.h:37
-msgid "List from your Weakest Words"
-msgstr "Liste de vos mots problématiques"
-
-#: ../src/gwaei/vocabularywindow.ui.h:38
 msgid "List from Popular Words"
 msgstr "Liste de mots populaires"
 
-#: ../src/gwaei/vocabularywindow.ui.h:39
-msgid "Kanji List from JLPT Level 1"
-msgstr "Liste de Kanji pour le niveau 1 du JLPT"
+#: ../src/gwaei/vocabularywindow.ui.h:18
+msgid "List from your Weakest Words"
+msgstr "Liste de vos mots problématiques"
 
-#: ../src/gwaei/vocabularywindow.ui.h:40
-msgid "Study"
-msgstr "Étudier"
+#: ../src/gwaei/vocabularywindow.ui.h:19
+msgid "New _List"
+msgstr "Nouvelle _liste"
 
-#: ../src/gwaei/vocabularywindow.ui.h:41
+#: ../src/gwaei/vocabularywindow.ui.h:20
+msgid "New _Word"
+msgstr "Nouveau _mot"
+
+#: ../src/gwaei/vocabularywindow.ui.h:22
+msgid "Revert"
+msgstr "Revenir à l'état précédent"
+
+#: ../src/gwaei/vocabularywindow.ui.h:23
 msgid "Save"
 msgstr "Enregistrer"
 
-#: ../src/gwaei/vocabularywindow.ui.h:44
-msgid "Edit"
-msgstr "Édition"
+#: ../src/gwaei/vocabularywindow.ui.h:24
+msgid "Save All"
+msgstr "Tout enregistrer "
 
-#: ../src/gwaei/flashcardwindow.ui.h:2
+#: ../src/gwaei/vocabularywindow.ui.h:25
+msgid "Show _Last Studied Column"
+msgstr "Afficher la colonne de _dernière date d'étude"
+
+#: ../src/gwaei/vocabularywindow.ui.h:26
+msgid "Show _Position Column"
+msgstr "Afficher la colonne de _position"
+
+#: ../src/gwaei/vocabularywindow.ui.h:27
+msgid "Show _Score Column"
+msgstr "Afficher la colonne de _score"
+
+#: ../src/gwaei/vocabularywindow.ui.h:29
+msgid "Shuffle"
+msgstr "Mélanger"
+
+#: ../src/gwaei/vocabularywindow.ui.h:30
+msgid "Shuffle Flashcards"
+msgstr "Mélanger les cartes"
+
+#: ../src/gwaei/vocabularywindow.ui.h:31
+msgid "Study"
+msgstr "Étudier"
+
+#: ../src/gwaei/vocabularywindow.ui.h:32 ../src/gwaei/flashcardwindow.ui.h:5
+msgid "Track Results"
+msgstr "Suivre vos résultats"
+
+#: ../src/gwaei/vocabularywindow.ui.h:33
+msgid "Track Score Results"
+msgstr "Suivre les scores"
+
+#: ../src/gwaei/vocabularywindow.ui.h:35
+msgid "_Export List"
+msgstr "_Exporter la liste"
+
+#: ../src/gwaei/vocabularywindow.ui.h:37
+msgid "_Generate"
+msgstr "_Générer"
+
+#: ../src/gwaei/vocabularywindow.ui.h:38
+msgid "_Import List"
+msgstr "_Importer la liste"
+
+#: ../src/gwaei/vocabularywindow.ui.h:39
+msgid "_Revert List"
+msgstr "_Revenir à la version enregistrée de la liste"
+
+#: ../src/gwaei/vocabularywindow.ui.h:40
+msgid "_Save All Changes"
+msgstr "_Enregistrer tous les changements"
+
+#: ../src/gwaei/vocabularywindow.ui.h:41
+msgid "_Study"
+msgstr "_Étudier"
+
+#: ../src/gwaei/flashcardwindow.ui.h:1
 msgid "Answer:"
 msgstr "Réponse:"
 
-#: ../src/gwaei/flashcardwindow.ui.h:3
+#: ../src/gwaei/flashcardwindow.ui.h:2
 msgid "Check your Answer"
 msgstr "Vérifier la réponse"
 
-#: ../src/gwaei/flashcardwindow.ui.h:4
-msgid "_Check Answer"
-msgstr "_Vérifier"
+#: ../src/gwaei/flashcardwindow.ui.h:3
+msgid "Continue to the Next Flashcard"
+msgstr "Passer à la carte suivante"
 
-#: ../src/gwaei/flashcardwindow.ui.h:5
+#: ../src/gwaei/flashcardwindow.ui.h:4
 msgid "Don't Know the Answer"
 msgstr "Je ne connais pas la réponse"
 
 #: ../src/gwaei/flashcardwindow.ui.h:6
-msgid "_Don't Know"
-msgstr "_J'sais pas"
+msgid "_Check Answer"
+msgstr "_Vérifier"
 
 #: ../src/gwaei/flashcardwindow.ui.h:7
-msgid "Continue to the Next Flashcard"
-msgstr "Passer à la carte suivante"
+msgid "_Don't Know"
+msgstr "_J'sais pas"
 
 #: ../src/gwaei/flashcardwindow.ui.h:8
 msgid "_Next Card"
 msgstr "Carte suiva_nte"
 
-#: ../src/gwaei/application.c:210
+#: ../src/gwaei/application.c:272
 msgid "Force a new instance window"
 msgstr "Ouverture d'une nouvelle fenêtre"
 
-#: ../src/gwaei/application.c:211
+#: ../src/gwaei/application.c:273
 msgid "Choose the dictionary to use"
 msgstr "Sélectionner le dictionnaire à utiliser"
 
-#: ../src/gwaei/application.c:212
+#: ../src/gwaei/application.c:274
 msgid "Open the vocabulary manager window"
 msgstr "Ouvrir la fenêtre du gestionnaire de vocabulaire"
 
-#: ../src/gwaei/application.c:213
+#: ../src/gwaei/application.c:275
 msgid "Check the gWaei version information"
 msgstr "Informations sur la version de gWaei"
 
-#: ../src/gwaei/application.c:220
+#: ../src/gwaei/application.c:282
 msgid "- A dictionary program for Japanese-English translation."
 msgstr "- Un dictionnaire logiciel pour la traduction Japonais-Anglais"
 
-#: ../src/gwaei/application.c:247
+#: ../src/gwaei/application.c:309
 #, c-format
 msgid "%s version %s"
 msgstr "%s version %s"
 
-#: ../src/gwaei/dictionaryinstallwindow-callbacks.c:464
+#: ../src/gwaei/dictionaryinstallwindow-callbacks.c:463
 #, c-format
 msgid "<b>%s Install Details</b>"
 msgstr "<b>Détails d'installation de %s</b>"
 
 #. Third row
-#: ../src/gwaei/dictionaryinstallwindow-callbacks.c:486
+#: ../src/gwaei/dictionaryinstallwindow-callbacks.c:485
 msgid "Filename: "
 msgstr "Fichier :"
 
 #. Forth row
-#: ../src/gwaei/dictionaryinstallwindow-callbacks.c:500
+#: ../src/gwaei/dictionaryinstallwindow-callbacks.c:499
 msgid "Engine: "
 msgstr "Moteur :"
 
 #. Fifth row
-#: ../src/gwaei/dictionaryinstallwindow-callbacks.c:520
+#: ../src/gwaei/dictionaryinstallwindow-callbacks.c:519
 msgid "Source: "
 msgstr "Source : "
 
 #. Sixth row
-#: ../src/gwaei/dictionaryinstallwindow-callbacks.c:550
+#: ../src/gwaei/dictionaryinstallwindow-callbacks.c:549
 msgid "Encoding: "
 msgstr "Encodage :"
 
 #. Seventh row
-#: ../src/gwaei/dictionaryinstallwindow-callbacks.c:569
+#: ../src/gwaei/dictionaryinstallwindow-callbacks.c:568
 msgid "Compression: "
 msgstr "Compression :"
 
 #. Eighth row
-#: ../src/gwaei/dictionaryinstallwindow-callbacks.c:588
+#: ../src/gwaei/dictionaryinstallwindow-callbacks.c:587
 msgid "Split Places from Names Dictionary"
 msgstr "Séparer les lieux dans le dictionnaire des noms propres."
 
 #. Ninth row
-#: ../src/gwaei/dictionaryinstallwindow-callbacks.c:600
+#: ../src/gwaei/dictionaryinstallwindow-callbacks.c:599
 msgid "Merge Radicals into Kanji Dictionary"
 msgstr "Incorporer les radicaux au sein du dictionnaire des Kanji"
 
-#: ../src/gwaei/dictionaryinstallwindow.c:117
+#: ../src/gwaei/dictionaryinstallwindow.c:116
 msgid "Select Dictionaries..."
 msgstr "Sélection des dictionnaires ..."
 
-#: ../src/gwaei/installprogresswindow-callbacks.c:155
+#: ../src/gwaei/installprogresswindow-callbacks.c:152
 #, c-format
 msgid "Installing %s..."
 msgstr "Installation de %s ..."
 
-#: ../src/gwaei/installprogresswindow-callbacks.c:156
+#: ../src/gwaei/installprogresswindow-callbacks.c:153
 #, c-format
 msgid "Installing dictionary %d of %d..."
 msgstr "Installation du dictionnaire %d de %d ..."
 
 #. Initializations
-#: ../src/gwaei/printing.c:185
+#: ../src/gwaei/printing.c:182
 #, c-format
 msgid "Page %d/%d"
 msgstr "Page %d/%d"
 
-#: ../src/gwaei/radicalswindow.c:491
+#: ../src/gwaei/radicalswindow.c:500
 #, c-format
 msgid ""
 "<b>Substitution Radical:</b> %s\n"
@@ -895,15 +884,15 @@ msgstr ""
 "<b>Radical actuel :</b> %s\n"
 "<b>Nom du radical :</b> %s"
 
-#: ../src/gwaei/searchwindow-callbacks.c:573
+#: ../src/gwaei/searchwindow-callbacks.c:564
 msgid "Save As"
 msgstr "Enregistrer sous"
 
-#: ../src/gwaei/searchwindow-callbacks.c:586
+#: ../src/gwaei/searchwindow-callbacks.c:577
 msgid "vocabulary.txt"
 msgstr "vocabulaire.txt"
 
-#: ../src/gwaei/searchwindow-callbacks.c:1041
+#: ../src/gwaei/searchwindow-callbacks.c:1030
 msgid ""
 "Program for Japanese translation and reference. The\n"
 "dictionaries are supplied by Jim Breen's WWWJDIC.\n"
@@ -917,76 +906,76 @@ msgstr ""
 "Dédié à Chuus."
 
 #. TRANSLATORS: You can add your own name to the translation of this field, it will be displayed in the "about" box when gwaei is run in your language
-#: ../src/gwaei/searchwindow-callbacks.c:1045
+#: ../src/gwaei/searchwindow-callbacks.c:1034
 msgid "translator-credits"
 msgstr "Nicolas Laurent (2009-2012)"
 
-#: ../src/gwaei/searchwindow-callbacks.c:2478
+#: ../src/gwaei/searchwindow-callbacks.c:2442
 msgid "_Close Tab"
 msgstr "_Fermer l'onglet"
 
-#: ../src/gwaei/searchwindow-callbacks.c:2480
+#: ../src/gwaei/searchwindow-callbacks.c:2444
 msgid "_Close"
 msgstr "_Fermer"
 
-#: ../src/gwaei/searchwindow-output.c:433
-#: ../src/gwaei/searchwindow-output.c:547
+#: ../src/gwaei/searchwindow-output.c:429
+#: ../src/gwaei/searchwindow-output.c:543
 msgid "Pop"
 msgstr "Pop."
 
-#: ../src/gwaei/searchwindow-output.c:684
-#: ../src/gwaei/searchwindow-output.c:999
+#: ../src/gwaei/searchwindow-output.c:680
+#: ../src/gwaei/searchwindow-output.c:995
 msgid "Radicals:"
 msgstr "Radicaux :"
 
-#: ../src/gwaei/searchwindow-output.c:698
-#: ../src/gwaei/searchwindow-output.c:1008
-#: ../src/gwaei/searchwindow-output.c:1017
+#: ../src/gwaei/searchwindow-output.c:694
+#: ../src/gwaei/searchwindow-output.c:1004
+#: ../src/gwaei/searchwindow-output.c:1013
 msgid "Readings:"
 msgstr "Lectures :"
 
-#: ../src/gwaei/searchwindow-output.c:708
+#: ../src/gwaei/searchwindow-output.c:704
 msgid "Name:"
 msgstr "Nom :"
 
-#: ../src/gwaei/searchwindow-output.c:718
+#: ../src/gwaei/searchwindow-output.c:714
 msgid "Radical Name:"
 msgstr "Radicaux :"
 
-#: ../src/gwaei/searchwindow-output.c:732
-#: ../src/gwaei/searchwindow-output.c:1036
+#: ../src/gwaei/searchwindow-output.c:728
+#: ../src/gwaei/searchwindow-output.c:1032
 msgid "Stroke:"
 msgstr "Traits :"
 
-#: ../src/gwaei/searchwindow-output.c:739
-#: ../src/gwaei/searchwindow-output.c:1045
+#: ../src/gwaei/searchwindow-output.c:735
+#: ../src/gwaei/searchwindow-output.c:1041
 msgid "Freq:"
 msgstr "Fréq. :"
 
-#: ../src/gwaei/searchwindow-output.c:746
-#: ../src/gwaei/searchwindow-output.c:1054
+#: ../src/gwaei/searchwindow-output.c:742
+#: ../src/gwaei/searchwindow-output.c:1050
 msgid "Grade:"
 msgstr "Grade :"
 
-#: ../src/gwaei/searchwindow-output.c:752
-#: ../src/gwaei/searchwindow-output.c:1063
+#: ../src/gwaei/searchwindow-output.c:748
+#: ../src/gwaei/searchwindow-output.c:1059
 msgid "JLPT:"
 msgstr "JLPT :"
 
-#: ../src/gwaei/searchwindow-output.c:761
-#: ../src/gwaei/searchwindow-output.c:1081
+#: ../src/gwaei/searchwindow-output.c:757
+#: ../src/gwaei/searchwindow-output.c:1077
 msgid "Meanings:"
 msgstr "Signification : "
 
 # E: English
 #. TRANSLATORS: The "E" stands for "English"
-#: ../src/gwaei/searchwindow-output.c:825
+#: ../src/gwaei/searchwindow-output.c:821
 msgid "E:\t"
 msgstr "E:\t"
 
 # J: Japanese
 #. TRANSLATORS: The "J" stands for "Japanese"
-#: ../src/gwaei/searchwindow-output.c:836
+#: ../src/gwaei/searchwindow-output.c:832
 msgid ""
 "\n"
 "J:\t"
@@ -996,7 +985,7 @@ msgstr ""
 
 # D: Detail
 #. TRANSLATORS: The "D" stands for "Detail"
-#: ../src/gwaei/searchwindow-output.c:847
+#: ../src/gwaei/searchwindow-output.c:843
 msgid ""
 "\n"
 "D:\t"
@@ -1004,50 +993,50 @@ msgstr ""
 "\n"
 "D:\t"
 
-#: ../src/gwaei/searchwindow-output.c:934
+#: ../src/gwaei/searchwindow-output.c:930
 #, c-format
 msgid "Other Result %d"
 msgid_plural "Other Results %d"
 msgstr[0] "%d résultat similaire"
 msgstr[1] "%d résultats similaires"
 
-#: ../src/gwaei/searchwindow-output.c:956
+#: ../src/gwaei/searchwindow-output.c:952
 #, c-format
 msgid "Main Result %d"
 msgid_plural "Main Results %d"
 msgstr[0] "%d résultat principal"
 msgstr[1] "%d résultats principaux"
 
-#: ../src/gwaei/searchwindow-output.c:1026
+#: ../src/gwaei/searchwindow-output.c:1022
 msgid "Radical Name"
 msgstr "Nom du radical"
 
 #. TRANSLATORS: The argument is the dictionary long name
-#: ../src/gwaei/searchwindow-output.c:1218
+#: ../src/gwaei/searchwindow-output.c:1214
 #, c-format
 msgid "Nothing found in the %s!"
 msgstr "Aucun résultat trouvé dans le %s !"
 
-#: ../src/gwaei/searchwindow-output.c:1249
+#: ../src/gwaei/searchwindow-output.c:1245
 msgid "Search Other Dictionary: "
 msgstr "Rechercher dans d'autres dictionnaires : "
 
-#: ../src/gwaei/searchwindow-output.c:1287
+#: ../src/gwaei/searchwindow-output.c:1282
 msgid "Search Online: "
 msgstr "Rechercher sur Internet : "
 
-#: ../src/gwaei/searchwindow-output.c:1340
+#: ../src/gwaei/searchwindow-output.c:1335
 #, c-format
 msgid "gWaei Usage Tip #%d: "
 msgstr "Astuce d'utilisation de gWaei n°%d :"
 
 #. Tip 1
-#: ../src/gwaei/searchwindow-output.c:1353
-#, fuzzy, c-format
+#: ../src/gwaei/searchwindow-output.c:1348
+#, c-format
 msgid ""
 "Use the Unknown Character from the Insert menu or toolbar in place of "
 "unknown Kanji. %s will return results like %s.\n"
-" \n"
+"\n"
 "Kanjipad is another option for inputting Kanji characters.  Because of how "
 "the innards of Kanjipad works, drawing with the correct number of strokes "
 "and drawing the strokes in the correct direction is very important."
@@ -1060,15 +1049,15 @@ msgstr ""
 "dont Kanjipad fonctionne, il est très important de dessiner les Kanji avec "
 "le nombre correct de traits et de les tracer dans le bon sens."
 
-#: ../src/gwaei/searchwindow-output.c:1360
+#: ../src/gwaei/searchwindow-output.c:1355
 msgid "Inputting Unknown Kanji"
 msgstr "Entrer un Kanji inconnu"
 
-#: ../src/gwaei/searchwindow-output.c:1377
+#: ../src/gwaei/searchwindow-output.c:1372
 msgid "Getting More Exact Matches"
 msgstr "Obtenir plus de résultat exacts"
 
-#: ../src/gwaei/searchwindow-output.c:1383
+#: ../src/gwaei/searchwindow-output.c:1378
 msgid ""
 "Use the Word-edge Mark and the Not-word-edge Mark from the insert menu to "
 "get more relevant results.  fish\\b will return results like fish and "
@@ -1081,7 +1070,7 @@ msgstr ""
 "où \"fish\" n'est pas en bordure de mot, comme \"fisherman\"."
 
 #. Tip 3
-#: ../src/gwaei/searchwindow-output.c:1391
+#: ../src/gwaei/searchwindow-output.c:1386
 #, c-format
 msgid ""
 "Use the And Character or Or Character to window for results that contain a "
@@ -1094,15 +1083,15 @@ msgstr ""
 "qui pourraient ne pas être consécutifs. « cat&dogs » retournera seulement "
 "les résultats qui contiennent les deux mots, comme « %s »."
 
-#: ../src/gwaei/searchwindow-output.c:1397
+#: ../src/gwaei/searchwindow-output.c:1392
 msgid "Searching for Multiple Words"
 msgstr "Recherche de mots multiples"
 
-#: ../src/gwaei/searchwindow-output.c:1414
+#: ../src/gwaei/searchwindow-output.c:1409
 msgid "Make a Vocabulary List"
 msgstr "Faire une liste de vocabulaire"
 
-#: ../src/gwaei/searchwindow-output.c:1420
+#: ../src/gwaei/searchwindow-output.c:1415
 msgid ""
 "Specific sections of results can be printed or saved by dragging the mouse "
 "to highlight them.  Using this in combination with the Append command from "
@@ -1115,11 +1104,11 @@ msgstr ""
 "le menu « Fichier » ou depuis la barre d'outils, permet de rapidement et "
 "facilement créer des listes de vocabulaire."
 
-#: ../src/gwaei/searchwindow-output.c:1430
+#: ../src/gwaei/searchwindow-output.c:1425
 msgid "Why Use the Mouse?"
 msgstr "Pourquoi donc utiliser la souris ?"
 
-#: ../src/gwaei/searchwindow-output.c:1436
+#: ../src/gwaei/searchwindow-output.c:1431
 msgid ""
 "Typing something will move the focus to the window input box.  Hitting the "
 "Up or Down arrow key will move the focus to the results pane so you can "
@@ -1132,19 +1121,18 @@ msgstr ""
 "combinaison Alt-Haut ou Alt-Bas permettra de basculer le dictionnaire actif "
 "parmi tous les dictionnaires installés."
 
-#: ../src/gwaei/searchwindow-output.c:1446
+#: ../src/gwaei/searchwindow-output.c:1441
 msgid "Get Ready for the JLPT"
 msgstr "Préparez vous pour le JLPT"
 
-#: ../src/gwaei/searchwindow-output.c:1452
-#, fuzzy
+#: ../src/gwaei/searchwindow-output.c:1447
 msgid ""
 "The Kanji dictionary has some hidden features.  One such one is the ability "
 "to filter out Kanji that don't meet a certain criteria.  If you are planning "
 "on taking the Japanese Language Proficiency Test, using the phrase J# will "
 "filter out Kanji not of that level for easy study.  For example, J4 will "
 "only show Kanji that appears on the forth level test.\n"
-" \n"
+"\n"
 "Also of interest, the phrase G# will filter out Kanji for the grade level a "
 "Japanese person would study it at in school."
 msgstr ""
@@ -1158,11 +1146,11 @@ msgstr ""
 "Une autre de ces fonctions cachées, est la possible de filtrer les Kanji par "
 "niveau d'étude au Japon, à l'aide du code G# (où # est l'année d'étude)."
 
-#: ../src/gwaei/searchwindow-output.c:1466
+#: ../src/gwaei/searchwindow-output.c:1461
 msgid "Just drag words in!"
 msgstr "Glissez et déposez les mots !"
 
-#: ../src/gwaei/searchwindow-output.c:1472
+#: ../src/gwaei/searchwindow-output.c:1467
 msgid ""
 "If you drag and drop a highlighted word into gWaei's window result box, "
 "gWaei will automatically start a window using that text.  This can be a nice "
@@ -1173,17 +1161,16 @@ msgstr ""
 "un bon moyen de rapidement vérifier des mots lors de vos recherches sur le "
 "web."
 
-#: ../src/gwaei/searchwindow-output.c:1483
+#: ../src/gwaei/searchwindow-output.c:1478
 msgid "What does (adj-i) mean?"
 msgstr "Que signifie (adj-i) ?"
 
-#: ../src/gwaei/searchwindow-output.c:1489
-#, fuzzy
+#: ../src/gwaei/searchwindow-output.c:1484
 msgid ""
 "It is part of the terminalogy used by the EDICT group of dictionaries to "
 "categorize words.  Some are obvious, but there are a number that there is no "
 "way to know the meaning other than by looking it up.\n"
-" \n"
+"\n"
 "gWaei includes some of the EDICT documentation in its help manual.  Click "
 "the Dictionary Terminology Glossary menuitem in the Help menu to get to it."
 msgstr ""
@@ -1195,11 +1182,11 @@ msgstr ""
 "sur l'entrée du menu d'aide intitulée « Glossaire terminologique du "
 "dictionnaire » pour y avoir accès."
 
-#: ../src/gwaei/searchwindow-output.c:1501
+#: ../src/gwaei/searchwindow-output.c:1496
 msgid "Books are Heavy"
 msgstr "Les livres sont lourds"
 
-#: ../src/gwaei/searchwindow-output.c:1507
+#: ../src/gwaei/searchwindow-output.c:1502
 msgid ""
 "Aways wear a construction helmet when working with books.  They are "
 "dangerous heavy objects that can at any point fall on and injure you.  "
@@ -1211,205 +1198,188 @@ msgstr ""
 "Avertissez tous vos amis. Ils vous en remercieront plus tard. Si si, "
 "Vraiment."
 
-#: ../src/gwaei/searchwindow.c:632
+#: ../src/gwaei/searchwindow.c:630
 msgid "Searching..."
 msgstr "Recherche en cours ... "
 
-#: ../src/gwaei/searchwindow.c:635
+#: ../src/gwaei/searchwindow.c:633
 #, c-format
 msgid "Searching... %d result"
 msgid_plural "Searching... %d results"
 msgstr[0] "Recherche en cours ... %d résultat"
 msgstr[1] "Recherche en cours ... %d résultats"
 
-#: ../src/gwaei/searchwindow.c:1645
+#: ../src/gwaei/searchwindow.c:1663
 msgid "(Empty)"
 msgstr "(Vide)"
 
-#: ../src/gwaei/searchwindow.c:2032
-#, fuzzy, c-format
-msgid "Also showing results for: 「%s」"
+#: ../src/gwaei/searchwindow.c:1992
+#, c-format
+msgid "Showing results also for 「%s」"
 msgstr "Afficher aussi les résultats pour 「%s」"
 
-#: ../src/gwaei/searchwindow.c:2432
+#: ../src/gwaei/searchwindow.c:2386
 msgid "_Cycle Up"
 msgstr "Revenir au _précédent"
 
-#: ../src/gwaei/searchwindow.c:2438
+#: ../src/gwaei/searchwindow.c:2392
 msgid "Cycle _Down"
 msgstr "Passer au _suivant"
 
-#: ../src/gwaei/settingswindow-callbacks.c:346
+#: ../src/gwaei/settingswindow-callbacks.c:341
 #, c-format
 msgid "_Use the System Document Font (%s)"
 msgstr "_Utiliser la police de document du système (%s)"
 
-#: ../src/gwaei/settingswindow.c:507
+#: ../src/gwaei/settingswindow.c:491
 msgid "Name"
 msgstr "Nom"
 
-#: ../src/gwaei/settingswindow.c:513
+#: ../src/gwaei/settingswindow.c:497
 msgid "Engine"
 msgstr "Moteur"
 
-#: ../src/gwaei/settingswindow.c:518
+#: ../src/gwaei/settingswindow.c:502
 msgid "Shortcut"
 msgstr "Raccourci"
 
-#: ../src/gwaei/spellcheck.c:863
-#, fuzzy, c-format
-msgid "Add \"%s\" to the dictionary"
-msgstr "Autre dictionnaire"
-
 #. Set up the gtk window
-#: ../src/gwaei/vocabularywindow.c:187
-#: ../src/gwaei/vocabularywindow-callbacks.c:247
-#: ../src/gwaei/vocabularywindow-callbacks.c:251
-#, c-format
+#: ../src/gwaei/vocabularywindow.c:184
+#: ../src/gwaei/vocabularywindow-callbacks.c:244
 msgid "gWaei Vocabulary Manager"
 msgstr "Gestionnaire de vocabulaire de gWaei"
 
-#: ../src/gwaei/vocabularywindow.c:584
+#: ../src/gwaei/vocabularywindow.c:565
 msgid "Lists"
 msgstr "Listes"
 
-#: ../src/gwaei/vocabularywindow.c:653
+#: ../src/gwaei/vocabularywindow.c:634
 msgid "Word"
 msgstr "Mot"
 
-#: ../src/gwaei/vocabularywindow.c:668
+#: ../src/gwaei/vocabularywindow.c:649
 msgid "Reading"
 msgstr "Lectures"
 
-#: ../src/gwaei/vocabularywindow.c:685
+#: ../src/gwaei/vocabularywindow.c:666
 msgid "Definitions"
 msgstr "Définitions"
 
-#: ../src/gwaei/vocabularywindow.c:699
+#: ../src/gwaei/vocabularywindow.c:680
 msgid "Last Studied"
 msgstr "Dernière date de révision"
 
-#: ../src/gwaei/vocabularywindow.c:711
+#: ../src/gwaei/vocabularywindow.c:692
 msgid "Score"
 msgstr "Score"
 
-#: ../src/gwaei/vocabularywindow.c:910
+#: ../src/gwaei/vocabularywindow.c:884
 msgid "Save changes before closing?"
 msgstr "Enregistrer les changements avant de fermer ?"
 
-#: ../src/gwaei/vocabularywindow.c:911
+#: ../src/gwaei/vocabularywindow.c:885
 msgid "Close _without Saving"
 msgstr "Fermer sans enregistrer"
 
-#: ../src/gwaei/vocabularywindow.c:925
+#: ../src/gwaei/vocabularywindow.c:899
 msgid "Save Changes before Closing?"
 msgstr "Enregistrer les changements avant de fermer ?"
 
-#: ../src/gwaei/vocabularywindow.c:926
+#: ../src/gwaei/vocabularywindow.c:900
 msgid "Some of your vocabulary lists have changed since your last save."
 msgstr ""
 "Certaines de vos listes de vocabulaires ont été modifiées depuis votre "
 "dernier enregistrement."
 
-#: ../src/gwaei/vocabularywindow-callbacks.c:460
+#: ../src/gwaei/vocabularywindow-callbacks.c:451
 msgid "Export Vocabulary List..."
 msgstr "Exporter la liste de vocabulaire …"
 
-#: ../src/gwaei/vocabularywindow-callbacks.c:803
-#: ../src/gwaei/vocabularywindow-callbacks.c:837
+#: ../src/gwaei/vocabularywindow-callbacks.c:794
+#: ../src/gwaei/vocabularywindow-callbacks.c:828
 msgid "What is the definition of this word?"
 msgstr "Quelle est la définition de ce mot ?"
 
-#: ../src/gwaei/vocabularywindow-callbacks.c:820
+#: ../src/gwaei/vocabularywindow-callbacks.c:811
 msgid "What is the Japanese word for this definition?"
 msgstr "Quel est le texte japonais pour cette définition ?"
 
-#: ../src/gwaei/vocabularywindow-callbacks.c:854
+#: ../src/gwaei/vocabularywindow-callbacks.c:845
 msgid "What is the Furigana for this definition?"
 msgstr "Quels sont les Furigana pour cette définition ?"
 
-#: ../src/gwaei/vocabularywindow-callbacks.c:870
+#: ../src/gwaei/vocabularywindow-callbacks.c:861
 msgid "Kanji→Furigana"
 msgstr "Kanji→Furigana"
 
-#: ../src/gwaei/vocabularywindow-callbacks.c:871
+#: ../src/gwaei/vocabularywindow-callbacks.c:862
 msgid "What is the Furigana for this Kanji?"
 msgstr "Quels sont les Furigana pour ce Kanji ?"
 
-#: ../src/gwaei/vocabularywindow-callbacks.c:888
+#: ../src/gwaei/vocabularywindow-callbacks.c:879
 msgid "What is the Kanji for this Furigana?"
 msgstr "Quel est le Kanji pour ce(s) Furigana ?"
 
-#: ../src/gwaei/vocabularyliststore.c:501
-#: ../src/gwaei/vocabularyliststore.c:506
+#: ../src/gwaei/vocabularyliststore.c:500
+#: ../src/gwaei/vocabularyliststore.c:505
 #, c-format
 msgid "New List %d"
 msgstr "Nouvelle liste %d"
 
-#: ../src/gwaei/vocabularywordstore.c:605
+#: ../src/gwaei/vocabularywordstore.c:604
 msgid "(Click to set Kanji)"
 msgstr "(Cliquer pour définir le Kanji)"
 
-#: ../src/gwaei/vocabularywordstore.c:606
+#: ../src/gwaei/vocabularywordstore.c:605
 msgid "(Click to set Furigana)"
 msgstr "(Cliquer pour définir les Furigana)"
 
-#: ../src/gwaei/vocabularywordstore.c:607
+#: ../src/gwaei/vocabularywordstore.c:606
 msgid "(Click to set Definitions)"
 msgstr "(Cliquer pour ajouter les définitions)"
 
-#: ../src/gwaei/vocabularywordstore.c:619
+#: ../src/gwaei/vocabularywordstore.c:618
 msgid "New"
 msgstr "Nouveau"
 
-#: ../src/gwaei/flashcardwindow.c:220
+#: ../src/gwaei/flashcardwindow.c:231
 #, c-format
 msgid "%s - gWaei %s Flashcards"
 msgstr "%s - gWaei - Cartes « %s » "
 
-#: ../src/gwaei/flashcardwindow.c:352
+#: ../src/gwaei/flashcardwindow.c:400
 msgid "You were correct!"
 msgstr "Réponse correcte !"
 
-#: ../src/gwaei/flashcardwindow.c:353 ../src/gwaei/flashcardwindow.c:367
+#: ../src/gwaei/flashcardwindow.c:401 ../src/gwaei/flashcardwindow.c:415
 msgid "Press [Enter] to continue..."
 msgstr "Appuyer sur [Entrée] pour continuer …"
 
-#: ../src/gwaei/flashcardwindow.c:354 ../src/gwaei/flashcardwindow.c:368
+#: ../src/gwaei/flashcardwindow.c:402 ../src/gwaei/flashcardwindow.c:416
 msgid "Answer"
 msgstr "Réponse"
 
-#: ../src/gwaei/flashcardwindow.c:366
+#: ../src/gwaei/flashcardwindow.c:414
 msgid "You were incorrect!"
 msgstr "Réponse incorrecte !"
 
-#: ../src/gwaei/flashcardwindow.c:561
-#, c-format
-msgid "%d Flashcard Left..."
-msgid_plural "%d Flashcards Left..."
-msgstr[0] ""
-msgstr[1] ""
-
-#: ../src/gwaei/flashcardwindow.c:620
+#: ../src/gwaei/flashcardwindow.c:684
 msgid "You've finished this flash card deck!"
 msgstr "Vous avez terminé cette pile de cartes"
 
-#: ../src/gwaei/flashcardwindow.c:621
+#: ../src/gwaei/flashcardwindow.c:685
 msgid "Your Grade"
 msgstr "Votre niveau"
 
-#: ../src/gwaei/flashcardwindow.c:622
+#: ../src/gwaei/flashcardwindow.c:686
 msgid "Completion Time"
 msgstr "Temps écoulé"
 
-#: ../src/desktop/gwaei.desktop.in.h:2
+#: ../src/desktop/gwaei.desktop.in.h:1
 msgid "Enter a Japanese or English word to easily get translations."
 msgstr ""
 "Entrer un mot en japonais ou en anglais pour facilement obtenir une "
 "traduction."
-
-#~ msgid "Showing results also for \"%s\"\n"
-#~ msgstr "Afficher aussi les résultats pour \"%s\"\n"
 
 #~ msgid "Append"
 #~ msgstr "Ajouter"

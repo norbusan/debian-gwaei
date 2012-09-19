@@ -15,25 +15,24 @@ typedef enum {
 } GwApplicationSignalId;
 
 struct _GwApplicationPrivate {
-  int* argc;
-  char*** argv;
+  gint* argc;
+  gchar*** argv;
 
   GError *error;
 
   LwPreferences *preferences;
-  LwDictInstList *dictinstlist;
+  GwDictionaryList *installed_dictionarylist;
+  GwDictionaryList *installable_dictionarylist;
   GwSearchWindow *last_focused;
 
   guint signalid[TOTAL_GW_APPLICATION_SIGNALIDS];
 
   GOptionContext *context;
-  gboolean arg_new_window_switch;
   gchar   *arg_dictionary;
   gchar   *arg_query;
   gboolean arg_version_switch;
   gboolean arg_new_vocabulary_window_switch;
 
-  GtkListStore *dictionarystore;
   GtkListStore *vocabularyliststore;
 
   gint block_new_searches;

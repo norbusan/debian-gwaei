@@ -25,9 +25,6 @@
 //! @brief To be written
 //!
 
-
-#include "../private.h"
-
 #include <gwaei/gwaei.h>
 #include <gwaei/window-private.h>
 
@@ -50,4 +47,76 @@ gw_window_configure_event_cb (GtkWidget *widget, GdkEvent *event, gpointer data)
 
     return FALSE;
 }
+
+
+static GMenuModel*
+gw_window_get_transient_for_menumodel (GwWindow *window)
+{
+    //Sanity checks
+    g_return_val_if_fail (window != NULL, NULL);
+
+    //Declarations
+    GMenuModel *menumodel;
+    GwWindow *transientfor;
+    gboolean check_transient_for;
+
+    //Initializations
+    transientfor = GW_WINDOW (gtk_window_get_transient_for (GTK_WINDOW (window)));
+    menumodel = gw_window_get_menumodel (window);
+    check_transient_for = (transientfor != NULL && menumodel == NULL);
+
+    //Recursive
+    if (check_transient_for)
+      return gw_window_get_transient_for_menumodel (GW_WINDOW (transientfor));
+    else
+      return gw_window_get_menumodel (window);
+}
+
+
+G_MODULE_EXPORT gboolean
+gw_window_focus_in_event_cb (GtkWidget *widget, GdkEvent *event, gpointer data)
+{
+    //Declarations
+    GwWindow *window;
+    GwApplication *application;
+    GMenuModel *menumodel;
+    gboolean os_shows_win_menu;
+    GtkSettings *settings;
+    
+    //Initializations
+    window = GW_WINDOW (widget);
+    application = gw_window_get_application (window);
+    settings = gtk_settings_get_default ();
+    g_object_get (settings, "gtk-shell-shows-menubar", &os_shows_win_menu, NULL);
+
+    menumodel = gw_window_get_transient_for_menumodel (window);
+    if (menumodel == NULL)
+      menumodel = G_MENU_MODEL (g_menu_new ());
+    if (menumodel == NULL) 
+      return FALSE;
+
+    gw_application_set_win_menubar (GW_APPLICATION (application), menumodel);
+
+    return FALSE;
+}
+
+
+G_MODULE_EXPORT gboolean
+gw_window_delete_event_cb (GtkWidget *widget, GdkEvent *event, gpointer data)
+{
+    GwApplication *application;
+    GwWindow *window;
+
+    window = GW_WINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_WINDOW));
+    g_return_val_if_fail (window != NULL, FALSE);
+    application = gw_window_get_application (window);
+
+    gtk_widget_destroy (GTK_WIDGET (window));
+
+    if (gw_application_should_quit (application))
+      gw_application_quit (application);
+
+    return TRUE;
+}
+
 

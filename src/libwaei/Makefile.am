@@ -4,10 +4,10 @@ SUBDIRS = include/libwaei
 LIBRARY_VERSION = 2:0:0
 ACLOCAL_AMFLAGS = -I m4
 datadir = @datadir@
-DEFINITIONS =-DDATADIR2=\"$(datadir)\" -DGWAEI_LOCALEDIR=\"$(GWAEI_LOCALEDIR)\" -Wall 
+DEFINITIONS =-DDATADIR2=\"$(datadir)\" -DGWAEI_LOCALEDIR=\"$(GWAEI_LOCALEDIR)\" 
 
 lib_LTLIBRARIES =libwaei.la
-libwaei_la_SOURCES =libwaei.c dictinfo.c dictinfolist.c dictinst.c dictinstlist.c queryline.c engine.c engine-data.c utilities.c io.c regex.c searchitem.c history.c resultline.c preferences.c vocabularylist.c vocabularyitem.c
+libwaei_la_SOURCES =libwaei.c dictionary.c dictionary-installer.c dictionary-callbacks.c edictionary.c kanjidictionary.c exampledictionary.c unknowndictionary.c dictionarylist.c query.c range.c utilities.c io.c regex.c search.c history.c result.c preferences.c vocabulary.c word.c
 libwaei_la_LDFLAGS =-version-info $(LIBRARY_VERSION)  $(LIBWAEI_LIBS) $(MECAB_LIBS)
 libwaei_la_CPPFLAGS = $(LIBWAEI_CFLAGS) -I$(top_srcdir)/src/libwaei/include $(DEFINITIONS) 
 

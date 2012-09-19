@@ -28,8 +28,6 @@
 //!
 
 
-#include "../private.h"
-
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -137,7 +135,7 @@ _kanjipadwindow_initialize_drawingarea (GwKanjipadWindow *window)
     cairo_t *cr;
     double half_width;
     double half_height;
-    double dashes[] = { 10.0, 10.0 };
+    double dashes[] = { 10.0, 10.0,  };
     int ndash;
     double offset;
 
@@ -158,16 +156,18 @@ _kanjipadwindow_initialize_drawingarea (GwKanjipadWindow *window)
     ndash  = sizeof (dashes)/sizeof(dashes[0]);
     offset = 0.0;
 
-    context = gtk_widget_get_style_context (GTK_WIDGET (window));
-    gtk_style_context_get_background_color (context, GTK_STATE_FLAG_NORMAL, &fgcolorn);
-    gtk_style_context_get_border_color (context, GTK_STATE_FLAG_NORMAL, &bgcolorn);
-    gtk_style_context_get_background_color (context, GTK_STATE_FLAG_SELECTED, &fgcolors);
-    gtk_style_context_get_border_color (context, GTK_STATE_FLAG_SELECTED, &bgcolors);
+    context = gtk_widget_get_style_context (GTK_WIDGET (priv->drawingarea));
+    gtk_style_context_get_color (context, GTK_STATE_FLAG_NORMAL, &fgcolorn);
+    gtk_style_context_get_background_color (context, GTK_STATE_FLAG_NORMAL, &bgcolorn);
+    gtk_style_context_get_color (context, GTK_STATE_FLAG_SELECTED, &fgcolors);
+    gtk_style_context_get_background_color (context, GTK_STATE_FLAG_SELECTED, &bgcolors);
+
 
     //Drawing
     cairo_set_source_rgba (cr, fgcolors.red, fgcolors.green, fgcolors.blue, 1.0);
     cairo_rectangle (cr, 0, 0, width, height);
     cairo_fill (cr);
+
 
     //Draw bounding box
     cairo_set_source_rgba (cr, bgcolors.red, bgcolors.green, bgcolors.blue, 0.5);
@@ -190,7 +190,7 @@ _kanjipadwindow_initialize_drawingarea (GwKanjipadWindow *window)
     //Draw strokes
     cairo_set_dash (cr, NULL, 0, 0);
     cairo_set_line_width (cr, 2.0);
-    cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 1.0);
+    cairo_set_source_rgba (cr, fgcolorn.red, fgcolorn.green, fgcolorn.blue, 1.0);
 
     for (iter = priv->strokes; iter != NULL; iter = iter->next)
     {
@@ -379,8 +379,8 @@ gw_kanjipadwindow_drawingarea_motion_event_cb (GtkWidget *widget, GdkEventMotion
 
       //extend line
       cr = cairo_create(priv->surface);
-      cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 1.0);
-      cairo_set_line_width (cr, 2.0);
+      cairo_set_source_rgb (cr, 0.0, 0.0, 0.0);
+      cairo_set_line_width (cr, 2.0 );
       cairo_move_to (cr, old->x,  old->y);
       cairo_line_to (cr, x, y);
       cairo_stroke (cr);

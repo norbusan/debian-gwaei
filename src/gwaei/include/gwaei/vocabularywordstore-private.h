@@ -6,7 +6,7 @@ G_BEGIN_DECLS
 struct _GwVocabularyWordStorePrivate {
   gchar* name;
   gchar* filename;
-  LwVocabularyList *vocabulary_list;
+  LwVocabulary *vocabulary_list;
   gboolean has_changes;
   gboolean loaded;
 };

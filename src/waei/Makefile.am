@@ -7,7 +7,7 @@ ACLOCAL_AMFLAGS = -I m4
 bin_PROGRAMS = waei
 
 datadir = @datadir@
-DEFINITIONS =-DDATADIR2=\"$(datadir)\" -DLIBDIR=\"$(libdir)\" -DGWAEI_LOCALEDIR=\"$(GWAEI_LOCALEDIR)\" -Wall 
+DEFINITIONS =-DDATADIR2=\"$(datadir)\" -DLIBDIR=\"$(libdir)\" -DGWAEI_LOCALEDIR=\"$(GWAEI_LOCALEDIR)\"
 
 waei_SOURCES =waei.c application.c search-data.c console.c console-output.c console-callbacks.c
 waei_LDADD =$(WAEI_LIBS) ../libwaei/libwaei.la

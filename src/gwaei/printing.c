@@ -26,8 +26,6 @@
 //!
 
 
-#include "../private.h"
-
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -35,6 +33,7 @@
 #include <gtk/gtk.h>
 
 #include <gwaei/gwaei.h>
+#include <gwaei/gettext.h>
 
 
 
@@ -143,12 +142,12 @@ static void _draw_page_title (GtkPrintContext *context, GwPageInfo *page, GwPrin
     int height;
     gint index;
     cairo_t *cr;
-    LwSearchItem *item;
+    LwSearch *search;
 
     //Initializations
     index = gw_searchwindow_get_current_tab_index (data->window);
-    item = gw_searchwindow_get_searchitem_by_index (data->window, index);
-    text = gw_searchwindow_get_title_by_searchitem (data->window, item);
+    search = gw_searchwindow_get_searchitem_by_index (data->window, index);
+    text = gw_searchwindow_get_title_by_searchitem (data->window, search);
     layout = gtk_print_context_create_pango_layout (context);
     desc = pango_font_description_from_string ("sans 8");
     cr = gtk_print_context_get_cairo_context (context);
@@ -431,7 +430,9 @@ void gw_print (const GtkPrintOperationAction ACTION, GwSearchWindow *window)
 //! to set up a print operation.  If a section of the search results are highlighted
 //! only those results are printed.
 //!
-G_MODULE_EXPORT void gw_print_cb (GtkWidget *widget, gpointer data)
+G_MODULE_EXPORT void gw_print_cb (GSimpleAction *action,
+                                  GVariant      *parameter,
+                                  gpointer       data)
 {
     GwSearchWindow *window;
     GwApplication *application;
@@ -449,7 +450,9 @@ G_MODULE_EXPORT void gw_print_cb (GtkWidget *widget, gpointer data)
 //!
 //! @brief Sets up a print preview for the results
 //!
-G_MODULE_EXPORT void gw_print_preview_cb (GtkWidget *widget, gpointer data)
+G_MODULE_EXPORT void gw_print_preview_cb (GSimpleAction *action,
+                                          GVariant      *parameter,
+                                          gpointer       data)
 {
     GwSearchWindow *window;
     GwApplication *application;

@@ -1,0 +1,155 @@
+<interface>
+  <menu id='menu'>
+    <submenu>
+      <attribute name='label' translatable='yes'>_File</attribute>
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>New _List</attribute>
+          <attribute name='action'>win.new-list</attribute>
+          <attribute name='accel'>&lt;Primary&gt;n</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>New _Word</attribute>
+          <attribute name='action'>win.new-word</attribute>
+          <attribute name='accel'>&lt;Primary&gt;n</attribute>
+        </item>
+      </section>
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>_Save</attribute>
+          <attribute name='action'>win.save</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>Save _As</attribute>
+          <attribute name='action'>win.save-as</attribute>
+          <attribute name='accel'>&lt;Primary&gt;s</attribute>
+        </item>
+      </section>
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>_Import</attribute>
+          <attribute name='action'>win.import</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>_Export</attribute>
+          <attribute name='action'>win.export</attribute>
+        </item>
+      </section>
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>_Close</attribute>
+          <attribute name='action'>win.close</attribute>
+        </item>
+      </section>
+    </submenu>
+
+    <submenu>
+      <attribute name='label' translatable='yes'>_Edit</attribute>
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>_Reset</attribute>
+          <attribute name='action'>win.reset</attribute>
+          <attribute name='accel'>&lt;Primary&gt;z</attribute>
+        </item>
+      </section>
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>_Cut</attribute>
+          <attribute name='action'>win.cut</attribute>
+          <attribute name='accel'>&lt;Primary&gt;x</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>_Copy</attribute>
+          <attribute name='action'>win.copy</attribute>
+          <attribute name='accel'>&lt;Primary&gt;c</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>_Paste</attribute>
+          <attribute name='action'>win.paste</attribute>
+          <attribute name='accel'>&lt;Primary&gt;v</attribute>
+        </item>
+      </section>
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>_Delete</attribute>
+          <attribute name='action'>win.delete</attribute>
+          <attribute name='accel'>Delete</attribute>
+        </item>
+      </section>
+    </submenu>
+
+    <submenu>
+      <attribute name='label' translatable='yes'>_View</attribute>
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>_Toolbar</attribute>
+          <attribute name='action'>win.show-toolbar</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>_Position Column</attribute>
+          <attribute name='action'>win.show-toolbar</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>_Timestamp Column</attribute>
+          <attribute name='action'>win.show-toolbar</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>_Score Column</attribute>
+          <attribute name='action'>win.show-toolbar</attribute>
+        </item>
+      </section>
+    </submenu>
+
+    <submenu>
+      <attribute name='label' translatable='yes'>_Study</attribute>
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>_Kanji→Definition Flashcards</attribute>
+          <attribute name='action'>win.show-kanji-definition-flashcards</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>_Definition→Kanji Flashcards</attribute>
+          <attribute name='action'>win.show-definition-kanji-flashcards</attribute>
+        </item>
+      </section>
+
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>_Furigana→Definition Flashcards</attribute>
+          <attribute name='action'>win.show-furigana-definition-flashcards</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>_Definition→Furigana Flashcards</attribute>
+          <attribute name='action'>win.show-definition-furigana-flashcards</attribute>
+        </item>
+      </section>
+
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>_Kanji→Furigana Flashcards</attribute>
+          <attribute name='action'>win.show-furigana-definition-flashcards</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>_Furigana→Kanji Flashcards</attribute>
+          <attribute name='action'>win.show-definition-furigana-flashcards</attribute>
+        </item>
+      </section>
+
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>_Shuffle Flashcards</attribute>
+          <attribute name='action'>win.shuffle-flashcards</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>_Trim Flashcards</attribute>
+          <attribute name='action'>win.trim-flashcards</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>_Track Results</attribute>
+          <attribute name='action'>win.track-results</attribute>
+        </item>
+      </section>
+    </submenu>
+  </menu>
+</interface>
+

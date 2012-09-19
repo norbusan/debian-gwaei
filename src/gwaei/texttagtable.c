@@ -25,9 +25,6 @@
 //! @brief To be written
 //!
 
-
-#include "../private.h"
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -189,46 +186,56 @@ gw_texttagtable_init_base_tags (GwTextTagTable *tagtable)
     //Declarations
     GtkTextTag *tag;
 
-    tag = gtk_text_tag_new ("italic");
-    g_object_set (tag, "style", PANGO_STYLE_ITALIC, NULL);
+    tag = gtk_text_tag_new ("entry-grand-header");
+    g_object_set (tag, "scale", 5.0, "family", "KanjiStrokeOrders", NULL);
     gtk_text_tag_table_add (GTK_TEXT_TAG_TABLE (tagtable), tag);
+    g_object_unref (tag);
 
-    tag = gtk_text_tag_new ("gray");
-    g_object_set (tag, "foreground", "#888888", NULL);
+    tag = gtk_text_tag_new ("entry-header");
+    g_object_set (tag, "scale", 1.3, "weight", 600, NULL);
     gtk_text_tag_table_add (GTK_TEXT_TAG_TABLE (tagtable), tag);
+    g_object_unref (tag);
 
-    tag = gtk_text_tag_new ("smaller");
-    g_object_set (tag, "size", "smaller", NULL);
+    tag = gtk_text_tag_new ("entry-definition");
     gtk_text_tag_table_add (GTK_TEXT_TAG_TABLE (tagtable), tag);
+    g_object_unref (tag);
 
-    tag = gtk_text_tag_new ("small");
-    g_object_set (tag, "font", "Serif 6", NULL);
+    tag = gtk_text_tag_new ("entry-lexicon");
+    g_object_set (tag, "scale", 1.0, "foreground", "#888888", "style", PANGO_STYLE_ITALIC, NULL);
     gtk_text_tag_table_add (GTK_TEXT_TAG_TABLE (tagtable), tag);
+    g_object_unref (tag);
 
-    tag = gtk_text_tag_new ("important");
+    tag = gtk_text_tag_new ("entry-popular");
+    g_object_set (tag, "scale", 1.0, NULL);
+    gtk_text_tag_table_add (GTK_TEXT_TAG_TABLE (tagtable), tag);
+    g_object_unref (tag);
+
+    tag = gtk_text_tag_new ("entry-example-definition");
+    g_object_set (tag, "scale", 1.3, NULL);
+    gtk_text_tag_table_add (GTK_TEXT_TAG_TABLE (tagtable), tag);
+    g_object_unref (tag);
+
+    tag = gtk_text_tag_new ("entry-bullet");
     g_object_set (tag, "weight", PANGO_WEIGHT_BOLD, NULL);
     gtk_text_tag_table_add (GTK_TEXT_TAG_TABLE (tagtable), tag);
-
-    tag = gtk_text_tag_new ("larger");
-    g_object_set (tag, "font", "Sans 20", NULL);
-    gtk_text_tag_table_add (GTK_TEXT_TAG_TABLE (tagtable), tag);
-
-    tag = gtk_text_tag_new ("large");
-    g_object_set (tag, "font", "Serif 40", NULL);
-    gtk_text_tag_table_add (GTK_TEXT_TAG_TABLE (tagtable), tag);
-
-    tag = gtk_text_tag_new ("center");
-    g_object_set (tag, "justification", GTK_JUSTIFY_LEFT, NULL);
-    gtk_text_tag_table_add (GTK_TEXT_TAG_TABLE (tagtable), tag);
+    g_object_unref (tag);
 
     tag = gtk_text_tag_new ("comment");
     gtk_text_tag_table_add (GTK_TEXT_TAG_TABLE (tagtable), tag);
+    g_object_unref (tag);
 
     tag = gtk_text_tag_new ("match");
     gtk_text_tag_table_add (GTK_TEXT_TAG_TABLE (tagtable), tag);
+    g_object_unref (tag);
 
     tag = gtk_text_tag_new ("header");
     gtk_text_tag_table_add (GTK_TEXT_TAG_TABLE (tagtable), tag);
+    g_object_unref (tag);
+
+    tag = gtk_text_tag_new ("spacing");
+    g_object_set (tag, "scale", 0.5, NULL);
+    gtk_text_tag_table_add (GTK_TEXT_TAG_TABLE (tagtable), tag);
+    g_object_unref (tag);
 }
 
 
@@ -335,7 +342,7 @@ static void
 gw_texttagtable_sync_tag_cb (GSettings *settings, gchar *key, gpointer data)
 {
     //Declarations
-    char hex[20];
+    gchar hex[20];
     GdkRGBA color;
     gchar **pair;
     GtkTextTag *tag;

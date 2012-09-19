@@ -28,8 +28,6 @@
 //!
 
 
-#include "../private.h"
-
 #include <stdlib.h>
 #include <string.h>
 
@@ -49,7 +47,7 @@ gw_searchdata_new (GtkTextView *view, GwSearchWindow *window)
     {
       temp->window = window;
       temp->view = view;
-      temp->resultline = NULL;
+      temp->result = NULL;
     }
     return temp;
 }
@@ -58,32 +56,32 @@ gw_searchdata_new (GtkTextView *view, GwSearchWindow *window)
 void 
 gw_searchdata_free (GwSearchData *data)
 {
-    g_assert (data != NULL);
+    if (data == NULL) return;
 
-    if (data->resultline != NULL) lw_resultline_free (data->resultline);
+    if (data->result != NULL) lw_result_free (data->result);
 
     data->window = NULL;
     data->view = NULL;
-    data->resultline = NULL;
+    data->result = NULL;
 
     free (data);
 }
 
 
 void 
-gw_searchdata_set_resultline (GwSearchData *data, LwResultLine *resultline)
+gw_searchdata_set_result (GwSearchData *data, LwResult *result)
 {
     g_assert (data != NULL);
 
-    if (data->resultline != NULL) 
-      lw_resultline_free (data->resultline);
-    data->resultline = resultline;
+    if (data->result != NULL) 
+      lw_result_free (data->result);
+    data->result = result;
 }
 
-LwResultLine* 
-gw_searchdata_get_resultline (GwSearchData *data)
+LwResult* 
+gw_searchdata_get_result (GwSearchData *data)
 {
-  return data->resultline;
+  return data->result;
 }
 
 
