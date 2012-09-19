@@ -1,0 +1,52 @@
+%define prefix @prefix@
+%define sysconfdir @sysconfdir@
+
+%define localedir ${datarootdir}/locale
+
+Summary: Japanese-English Dictionary for Gnome
+Name: @PACKAGE@
+Version: @VERSION@
+Release: @RELEASE@
+License: GPL
+Group: Applications/Utilities
+Source: ./@PACKAGE@-@VERSION@.tar.gz
+Requires: ttf-kanjistrokeorders, ttf-arphic-ukai
+URL: http://gwaei.sourceforge.net
+BuildRoot: /var/tmp/gwaei-%{PACKAGE_VERSION}-root
+%description
+gWaei is an easy to use and yet powerful full-featured
+dictionary program for Japanese to English translation.
+It organizes results by relevance, supports regex searches,
+tabs, spell checking, kanji handwriting recognition and
+an accompanying console version for searches through
+the terminal.
+%prep
+%setup -q
+./configure --prefix @prefix@ --sysconfdir=@sysconfdir@ --disable-schemas-install
+[ -f rpm/rpm_gconf_install_post.sh ]
+[ -f rpm/rpm_gconf_uninstall_pre.sh ]
+%build
+make
+%install
+make DESTDIR=$RPM_BUILD_ROOT install
+%clean
+rm -rf $RPM_BUILD_ROOT
+%post
+%include rpm/rpm_gconf_install_post.sh
+%preun
+%include rpm/rpm_gconf_uninstall_pre.sh
+%files
+%defattr(-, root, root)
+#%doc NEWS INSTALL COPYING ChangeLog
+%{prefix}/bin/gwaei
+%{prefix}/bin/waei
+%{prefix}/share/applications/@PACKAGE@.desktop
+%{prefix}/share/gnome/
+%{prefix}/share/@PACKAGE@/
+%{prefix}/share/icons/
+%{prefix}/share/locale/
+%{prefix}/share/doc/
+%{prefix}/share/omf/gwaei/gwaei-C.omf
+%{sysconfdir}/gconf/schemas/@PACKAGE@.schemas
+
+

@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<omf>
+  <resource>
+    <subject category="GNOME|Applications|Accessories"/>
+    <type>manual</type>
+    <relation seriesid="2b80edde-4170-11de-9040-00046153c702"/>
+    <rights type="GNU FDL" license.version="1.1" holder="Zachary Dovel"/>
+  </resource>
+</omf>
+

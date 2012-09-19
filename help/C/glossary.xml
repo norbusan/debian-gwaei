@@ -1,0 +1,707 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
+               "/usr/share/sgml/docbook/dtd/xml/4.1.2/docbookx.dtd">
+     
+<article id="index" xml:lang="ja">
+  <articleinfo> 
+	 <title>Dictionary Terminology Glossary</title>
+	  <!--<copyright>
+	    <year>2008-2009</year>
+	    <holder>Zachary Dovel</holder>
+	  </copyright>-->
+
+	 <authorgroup> 
+		<author> 
+		  <firstname>Zachary</firstname>
+		  <surname>Dovel</surname> 
+		  <affiliation> 
+			 <address> <email>pizzach@gmail.com</email> </address>
+		  </affiliation>
+		</author>
+	 </authorgroup>
+</articleinfo>
+
+  <indexterm zone="index"> 
+    <primary>gWaei</primary> 
+  </indexterm>
+  <indexterm zone="index"> 
+    <primary>Dictionaries</primary> 
+  </indexterm>
+
+
+<!-- ============= Document Body ============================= -->
+<!-- ============= Introduction ============================= -->
+   <abstract>
+      <para>
+        This help manual covers the terminology used by the EDICT (English)
+        and the ENAMDICT (Names and Places) dictionaries.  Both
+        are projects Copyright of The Electronic Dictionary Research and
+        Development Group, Monash University.
+      </para>
+      <para>
+        Most of the information here has been lifted from their web pages.
+        For the most up to date documentation, you would be best off
+        perusing their respective home pages.
+      </para>
+    </abstract>
+
+
+<sect1 id="EdictLexicographicalDetails">
+  <title>English Dictionary Glossary</title>
+  <para>
+    The EDICT (English-Japanese) dictionary uses some symbols to represent
+    and classify words.  While you may be able to guess adj-na means a na
+    form adjective, MA is a bit harder to guess.  This table was taken from
+    <ulink url="http://www.csse.monash.edu.au/~jwb/edict_doc.html">the EDICT
+    Project's homepage.</ulink>  For the newest revisions of the documentation,
+    please check it out.
+  </para>
+
+  <sect2>
+    <title>Part of Speech Markings</title>
+
+    <sect3>
+    <title>Adjective</title>
+    <glosslist>
+      <glossentry>
+        <glossterm>adj-i</glossterm>
+        <glossdef><para>adjective (keiyoushi)</para></glossdef>
+      </glossentry>
+
+      <glossentry>
+        <glossterm>adj-na</glossterm>
+        <glossdef><para>adjectival nouns or quasi-adjectives (keiyodoshi)</para></glossdef>
+      </glossentry>
+
+      <glossentry>
+        <glossterm>adj-no</glossterm>
+        <glossdef><para>nouns which may take the genitive case particle `no'</para></glossdef>
+      </glossentry>
+
+      <glossentry>
+        <glossterm>adj-pn</glossterm>
+        <glossdef><para>pre-noun adjectival (rentaishi)</para></glossdef>
+      </glossentry>
+
+      <glossentry>
+        <glossterm>adj-t</glossterm>
+        <glossdef><para>`taru' adjective</para></glossdef>
+      </glossentry>
+
+      <glossentry>
+        <glossterm>adj-f</glossterm>
+        <glossdef><para>noun or verb acting prenominally (other than the above)</para></glossdef>
+      </glossentry>
+
+      <glossentry>
+        <glossterm>adj</glossterm>
+        <glossdef><para>former adjective classification (being removed)</para></glossdef>
+      </glossentry>
+
+      <glossentry>
+        <glossterm>adv</glossterm>
+        <glossdef><para>adverb (fukushi)</para></glossdef>
+      </glossentry>
+
+      <glossentry>
+        <glossterm>adv-n</glossterm>
+        <glossdef><para>adverbial noun</para></glossdef>
+      </glossentry>
+
+      <glossentry>
+        <glossterm>adv-to</glossterm>
+        <glossdef><para>adverb taking the `to' particle</para></glossdef>
+      </glossentry>
+  </glosslist>
+  </sect3>
+
+  <sect3>
+    <title>Auxiliary</title>
+    <glosslist>
+        <glossentry>
+          <glossterm>aux</glossterm>
+          <glossdef><para>auxiliary</para></glossdef>
+        </glossentry>
+
+        <glossentry>
+          <glossterm>aux-v</glossterm>
+          <glossdef><para>auxiliary verb</para></glossdef>
+        </glossentry>
+        
+        <glossentry>
+          <glossterm>aux-adj</glossterm>
+          <glossdef><para>auxiliary adjective</para></glossdef>
+        </glossentry>
+    </glosslist>
+  </sect3>
+
+  <sect3>
+    <title>Verb</title>
+    <glosslist>
+        <glossentry>
+          <glossterm>v1</glossterm>
+          <glossdef><para>Ichidan verb</para></glossdef>
+        </glossentry>
+        
+        <glossentry>
+          <glossterm>v5</glossterm>
+          <glossdef><para>Godan verb (not completely classified)</para></glossdef>
+        </glossentry>
+        
+        <glossentry>
+          <glossterm>v5aru</glossterm>
+          <glossdef><para>Godan verb - -aru special class</para></glossdef>
+        </glossentry>
+        
+        <glossentry>
+          <glossterm>v5b</glossterm>
+          <glossdef><para>Godan verb with `bu' ending</para></glossdef>
+        </glossentry>
+        
+        <glossentry>
+          <glossterm>v5g</glossterm>
+          <glossdef><para>Godan verb with `gu' ending</para></glossdef>
+        </glossentry>
+        
+        <glossentry>
+          <glossterm>v5k</glossterm>
+          <glossdef><para>Godan verb with `ku' ending</para></glossdef>
+        </glossentry>
+        
+        <glossentry>
+          <glossterm>v5k-s</glossterm>
+          <glossdef><para>Godan verb - iku/yuku special class</para></glossdef>
+        </glossentry>
+        
+        <glossentry>
+          <glossterm>v5m</glossterm>
+          <glossdef><para>Godan verb with `mu' ending</para></glossdef>
+        </glossentry>
+        
+        <glossentry>
+          <glossterm>v5n</glossterm>
+          <glossdef><para>Godan verb with `nu' ending</para></glossdef>
+        </glossentry>
+        
+        <glossentry>
+          <glossterm>v5r</glossterm>
+          <glossdef><para>Godan verb with `ru' ending</para></glossdef>
+        </glossentry>
+        
+        <glossentry>
+          <glossterm>v5r-i</glossterm>
+          <glossdef><para>Godan verb with `ru' ending (irregular verb)</para></glossdef>
+        </glossentry>
+        
+        <glossentry>
+          <glossterm>5s</glossterm>
+          <glossdef><para>Godan verb with `su' ending</para></glossdef>
+        </glossentry>
+        
+        <glossentry>
+          <glossterm>v5t</glossterm>
+          <glossdef><para>Godan verb with `tsu' ending</para></glossdef>
+        </glossentry>
+        
+        <glossentry>
+          <glossterm>v5u</glossterm>
+          <glossdef><para>Godan verb with `u' ending</para></glossdef>
+        </glossentry>
+        
+        <glossentry>
+          <glossterm>v5u-s</glossterm>
+          <glossdef><para>Godan verb with `u' ending (special class)</para></glossdef>
+        </glossentry>
+        
+        <glossentry>
+          <glossterm>v5uru</glossterm>
+          <glossdef><para>Godan verb - uru old class verb (old form of Eru)</para></glossdef>
+        </glossentry>
+        
+        <glossentry>
+          <glossterm>v5z</glossterm>
+          <glossdef><para>Godan verb with `zu' ending</para></glossdef>
+        </glossentry>
+        
+        <glossentry>
+          <glossterm>vz</glossterm>
+          <glossdef><para>Ichidan verb - zuru verb - (alternative form of -jiru verbs)</para></glossdef>
+        </glossentry>
+        
+        <glossentry>
+          <glossterm>vi</glossterm>
+          <glossdef><para>intransitive verb</para></glossdef>
+        </glossentry>
+        
+        <glossentry>
+          <glossterm>vk</glossterm>
+          <glossdef><para>kuru verb - special class</para></glossdef>
+        </glossentry>
+        
+        <glossentry>
+          <glossterm>vn</glossterm>
+          <glossdef><para>irregular nu verb</para></glossdef>
+        </glossentry>
+        
+        <glossentry>
+          <glossterm>vs</glossterm>
+          <glossdef><para>noun or participle which takes the aux. verb suru</para></glossdef>
+        </glossentry>
+        
+        <glossentry>
+          <glossterm>vs-i</glossterm>
+          <glossdef><para>suru verb - irregular</para></glossdef>
+        </glossentry>
+        
+        <glossentry>
+          <glossterm>vs-s</glossterm>
+          <glossdef><para>suru verb - special class</para></glossdef>
+        </glossentry>
+        
+        <glossentry>
+          <glossterm>vt</glossterm>
+          <glossdef><para>transitive verb</para></glossdef>
+        </glossentry>
+        
+        <glossentry>
+          <glossterm>iv</glossterm>
+          <glossdef><para>irregular verb</para></glossdef>
+        </glossentry>
+    
+    </glosslist>
+  </sect3>
+
+  <sect3>
+    <title>Noun</title>
+    <glosslist>
+        <glossentry>
+          <glossterm>n	noun</glossterm>
+          <glossdef><para>(common) (futsuumeishi)</para></glossdef>
+        </glossentry>
+        
+        <glossentry>
+          <glossterm>n-adv</glossterm>
+          <glossdef><para>adverbial noun (fukushitekimeishi)</para></glossdef>
+        </glossentry>
+        
+        <glossentry>
+          <glossterm>n-pref</glossterm>
+          <glossdef><para>noun, used as a prefix</para></glossdef>
+        </glossentry>
+        
+        <glossentry>
+          <glossterm>n-suf</glossterm>
+          <glossdef><para>noun, used as a suffix</para></glossdef>
+        </glossentry>
+        
+        <glossentry>
+          <glossterm>n-t</glossterm>
+          <glossdef><para>noun (temporal) (jisoumeishi)</para></glossdef>
+        </glossentry>
+    </glosslist>
+  </sect3>
+
+  <sect3>
+    <title>Other</title>
+    <glosslist>
+        <glossentry>
+          <glossterm>num</glossterm>
+          <glossdef><para>numeric</para></glossdef>
+        </glossentry>
+        
+        <glossentry>
+          <glossterm>pref</glossterm>
+          <glossdef><para>prefix</para></glossdef>
+        </glossentry>
+        
+        <glossentry>
+          <glossterm>prt</glossterm>
+          <glossdef><para>particle</para></glossdef>
+        </glossentry>
+        
+        <glossentry>
+          <glossterm>suf</glossterm>
+          <glossdef><para>suffix</para></glossdef>
+        </glossentry>
+        
+        <glossentry>
+          <glossterm>conj</glossterm>
+          <glossdef><para>conjunction</para></glossdef>
+        </glossentry>
+        
+        <glossentry>
+          <glossterm>ctr</glossterm>
+          <glossdef><para>counter</para></glossdef>
+        </glossentry>
+        
+        <glossentry>
+          <glossterm>exp</glossterm>
+          <glossdef><para>Expressions (phrases, clauses, etc.)</para></glossdef>
+        </glossentry>
+        
+        <glossentry>
+          <glossterm>id</glossterm>
+          <glossdef><para>idiomatic expression</para></glossdef>
+        </glossentry>
+        
+        <glossentry>
+          <glossterm>int</glossterm>
+          <glossdef><para>interjection (kandoushi)</para></glossdef>
+        </glossentry>
+    </glosslist>
+  </sect3>
+</sect2>
+
+<sect2>
+  <title>Field of Application Markings</title>
+  <glosslist>
+    <glossentry>
+      <glossterm>Buddh</glossterm>	
+      <glossdef><para>Buddhist term</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>MA</glossterm>	
+      <glossdef><para>martial arts term</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>comp</glossterm>	
+      <glossdef><para>computer terminology</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>food</glossterm>	
+      <glossdef><para>food term</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>geom</glossterm>	
+      <glossdef><para>geometry term</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>gram</glossterm>	
+      <glossdef><para>grammatical term</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>ling</glossterm>	
+      <glossdef><para>linguistics terminology</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>math</glossterm>	
+      <glossdef><para>mathematics</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>mil</glossterm>	
+      <glossdef><para>military</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>physics</glossterm>	
+      <glossdef><para>physics terminolog</para></glossdef>
+    </glossentry>
+  </glosslist>
+</sect2>
+  
+<sect2>
+  <title>Miscellaneous Markings</title>
+  <glosslist>
+
+    <glossentry>
+      <glossterm>X</glossterm>	
+      <glossdef><para>rude or X-rated term</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>abbr</glossterm>
+      <glossdef><para>abbreviation</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>arch</glossterm>
+      <glossdef><para>archaism</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>ateji</glossterm>
+      <glossdef><para>ateji (phonetic) reading</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>chn</glossterm>
+      <glossdef><para>children's language</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>col</glossterm>
+      <glossdef><para>colloquialism</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>derog</glossterm>
+      <glossdef><para>derogatory term</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>eK</glossterm>
+      <glossdef><para>exclusively kanji</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>ek</glossterm>
+      <glossdef><para>exclusively kana</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>fam</glossterm>
+      <glossdef><para>familiar language</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>fem</glossterm>
+      <glossdef><para>female term or language</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>gikun</glossterm>
+      <glossdef><para>gikun (meaning) reading</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>hon</glossterm>
+      <glossdef><para>honorific or respectful (sonkeigo) language</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>hum</glossterm>
+      <glossdef><para>humble (kenjougo) language</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>iK</glossterm>
+      <glossdef><para>word containing irregular kanji usage</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>id</glossterm>
+      <glossdef><para>idiomatic expression</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>io</glossterm>
+      <glossdef><para>irregular okurigana usage</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>m-sl</glossterm>
+      <glossdef><para>manga slang</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>male</glossterm>
+      <glossdef><para>male term or language</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>male-sl</glossterm>
+      <glossdef><para>male slang</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>ng</glossterm>
+      <glossdef><para>neuter gender</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>oK</glossterm>
+      <glossdef><para>word containing out-dated kanji</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>obs</glossterm>
+      <glossdef><para>obsolete term</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>obsc</glossterm>
+      <glossdef><para>obscure term</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>ok</glossterm>
+      <glossdef><para>out-dated or obsolete kana usage</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>on-mim</glossterm>
+      <glossdef><para>onomatopoeic or mimetic word</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>poet</glossterm>
+      <glossdef><para>poetical term</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>pol</glossterm>
+      <glossdef><para>polite (teineigo) language</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>rare</glossterm>
+      <glossdef><para>rare</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>sens</glossterm>
+      <glossdef><para>sensitive word</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>sl</glossterm>
+      <glossdef><para>slang</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>uK</glossterm>
+      <glossdef><para>word usually written using kanji alone</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>uk</glossterm>
+      <glossdef><para>word usually written using kana alone</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>vulg</glossterm>
+      <glossdef><para>vulgar expression or word</para></glossdef>
+    </glossentry>
+
+  </glosslist>
+</sect2>
+
+<sect2>
+  <title>Gairaigo and Regional Word Markings</title>
+  <glosslist>
+    <glossentry>
+      <glossterm>kyb</glossterm>
+      <glossdef><para>Kyoto-ben</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>osb</glossterm>
+      <glossdef><para>Osaka-ben</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>ksb</glossterm>
+      <glossdef><para>Kansai-ben</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>ktb</glossterm>
+      <glossdef><para>Kantou-ben</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>tsb</glossterm>
+      <glossdef><para>Tosa-ben</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>thb</glossterm>
+      <glossdef><para>Touhoku-ben</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>tsug</glossterm>
+      <glossdef><para>Tsugaru-ben</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>kyu</glossterm>
+      <glossdef><para>Kyuushuu-ben</para></glossdef>
+    </glossentry>
+    
+    <glossentry>
+      <glossterm>rkb</glossterm>
+      <glossdef><para>Ryuukyuu-ben</para></glossdef>
+    </glossentry>
+
+  </glosslist>
+</sect2>
+
+</sect1>
+      
+
+<sect1 id="EnamdictLexicographicalDetails">
+  <title>Names/Places Dictionary Glossary</title>
+  <para>
+    The Names and Places dictionaries uses some symbols to represent and
+    classify words.  While you may be able to guess "m" means a male given
+    name, g is a bit harder to guess.  This table was taken from
+    <ulink url="http://www.csse.monash.edu.au/~jwb/enamdict_doc.html">the
+    ENAMDICT Project's homepage.</ulink>  For the newest revisions of the
+    documentation, please check it out.
+  </para>
+
+  <sect2>
+    <title>General Markings</title>
+    <glosslist>
+      <glossentry>
+        <glossterm>s</glossterm>
+        <glossdef><para>Surname</para></glossdef>
+      </glossentry>
+
+      <glossentry>
+        <glossterm>p</glossterm>
+        <glossdef><para>Place-name</para></glossdef>
+      </glossentry>
+      
+      <glossentry>
+        <glossterm>u</glossterm>
+        <glossdef><para>Person name, either given or surname, as-yet unclassified</para></glossdef>
+      </glossentry>
+      
+      <glossentry>
+        <glossterm>g</glossterm>
+        <glossdef><para>Given name, as-yet not classified by sex</para></glossdef>
+      </glossentry>
+      
+      <glossentry>
+        <glossterm>f</glossterm>
+        <glossdef><para>Female given name</para></glossdef>
+      </glossentry>
+      
+      <glossentry>
+        <glossterm>m</glossterm>
+        <glossdef><para>Male given name</para></glossdef>
+      </glossentry>
+      
+      <glossentry>
+        <glossterm>h</glossterm>
+        <glossdef><para>Full (family plus given) name of a particular person</para></glossdef>
+      </glossentry>
+      
+      <glossentry>
+        <glossterm>pr</glossterm>
+        <glossdef><para>Product name</para></glossdef>
+      </glossentry>
+      
+      <glossentry>
+        <glossterm>co</glossterm>
+        <glossdef><para>Company name</para></glossdef>
+      </glossentry>
+    
+    </glosslist>
+  </sect2>
+
+</sect1>
+
+</article>
+
+
