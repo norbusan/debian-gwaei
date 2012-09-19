@@ -6,6 +6,7 @@ G_BEGIN_DECLS
 struct _GwKanjipadWindowPrivate {
   GtkDrawingArea *drawingarea;
   GtkDrawingArea *candidates;
+  GtkButton *close_button;
 
   gint annotate;
   GList *strokes;

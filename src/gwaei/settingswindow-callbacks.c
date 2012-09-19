@@ -26,6 +26,8 @@
 //!
 
 
+#include "../private.h"
+
 #include <string.h>
 #include <stdlib.h>
 
@@ -51,7 +53,7 @@ gw_settingswindow_hira_kata_conv_toggled_cb (GtkWidget *widget, gpointer data)
 
     //Initializations
     window = GW_SETTINGSWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_SETTINGSWINDOW));
-    if (window == NULL) return;
+    g_return_if_fail (window != NULL);
     application = gw_window_get_application (GW_WINDOW (window));
     preferences = gw_application_get_preferences (application);
     request = lw_preferences_get_boolean_by_schema (preferences, LW_SCHEMA_BASE, LW_KEY_HIRA_KATA);
@@ -76,7 +78,7 @@ gw_settingswindow_kata_hira_conv_toggled_cb (GtkWidget *widget, gpointer data)
 
     //Initializations
     window = GW_SETTINGSWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_SETTINGSWINDOW));
-    if (window == NULL) return;
+    g_return_if_fail (window != NULL);
     application = gw_window_get_application (GW_WINDOW (window));
     preferences = gw_application_get_preferences (application);
     request = lw_preferences_get_boolean_by_schema (preferences, LW_SCHEMA_BASE, LW_KEY_KATA_HIRA);
@@ -101,7 +103,7 @@ gw_settingswindow_spellcheck_toggled_cb (GtkWidget *widget, gpointer data)
 
     //Initializations
     window = GW_SETTINGSWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_SETTINGSWINDOW));
-    if (window == NULL) return;
+    g_return_if_fail (window != NULL);
     application = gw_window_get_application (GW_WINDOW (window));
     preferences = gw_application_get_preferences (application);
     request = lw_preferences_get_boolean_by_schema (preferences, LW_SCHEMA_BASE, LW_KEY_SPELLCHECK);
@@ -126,7 +128,7 @@ gw_settingswindow_search_as_you_type_toggled_cb (GtkWidget *widget, gpointer dat
 
     //Initializations
     window = GW_SETTINGSWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_SETTINGSWINDOW));
-    if (window == NULL) return;
+    g_return_if_fail (window != NULL);
     application = gw_window_get_application (GW_WINDOW (window));
     preferences = gw_application_get_preferences (application);
     request = lw_preferences_get_boolean_by_schema (preferences, LW_SCHEMA_BASE, LW_KEY_SEARCH_AS_YOU_TYPE);
@@ -146,16 +148,18 @@ gw_settingswindow_romaji_kana_conv_changed_cb (GtkWidget *widget, gpointer data)
 {
     //Declarations
     GwSettingsWindow *window;
+    GwSettingsWindowPrivate *priv;
     GwApplication *application;
     LwPreferences *preferences;
     int active;
 
     //Initializations
     window = GW_SETTINGSWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_SETTINGSWINDOW));
-    if (window == NULL) return;
+    g_return_if_fail (window != NULL);
+    priv = window->priv;
     application = gw_window_get_application (GW_WINDOW (window));
     preferences = gw_application_get_preferences (application);
-    active = gtk_combo_box_get_active(GTK_COMBO_BOX (widget));
+    active = gtk_combo_box_get_active (priv->romaji_to_kana_combobox);
 
     lw_preferences_set_int_by_schema (preferences, LW_SCHEMA_BASE, LW_KEY_ROMAN_KANA, active);
 }
@@ -173,22 +177,26 @@ gw_settingswindow_swatch_color_changed_cb (GtkWidget *widget, gpointer data)
     GwSettingsWindow *window;
     GwApplication *application;
     LwPreferences *preferences;
-    GdkColor color;
+    GdkRGBA color;
     char *hex_color_string;
     char *pref_key;
     char *letter;
 
     //Initializations
     window = GW_SETTINGSWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_SETTINGSWINDOW));
-    if (window == NULL) return;
+    g_return_if_fail (window != NULL);
     application = gw_window_get_application (GW_WINDOW (window));
     preferences = gw_application_get_preferences (application);
-    gtk_color_button_get_color (GTK_COLOR_BUTTON (widget), &color);
-    hex_color_string = gdk_color_to_string (&color);
+    gtk_color_chooser_get_rgba (GTK_COLOR_CHOOSER (widget), &color);
+    hex_color_string = gdk_rgba_to_string (&color);
     pref_key = g_strdup_printf ("%s", gtk_buildable_get_name (GTK_BUILDABLE (widget)));
     letter = strchr(pref_key, '_');
     if (letter == NULL) return;
     *letter = '-';
+
+    letter = strchr(letter, '_');
+    if (letter == NULL) return;
+    *letter = '\0';
 
     //Set the color in the prefs
     if (pref_key != NULL && hex_color_string != NULL)
@@ -226,7 +234,7 @@ gw_settingswindow_reset_all_swatches_activated_cb (GtkWidget *widget, gpointer d
 
     //Initializations
     window = GW_SETTINGSWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_SETTINGSWINDOW));
-    if (window == NULL) return;
+    g_return_if_fail (window != NULL);
     application = gw_window_get_application (GW_WINDOW (window));
     preferences = gw_application_get_preferences (application);
 
@@ -254,7 +262,7 @@ gw_settingswindow_use_global_document_font_toggled_cb (GtkWidget *widget, gpoint
 
     //Initializations
     window = GW_SETTINGSWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_SETTINGSWINDOW));
-    if (window == NULL) return;
+    g_return_if_fail (window != NULL);
     application = gw_window_get_application (GW_WINDOW (window));
     preferences = gw_application_get_preferences (application);
     request = lw_preferences_get_boolean_by_schema (preferences, LW_SCHEMA_FONT, LW_KEY_FONT_USE_GLOBAL_FONT);
@@ -272,17 +280,17 @@ G_MODULE_EXPORT void
 gw_settingswindow_custom_document_font_changed_cb (GtkWidget *widget, gpointer data)
 {
     GwSettingsWindow *window;
+    GwSettingsWindowPrivate *priv;
     GwApplication *application;
     LwPreferences *preferences;
-    GtkWidget *button;
     const char *font;
 
     window = GW_SETTINGSWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_SETTINGSWINDOW));
-    if (window == NULL) return;
+    g_return_if_fail (window != NULL);
+    priv = window->priv;
     application = gw_window_get_application (GW_WINDOW (window));
     preferences = gw_application_get_preferences (application);
-    button = GTK_WIDGET (gw_window_get_object (GW_WINDOW (window), "custom_font_fontbutton"));
-    font = gtk_font_button_get_font_name (GTK_FONT_BUTTON (button));
+    font = gtk_font_button_get_font_name (priv->custom_font_fontbutton);
 
     lw_preferences_set_string_by_schema (preferences, LW_SCHEMA_FONT, LW_KEY_FONT_CUSTOM_FONT, font);
 }
@@ -297,24 +305,24 @@ gw_settingswindow_sync_use_global_document_font_cb (GSettings *settings, gchar *
 {
     //Declarations
     GwSettingsWindow *window;
+    GwSettingsWindowPrivate *priv;
     GtkWidget *toplevel;
-    GtkToggleButton *checkbox;
-    GtkWidget *hbox;
+    GtkToggleButton *checkbutton;
     gboolean request;
 
     //Initializations
     window = GW_SETTINGSWINDOW (data);
-    if (window == NULL) return;
+    g_return_if_fail (window != NULL);
+    priv = window->priv;
     toplevel = gw_window_get_toplevel (GW_WINDOW (window));
-    checkbox = GTK_TOGGLE_BUTTON (gw_window_get_object (GW_WINDOW (window), "system_font_checkbox"));
-    hbox = GTK_WIDGET (gw_window_get_object (GW_WINDOW (window), "system_document_font_hbox"));
     request = lw_preferences_get_boolean (settings, KEY);
+    checkbutton = GTK_TOGGLE_BUTTON (priv->system_font_checkbutton);
 
     //Updates
-    g_signal_handlers_block_by_func (checkbox, gw_settingswindow_use_global_document_font_toggled_cb, toplevel);
-    gtk_toggle_button_set_active (checkbox, request);
-    gtk_widget_set_sensitive (hbox, !request);
-    g_signal_handlers_unblock_by_func (checkbox, gw_settingswindow_use_global_document_font_toggled_cb, toplevel);
+    G_GNUC_EXTENSION g_signal_handlers_block_by_func (checkbutton, gw_settingswindow_use_global_document_font_toggled_cb, toplevel);
+    gtk_toggle_button_set_active (checkbutton, request);
+    gtk_widget_set_sensitive (GTK_WIDGET (priv->system_document_font_hbox), !request);
+    G_GNUC_EXTENSION g_signal_handlers_unblock_by_func (checkbutton, gw_settingswindow_use_global_document_font_toggled_cb, toplevel);
 }
 
 
@@ -323,24 +331,24 @@ gw_settingswindow_sync_global_document_font_cb (GSettings *settings, gchar *KEY,
 {
     //Declarations
     GwSettingsWindow *window;
+    GwSettingsWindowPrivate *priv;
     GwApplication *application;
     LwPreferences *preferences;
-    GtkCheckButton *button;
     char font[50];
     char *text;
 
     //Initializations
     window = GW_SETTINGSWINDOW (data);
-    if (window == NULL) return;
+    g_return_if_fail (window != NULL);
+    priv = window->priv;
     application = gw_window_get_application (GW_WINDOW (window));
     preferences = gw_application_get_preferences (application);
-    button = GTK_CHECK_BUTTON (gw_window_get_object (GW_WINDOW (window), "system_font_checkbox"));
     lw_preferences_get_string_by_schema (preferences, font, LW_SCHEMA_GNOME_INTERFACE, LW_KEY_DOCUMENT_FONT_NAME, 50);
     text = g_strdup_printf (gettext("_Use the System Document Font (%s)"), font);
 
     if (text != NULL) 
     {
-      gtk_button_set_label (GTK_BUTTON (button), text);
+      gtk_button_set_label (GTK_BUTTON (priv->system_font_checkbutton), text);
       g_free (text);
     }
 }
@@ -355,25 +363,27 @@ gw_settingswindow_sync_custom_font_cb (GSettings *settings, gchar *KEY, gpointer
 {
     //Declarations
     GwSettingsWindow *window;
+    GwSettingsWindowPrivate *priv;
     GwApplication *application;
     LwPreferences *preferences;
     GtkWidget *toplevel;
-    GtkFontButton *button;
+    GtkButton *button;
     char font[50];
 
     //Initializations
     window = GW_SETTINGSWINDOW (data);
-    if (window == NULL) return;
+    g_return_if_fail (window != NULL);
+    priv = window->priv;
     toplevel = gw_window_get_toplevel (GW_WINDOW (window));
     application = gw_window_get_application (GW_WINDOW (window));
     preferences = gw_application_get_preferences (application);
-    button = GTK_FONT_BUTTON (gw_window_get_object (GW_WINDOW (window), "custom_font_fontbutton"));
     lw_preferences_get_string_by_schema (preferences, font, LW_SCHEMA_FONT, LW_KEY_FONT_CUSTOM_FONT, 50);
+    button = GTK_BUTTON (priv->custom_font_fontbutton);
 
     //Body
-    g_signal_handlers_block_by_func (button, gw_settingswindow_custom_document_font_changed_cb, toplevel);
-    gtk_font_button_set_font_name (button, font);
-    g_signal_handlers_unblock_by_func (button, gw_settingswindow_custom_document_font_changed_cb, toplevel);
+    G_GNUC_EXTENSION g_signal_handlers_block_by_func (button, gw_settingswindow_custom_document_font_changed_cb, toplevel);
+    gtk_font_button_set_font_name (GTK_FONT_BUTTON (button), font);
+    G_GNUC_EXTENSION g_signal_handlers_unblock_by_func (button, gw_settingswindow_custom_document_font_changed_cb, toplevel);
 }
 
 
@@ -386,24 +396,26 @@ gw_settingswindow_sync_search_as_you_type_cb (GSettings *settings, gchar *KEY, g
 {
     //Declarations
     GwSettingsWindow *window;
+    GwSettingsWindowPrivate *priv;
     GwApplication *application;
     LwPreferences *preferences;
     GtkWidget *toplevel;
-    GtkToggleButton *checkbox;
     gboolean request;
+    GtkToggleButton *togglebutton;
 
     //Initializations
     window = GW_SETTINGSWINDOW (data);
-    if (window == NULL) return;
+    g_return_if_fail (window != NULL);
+    priv = window->priv;
     application = gw_window_get_application (GW_WINDOW (window));
     preferences = gw_application_get_preferences (application);
     toplevel = gw_window_get_toplevel (GW_WINDOW (window));
-    checkbox = GTK_TOGGLE_BUTTON (gw_window_get_object (GW_WINDOW (window), "search_as_you_type_checkbox"));
     request = lw_preferences_get_boolean_by_schema (preferences, LW_SCHEMA_BASE, LW_KEY_SEARCH_AS_YOU_TYPE);
+    togglebutton = GTK_TOGGLE_BUTTON (priv->search_as_you_type_checkbutton);
 
-    g_signal_handlers_block_by_func (checkbox, gw_settingswindow_search_as_you_type_toggled_cb, toplevel);
-    gtk_toggle_button_set_active (checkbox, request);
-    g_signal_handlers_unblock_by_func (checkbox, gw_settingswindow_search_as_you_type_toggled_cb, toplevel);
+    G_GNUC_EXTENSION g_signal_handlers_block_by_func (togglebutton, gw_settingswindow_search_as_you_type_toggled_cb, toplevel);
+    gtk_toggle_button_set_active (togglebutton, request);
+    G_GNUC_EXTENSION g_signal_handlers_unblock_by_func (togglebutton, gw_settingswindow_search_as_you_type_toggled_cb, toplevel);
 }
 
 
@@ -418,18 +430,24 @@ gw_settingswindow_close_cb (GtkWidget *widget, gpointer data)
     //Declarations
     GwSettingsWindow *window;
     GwApplication *application;
+    GtkListStore *dictionarystore;
     LwDictInfoList *dictinfolist;
+    LwPreferences *preferences;
     
     //Initializations
     window = GW_SETTINGSWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_SETTINGSWINDOW));
-    if (window == NULL) return;
+    g_return_if_fail (window != NULL);
     application = gw_window_get_application (GW_WINDOW (window));
-    dictinfolist = LW_DICTINFOLIST (gw_application_get_dictinfolist (GW_APPLICATION (application)));
+    preferences = gw_application_get_preferences (application);
+    dictionarystore = gw_application_get_dictionarystore (application);
+    dictinfolist = gw_dictionarystore_get_dictinfolist (GW_DICTIONARYSTORE (dictionarystore));
 
     gtk_widget_destroy (GTK_WIDGET (window));
 
     if (lw_dictinfolist_get_total (dictinfolist) == 0)
       gw_application_quit (application);
+
+    gw_dictionarystore_save_order (GW_DICTIONARYSTORE (dictionarystore), preferences);
 }
 
 
@@ -438,14 +456,16 @@ gw_settingswindow_sync_romaji_kana_conv_cb (GSettings *settings, gchar *KEY, gpo
 {
     //Declarations
     GwSettingsWindow *window;
+    GwSettingsWindowPrivate *priv;
     GtkComboBox *combobox;
     int request;
 
     window = GW_SETTINGSWINDOW (data);
-    combobox = GTK_COMBO_BOX (gw_window_get_object (GW_WINDOW (window), "query_romaji_to_kana"));
+    priv = window->priv;
+    combobox = priv->romaji_to_kana_combobox;
     request = lw_preferences_get_int (settings, KEY);
 
-    gtk_combo_box_set_active(combobox, request);
+    gtk_combo_box_set_active (combobox, request);
 }
 
 
@@ -454,20 +474,22 @@ gw_settingswindow_sync_hira_kata_conv_cb (GSettings *settings, gchar *KEY, gpoin
 {
     //Declarations
     GwSettingsWindow *window;
+    GwSettingsWindowPrivate *priv;
     GtkWidget *toplevel;
-    GtkToggleButton *checkbox;
+    GtkToggleButton *togglebutton;
     gboolean request;
 
     //Initializations
     window = GW_SETTINGSWINDOW (data);
-    if (window == NULL) return;
+    g_return_if_fail (window != NULL);
+    priv = window->priv;
     toplevel = gw_window_get_toplevel (GW_WINDOW (window));
-    checkbox = GTK_TOGGLE_BUTTON (gw_window_get_object (GW_WINDOW (window), "query_hiragana_to_katakana"));
+    togglebutton = GTK_TOGGLE_BUTTON (priv->hiragana_to_katakana_checkbutton);
     request = lw_preferences_get_boolean (settings, KEY);
 
-    g_signal_handlers_block_by_func (checkbox, gw_settingswindow_hira_kata_conv_toggled_cb, toplevel);
-    gtk_toggle_button_set_active(checkbox, request);
-    g_signal_handlers_unblock_by_func (checkbox, gw_settingswindow_hira_kata_conv_toggled_cb, toplevel);
+    G_GNUC_EXTENSION g_signal_handlers_block_by_func (togglebutton, gw_settingswindow_hira_kata_conv_toggled_cb, toplevel);
+    gtk_toggle_button_set_active (togglebutton, request);
+    G_GNUC_EXTENSION g_signal_handlers_unblock_by_func (togglebutton, gw_settingswindow_hira_kata_conv_toggled_cb, toplevel);
 }
 
 
@@ -476,20 +498,22 @@ gw_settingswindow_sync_kata_hira_conv_cb (GSettings *settings, gchar *KEY, gpoin
 {
     //Declarations
     GwSettingsWindow *window;
+    GwSettingsWindowPrivate *priv;
     GtkWidget *toplevel;
-    GtkToggleButton *checkbox;
+    GtkToggleButton *togglebutton;
     gboolean request;
 
     //Initializations
     window = GW_SETTINGSWINDOW (data);
-    if (window == NULL) return;
+    g_return_if_fail (window != NULL);
+    priv = window->priv;
     toplevel = gw_window_get_toplevel (GW_WINDOW (window));
-    checkbox = GTK_TOGGLE_BUTTON (gw_window_get_object (GW_WINDOW (window), "query_katakana_to_hiragana"));
+    togglebutton = GTK_TOGGLE_BUTTON (priv->katakana_to_hiragana_checkbutton);
     request = lw_preferences_get_boolean (settings, KEY);
 
-    g_signal_handlers_block_by_func (checkbox, gw_settingswindow_kata_hira_conv_toggled_cb, toplevel);
-    gtk_toggle_button_set_active (checkbox, request);
-    g_signal_handlers_unblock_by_func (checkbox, gw_settingswindow_kata_hira_conv_toggled_cb, toplevel);
+    G_GNUC_EXTENSION g_signal_handlers_block_by_func (togglebutton, gw_settingswindow_kata_hira_conv_toggled_cb, toplevel);
+    gtk_toggle_button_set_active (togglebutton, request);
+    G_GNUC_EXTENSION g_signal_handlers_unblock_by_func (togglebutton, gw_settingswindow_kata_hira_conv_toggled_cb, toplevel);
 }
 
 
@@ -498,22 +522,22 @@ gw_settingswindow_sync_swatch_color_cb (GSettings *settings, gchar *KEY, gpointe
 {
     //Declarations
     GwSettingsWindow *window;
-    GtkColorButton *swatch;
-    GdkColor color;
+    GtkColorChooser *swatch;
+    GdkRGBA color;
     char hex_color_string[20];
 
     //Initializations
     window = GW_SETTINGSWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_SETTINGSWINDOW));
-    if (window == NULL) return;
-    swatch = GTK_COLOR_BUTTON (data);
+    g_return_if_fail (window != NULL);
+    swatch = GTK_COLOR_CHOOSER (data);
     lw_preferences_get_string (hex_color_string, settings, KEY, 20);
     g_assert (swatch != NULL);
 
-    if (gdk_color_parse (hex_color_string, &color) == TRUE)
+    if (gdk_rgba_parse (&color, hex_color_string) == TRUE)
     {
-      g_signal_handlers_block_by_func (swatch, gw_settingswindow_swatch_color_changed_cb, window);
-      gtk_color_button_set_color (swatch, &color);
-      g_signal_handlers_unblock_by_func (swatch, gw_settingswindow_swatch_color_changed_cb, window);
+      G_GNUC_EXTENSION g_signal_handlers_block_by_func (swatch, gw_settingswindow_swatch_color_changed_cb, window);
+      gtk_color_chooser_set_rgba (swatch, &color);
+      G_GNUC_EXTENSION g_signal_handlers_unblock_by_func (swatch, gw_settingswindow_swatch_color_changed_cb, window);
     }
 }
 
@@ -523,20 +547,22 @@ gw_settingswindow_sync_spellcheck_cb (GSettings *settings, gchar *KEY, gpointer 
 {
     //Declarations
     GwSettingsWindow *window;
+    GwSettingsWindowPrivate *priv;
     GtkWidget *toplevel;
-    GtkToggleButton *checkbox;
+    GtkToggleButton *togglebutton;
     gboolean request;
 
     //Initializations
     window = GW_SETTINGSWINDOW (data);
-    if (window == NULL) return;
+    g_return_if_fail (window != NULL);
+    priv = window->priv;
     toplevel = gw_window_get_toplevel (GW_WINDOW (window));
-    checkbox = GTK_TOGGLE_BUTTON (gw_window_get_object (GW_WINDOW (window), "query_spellcheck"));
+    togglebutton = GTK_TOGGLE_BUTTON (priv->spellcheck_checkbutton);
     request = lw_preferences_get_boolean (settings, KEY);
 
-    g_signal_handlers_block_by_func (checkbox, gw_settingswindow_spellcheck_toggled_cb, toplevel);
-    gtk_toggle_button_set_active (checkbox, request);
-    g_signal_handlers_unblock_by_func (checkbox, gw_settingswindow_spellcheck_toggled_cb, toplevel);
+    G_GNUC_EXTENSION g_signal_handlers_block_by_func (togglebutton, gw_settingswindow_spellcheck_toggled_cb, toplevel);
+    gtk_toggle_button_set_active (togglebutton, request);
+    G_GNUC_EXTENSION g_signal_handlers_unblock_by_func (togglebutton, gw_settingswindow_spellcheck_toggled_cb, toplevel);
 }
 
 
@@ -560,49 +586,52 @@ gw_settingswindow_remove_dictinfo_cb (GtkWidget *widget, gpointer data)
 {
     //Declarations
     GwSettingsWindow *window;
+    GwSettingsWindowPrivate *priv;
     GwApplication *application;
-    GwDictInfoList *dictinfolist;
+    GtkListStore *dictionarystore;
+    LwDictInfoList *dictinfolist;
+    LwPreferences *preferences;
 
-    GtkWidget *button;
     GtkTreePath *path;
     GtkTreeIter iter;
     LwDictInfo *di;
     GError *error;
     GtkTreeSelection *selection;
-    GtkTreeModel *tmodel;
+    GtkTreeModel *model;
     gboolean has_selection;
     gint* indices;
     GtkTreeView *view;
 
     //Initializations
     window = GW_SETTINGSWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_SETTINGSWINDOW));
-    if (window == NULL) return;
+    g_return_if_fail (window != NULL);
+    priv = window->priv;
     application = gw_window_get_application (GW_WINDOW (window));
-    dictinfolist = gw_application_get_dictinfolist (application);
-    button = GTK_WIDGET (gw_window_get_object (GW_WINDOW (window), "remove_dictionary_button"));
-    view = GTK_TREE_VIEW (gw_window_get_object (GW_WINDOW (window), "manage_dictionaries_treeview"));
+    dictionarystore = gw_application_get_dictionarystore (application);
+    dictinfolist = gw_dictionarystore_get_dictinfolist (GW_DICTIONARYSTORE (dictionarystore));
+    view = priv->manage_dictionaries_treeview;
     selection = gtk_tree_view_get_selection (view);
-    tmodel = GTK_TREE_MODEL (dictinfolist->model);
-    has_selection = gtk_tree_selection_get_selected (selection, &tmodel, &iter);
+    model = GTK_TREE_MODEL (dictionarystore);
+    has_selection = gtk_tree_selection_get_selected (selection, &model, &iter);
+    preferences = gw_application_get_preferences (application);
     error = NULL;
 
     //Sanity check
     if (!has_selection) return;
 
-    path = gtk_tree_model_get_path (GTK_TREE_MODEL (dictinfolist->model), &iter);
+    path = gtk_tree_model_get_path (model, &iter);
     indices = gtk_tree_path_get_indices (path);
-    di = lw_dictinfolist_get_dictinfo_by_load_position (LW_DICTINFOLIST (dictinfolist), *indices);
+    di = lw_dictinfolist_get_dictinfo_by_load_position (dictinfolist, *indices);
 
     if (di != NULL)
     {
       lw_dictinfo_uninstall (di, NULL, &error);
-      gw_dictinfolist_reload (dictinfolist);
+      gw_dictionarystore_reload (GW_DICTIONARYSTORE (dictionarystore), preferences);
     }
 
     //Cleanup
-    gtk_tree_path_free (path);
+    gtk_tree_path_free (path); path = NULL;
 
-    gtk_widget_set_sensitive (GTK_WIDGET (button), FALSE);
     gw_settingswindow_check_for_dictionaries (window);
 }
 
@@ -615,7 +644,7 @@ gw_settingswindow_open_dictionaryinstallwindow_cb (GtkWidget *widget, gpointer d
     GwApplication *application;
 
     window = GW_SETTINGSWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_SETTINGSWINDOW));
-    if (window == NULL) return;
+    g_return_if_fail (window != NULL);
     application = gw_window_get_application (GW_WINDOW (window));
 
     dictionaryinstallwindow = gw_dictionaryinstallwindow_new (GTK_APPLICATION (application));
@@ -624,32 +653,36 @@ gw_settingswindow_open_dictionaryinstallwindow_cb (GtkWidget *widget, gpointer d
 }
 
 
+//!
+//! @brief Opens the dictionary folder using the user's default file browser
+//! @param widget Unused GtkWidget pointer
+//! @param data Unused gpointer
+//!
 G_MODULE_EXPORT void 
-gw_settingswindow_dictionary_cursor_changed_cb (GtkTreeView *view, gpointer data)
+gw_settingswindow_open_dictionary_folder_cb (GtkWidget *widget, gpointer data) 
 {
     //Declarations
     GwSettingsWindow *window;
     GwApplication *application;
-    GwDictInfoList *dictinfolist;
-    GtkWidget *button;
-    GtkTreeSelection *selection;
-    GtkTreeIter iter;
-    GtkTreeModel *tmodel;
-    gboolean has_selection;
+    char *directory;
+    char *uri;
+    GError *error;
 
     //Initializations
     window = GW_SETTINGSWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_SETTINGSWINDOW));
-    if (window == NULL) return;
+    g_return_if_fail (window != NULL);
     application = gw_window_get_application (GW_WINDOW (window));
-    dictinfolist = gw_application_get_dictinfolist (application);
-    button = GTK_WIDGET (gw_window_get_object (GW_WINDOW (window), "remove_dictionary_button"));
-    selection = gtk_tree_view_get_selection (view);
-    tmodel = GTK_TREE_MODEL (dictinfolist->model);
-    has_selection = gtk_tree_selection_get_selected (selection, &tmodel, &iter);
+    directory = lw_util_build_filename (LW_PATH_DICTIONARY, NULL);
+    uri = g_build_filename ("file://", directory, NULL);
+    error = NULL;
 
-    gtk_widget_set_sensitive (GTK_WIDGET (button), has_selection);
+    gtk_show_uri (NULL, uri, gtk_get_current_event_time (), &error);
+
+    gw_application_handle_error (application, GTK_WINDOW (window), TRUE, &error);
+
+    g_free (uri);
+    g_free (directory);
 }
-
 
 
 

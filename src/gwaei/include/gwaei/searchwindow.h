@@ -5,6 +5,12 @@
 
 G_BEGIN_DECLS
 
+typedef enum {
+  GW_SEARCHWINDOW_CLASS_SIGNALID_WORD_ADDED,
+  TOTAL_GW_SEARCHWINDOW_CLASS_SIGNALIDS
+} GwSearchWindowClassSignalId;
+
+
 //Boilerplate
 typedef struct _GwSearchWindow GwSearchWindow;
 typedef struct _GwSearchWindowClass GwSearchWindowClass;
@@ -26,6 +32,10 @@ struct _GwSearchWindow {
 
 struct _GwSearchWindowClass {
   GwWindowClass parent_class;
+  guint signalid[TOTAL_GW_SEARCHWINDOW_CLASS_SIGNALIDS];
+  void (*word_added) (GwSearchWindow* window, LwResultLine *line);
+  GtkSizeGroup *tablabel_sizegroup;
+  GtkCssProvider *tablabel_cssprovider;
 };
 
 GtkWindow* gw_searchwindow_new (GtkApplication *application);
@@ -66,10 +76,7 @@ void gw_searchwindow_buffer_initialize_tags (GwSearchWindow*);
 void gw_searchwindow_set_font (GwSearchWindow*);
 void gw_searchwindow_buffer_initialize_marks (GtkTextBuffer*);
 
-
-void gw_searchwindow_entry_insert (GwSearchWindow*, char*);
 void gw_searchwindow_clear_search_entry (GwSearchWindow*);
-
 
 gunichar gw_searchwindow_get_hovered_character (GwSearchWindow*, int*, int*, GtkTextIter*);
 void gw_searchwindow_show_window (GwSearchWindow*, char*);
@@ -102,24 +109,34 @@ void gw_searchwindow_set_color_to_swatch (GwSearchWindow*, const char*, const ch
 
 void gw_searchwindow_guarantee_first_tab (GwSearchWindow*);
 
+GtkTextView* gw_searchwindow_get_textview (GwSearchWindow*, int);
+GtkInfoBar* gw_searchwindow_get_infobar (GwSearchWindow*, int);
 GtkTextView* gw_searchwindow_get_current_textview (GwSearchWindow*);
+GtkInfoBar* gw_searchwindow_get_current_infobar (GwSearchWindow*);
+
+void gw_searchwindow_show_current_infobar (GwSearchWindow*, char*);
+void gw_searchwindow_hide_current_infobar (GwSearchWindow*);
+void gw_searchwindow_hide_infobars (GwSearchWindow*);
 
 void gw_searchwindow_set_tab_text_by_searchitem (GwSearchWindow*, LwSearchItem*);
-void gw_searchwindow_set_current_searchitem (GwSearchWindow*, LwSearchItem*);
-LwSearchItem* gw_searchwindow_get_current_searchitem (GwSearchWindow*);
-void gw_searchwindow_sync_current_searchitem (GwSearchWindow*);
+
+gint gw_searchwindow_get_current_tab_index (GwSearchWindow*);
+void gw_searchwindow_set_searchitem_by_index (GwSearchWindow*, gint, LwSearchItem*);
+LwSearchItem* gw_searchwindow_get_searchitem_by_index (GwSearchWindow*, gint);
+LwSearchItem* gw_searchwindow_steal_searchitem_by_index (GwSearchWindow*, gint);
+
 void gw_searchwindow_no_results_search_for_dictionary_cb (GtkWidget*, gpointer);
 
 int gw_searchwindow_new_tab (GwSearchWindow*);
-void gw_searchwindow_remove_tab (GwSearchWindow*, int);
+void gw_searchwindow_remove_tab_by_index (GwSearchWindow*, int);
 
 void gw_searchwindow_start_search (GwSearchWindow*, LwSearchItem*);
-void gw_searchwindow_initialize_dictionary_menu (GwSearchWindow*);
-void gw_searchwindow_initialize_dictionary_combobox (GwSearchWindow*);
 
 void gw_searchwindow_insert_resultpopup_button (GwSearchWindow*, LwSearchItem*, LwResultLine*, GtkTextIter*);
 
 void gw_searchwindow_append_to_buffer (GwSearchWindow*, LwSearchItem*, const char *, char*, char*, int*, int*);
+void gw_searchwindow_initialize_dictionary_menu (GwSearchWindow*);
+void gw_searchwindow_initialize_dictionary_combobox (GwSearchWindow*);
 
 #include "searchwindow-callbacks.h"
 #include "searchwindow-output.h"

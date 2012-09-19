@@ -28,6 +28,8 @@
 //!
 
 
+#include "../private.h"
+
 #include <ctype.h>
 #include <errno.h>
 #include <stdlib.h>
@@ -37,7 +39,8 @@
 
 #include <gtk/gtk.h>
 
-#include <gwaei/gwaei.h>
+#include <libwaei/libwaei.h>
+#include <gwaei/kanjipadwindow.h>
 #include <gwaei/kanjipadwindow-private.h>
 
 #define BUFLEN 256
@@ -51,7 +54,8 @@ G_DEFINE_TYPE (GwKanjipadWindow, gw_kanjipadwindow, GW_TYPE_WINDOW)
 //!
 //! @brief Sets up the variables in main-interface.c and main-callbacks.c for use
 //!
-GtkWindow* gw_kanjipadwindow_new (GtkApplication *application)
+GtkWindow* 
+gw_kanjipadwindow_new (GtkApplication *application)
 {
     g_assert (application != NULL);
 
@@ -69,23 +73,34 @@ GtkWindow* gw_kanjipadwindow_new (GtkApplication *application)
 }
 
 
-void gw_kanjipadwindow_init (GwKanjipadWindow *window)
+static void
+gw_kanjipadwindow_init (GwKanjipadWindow *window)
 {
     window->priv = GW_KANJIPADWINDOW_GET_PRIVATE (window);
     memset(window->priv, 0, sizeof(GwKanjipadWindowPrivate));
 }
 
 
-void gw_kanjipadwindow_finalize (GObject *object)
+static void
+gw_kanjipadwindow_finalize (GObject *object)
 {
     GwKanjipadWindow *window;
     GwKanjipadWindowPrivate *priv;
     GSource *source;
     GError *error;
+    GList *link;
 
     window = GW_KANJIPADWINDOW (object);
     priv = window->priv;
     error = NULL;
+
+    for (link = priv->strokes; link != NULL; link = link->next)
+      gw_kanjipadwindow_free_drawingarea_stroke (link->data);
+    if (priv->strokes != NULL) g_list_free (priv->strokes); priv->strokes = NULL;
+    if (priv->strokes != NULL) g_list_free (priv->curstroke); priv->curstroke = NULL;
+
+    if (priv->ksurface != NULL) cairo_surface_destroy (priv->ksurface); priv->ksurface = NULL;
+    if (priv->surface != NULL) cairo_surface_destroy (priv->surface); priv->surface = NULL;
 
     if (g_main_current_source () != NULL &&
         !g_source_is_destroyed (g_main_current_source ()) &&
@@ -126,12 +141,12 @@ void gw_kanjipadwindow_finalize (GObject *object)
 }
 
 
-static void gw_kanjipadwindow_constructed (GObject *object)
+static void 
+gw_kanjipadwindow_constructed (GObject *object)
 {
     GwKanjipadWindow *window;
     GwKanjipadWindowPrivate *priv;
     GtkAccelGroup *accelgroup;
-    GtkWidget *widget;
 
     //Chain the parent class
     {
@@ -152,31 +167,45 @@ static void gw_kanjipadwindow_constructed (GObject *object)
 
     priv->drawingarea = GTK_DRAWING_AREA (gw_window_get_object (GW_WINDOW (window), "kdrawing_area"));
     priv->candidates = GTK_DRAWING_AREA (gw_window_get_object (GW_WINDOW (window), "kguesses"));
+    priv->close_button = GTK_BUTTON (gw_window_get_object (GW_WINDOW (window), "close_button"));
 
     gw_kanjipadwindow_initialize_drawingarea (window);
     gw_kanjipadwindow_initialize_candidates (window);
     _kanjipadwindow_initialize_engine (window);
 
-    widget = GTK_WIDGET (gw_window_get_object (GW_WINDOW (window), "close_button"));
-    gtk_widget_add_accelerator (GTK_WIDGET (widget), "activate", 
+    gtk_widget_add_accelerator (GTK_WIDGET (priv->close_button), "activate", 
       accelgroup, (GDK_KEY_W), GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
-    gtk_widget_add_accelerator (GTK_WIDGET (widget), "activate", 
+    gtk_widget_add_accelerator (GTK_WIDGET (priv->close_button), "activate", 
       accelgroup, (GDK_KEY_Escape), 0, GTK_ACCEL_VISIBLE);
 
+    gw_window_unload_xml (GW_WINDOW (window));
 }
 
 
 static void
 gw_kanjipadwindow_class_init (GwKanjipadWindowClass *klass)
 {
-  GObjectClass *object_class;
+    GObjectClass *object_class;
 
-  object_class = G_OBJECT_CLASS (klass);
+    object_class = G_OBJECT_CLASS (klass);
 
-  object_class->constructed = gw_kanjipadwindow_constructed;
-  object_class->finalize = gw_kanjipadwindow_finalize;
+    object_class->constructed = gw_kanjipadwindow_constructed;
+    object_class->finalize = gw_kanjipadwindow_finalize;
 
-  g_type_class_add_private (object_class, sizeof (GwKanjipadWindowPrivate));
+    g_type_class_add_private (object_class, sizeof (GwKanjipadWindowPrivate));
+
+    klass->signalid[GW_KANJIPADWINDOW_CLASS_SIGNALID_KANJI_SELECTED] = g_signal_new (
+        "kanji-selected",
+        G_OBJECT_CLASS_TYPE (object_class),
+        G_SIGNAL_RUN_FIRST,
+        G_STRUCT_OFFSET (GwKanjipadWindowClass, kanji_selected),
+        NULL, NULL,
+        g_cclosure_marshal_VOID__STRING,
+        G_TYPE_NONE, 
+        1, G_TYPE_STRING
+
+    );
+
 }
 
 

@@ -5,6 +5,8 @@
 #define G_SETTINGS_ENABLE_BACKEND
 #include <gio/gsettingsbackend.h>
 
+G_BEGIN_DECLS
+
 //GSettings
 #define LW_SCHEMA_GNOME_INTERFACE   "org.gnome.desktop.interface"
 #define LW_KEY_TOOLBAR_STYLE        "toolbar-style"
@@ -12,16 +14,28 @@
 #define LW_KEY_PROGRAM_VERSION      "version"
 
 /////////////////////////
-#define LW_SCHEMA_BASE             "org.gnome.gwaei"
-#define LW_KEY_TOOLBAR_SHOW        "toolbar-show"
-#define LW_KEY_STATUSBAR_SHOW      "statusbar-show"
-#define LW_KEY_LESS_RELEVANT_SHOW  "less-relevant-results-show"
-#define LW_KEY_HIRA_KATA           "query-hiragana-to-katakana"
-#define LW_KEY_KATA_HIRA           "query-katakana-to-hiragana"
-#define LW_KEY_ROMAN_KANA          "query-romanji-to-kana"
-#define LW_KEY_SPELLCHECK          "query-spellcheck"
-#define LW_KEY_SEARCH_AS_YOU_TYPE  "search-as-you-type"
-#define LW_KEY_WINDOW_POSITIONS    "window-positions"
+#define LW_SCHEMA_BASE               "org.gnome.gwaei"
+#define LW_KEY_WINDOW_SIZE           "window-size"
+#define LW_KEY_TOOLBAR_SHOW          "toolbar-show"
+#define LW_KEY_STATUSBAR_SHOW        "statusbar-show"
+#define LW_KEY_LESS_RELEVANT_SHOW    "less-relevant-results-show"
+#define LW_KEY_HIRA_KATA             "query-hiragana-to-katakana"
+#define LW_KEY_KATA_HIRA             "query-katakana-to-hiragana"
+#define LW_KEY_ROMAN_KANA            "query-romanji-to-kana"
+#define LW_KEY_SPELLCHECK            "query-spellcheck"
+#define LW_KEY_SPELLCHECK_DICTIONARY "spellcheck-dictionary"
+#define LW_KEY_SEARCH_AS_YOU_TYPE    "search-as-you-type"
+
+//////////////////////////
+#define LW_SCHEMA_VOCABULARY         "org.gnome.gwaei.vocabulary"
+#define LW_KEY_TRIM_FLASHCARDS       "trim-flashcards"
+#define LW_KEY_SHUFFLE_FLASHCARDS    "shuffle-flashcards"
+#define LW_KEY_FLASHCARD_DECK_SIZE   "flashcard-deck-size"
+#define LW_KEY_TRACK_RESULTS         "track-results"
+#define LW_KEY_LIST_ORDER            "list-order"
+#define LW_KEY_POSITION_COLUMN_SHOW  "position-column-show"
+#define LW_KEY_SCORE_COLUMN_SHOW     "score-column-show"
+#define LW_KEY_TIMESTAMP_COLUMN_SHOW "timestamp-column-show"
 
 //////////////////////////
 #define LW_SCHEMA_FONT               "org.gnome.gwaei.fonts"
@@ -55,7 +69,7 @@
 
 struct _LwPreferences {
   GList *settingslist;
-  GMutex *mutex;
+  GMutex mutex;
   GSettingsBackend *backend;
 
   gboolean toolbar_show; 
@@ -124,10 +138,8 @@ gulong lw_preferences_add_change_listener_by_schema (LwPreferences*, const char*
 void lw_preferences_remove_change_listener (GSettings*, gulong);
 void lw_preferences_remove_change_listener_by_schema (LwPreferences*, const char*, gulong);
 
+G_END_DECLS
 
 #endif
-
-
-
 
 

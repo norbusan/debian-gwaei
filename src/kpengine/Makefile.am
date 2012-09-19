@@ -25,10 +25,10 @@ kpengine_LDADD =  $(LIBWAEI_LIBS)
 
 
 if OS_MINGW
+kpengine_LDFLAGS =-Wl,-subsystem,windows 
 MINGW_DEFS = -DCURL_STATICLIB
 INCLUDES += $(MINGW_CFLAGS) $(MINGW_DEFS) 
 kpengine_LDADD += $(MINGW_LIBS) 
-kpengine_LDFLAGS = -Wl,-subsystem,windows 
 endif
 
 

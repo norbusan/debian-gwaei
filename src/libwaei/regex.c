@@ -24,6 +24,8 @@
 //!
 
 
+#include "../private.h"
+
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -78,8 +80,8 @@ GRegex *lw_re[LW_RE_TOTAL + 1]; //!< Globally accessable pre-compiled regexes
 void 
 lw_regex_initialize ()
 {
+    if (_regex_expressions_reference_count > 0) return;
     _regex_expressions_reference_count++;
-    if (_regex_expressions_reference_count > 1) return;
 
     //Declarations
     GError *error;
@@ -128,8 +130,8 @@ lw_regex_initialize ()
 void 
 lw_regex_free ()
 {
+    if (_regex_expressions_reference_count < 1) return;
     _regex_expressions_reference_count--;
-    if (_regex_expressions_reference_count <= 1) return;
 
     //Declarations
     int i;

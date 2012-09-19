@@ -1,6 +1,8 @@
 #ifndef GW_APPLICATION_INCLUDED
 #define GW_APPLICATION_INCLUDED
 
+#include <gwaei/vocabularyliststore.h>
+
 G_BEGIN_DECLS
 
 //Boilerplate
@@ -9,7 +11,6 @@ typedef struct _GwApplicationClass GwApplicationClass;
 typedef struct _GwApplicationPrivate GwApplicationPrivate;
 
 struct _GwSearchWindow; //Forward declaration
-struct _GwDictInfoList; //Forward declaration
 
 #define GW_TYPE_APPLICATION              (gw_application_get_type())
 #define GW_APPLICATION(obj)              (G_TYPE_CHECK_INSTANCE_CAST((obj), GW_TYPE_APPLICATION, GwApplication))
@@ -68,11 +69,12 @@ void gw_application_set_last_focused_searchwindow (GwApplication*, struct _GwSea
 struct _GwSearchWindow* gw_application_get_last_focused_searchwindow (GwApplication*);
 
 LwPreferences* gw_application_get_preferences (GwApplication*);
-struct _GwDictInfoList* gw_application_get_dictinfolist (GwApplication*);
+GtkListStore* gw_application_get_dictionarystore (GwApplication*);
 struct _LwDictInstList* gw_application_get_dictinstlist (GwApplication*);
 GtkTextTagTable* gw_application_get_tagtable (GwApplication*);
+GtkListStore* gw_application_get_vocabularyliststore (GwApplication*);
 
-void gw_application_destroy_window (GwApplication*, GtkWindow*);
+gboolean gw_application_should_quit (GwApplication *application);
 
 #include "application-callbacks.h"
 

@@ -26,12 +26,15 @@
 //!
 
 
+#include "../private.h"
+
 #include <string.h>
 
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
-#include <gwaei/gwaei.h>
+#include <libwaei/libwaei.h>
+#include <gwaei/radicalswindow.h>
 #include <gwaei/radicalswindow-private.h>
 
 
@@ -44,23 +47,17 @@
 G_MODULE_EXPORT void 
 gw_radicalswindow_clear_cb (GtkWidget *widget, gpointer data)
 {
-    //Declaratins
-    GwApplication *application;
+    //Declarations
     GwRadicalsWindow *window;
     GwRadicalsWindowPrivate *priv;
 
     //Initializations
     window = GW_RADICALSWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_RADICALSWINDOW));
-    if (window == NULL) return;
+    g_return_if_fail (window != NULL);
     priv = window->priv;
-    application = gw_window_get_application (GW_WINDOW (window));
-
-    gw_application_block_searches (application);
 
     gw_radicalswindow_deselect_all_radicals (window);
     gtk_toggle_button_set_active (priv->strokes_checkbutton, FALSE);
-
-    gw_application_unblock_searches (application);
 }
 
 
@@ -74,45 +71,22 @@ gw_radicalswindow_clear_cb (GtkWidget *widget, gpointer data)
 //! @param data Currently unused gpointer
 //!
 G_MODULE_EXPORT void 
-gw_radicalswindow_search_cb (GtkWidget *widget, gpointer data)
+gw_radicalswindow_toggled_cb (GtkWidget *widget, gpointer data)
 {
     //Declarations
-    GwApplication *application;
     GwRadicalsWindow *window;
-    GwSearchWindow *searchwindow;
-    LwDictInfoList *dictinfolist;
-    LwDictInfo *di;
-    char *text_query;
-    char *text_radicals;
-    char *text_strokes;
+    GwRadicalsWindowClass *klass;
 
     //Initializations
     window = GW_RADICALSWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_RADICALSWINDOW));
-    if (window == NULL) return;
-    searchwindow = GW_SEARCHWINDOW (gtk_window_get_transient_for (GTK_WINDOW (window)));
-    g_assert (searchwindow != NULL);
-    application = gw_window_get_application (GW_WINDOW (window));
-    dictinfolist = LW_DICTINFOLIST (gw_application_get_dictinfolist (application));
-    di = lw_dictinfolist_get_dictinfo (dictinfolist, LW_DICTTYPE_KANJI, "Kanji");
-    if (di == NULL) return;
+    g_return_if_fail (window != NULL);
+    klass = GW_RADICALSWINDOW_CLASS (G_OBJECT_GET_CLASS (window));
 
-    text_radicals = gw_radicalswindow_strdup_all_selected (window);
-    text_strokes = gw_radicalswindow_strdup_prefered_stroke_count (window);
-    text_query = g_strdup_printf ("%s%s", text_radicals, text_strokes);
-
-    //Sanity checks
-    if (text_query != NULL && strlen(text_query) > 0)
-    {
-      gw_searchwindow_entry_set_text (searchwindow, text_query);
-      gw_searchwindow_set_dictionary (searchwindow, di->load_position);
-
-      gw_searchwindow_search_cb (GTK_WIDGET (searchwindow), searchwindow);
-    }
-
-    //Cleanup
-    if (text_query != NULL) g_free (text_query);
-    if (text_strokes != NULL) g_free (text_strokes);
-    if (text_radicals != NULL) g_free (text_radicals);
+    g_signal_emit (
+      G_OBJECT (window), 
+      klass->signalid[GW_RADICALSWINDOW_CLASS_SIGNALID_QUERY_CHANGED], 
+      0
+    );
 }
 
 
@@ -124,18 +98,24 @@ gw_radicalswindow_strokes_checkbox_toggled_cb (GtkWidget *widget, gpointer data)
 {
     //Declarations
     GwRadicalsWindow *window;
+    GwRadicalsWindowClass *klass;
     GwRadicalsWindowPrivate *priv;
     gboolean request;
 
     //Initializations
     window = GW_RADICALSWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_RADICALSWINDOW));
-    if (window == NULL) return;
+    g_return_if_fail (window != NULL);
+    klass = GW_RADICALSWINDOW_CLASS (G_OBJECT_GET_CLASS (window));
     priv = window->priv;
     request = gtk_toggle_button_get_active (priv->strokes_checkbutton);
 
     gtk_widget_set_sensitive (GTK_WIDGET (priv->strokes_spinbutton), request);
 
-    gw_radicalswindow_search_cb (widget, data);
+    g_signal_emit (
+      G_OBJECT (window), 
+      klass->signalid[GW_RADICALSWINDOW_CLASS_SIGNALID_QUERY_CHANGED], 
+      0
+    );
 }
 
 
@@ -147,7 +127,7 @@ gw_radicalswindow_close_cb (GtkWidget* widget, gpointer data)
 
     //Initializations
     window = GW_RADICALSWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_RADICALSWINDOW));
-    if (window == NULL) return;
+    g_return_if_fail (window != NULL);
 
     gtk_widget_hide (GTK_WIDGET (window));
 }
@@ -164,7 +144,7 @@ gw_radicalswindow_show_cb (GtkWidget *widget, gpointer data)
 
     //Initializations
     window = GTK_WINDOW (widget);
-    if (window == NULL) return;
+    g_return_if_fail (window != NULL);
     scrolledwindow = GTK_SCROLLED_WINDOW (data);
     gtk_scrolled_window_get_policy (scrolledwindow, NULL, &policy);
 

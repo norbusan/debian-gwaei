@@ -5,11 +5,11 @@ G_BEGIN_DECLS
 
 struct _GwRadicalsWindowPrivate {
   GtkToggleButton *strokes_checkbutton;
-  GtkTable *radicals_table;
+  GtkGrid *radicals_grid;
   GtkSpinButton *strokes_spinbutton;
+
   char cache[300 * 4];
 };
-
 
 typedef enum {
   GW_RADARRAY_STROKES,

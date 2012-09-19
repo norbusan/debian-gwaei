@@ -1,4 +1,4 @@
-/******************************************************************************
+/*****************************************************************************
     AUTHOR:
     File written and Copyrighted by Zachary Dovel. All Rights Reserved.
 
@@ -24,6 +24,8 @@
 //!
 
 
+#include "../private.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -32,6 +34,7 @@
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <curl/curl.h>
+#include <zlib.h>
 
 #include <libwaei/libwaei.h>
 
@@ -142,53 +145,56 @@ lw_io_copy_with_encoding (const char *SOURCE_PATH, const char *TARGET_PATH,
     //Declarations
     FILE* readfd = NULL;
     FILE* writefd = NULL;
-    const int MAX = LW_IO_MAX_FGETS_LINE;
-    char buffer[MAX];
-    char output[MAX];
-    gsize inbytes_left, outbytes_left;
-    char *inptr, *outptr;
-    char prev_inbytes;
-    size_t curpos;
-    size_t end;
+    const gint MAX = 1024 * 2;
+    gchar source_buffer[MAX];
+    gchar target_buffer[MAX];
+    gchar *sptr, *tptr;
+    size_t read, source_bytes_left, target_bytes_left;
+    gdouble fraction;
+    size_t position, filesize;
     GIConv conv;
-    double fraction;
+
+    filesize = lw_io_get_filesize (SOURCE_PATH);
+    position = 0;
 
     //Initializations
-    readfd = fopen (SOURCE_PATH, "r");
-    writefd = fopen (TARGET_PATH, "w");
+    readfd = fopen (SOURCE_PATH, "rb");
+    writefd = fopen (TARGET_PATH, "wb");
     conv = g_iconv_open (TARGET_ENCODING, SOURCE_ENCODING);
-    prev_inbytes = 0;
-    end = lw_io_get_filesize (SOURCE_PATH);
-    curpos = 0;
 
-    while (ferror(readfd) == 0 && feof(readfd) == 0 && ferror(writefd) == 0 && feof(writefd) == 0)
+    //Read a chunk
+    while (ferror(readfd) == 0 && feof(readfd) == 0)
     {
-      fgets(buffer, MAX, readfd);
-      fraction = ((double) curpos / (double) end);
-      if (cb != NULL) cb (fraction, data);
+      read = fread(source_buffer, sizeof(gchar), MAX, readfd);
+      source_bytes_left = read;
+      sptr = source_buffer;
 
-      curpos += strlen(buffer);
-      inptr = buffer; outptr = output;
-      inbytes_left = MAX; outbytes_left = MAX;
-      while (inbytes_left && outbytes_left)
+      //Try to convert and write the chunk
+      while (source_bytes_left > 0 && ferror(writefd) == 0 && feof(writefd) == 0)
       {
-        if (g_iconv (conv, &inptr, &inbytes_left, &outptr, &outbytes_left) == -1) break;
+        target_bytes_left = MAX;
+        tptr = target_buffer;
 
-        //Force increment if there is something wrong
-        if (prev_inbytes == inbytes_left)
+        g_iconv (conv, &sptr, &source_bytes_left, &tptr, &target_bytes_left);
+        if (MAX != target_bytes_left) //Bytes were converted!
         {
-          inptr++;
-          inbytes_left--;
+          fwrite(target_buffer, sizeof(gchar), MAX - target_bytes_left, writefd); 
         }
-        //Normal operation
-        prev_inbytes = inbytes_left;
-        inptr = inptr + strlen(inptr) - inbytes_left;
-        outptr = outptr + strlen(outptr) - outbytes_left;
+        else if (source_bytes_left == MAX && target_bytes_left == MAX)
+        {
+          fprintf(stderr, "The file you are converting may be corrupt! Trying to skip a character...\n");
+          fseek(readfd, 1L - source_bytes_left, SEEK_CUR);
+        }
+        else if (source_bytes_left > 0) //Bytes failed to convert!
+        {
+          fseek(readfd, -source_bytes_left, SEEK_CUR);
+          source_bytes_left = 0;
+        }
       }
-      fwrite(output, 1, strlen(output), writefd); 
+      position = ftell(readfd);
+      fraction = (gdouble) position / (gdouble) filesize;
+      if (cb != NULL) cb (fraction, data);
     }
-    fraction = ((double) curpos / (double) end);
-    if (cb != NULL) cb (fraction, data);
 
     //Cleanup
     g_iconv_close (conv);
@@ -279,7 +285,7 @@ lw_io_download (char *source_path, char *target_path, LwIoProgressCallback cb,
     CURL *curl;
     CURLcode res;
     FILE *outfile;
-    char *message;
+    const gchar *message;
     LwIoProgressCallbackWithData cbwdata;
 
     //Initializations
@@ -339,18 +345,18 @@ lw_io_copy (const char *SOURCE_PATH, const char *TARGET_PATH,
     if (*error != NULL) return FALSE;
 
     //Declarations
-    FILE *in;
-    FILE *out;
+    FILE *infd;
+    FILE *outfd;
     size_t chunk;
     size_t end;
     size_t curpos;
-    const int MAX_CHUNK = 128;
-    char buffer[MAX_CHUNK];
+    const int MAX = 1024;
+    char buffer[MAX];
     double fraction;
 
     //Initalizations
-    in = fopen(SOURCE_PATH, "rb");
-    out = fopen(TARGET_PATH, "wb");
+    infd = fopen(SOURCE_PATH, "rb");
+    outfd = fopen(TARGET_PATH, "wb");
     chunk = 1;
     end = lw_io_get_filesize (SOURCE_PATH);
     curpos = 0;
@@ -360,16 +366,16 @@ lw_io_copy (const char *SOURCE_PATH, const char *TARGET_PATH,
     {
       fraction = ((double) curpos) / ((double) end);
       if (cb != NULL) cb (fraction, data);
-      chunk = fread(buffer, sizeof(char), MAX_CHUNK, in);
-      chunk = fwrite(buffer, sizeof(char), chunk, out);
+      chunk = fread(buffer, sizeof(char), MAX, infd);
+      chunk = fwrite(buffer, sizeof(char), chunk, outfd);
       curpos += chunk;
     }
     fraction = 1.0;
     if (cb != NULL) cb (fraction, data);
 
     //Cleanup
-    fclose(in);
-    fclose(out);
+    fclose(infd);
+    fclose(outfd);
 
     return (error == NULL && *error == NULL);;
 }
@@ -607,9 +613,37 @@ lw_io_gunzip_file (const char *SOURCE_PATH, const char *TARGET_PATH,
     if (error != NULL && *error != NULL) return FALSE;
 
     //Declarations
-    char *argv[] = { GZIP, "-cd", NULL };
+    gzFile source;
+    FILE *target;
+    int read;
+    const int MAX = 1024;
+    char buffer[MAX];
+    gdouble fraction;
+    size_t filesize, position;
 
-    lw_io_pipe_data (argv, SOURCE_PATH, TARGET_PATH, cb, data, error);
+    source = gzopen (SOURCE_PATH, "rb");
+    if (source != NULL)
+    {
+      filesize = lw_io_get_filesize (SOURCE_PATH);
+
+      target = fopen(TARGET_PATH, "wb");
+      if (target != NULL)
+      {
+        do {
+          read = gzread (source, buffer, MAX);
+          if (read > 0) 
+          {
+            position = gzoffset(source);
+            fraction = (gdouble) position / (gdouble) filesize;
+            if (cb != NULL) cb (fraction, data);
+            fwrite(buffer, sizeof(char), read, target);
+          }
+        } while (read > 0);
+
+        fclose(target); target = NULL;
+      }
+      gzclose(source); source = NULL;
+    }
 
     return (error == NULL || *error == NULL);
 } 
@@ -822,93 +856,6 @@ gpointer _stdout_func (gpointer data)
 
 
 //!
-//! @brief Pipes a source file through a program and sends the output to a target file.
-//! @param argv An array of strings representing a program path and flags
-//! @param SOURCE_PATH The path to the file file to be streamed to the program
-//! @param TARGET_PATH The path to write the uncompressed file to
-//! @param cb A LwIoProgressCallback function to give progress feedback or NULL
-//! @param data A generic pointer to data to pass to the LwIoProgressCallback
-//! @param error A pointer to a GError object to write an error to or NULL
-//!
-gboolean 
-lw_io_pipe_data (char                 **argv, 
-                 const char            *SOURCE_PATH, 
-                 const char            *TARGET_PATH, 
-                 LwIoProgressCallback   cb, 
-                 gpointer               data, 
-                 GError               **error          )
-{
-    //Sanity check
-    if (error != NULL && *error != NULL) return FALSE;
-
-    //Declarations
-    gint stdin_fd;
-    gint stdout_fd;
-    GPid pid;
-    GThread *stdin_thread;
-    GThread *stdout_thread;
-    LwIoProcessFdData stdin_data;
-    LwIoProcessFdData stdout_data;
-
-    //Initalizations
-    g_spawn_async_with_pipes (
-          NULL,
-          argv, 
-          NULL, 
-          G_SPAWN_STDERR_TO_DEV_NULL, 
-          NULL, 
-          NULL, 
-          &pid, 
-          &stdin_fd, 
-          &stdout_fd, 
-          NULL, 
-          error
-    );
-
-    stdin_data.uri = SOURCE_PATH;
-    stdin_data.fd = stdin_fd;
-    stdin_data.cb = cb;
-    stdin_data.data = data;
-    stdin_data.error = NULL;
-
-    stdout_data.uri = TARGET_PATH;
-    stdout_data.fd = stdout_fd;
-    stdout_data.cb = cb;
-    stdout_data.data = data;
-    stdout_data.error = NULL;
-
-    //Process the data through the external program
-    stdin_thread = g_thread_create (_stdin_func, &stdin_data, TRUE, error);
-    stdout_thread = g_thread_create (_stdout_func, &stdout_data, TRUE, error);
-
-    //Wait for it to finish
-    g_thread_join (stdin_thread);
-    g_thread_join (stdout_thread);
-
-    //Set the first error from the streams if there or no ther ones already there
-    if (stdin_data.error != NULL)
-    {
-      if (error != NULL && *error == NULL)
-        *error = stdin_data.error;
-      else
-        g_error_free (stdin_data.error);
-    }
-    if (stdout_data.error != NULL)
-    {
-      if (error != NULL && *error == NULL)
-        *error = stdout_data.error;
-      else
-        g_error_free (stdout_data.error);
-    }
-
-    //Cleanup
-    g_spawn_close_pid (pid);
-
-    return (*error == NULL);
-} 
-
-
-//!
 //! @brief Deletes a file from the filesystem
 //! @param URI The path to the file to delet
 //! @param error A pointer to a GError object to write errors to or NULL
@@ -959,4 +906,5 @@ lw_io_get_size_for_uri (const char *URI)
    
     return length;
 }
+
 

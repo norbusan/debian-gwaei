@@ -1,6 +1,8 @@
 #ifndef LW_DICT_INCLUDED
 #define LW_DICT_INCLUDED
 
+G_BEGIN_DECLS
+
 #define LW_DICT(object) (LwDict*) object
 
 #define EXTENDS_LW_DICT \
@@ -20,6 +22,7 @@ typedef enum {
   TOTAL_LW_DICTTYPES
 } LwDictType;
 
+G_END_DECLS
 
 #endif
 

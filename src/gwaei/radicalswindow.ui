@@ -22,15 +22,17 @@
     <property name="icon_name">gwaei</property>
     <property name="type_hint">utility</property>
     <child>
-      <object class="GtkVBox" id="toplevel">
+      <object class="GtkBox" id="toplevel">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="border_width">8</property>
         <property name="spacing">8</property>
+        <property name="orientation">vertical</property>
         <child>
-          <object class="GtkHBox" id="hbox1">
+          <object class="GtkBox" id="hbox1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="orientation">horizontal</property>
             <child>
               <object class="GtkScrolledWindow" id="radical_selection_scrolledwindow">
                 <property name="visible">True</property>
@@ -42,11 +44,10 @@
                     <property name="can_focus">False</property>
                     <property name="resize_mode">queue</property>
                     <child>
-                      <object class="GtkTable" id="radical_selection_table">
+                      <object class="GtkGrid" id="radical_selection_grid">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="border_width">6</property>
-                        <property name="row_spacing">7</property>
+                        <property name="row_spacing">8</property>
                         <child>
                           <placeholder/>
                         </child>
@@ -69,17 +70,20 @@
           </packing>
         </child>
         <child>
-          <object class="GtkHBox" id="hbox2">
+          <object class="GtkBox" id="hbox2">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="spacing">5</property>
+            <property name="orientation">horizontal</property>
             <child>
-              <object class="GtkHBox" id="strokes_hbox">
+              <object class="GtkBox" id="strokes_hbox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="orientation">horizontal</property>
                 <child>
                   <object class="GtkCheckButton" id="strokes_checkbox">
                     <property name="label" translatable="yes">_Restrict to Kanji of</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
@@ -106,7 +110,7 @@
                     <property name="adjustment">stroke_count_adjustment</property>
                     <property name="numeric">True</property>
                     <property name="update_policy">if-valid</property>
-                    <signal name="value-changed" handler="gw_radicalswindow_search_cb" object="toplevel" swapped="no"/>
+                    <signal name="value-changed" handler="gw_radicalswindow_toggled_cb" object="toplevel" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -144,6 +148,7 @@
                 <child>
                   <object class="GtkButton" id="radical_clear_button">
                     <property name="label" translatable="yes">C_lear</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -162,6 +167,7 @@
                 <child>
                   <object class="GtkButton" id="close_button">
                     <property name="label">gtk-close</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>

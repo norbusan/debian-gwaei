@@ -28,6 +28,8 @@
 //!
 
 
+#include "../private.h"
+
 #include <ctype.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -36,14 +38,16 @@
 
 #include <gtk/gtk.h>
 
-#include <gwaei/gwaei.h>
+#include <libwaei/libwaei.h>
+#include <gwaei/kanjipadwindow.h>
 #include <gwaei/kanjipadwindow-private.h>
 
 
 //!
 //! @brief Does the needed calls to kpad to look up the kanji
 //! 
-G_MODULE_EXPORT gboolean gw_kanjipadwindow_look_up_cb (GtkWidget *widget, GdkEventButton *event, gpointer data)
+G_MODULE_EXPORT gboolean 
+gw_kanjipadwindow_look_up_cb (GtkWidget *widget, GdkEventButton *event, gpointer data)
 {
     //Declarations
     GwKanjipadWindow *window;
@@ -57,7 +61,7 @@ G_MODULE_EXPORT gboolean gw_kanjipadwindow_look_up_cb (GtkWidget *widget, GdkEve
 
     //Initializations
     window = GW_KANJIPADWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_KANJIPADWINDOW));
-    if (window == NULL) return FALSE;
+    g_return_val_if_fail (window != NULL, FALSE);
     priv = window->priv;
 
     if (priv->to_engine == NULL)
@@ -89,7 +93,7 @@ G_MODULE_EXPORT gboolean gw_kanjipadwindow_look_up_cb (GtkWidget *widget, GdkEve
       exit (EXIT_FAILURE);
     }
 
-    g_string_free (message, FALSE);
+    g_string_free (message, TRUE);
 
     return FALSE;
 }
@@ -103,7 +107,7 @@ G_MODULE_EXPORT void gw_kanjipadwindow_clear_drawingarea_cb (GtkWidget *widget, 
     GwKanjipadWindow *window;
 
     window = GW_KANJIPADWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_KANJIPADWINDOW));
-    if (window == NULL) return;
+    g_return_if_fail (window != NULL);
 
     gw_kanjipadwindow_clear_drawingarea (window);
 }
@@ -118,7 +122,7 @@ G_MODULE_EXPORT void do_kanjipad_annotate_toggled (GtkWidget *widget, gpointer d
     gboolean request;
 
     window = GW_KANJIPADWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_KANJIPADWINDOW));
-    if (window == NULL) return;
+    g_return_if_fail (window != NULL);
     request = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget));
 
     gw_kanjipadwindow_set_drawingarea_annotate (window, request);
@@ -130,7 +134,7 @@ G_MODULE_EXPORT void gw_kanjipadwindow_close_cb (GtkWidget *widget, gpointer dat
     GwKanjipadWindow *window;
 
     window = GW_KANJIPADWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_KANJIPADWINDOW));
-    if (window == NULL) return;
+    g_return_if_fail (window != NULL);
    
     gtk_widget_destroy (GTK_WIDGET (window));
 }

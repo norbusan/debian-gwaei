@@ -23,6 +23,28 @@ typedef enum {
 
 struct _GwSettingsWindowPrivate {
   GtkNotebook *notebook;
+  GtkTreeView *manage_dictionaries_treeview;
+  GtkButton *close_button;
+  GtkToolButton *remove_dictionary_toolbutton;
+
+  GtkColorButton *match_foreground;
+  GtkColorButton *match_background;
+  GtkColorButton *comment_foreground;
+  GtkColorButton *header_foreground;
+  GtkColorButton *header_background;
+
+  GtkToggleButton *spellcheck_checkbutton;
+
+  GtkComboBox *romaji_to_kana_combobox;
+  GtkCheckButton *hiragana_to_katakana_checkbutton;
+  GtkCheckButton *katakana_to_hiragana_checkbutton;
+  GtkCheckButton *system_font_checkbutton;
+  GtkBox *system_document_font_hbox;
+  GtkCheckButton *search_as_you_type_checkbutton;
+
+  GtkBox *please_install_dictionary_hbox;
+  GtkFontButton *custom_font_fontbutton;
+
   guint signalids[TOTAL_GW_SETTINGSWINDOW_SIGNALIDS];
 //  guint timeoutids[TOTAL_GW_SETTINGSWINDOW_TIMEOUTIDS];
 };

@@ -3,6 +3,13 @@
 
 G_BEGIN_DECLS
 
+#include <gwaei/window.h>
+
+typedef enum {
+  GW_KANJIPADWINDOW_CLASS_SIGNALID_KANJI_SELECTED,
+  TOTAL_GW_KANJIPADWINDOW_CLASS_SIGNALIDS
+} GwKanjipadWindowClassSignalId;
+
 //Boilerplate
 typedef struct _GwKanjipadWindow GwKanjipadWindow;
 typedef struct _GwKanjipadWindowClass GwKanjipadWindowClass;
@@ -24,6 +31,8 @@ struct _GwKanjipadWindow {
 
 struct _GwKanjipadWindowClass {
   GwWindowClass parent_class;
+  guint signalid[TOTAL_GW_KANJIPADWINDOW_CLASS_SIGNALIDS];
+  void (*kanji_selected) (GwKanjipadWindow *window);
 };
 
 GtkWindow* gw_kanjipadwindow_new (GtkApplication *application);

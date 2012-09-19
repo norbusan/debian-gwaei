@@ -24,6 +24,8 @@
 //!
 
 
+#include "../private.h"
+
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -36,7 +38,6 @@
 
 //Private methods
 static gint     _dictinfolist_load_order_compare_function (gconstpointer, gconstpointer);
-static void     _dictinfolist_sort_and_normalize_order (LwDictInfoList*);
 
 
 //!
@@ -44,14 +45,14 @@ static void     _dictinfolist_sort_and_normalize_order (LwDictInfoList*);
 //! @return An allocated LwDictInfoList that will be needed to be freed by lw_dictinfolist_free ()
 //!
 LwDictInfoList* 
-lw_dictinfolist_new (const int MAX, LwPreferences *pm)
+lw_dictinfolist_new (const int MAX)
 {
     LwDictInfoList *temp;
     temp = (LwDictInfoList*) malloc(sizeof(LwDictInfoList));
 
     if (temp != NULL)
     {
-      lw_dictinfolist_init (temp, MAX, pm);
+      lw_dictinfolist_init (temp, MAX);
     }
 
     return temp;
@@ -73,14 +74,13 @@ lw_dictinfolist_free (LwDictInfoList *dil)
 
 
 void 
-lw_dictinfolist_init (LwDictInfoList *dil, const int MAX, LwPreferences* pm)
+lw_dictinfolist_init (LwDictInfoList *dil, const int MAX)
 {
     dil->list = NULL;
-    dil->mutex = g_mutex_new();
+    g_mutex_init (&dil->mutex);
     dil->max = MAX;
 
     lw_dictinfolist_reload (dil);
-    lw_dictinfolist_load_dictionary_order_from_pref (dil, pm);
 }
 
 
@@ -88,7 +88,7 @@ void
 lw_dictinfolist_deinit (LwDictInfoList *dil)
 {
     lw_dictinfolist_clear (dil);
-    g_mutex_free (dil->mutex);
+    g_mutex_clear (&dil->mutex);
 }
 
 
@@ -112,6 +112,7 @@ lw_dictinfolist_clear (LwDictInfoList *dil)
       dil->list = NULL;
     }
 }
+
 
 void 
 lw_dictinfolist_reload (LwDictInfoList *dil)
@@ -183,9 +184,12 @@ lw_dictinfolist_add_dictionary (LwDictInfoList *dil, const LwDictType DICTTYPE, 
 
     //Declarations
     LwDictInfo *di;
+    gint size;
 
     //Initializations
     di = lw_dictinfo_new (DICTTYPE, FILENAME);
+    size = g_list_length (dil->list);
+    di->load_position = size;
 
     //Append to the dictionary list if was loadable
     if (di != NULL) dil->list = g_list_append (dil->list, di);
@@ -398,10 +402,10 @@ lw_dictinfolist_get_total (LwDictInfoList *dil)
 //! @brief Saves the current load order to the preferences
 //
 void 
-lw_dictinfolist_save_dictionary_order_pref (LwDictInfoList *dil, LwPreferences *pm)
+lw_dictinfolist_save_order (LwDictInfoList *dil, LwPreferences *pm)
 {
     //Make sure things are sorted and normal
-    _dictinfolist_sort_and_normalize_order (dil);
+    lw_dictinfolist_sort_and_normalize_order (dil);
 
     //Declarations
     char *load_order;
@@ -439,7 +443,7 @@ lw_dictinfolist_save_dictionary_order_pref (LwDictInfoList *dil, LwPreferences *
 //! @brief Loads the load order from the preferences
 //
 void 
-lw_dictinfolist_load_dictionary_order_from_pref (LwDictInfoList *dil, LwPreferences *pm)
+lw_dictinfolist_load_order (LwDictInfoList *dil, LwPreferences *pm)
 {
     if (pm == NULL) return; 
 
@@ -451,17 +455,17 @@ lw_dictinfolist_load_dictionary_order_from_pref (LwDictInfoList *dil, LwPreferen
     char *name;
     LwDictInfo *di = NULL;
     int load_position = 0;
-    
+  
     lw_preferences_get_string_by_schema (pm, load_order, LW_SCHEMA_DICTIONARY, LW_KEY_LOAD_ORDER, 1000);
     load_order_array = g_strsplit_set (load_order, ";", dil->max);
-    
+
     for (iter = load_order_array; *iter != NULL; iter++)
     {
       //Sanity checking
       if (*iter == NULL || **iter == '\0') { 
         fprintf(stderr, "WARNING: failed sanity check 1. Resetting dictionary order prefs.\n");
         lw_preferences_reset_value_by_schema (pm, LW_SCHEMA_DICTIONARY, LW_KEY_LOAD_ORDER);
-        lw_dictinfolist_load_dictionary_order_from_pref (dil, pm);
+        lw_dictinfolist_load_order (dil, pm);
         return;
       }
 
@@ -472,7 +476,7 @@ lw_dictinfolist_load_dictionary_order_from_pref (LwDictInfoList *dil, LwPreferen
       {
         fprintf(stderr, "WARNING: failed sanity check 2. Resetting dictionary order prefs.\n");
         lw_preferences_reset_value_by_schema (pm, LW_SCHEMA_DICTIONARY, LW_KEY_LOAD_ORDER);
-        lw_dictinfolist_load_dictionary_order_from_pref (dil, pm);
+        lw_dictinfolist_load_order (dil, pm);
         return;
       }
 
@@ -493,7 +497,7 @@ lw_dictinfolist_load_dictionary_order_from_pref (LwDictInfoList *dil, LwPreferen
     g_strfreev (load_order_array);
     load_order_array = NULL;
 
-    _dictinfolist_sort_and_normalize_order (dil);
+    lw_dictinfolist_sort_and_normalize_order (dil);
 }
 
 
@@ -526,7 +530,7 @@ static gint _dictinfolist_load_order_compare_function (gconstpointer a, gconstpo
 //
 //! @brief Sorts the dictionaries by their load order and makes the numbers clean with no holes
 //
-static void _dictinfolist_sort_and_normalize_order (LwDictInfoList *dil)
+void lw_dictinfolist_sort_and_normalize_order (LwDictInfoList *dil)
 {
     //Declarations
     LwDictInfo *di;

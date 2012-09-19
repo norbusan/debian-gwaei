@@ -25,6 +25,8 @@
 //! @brief To be written
 //!
 
+#include "../private.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -42,7 +44,6 @@ static void gw_application_remove_signals (GwApplication*);
 static void gw_application_activate (GApplication*);
 static gboolean gw_application_local_command_line (GApplication*, gchar***, gint*);
 static int gw_application_command_line (GApplication*, GApplicationCommandLine*);
-static GtkTextTagTable* gw_application_texttagtable_new (void);
 
 G_DEFINE_TYPE (GwApplication, gw_application, GTK_TYPE_APPLICATION)
 
@@ -80,7 +81,6 @@ gw_application_constructed (GObject *object)
 {
     //Declarations
     GwApplication *application;
-    GwApplicationPrivate *priv;
 
     //Chain the parent class
     {
@@ -89,23 +89,24 @@ gw_application_constructed (GObject *object)
 
     //Initialization
     application = GW_APPLICATION (object);
-    priv = application->priv;
-
-    priv->preferences = lw_preferences_new (NULL);
-    priv->dictinfolist = gw_dictinfolist_new (20, application);
-    priv->tagtable = gw_application_texttagtable_new ();
 
     lw_regex_initialize ();
 
 #ifdef OS_MINGW
+/*
     GtkSettings *settings;
     settings = gtk_settings_get_default ();
-    g_object_set (settings, "gtk-theme-name", "MS-Windows", NULL);
-    g_object_set (settings, "gtk-menu-images", FALSE, NULL);
-    g_object_set (settings, "gtk-button-images", FALSE, NULL);
-    g_object_set (settings, "gtk-cursor-blink", FALSE, NULL);
-    g_object_set (settings, "gtk-alternative-button-order", TRUE, NULL);
-    g_object_unref (settings);
+    if (settings != NULL)
+    {
+      g_object_set (settings, "gtk-theme-name", "Raleigh", NULL);
+      g_object_set (settings, "gtk-menu-images", FALSE, NULL);
+      g_object_set (settings, "gtk-button-images", FALSE, NULL);
+      g_object_set (settings, "gtk-cursor-blink", FALSE, NULL);
+      g_object_set (settings, "gtk-alternative-button-order", TRUE, NULL);
+      g_object_unref (settings);
+      settings = NULL;
+    }
+*/
 #endif
 
     gw_application_attach_signals (application);
@@ -127,10 +128,20 @@ gw_application_finalize (GObject *object)
     if (priv->error != NULL) g_error_free (priv->error); priv->error = NULL;
 
     if (priv->dictinstlist != NULL) lw_dictinstlist_free (priv->dictinstlist); priv->dictinstlist = NULL;
-    if (priv->dictinfolist != NULL) gw_dictinfolist_free (priv->dictinfolist); priv->dictinfolist = NULL;
+
+    if (priv->dictionarystore != NULL) g_object_unref (priv->dictionarystore); 
+
+    if (priv->vocabularyliststore != NULL) g_object_unref (priv->vocabularyliststore); 
+
     if (priv->context != NULL) g_option_context_free (priv->context); priv->context = NULL;
     if (priv->arg_query != NULL) g_free(priv->arg_query); priv->arg_query = NULL;
     if (priv->preferences != NULL) lw_preferences_free (priv->preferences); priv->preferences = NULL;
+#if WITH_MECAB
+    if (lw_morphologyengine_has_default ()) 
+    {
+      lw_morphologyengine_free (lw_morphologyengine_get_default ()); 
+    }
+#endif
 
     lw_regex_free ();
 
@@ -149,7 +160,9 @@ gw_application_class_init (GwApplicationClass *klass)
 
   object_class->constructed = gw_application_constructed;
   object_class->finalize = gw_application_finalize;
+#ifndef OS_MINGW
   application_class->local_command_line = gw_application_local_command_line;
+#endif
   application_class->command_line = gw_application_command_line;
   application_class->activate = gw_application_activate;
 
@@ -160,88 +173,12 @@ gw_application_class_init (GwApplicationClass *klass)
 static void 
 gw_application_attach_signals (GwApplication *application)
 {
-    //Declarations
-    GwApplicationPrivate* priv;
-    LwPreferences *preferences;
-
-    //Initializations
-    priv = application->priv;
-    preferences = gw_application_get_preferences (application);
-
-    priv->signalid[GW_APPLICATION_SIGNALID_MATCH_FG] = lw_preferences_add_change_listener_by_schema (
-        preferences, 
-        LW_SCHEMA_HIGHLIGHT, 
-        LW_KEY_MATCH_FG, 
-        gw_application_sync_tag_cb, 
-        application
-    );
-    priv->signalid[GW_APPLICATION_SIGNALID_MATCH_BG] = lw_preferences_add_change_listener_by_schema (
-        preferences, 
-        LW_SCHEMA_HIGHLIGHT, 
-        LW_KEY_MATCH_BG, 
-        gw_application_sync_tag_cb, 
-        application
-    );
-    priv->signalid[GW_APPLICATION_SIGNALID_HEADER_FG] = lw_preferences_add_change_listener_by_schema (
-        preferences, 
-        LW_SCHEMA_HIGHLIGHT, 
-        LW_KEY_HEADER_FG, 
-        gw_application_sync_tag_cb, 
-        application
-    );
-    priv->signalid[GW_APPLICATION_SIGNALID_HEADER_BG] = lw_preferences_add_change_listener_by_schema (
-        preferences, 
-        LW_SCHEMA_HIGHLIGHT, 
-        LW_KEY_HEADER_BG, 
-        gw_application_sync_tag_cb, 
-        application
-    );
-    priv->signalid[GW_APPLICATION_SIGNALID_COMMENT_FG] = lw_preferences_add_change_listener_by_schema (
-        preferences, 
-        LW_SCHEMA_HIGHLIGHT, 
-        LW_KEY_COMMENT_FG, 
-        gw_application_sync_tag_cb, 
-        application
-    );
 }
 
 
 static void 
 gw_application_remove_signals (GwApplication *application)
 {
-    //Declarations
-    GwApplicationPrivate* priv;
-    LwPreferences *preferences;
-
-    //Initializations
-    priv = application->priv;
-    preferences = gw_application_get_preferences (application);
-
-    lw_preferences_remove_change_listener_by_schema (
-        preferences,
-        LW_SCHEMA_HIGHLIGHT,
-        priv->signalid[GW_APPLICATION_SIGNALID_MATCH_FG]
-    );
-    lw_preferences_remove_change_listener_by_schema (
-        preferences,
-        LW_SCHEMA_HIGHLIGHT,
-        priv->signalid[GW_APPLICATION_SIGNALID_MATCH_BG]
-    );
-    lw_preferences_remove_change_listener_by_schema (
-        preferences,
-        LW_SCHEMA_HIGHLIGHT,
-        priv->signalid[GW_APPLICATION_SIGNALID_HEADER_FG]
-    );
-    lw_preferences_remove_change_listener_by_schema (
-        preferences,
-        LW_SCHEMA_HIGHLIGHT,
-        priv->signalid[GW_APPLICATION_SIGNALID_HEADER_BG]
-    );
-    lw_preferences_remove_change_listener_by_schema (
-        preferences,
-        LW_SCHEMA_HIGHLIGHT,
-        priv->signalid[GW_APPLICATION_SIGNALID_COMMENT_FG]
-    );
 }
 
 
@@ -263,11 +200,13 @@ gw_application_parse_args (GwApplication *application, int *argc, char** argv[])
     if (priv->arg_query != NULL) g_free (priv->arg_query);
     priv->arg_query = NULL;
     priv->arg_version_switch = FALSE;
+    priv->arg_new_vocabulary_window_switch = FALSE;
 
     GOptionEntry entries[] =
     {
       { "new", 'n', 0, G_OPTION_ARG_NONE, &(priv->arg_new_window_switch), gettext("Force a new instance window"), NULL },
       { "dictionary", 'd', 0, G_OPTION_ARG_STRING, &(priv->arg_dictionary), gettext("Choose the dictionary to use"), "English" },
+      { "vocabulary", 'o', 0, G_OPTION_ARG_NONE, &(priv->arg_new_vocabulary_window_switch), gettext("Open the vocabulary manager window"), NULL },
       { "version", 'v', 0, G_OPTION_ARG_NONE, &(priv->arg_version_switch), gettext("Check the gWaei version information"), NULL },
       { NULL }
     };
@@ -285,7 +224,7 @@ gw_application_parse_args (GwApplication *application, int *argc, char** argv[])
     if (error != NULL)
     {
       gw_application_handle_error (application, NULL, FALSE, &error);
-      exit(1);
+      exit(EXIT_SUCCESS);
     }
 
     //Get the query after the flags have been parsed out
@@ -307,7 +246,7 @@ gw_application_print_about (GwApplication *application)
     printf ("\n\n");
 
     printf ("Check for the latest updates at <http://gwaei.sourceforge.net/>\n");
-    printf ("Code Copyright (C) 2009-2011 Zachary Dovel\n\n");
+    printf ("Code Copyright (C) 2009-2012 Zachary Dovel\n\n");
 
     printf ("License:\n");
     printf ("Copyright (C) 2008 Free Software Foundation, Inc.\nLicense GPLv3+: "
@@ -322,9 +261,35 @@ gw_application_quit (GwApplication *application)
 {
     gw_application_block_searches (application);
 
-    GList *iter;
-    while ((iter = gtk_application_get_windows (GTK_APPLICATION (application))) != NULL)
-      gtk_widget_destroy (GTK_WIDGET (iter->data));
+    GList *link;
+    GtkListStore *liststore;
+    gboolean has_changes;
+    gboolean should_close;
+
+    liststore = gw_application_get_vocabularyliststore (application);
+    has_changes = gw_vocabularyliststore_has_changes (GW_VOCABULARYLISTSTORE (liststore));
+    should_close = TRUE;
+
+    if (has_changes)
+    {
+       link = gtk_application_get_windows (GTK_APPLICATION (application));
+       while (link != NULL && GW_IS_VOCABULARYWINDOW (link->data) == FALSE) link = link->next;
+
+       if (link != NULL)
+       {
+         should_close = gw_vocabularywindow_show_save_dialog (GW_VOCABULARYWINDOW (link->data));
+       }
+    }
+
+    if (should_close)
+    {
+      link = gtk_application_get_windows (GTK_APPLICATION (application));
+      while (link != NULL)
+      {
+        gtk_widget_destroy (GTK_WIDGET (link->data));
+        link = gtk_application_get_windows (GTK_APPLICATION (application));
+      }
+    }
 
     gw_application_unblock_searches (application);
 }
@@ -555,11 +520,10 @@ gw_application_get_last_focused_searchwindow (GwApplication *application)
    GwSearchWindow *window;
 
    priv = application->priv;
+   window = GW_SEARCHWINDOW (gw_application_get_window_by_type (application, GW_TYPE_SEARCHWINDOW));
 
-   if (priv->last_focused != NULL)
+   if (window != NULL && priv->last_focused != NULL)
      window = priv->last_focused;
-   else
-     window = GW_SEARCHWINDOW (gw_application_get_window_by_type (application, GW_TYPE_SEARCHWINDOW));
 
    return window;
 }
@@ -572,57 +536,95 @@ gw_application_get_preferences (GwApplication *application)
 
     priv = application->priv;
 
+    if (priv->preferences == NULL)
+    {
+      priv->preferences = lw_preferences_new (NULL);
+    }
+
     return priv->preferences;
 }
 
 
-GwDictInfoList* 
-gw_application_get_dictinfolist (GwApplication *application)
+GtkListStore* 
+gw_application_get_dictionarystore (GwApplication *application)
 {
     GwApplicationPrivate *priv;
+    LwPreferences *preferences;
+    gpointer *pointer;
 
     priv = application->priv;
 
-    return priv->dictinfolist;
+    if (priv->dictionarystore == NULL)
+    {
+      priv->dictionarystore = gw_dictionarystore_new ();
+      pointer = (gpointer*) &(priv->dictionarystore);
+      preferences = gw_application_get_preferences (application);
+      gw_dictionarystore_load_order (GW_DICTIONARYSTORE (priv->dictionarystore), preferences);
+      g_object_add_weak_pointer (G_OBJECT (priv->dictionarystore), pointer);
+    }
+
+    return priv->dictionarystore;
 }
 
 
 LwDictInstList* 
 gw_application_get_dictinstlist (GwApplication *application)
 {
-  GwApplicationPrivate *priv;
+    GwApplicationPrivate *priv;
+    priv = application->priv;
 
-  priv = application->priv;
+    if (priv->dictinstlist == NULL)
+      priv->dictinstlist = lw_dictinstlist_new (priv->preferences);
 
-  if (priv->dictinstlist == NULL)
-    priv->dictinstlist = lw_dictinstlist_new (priv->preferences);
-
-  return priv->dictinstlist;
+    return priv->dictinstlist;
 }
 
 
-GtkTextTagTable* 
-gw_application_get_tagtable (GwApplication *application)
+GtkListStore*
+gw_application_get_vocabularyliststore (GwApplication *application)
 {
-    GwApplicationPrivate *priv;
+  GwApplicationPrivate *priv;
+  LwPreferences *preferences;
+  gpointer* pointer;
 
-    priv = application->priv;
+  priv = application->priv;
 
-    return priv->tagtable;
+  if (priv->vocabularyliststore == NULL)
+  {
+    preferences = gw_application_get_preferences (application);
+    priv->vocabularyliststore = gw_vocabularyliststore_new ();
+    pointer = (gpointer*) &(priv->vocabularyliststore);
+    g_object_add_weak_pointer (G_OBJECT (priv->vocabularyliststore), pointer);
+    gw_vocabularyliststore_load_list_order (GW_VOCABULARYLISTSTORE (priv->vocabularyliststore), preferences);
+  }
+
+  return priv->vocabularyliststore;
 }
 
 
 static void 
 gw_application_activate (GApplication *application)
 {
+    GwApplicationPrivate *priv;
     GwSearchWindow *searchwindow;
+    GwVocabularyWindow *vocabularywindow;
     GwSettingsWindow *settingswindow;
+    GwDictionaryStore *dictionarystore;
     LwDictInfoList *dictinfolist;
 
+    priv = GW_APPLICATION (application)->priv;
     searchwindow = gw_application_get_last_focused_searchwindow (GW_APPLICATION (application));
-    dictinfolist = LW_DICTINFOLIST (gw_application_get_dictinfolist (GW_APPLICATION (application)));
+    dictionarystore = GW_DICTIONARYSTORE (gw_application_get_dictionarystore (GW_APPLICATION (application)));
+    dictinfolist = gw_dictionarystore_get_dictinfolist (dictionarystore);
 
-    if (searchwindow == NULL)
+    if (priv->arg_new_vocabulary_window_switch)
+    {
+      vocabularywindow = GW_VOCABULARYWINDOW (gw_vocabularywindow_new (GTK_APPLICATION (application)));
+      gtk_widget_show (GTK_WIDGET (vocabularywindow));
+      return;
+    }
+
+    else if (searchwindow == NULL || priv->arg_new_window_switch)
     {
       searchwindow = GW_SEARCHWINDOW (gw_searchwindow_new (GTK_APPLICATION (application)));
       gtk_widget_show (GTK_WIDGET (searchwindow));
@@ -633,10 +635,12 @@ gw_application_activate (GApplication *application)
         gtk_window_set_transient_for (GTK_WINDOW (settingswindow), GTK_WINDOW (searchwindow));
         gtk_widget_show (GTK_WIDGET (settingswindow));
       }
+      return;
     }
     else
     {
       gtk_window_present (GTK_WINDOW (searchwindow));
+      return;
     }
 }
 
@@ -647,6 +651,7 @@ gw_application_command_line (GApplication *application, GApplicationCommandLine 
     //Declarations
     LwDictInfo *di;
     GwSearchWindow *window;
+    GwDictionaryStore *dictionarystore;
     LwDictInfoList *dictinfolist;
     GwApplicationPrivate *priv;
     int argc;
@@ -654,18 +659,24 @@ gw_application_command_line (GApplication *application, GApplicationCommandLine 
 
     //Initializations
     priv = GW_APPLICATION (application)->priv;
-    dictinfolist = LW_DICTINFOLIST (gw_application_get_dictinfolist (GW_APPLICATION (application)));
-    argv = g_application_command_line_get_arguments (command_line, &argc);
+    dictionarystore = GW_DICTIONARYSTORE (gw_application_get_dictionarystore (GW_APPLICATION (application)));
+    dictinfolist = gw_dictionarystore_get_dictinfolist (dictionarystore);
+    argv = NULL;
 
+    if (command_line != NULL)
+    {
+      argv = g_application_command_line_get_arguments (command_line, &argc);
+
+      gw_application_parse_args (GW_APPLICATION (application), &argc, &argv);
+    }
     g_application_activate (G_APPLICATION (application));
-
-    gw_application_parse_args (GW_APPLICATION (application), &argc, &argv);
     window = gw_application_get_last_focused_searchwindow (GW_APPLICATION (application));
-
-    g_assert (window != NULL);
+    if (window == NULL) 
+      return 0;
+    di = lw_dictinfolist_get_dictinfo_fuzzy (dictinfolist, priv->arg_dictionary);
 
     //Set the initial dictionary
-    if ((di = lw_dictinfolist_get_dictinfo_fuzzy (dictinfolist, priv->arg_dictionary)) != NULL)
+    if (di != NULL)
     {
       gw_searchwindow_set_dictionary (window, di->load_position);
     }
@@ -677,13 +688,16 @@ gw_application_command_line (GApplication *application, GApplicationCommandLine 
       gw_searchwindow_search_cb (GTK_WIDGET (window), window);
     }
 
+    //Cleanup
+    if (argv != NULL) g_strfreev (argv); argv = NULL;
+
     return 0;
 }
 
 
 static gboolean 
 gw_application_local_command_line (GApplication *application, 
-                                                 gchar ***argv, gint *exit_status)
+                                   gchar ***argv, gint *exit_status)
 {
     //Declarations
     int argc;
@@ -714,61 +728,18 @@ gw_application_local_command_line (GApplication *application,
 } 
 
 
-//!
-//! @brief Adds the tags to stylize the buffer text
-//!
-static GtkTextTagTable* 
-gw_application_texttagtable_new ()
+gboolean
+gw_application_should_quit (GwApplication *application)
 {
-    GtkTextTagTable *temp;
-    GtkTextTag *tag;
+    GList *windowlist;
+    GList *link;
+    gboolean should_quit;
 
-    temp = gtk_text_tag_table_new ();
+    windowlist = gtk_application_get_windows (GTK_APPLICATION (application));
+    should_quit = TRUE;
 
-    if (temp != NULL)
-    {
-      tag = gtk_text_tag_new ("italic");
-      g_object_set (tag, "style", PANGO_STYLE_ITALIC, NULL);
-      gtk_text_tag_table_add (temp, tag);
+    for (link = windowlist; should_quit && link != NULL; link = link->next)
+      if (gw_window_is_important (GW_WINDOW (link->data))) should_quit = FALSE;
 
-      tag = gtk_text_tag_new ("gray");
-      g_object_set (tag, "foreground", "#888888", NULL);
-      gtk_text_tag_table_add (temp, tag);
-
-      tag = gtk_text_tag_new ("smaller");
-      g_object_set (tag, "size", "smaller", NULL);
-      gtk_text_tag_table_add (temp, tag);
-
-      tag = gtk_text_tag_new ("small");
-      g_object_set (tag, "font", "Serif 6", NULL);
-      gtk_text_tag_table_add (temp, tag);
-
-      tag = gtk_text_tag_new ("important");
-      g_object_set (tag, "weight", PANGO_WEIGHT_BOLD, NULL);
-      gtk_text_tag_table_add (temp, tag);
-
-      tag = gtk_text_tag_new ("larger");
-      g_object_set (tag, "font", "Sans 20", NULL);
-      gtk_text_tag_table_add (temp, tag);
-
-      tag = gtk_text_tag_new ("large");
-      g_object_set (tag, "font", "Serif 40", NULL);
-      gtk_text_tag_table_add (temp, tag);
-
-      tag = gtk_text_tag_new ("center");
-      g_object_set (tag, "justification", GTK_JUSTIFY_LEFT, NULL);
-      gtk_text_tag_table_add (temp, tag);
-
-      tag = gtk_text_tag_new ("comment");
-      gtk_text_tag_table_add (temp, tag);
-
-      tag = gtk_text_tag_new ("match");
-      gtk_text_tag_table_add (temp, tag);
-
-      tag = gtk_text_tag_new ("header");
-      gtk_text_tag_table_add (temp, tag);
-    }
-
-    return temp;
+    return should_quit;
 }
-

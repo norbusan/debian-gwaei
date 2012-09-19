@@ -25,6 +25,9 @@
 //! @brief To be written
 //!
 
+
+#include "../private.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -67,18 +70,10 @@ w_application_init (WApplication *application)
 static void 
 w_application_constructed (GObject *object)
 {
-    //Declarations
-//    WApplication *application;
-//    WApplicationPrivate *priv;
-
     //Chain the parent class
     {
       G_OBJECT_CLASS (w_application_parent_class)->constructed (object);
     }
-
-    //Initialization
-//    application = W_APPLICATION (object);
-//    priv = application->priv;
 
     lw_regex_initialize ();
 }
@@ -99,6 +94,12 @@ w_application_finalize (GObject *object)
     if (priv->context != NULL) g_option_context_free (priv->context); priv->context = NULL;
     if (priv->arg_query_text_data != NULL) g_free(priv->arg_query_text_data); priv->arg_query_text_data = NULL;
     if (priv->preferences != NULL) lw_preferences_free (priv->preferences); priv->preferences = NULL;
+#if WITH_MECAB
+    if (lw_morphologyengine_has_default ()) 
+    {
+      lw_morphologyengine_free (lw_morphologyengine_get_default ()); 
+    }
+#endif
 
     lw_regex_free ();
 
@@ -201,7 +202,7 @@ w_application_print_about (WApplication *application)
     printf ("\n\n");
 
     printf ("Check for the latest updates at <http://gwaei.sourceforge.net/>\n");
-    printf ("Code Copyright (C) 2009-2011 Zachary Dovel\n\n");
+    printf ("Code Copyright (C) 2009-2012 Zachary Dovel\n\n");
 
     printf ("License:\n");
     printf ("Copyright (C) 2008 Free Software Foundation, Inc.\nLicense GPLv3+: "
@@ -261,11 +262,12 @@ w_application_get_dictinfolist (WApplication *application)
     LwPreferences *preferences;
 
     priv = application->priv;
+    preferences = w_application_get_preferences (application);
 
     if (priv->dictinfolist == NULL)
     {
-      preferences = w_application_get_preferences (application);
-      priv->dictinfolist = lw_dictinfolist_new (20, preferences);
+      priv->dictinfolist = lw_dictinfolist_new (20);
+      lw_dictinfolist_load_order (priv->dictinfolist, preferences);
     }
 
     return priv->dictinfolist;
@@ -332,7 +334,14 @@ w_application_run (WApplication *application, int *argc, char **argv[])
 
     //User didn't specify enough information for an action
     else 
-      printf("%s\n", g_option_context_get_help (priv->context, TRUE, NULL));
+    {
+      gchar *text = g_option_context_get_help (priv->context, FALSE, NULL);
+      if (text != NULL)
+      {
+        printf("%s\n", text);
+        g_free (text); text = NULL;
+      }
+    }
 
     //Cleanup
     w_application_handle_error (application, &error);
@@ -420,5 +429,4 @@ w_application_get_query_text_data (WApplication *application)
   priv = application->priv;
   return priv->arg_query_text_data;
 }
-
 

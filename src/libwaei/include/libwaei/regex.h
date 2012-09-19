@@ -1,13 +1,15 @@
 #ifndef LW_REGEX_INCLUDED
 #define LW_REGEX_INCLUDED
 
-#define LW_RE_COMPILE_FLAGS (G_REGEX_CASELESS | G_REGEX_OPTIMIZE)
-#define LW_RE_LOCATE_FLAGS  (0)
-#define LW_RE_EXIST_FLAGS   (0)
-
 #include <glib.h>
 #include <libwaei/dict.h>
 #include <libwaei/utilities.h>
+
+G_BEGIN_DECLS
+
+#define LW_RE_COMPILE_FLAGS (G_REGEX_CASELESS | G_REGEX_OPTIMIZE)
+#define LW_RE_LOCATE_FLAGS  (0)
+#define LW_RE_EXIST_FLAGS   (0)
 
 typedef enum
 {
@@ -51,5 +53,7 @@ typedef enum {
 } LwRegexDataIndex;
 
 extern GRegex *lw_re[LW_RE_TOTAL + 1];
+
+G_END_DECLS
 
 #endif

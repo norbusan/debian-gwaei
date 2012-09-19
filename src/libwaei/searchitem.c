@@ -24,6 +24,8 @@
 //!
 
 
+#include "../private.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -102,7 +104,7 @@ void
 lw_searchitem_free (LwSearchItem* item)
 {
     //Sanity check
-    g_assert (item != NULL && item->status == LW_SEARCHSTATUS_IDLE);
+    g_assert (item != NULL);
 
     lw_searchitem_deinit (item);
 
@@ -128,7 +130,7 @@ lw_searchitem_init (LwSearchItem *item, const char* query, LwDictInfo* dictionar
     item->results_medium = NULL;
     item->results_low = NULL;
     item->thread = NULL;
-    item->mutex = g_mutex_new ();
+    g_mutex_init (&item->mutex);
 
     //Set the internal pointers to the correct global variables
     item->fd = NULL;
@@ -173,20 +175,14 @@ lw_searchitem_init (LwSearchItem *item, const char* query, LwDictInfo* dictionar
 void 
 lw_searchitem_deinit (LwSearchItem *item)
 {
-    if (item->thread != NULL) 
-    {
-      item->status = LW_SEARCHSTATUS_CANCELING;
-      g_thread_join (item->thread);
-      item->thread = NULL;
-    }
+    lw_searchitem_cancel_search (item);
     lw_searchitem_clear_results (item);
     lw_searchitem_cleanup_search (item);
     lw_queryline_free (item->queryline);
     if (lw_searchitem_has_data (item))
       lw_searchitem_free_data (item);
 
-    g_mutex_free (item->mutex);
-    item->mutex = NULL;
+    g_mutex_clear (&item->mutex);
 }
 
 
@@ -284,8 +280,7 @@ lw_searchitem_cleanup_search (LwSearchItem* item)
       item->resultline = NULL;
     }
 
-    item->thread = NULL;
-    item->status = LW_SEARCHSTATUS_IDLE;
+    item->status = LW_SEARCHSTATUS_FINISHING;
 }
 
 
@@ -719,18 +714,15 @@ lw_searchitem_parse_result_string (LwSearchItem *item)
     }
 }
 
-static int _locks = 0;
 
 //!
 //! @brief A wrapper around gmutex made for LwSearchItem objects
 //! @param item An LwSearchItem to lock the mutex on
 //!
 void 
-lw_searchitem_lock_mutex (LwSearchItem *item)
+lw_searchitem_lock (LwSearchItem *item)
 {
-  _locks++;
-//  printf("LOCKS %d\n", _locks);
-  g_mutex_lock (item->mutex);
+  if (item->thread != NULL) g_mutex_lock (&item->mutex);
 }
 
 //!
@@ -738,11 +730,9 @@ lw_searchitem_lock_mutex (LwSearchItem *item)
 //! @param item An LwSearchItem to unlock the mutex on
 //!
 void 
-lw_searchitem_unlock_mutex (LwSearchItem *item)
+lw_searchitem_unlock (LwSearchItem *item)
 {
-  _locks--;
-//  printf("LOCKS %d\n", _locks);
-  g_mutex_unlock(item->mutex);
+  if (item->thread != NULL) g_mutex_unlock (&item->mutex);
 }
 
 
@@ -770,3 +760,25 @@ lw_searchitem_get_progress (LwSearchItem *item)
 
     return fraction;
 }
+
+
+void
+lw_searchitem_set_status (LwSearchItem *item, LwSearchStatus status)
+{
+    lw_searchitem_lock (item);
+    item->status = status;
+    lw_searchitem_unlock (item);
+}
+
+
+LwSearchStatus
+lw_searchitem_get_status (LwSearchItem *item)
+{
+    LwSearchStatus status;
+    lw_searchitem_lock (item);
+    status = item->status;
+    lw_searchitem_unlock (item);
+
+    return status;
+}
+

@@ -24,6 +24,8 @@
 //!
 
 
+#include "../private.h"
+
 #include <string.h>
 #include <stdlib.h>
 
@@ -76,7 +78,7 @@ lw_preferences_init (LwPreferences *pm, GSettingsBackend *backend)
 {
     pm->settingslist = NULL;
     pm->backend = backend;
-    pm->mutex = g_mutex_new ();
+    g_mutex_init (&pm->mutex);
 }
 
 
@@ -90,6 +92,8 @@ void
 lw_preferences_deinit (LwPreferences *pm)
 {
     lw_preferences_free_settings (pm);
+    g_mutex_clear (&pm->mutex); 
+    if (pm->backend != NULL) g_object_unref (pm->backend); pm->backend = NULL;
 }
 
 

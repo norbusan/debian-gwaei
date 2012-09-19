@@ -26,6 +26,8 @@
 //!
 
 
+#include "../private.h"
+
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -139,11 +141,13 @@ static void _draw_page_title (GtkPrintContext *context, GwPageInfo *page, GwPrin
     PangoFontDescription *desc;
     int width;
     int height;
+    gint index;
     cairo_t *cr;
     LwSearchItem *item;
 
     //Initializations
-    item = gw_searchwindow_get_current_searchitem (data->window);
+    index = gw_searchwindow_get_current_tab_index (data->window);
+    item = gw_searchwindow_get_searchitem_by_index (data->window, index);
     text = gw_searchwindow_get_title_by_searchitem (data->window, item);
     layout = gtk_print_context_create_pango_layout (context);
     desc = pango_font_description_from_string ("sans 8");
