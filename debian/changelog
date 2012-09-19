@@ -1,3 +1,11 @@
+gwaei (3.4.2-1) experimental; urgency=low
+
+  * new upstream release(s)
+  * upload to experimental, the necessary libs are not in unstable by now
+  * adjust build dependencies
+
+ -- Norbert Preining <preining@debian.org>  Tue, 03 Apr 2012 17:13:21 +0900
+
 gwaei (3.2.0b1-2) unstable; urgency=low
 
   * fix for stupid libgtk library breaking unrelated software, needed
