@@ -11,44 +11,34 @@ TABLE OF CONTENTS
 
   1.0 PREREQUISITES
   2.0 CONFIGURATION AND INSTALLATION
-  3.0 MAKING A DEB PACKAGE
-  4.0 MAKING AN RPM PACKAGE
-  5.0 COMPILING ON WINDOWS
-  6.0 MESSAGE TO PACKAGERS
-
+  3.0 COMPILING ON WINDOWS
 
 
 1.0 PREREQUISITES:
 
-  To run gWaei 1.2, an environment with at least gtk+-2.16/glib-2.9.0,
-  gconf-2.24.0, curl 7.19.6, gnome-doc-utils-0.14.0, libncurses5-5.7, and
-  libsexy-0.1.11 are required.  Additionally, you will want to have rsync, gzip
-  and kanjistrokeorders  available.  Most of these are satisfied with a
-  default install of Gnome 2.26 or newer which should come with Ubuntu 9.04
-  and Fedora 11. If you want to be able to see kanji stroke orders in the program,
-  it is recommended you install ttf-kanjistrokeorders along with gWaei.
+  To run gWaei 3.0.x, an environment with at least gtk+-3.0.0/glib-2.25.0,
+  curl 7.19.6, gnome-doc-utils-0.14.0, libncurses5-5.7, and libunique-3.0
+  are required.  Additionally, you will want to have gunzip, unzip, and
+  enchant, and ttf-kanjistrokeorders available.
 
   An example of a command that Ubuntu/Debian users might use to get the
   required runtime dependancies is:
 
-  sudo apt-get install libcurl3 libgtk2.0-0 libsexy2 libgconf2-4\ 
-  ttf-kanjistrokeorders gnome-doc-utils libncurses5
+  sudo apt-get install libcurl4-gnutls libgtk-3 gnome-doc-utils \
+  libunique-3.0 libncurses5 libncursesw5 ttf-kanjistrokeorder enchant
 
-  To compile the program, you will have to have the dev files for  GCONF2,
-  GTK+, CURL3, NCURSES and LIBSEXY and available. Users with binary based
-  distributions should install the approprate "dev" or "devel" files for the above
-  dependencies using their package manager. Automake and GCC will come in handy
-  too, as they are standard build tools for GNU systems.  If you want rsync
-  update functionality available for the dictionaries, you will need to make
-  sure that rsync is available when compiling, otherwise it will be perminently
-  disabled.
+  To compile the program, you will have to have the dev files for GTK+, CURL3,
+  LIBUNIQUE and NCURSES available. Users with binary based distributions
+  should install the approprate "dev" or "devel" files for the above dependencies
+  using their package manager. Automake and GCC will come in handy too, as they
+  are standard build tools for GNU systems.
 
   An example of a command that Ubuntu/Debian users might use to get the
   required compilation dependancies is:
 
-  sudo apt-get install libcurl4-gnutls-dev libgtk2.0-dev libsexy-dev\
- libgconf2-dev build-essential gnome-doc-utils libunique-dev libncurses5-dev
-  libncursesw5-dev gcc autoconf automake
+  sudo apt-get install libcurl4-gnutls-dev libgtk-3-dev gnome-doc-utils \
+  libunique-3.0-dev libncurses5-dev libncursesw5-dev imagemagick intltool \
+  rarian-compat
 
   For inputing Japanese queries, installing some software for Japanese
   conversion is highly recommended.  Currently, the three main linux methods are
@@ -61,18 +51,14 @@ TABLE OF CONTENTS
 
 2.0 CONFIGURATION AND INSTALLATION:
 
-  When configuring, the two most important variables for this program are
-  prefix and sysconfdir.  The sysconfdir will decide where the gconf schemas
-  will be installed.  This is normally in /etc/gconf/schemas.  For Debian users,
-  it's /usr/gconf/schemas.  BSDs tend to use /usr/pkg/gconf/schemas.  If you
-  choose the wrong location for the schemas, installation will usually fail. 
-  Most users will install using steps similar to below.
+  When configuring, the most important variable for this program is the  
+  prefix.  Most users will install using steps similar to below.
 
-  2.2 CREATION OF MISSING FILES FOR A DOWNLOAD FRESH FROM THE GIT REPO
+  2.2 CREATION OF MISSING FILES FOR A FRESH DOWNLOAD FROM THE GIT REPO
     $ ./autogen.sh
 
-  2.3 BUILDING AND INSTALLING FROM THE SOURCE:
-    $ ./configure --prefix /usr --sysconfdir /etc
+  2.3 BUILDING AND INSTALLING FROM THE SOURCE CODE:
+    $ ./configure --prefix /usr 
     $ make
     $ sudo make install
 
@@ -80,82 +66,28 @@ TABLE OF CONTENTS
     $ sudo make uninstall
 
 
+3.0 COMPILING ON WINDOWS:
 
-3.0 MAKING A DEB PACKAGE:
+  gWaei has been tested and built on windows with some success through MinGW.
+  Since I do not have a Windows PC of my own handy, I only get to test and
+  maintain builds sporadically.  Your success will largely depend on how well
+  you have your MinGW environment set up.
 
-  Debian packages of gWaei are coming to most distros through Debian.  To build
-  from the sources on the gWaei site, make sure you have dkpg and fakeroot installed in
-  addition to the standard build tools detailed above.  You may need to then run
-    sudo apt-get install quilt
+  Gotchas in MinGW are in setting up pkgconfig, and the paths in the gnome dependencies.
+  They are located in /uslr/lib/pkgconfig.  You will likely have to manually compile and install
+  libcurl.  Most other dependancies should be available on the gtk website and on the sourceforge
+  page for MinGW.  Make sure you also grab gnuregex while you are there.
 
-  ./autogen.sh.  You then run:
-    $ ./configure
-    $ make deb
+  The setup and installation of gWaei will look like so:
 
-  to get your debian package.
-
-
-
-4.0 MAKING AN RPM PACKAGE:
-
-  You will need to have the rpmbuilder executable available before proceeding.
-  On some architectures it is included with the rpm package itself.  On others
-  you will need to install the rpm-build package.
-  
-  You will need to configure the installer with any needed options using "./configure".
-  It will do the work of setting up the spec file correctly for you.  Then run
-  "make rpm" to actually build the rpm for your architecture. The newly created
-  rpm will appear at the base of the gwaei folder.  You may need to run ./autogen.sh
-  to make sure some missing files are generated if you got gWaei from the git
-  repositories.
-
-  Most users will get their rpm by doing something similar to this:
-    $ ./configure --prefix /usr --sysconf /etc
-    $ make rpm
-
-  If you are lazy, you can also use a shortcut for Fedora:
-    $ ./configure
-    $ make fedora-rpm
-
-
-
-5.0 COMPILING ON WINDOWS:
-
-  Work has been started to make gWaei compile and work on windows.  Currently,
-  only waei as of writing this works.  To compile, you will need the MingGW
-  environment, gtk win32 binary, libgnurx win32 binary, xslt win32 binary,
-  libxml win32 binary and curl source, gnome-doc-utils source.
-  
-  You will need to compile the curl dll with only ftp and http and file support
-  to simplify dependancies. There is info on it in the documentation.
-  
-  The xslt and libxml binaries are to simplify gnome-doc-utils installation.
-
-  If you can install these through some other method, go for it.  The actual
-  setup and installation of gWaei will look like so:
-
-    ./configure --prefix /usr/local --enable-win32 --disable-schemas-install
+    PKG_CONFIG_PATH="/the/path/to/pkgconfig" ./configure --prefix /usr/local --enable-win32
     make
     make install
 
   That's it.  If someone wants to help sort out the final issues with getting
   the program running on Windows, please feel free to get in contact with
-  one of the developers on the gWaei homepage.
-
-
-
-6.0 MESSAGE TO PACKAGERS
-
-  Libunique is a new dependancy for gWaei, so please make sure not to miss it.
-  If you still have it written that gWaei depends on libgnome and/or
-  libgnome-ui, please remove those lines.  They have been unneeded for a while.
-
-  I'm trying my best to make things easier for you guys.  Make sure to use the
-  --disable-schemas-install flag on configure to disable both the schemas install
-  call *and* the icon cache updating of the local install.  Otherwise, you will
-  likely get some kind of sandbox error.  You do not need to patch the icon cache
-  update line out. 
-
+  one of the developers on the gWaei homepage.  There are still various polish issues
+  that should be worked out before it is fully fledged like the other ports.
 
 
 END

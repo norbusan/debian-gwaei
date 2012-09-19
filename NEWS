@@ -1,2 +1,4 @@
-2010-08-16: gWaei 1.4.2
-A number of bug fixes. Crasher when rapidly switching radical search tool buttons has been fixed.  Fixed the save menu so it works again.  Better search results with the Kanji dictionary.  Various other fixes listed on git.
+2010-07-16: gWaei 3.0.2
+  Fixed warning coming from a tooltip window not being empting when adding an
+  hbox to it. Tweaks to the mutexes that were causing the program to freeze and
+  choppy query input.

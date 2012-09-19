@@ -9,10 +9,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gwaei 1.4.0\n"
 "Report-Msgid-Bugs-To: pizzach@gmail.com\n"
-"POT-Creation-Date: 2010-09-17 12:37-0400\n"
+"POT-Creation-Date: 2011-07-16 00:27-0400\n"
 "PO-Revision-Date: 2004-01-01 20:41+0100\n"
 "Last-Translator: Pavel Fric <pavelfric@seznam.cz>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
+"Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -22,51 +23,347 @@ msgstr ""
 "X-Poedit-Basepath: /home/nicolas/dev/japanese/gwaei\n"
 "X-Generator: Lokalize 1.0\n"
 
-#: src/console-main-interface.c:68 src/ncurses-main-interface.c:124
+#: ../src/libwaei/dictinfo.c:83
+#, c-format
+msgid "%s Dictionary"
+msgstr "Slovník %s"
+
+#: ../src/libwaei/dictinfo.c:128 ../src/libwaei/dictinstlist.c:61
+msgid "English Dictionary"
+msgstr "Anglický slovník"
+
+#: ../src/libwaei/dictinfo.c:129 ../src/libwaei/dictinstlist.c:60
+msgid "English"
+msgstr "Angličtina"
+
+#: ../src/libwaei/dictinfo.c:134
+msgid "Names Dictionary"
+msgstr "Slovník jmen"
+
+#: ../src/libwaei/dictinfo.c:135
+msgid "Names"
+msgstr "Jména"
+
+#: ../src/libwaei/dictinfo.c:140
+msgid "Places Dictionary"
+msgstr "Slovník míst"
+
+#: ../src/libwaei/dictinfo.c:141
+msgid "Places"
+msgstr "Místa"
+
+#: ../src/libwaei/dictinfo.c:149 ../src/libwaei/dictinstlist.c:77
+msgid "Kanji Dictionary"
+msgstr "Slovník kanji"
+
+#: ../src/libwaei/dictinfo.c:150 ../src/libwaei/dictinstlist.c:76
+msgid "Kanji"
+msgstr "Kanji"
+
+#: ../src/libwaei/dictinfo.c:158 ../src/libwaei/dictinstlist.c:109
+msgid "Examples Dictionary"
+msgstr "Slovník příkladů"
+
+#: ../src/libwaei/dictinfo.c:159 ../src/libwaei/dictinstlist.c:108
+msgid "Examples"
+msgstr "Příklady"
+
+#: ../src/libwaei/dictinst.c:760
+#, c-format
+msgid "Downloading %s..."
+msgstr "Stahuje se %s..."
+
+#: ../src/libwaei/dictinst.c:762
+#, c-format
+msgid "Downloading..."
+msgstr "Stahuje se..."
+
+#: ../src/libwaei/dictinst.c:766
+#, fuzzy, c-format
+msgid "Converting the encoding of %s from %s to UTF-8..."
+msgstr "Převádí se kódování..."
+
+#: ../src/libwaei/dictinst.c:768
+#, fuzzy, c-format
+msgid "Converting the encoding to UTF-8..."
+msgstr "Převádí se kódování..."
+
+#: ../src/libwaei/dictinst.c:772
+#, c-format
+msgid "Decompressing %s from %s file..."
+msgstr ""
+
+#: ../src/libwaei/dictinst.c:774
+#, fuzzy, c-format
+msgid "Decompressing..."
+msgstr "Následné zpracování..."
+
+#: ../src/libwaei/dictinst.c:778
+#, fuzzy, c-format
+msgid "Doing postprocessing on %s..."
+msgstr "Následné zpracování..."
+
+#: ../src/libwaei/dictinst.c:780
+#, c-format
+msgid "Postprocessing..."
+msgstr "Následné zpracování..."
+
+#: ../src/libwaei/dictinst.c:783
+#, fuzzy, c-format
+msgid "Finalizing installation of %s..."
+msgstr "Finalisation des changements dans le %s ..."
+
+#: ../src/libwaei/dictinst.c:786
+#, fuzzy, c-format
+msgid "Installed."
+msgstr "Nainstalován"
+
+#: ../src/libwaei/dictinstlist.c:62
+#, fuzzy
+msgid "The venerable Japanese-English Dictionary developed by Jim Breen."
+msgstr "Japonsko-anglický slovník gWaei "
+
+#: ../src/libwaei/dictinstlist.c:78
+msgid ""
+"A Kanji dictionary based off of kanjidic with radical information combined."
+msgstr ""
+
+#: ../src/libwaei/dictinstlist.c:92
+#, fuzzy
+msgid "Names and Places"
+msgstr "  waei -d Places "
+
+#: ../src/libwaei/dictinstlist.c:93
+#, fuzzy
+msgid "Names and Places Dictionary"
+msgstr "Slovník míst"
+
+#: ../src/libwaei/dictinstlist.c:94
+msgid ""
+"Based off of Enamdic, but with the names split from the places for 2 "
+"separate dictionaries."
+msgstr ""
+
+#: ../src/libwaei/dictinstlist.c:110
+msgid ""
+"A collection of Japanese/English sentences initially compiled by Professor "
+"Yasuhito Tanaka at Hyogo University and his students."
+msgstr ""
+
+#: ../src/libwaei/dictinstlist.c:125
+msgid "Other"
+msgstr ""
+
+#: ../src/libwaei/dictinstlist.c:126
+#, fuzzy
+msgid "Other Dictionary"
+msgstr "Jiné slovníky"
+
+#: ../src/libwaei/dictinstlist.c:127
+#, fuzzy
+msgid "Install a custom dictionary."
+msgstr "Nainstalovat slovník"
+
+#: ../src/libwaei/io.c:706
+msgid "Unable to read data from the input file."
+msgstr ""
+
+#: ../src/libwaei/io.c:712
+msgid "Unable to write to the external program's input stream."
+msgstr ""
+
+#: ../src/libwaei/io.c:754
+msgid "Unable to read data from the external program's pipe."
+msgstr ""
+
+#: ../src/libwaei/io.c:760
+msgid "Unable to write the stream's output to a file."
+msgstr ""
+
+#: ../src/waei/console.c:47 ../src/waei/console.c:49 ../src/waei/ncurses.c:115
 msgid "Other Results"
 msgstr "Další výsledky"
 
-#: src/console-main-interface.c:77 src/ncurses-main-interface.c:80
+#: ../src/waei/console.c:58 ../src/waei/ncurses.c:71
 msgid "No results found!"
 msgstr "Nenalezen žádný výsledek."
 
-#: src/console-main-interface.c:106 src/console-main-interface.c:149
-#, c-format
-msgid "Finished\n"
-msgstr "Hotovo\n"
+#: ../src/waei/console.c:77
+#, fuzzy, c-format
+msgid "Uninstalling %s...\n"
+msgstr "Instaluje se..."
 
-#: src/console-main-interface.c:117
-#, c-format
-msgid "Trying to install the %s...\n"
-msgstr "Pokouší se instalovat %s ...\n"
+#: ../src/waei/console.c:105
+#, fuzzy, c-format
+msgid "Installing %s...\n"
+msgstr "Instaluje se..."
 
 #. TRANSLATORS: 'Searching for "${query}" in ${dictionary long name}'
-#: src/console-main-interface.c:191
+#: ../src/waei/console.c:147
 #, c-format
 msgid "Searching for \"%s\" in %s...\n"
 msgstr "Hledá se \"%s\" v %s ...\n"
 
-#: src/console-main-interface.c:203
+#: ../src/waei/console.c:157
 #, c-format
 msgid "Installable dictionaries are:\n"
 msgstr "Slovníky, které lze nainstalovat: \n"
 
-#: src/console-main-interface.c:223 src/console-main-interface.c:254
+#: ../src/waei/console.c:184 ../src/waei/console.c:218
 msgid "none"
 msgstr "žádný"
 
-#: src/console-main-interface.c:240
+#: ../src/waei/console.c:205
 #, c-format
 msgid "Available dictionaries are:\n"
 msgstr "Nainstalované slovníky: \n"
 
-#: src/console-main-interface.c:274 src/ncurses-main-interface.c:448
+#: ../src/waei/console.c:283 ../src/waei/ncurses.c:566
+#: ../src/gwaei/output-callbacks.c:455 ../src/gwaei/output-callbacks.c:564
+msgid "Radicals:"
+msgstr "Radikály:"
+
+#: ../src/waei/console.c:288 ../src/waei/ncurses.c:571
+#: ../src/gwaei/output-callbacks.c:509 ../src/gwaei/output-callbacks.c:604
+msgid "Stroke:"
+msgstr "Tahy:"
+
+#: ../src/waei/console.c:296 ../src/waei/ncurses.c:579
+#: ../src/gwaei/output-callbacks.c:516 ../src/gwaei/output-callbacks.c:613
+msgid "Freq:"
+msgstr "Častost:"
+
+#: ../src/waei/console.c:304 ../src/waei/ncurses.c:587
+#: ../src/gwaei/output-callbacks.c:523 ../src/gwaei/output-callbacks.c:622
+msgid "Grade:"
+msgstr "Třída:"
+
+#: ../src/waei/console.c:312 ../src/waei/ncurses.c:595
+#: ../src/gwaei/output-callbacks.c:529 ../src/gwaei/output-callbacks.c:631
+msgid "JLPT:"
+msgstr "JLPT:"
+
+#: ../src/waei/console.c:319 ../src/waei/ncurses.c:602
+#: ../src/gwaei/output-callbacks.c:472 ../src/gwaei/output-callbacks.c:574
+#: ../src/gwaei/output-callbacks.c:584
+msgid "Readings:"
+msgstr "Čtení:"
+
+#: ../src/waei/console.c:321 ../src/waei/ncurses.c:604
+#: ../src/gwaei/output-callbacks.c:483
+msgid "Name:"
+msgstr "Název:"
+
+#: ../src/waei/console.c:323 ../src/waei/ncurses.c:606
+#: ../src/gwaei/output-callbacks.c:494
+msgid "Radical Name:"
+msgstr "Název radikálu:"
+
+#: ../src/waei/console.c:326 ../src/waei/ncurses.c:609
+#: ../src/gwaei/output-callbacks.c:538 ../src/gwaei/output-callbacks.c:649
+msgid "Meanings:"
+msgstr "Význam: "
+
+# E: English
+#. TRANSLATORS: The "E" stands for "English"
+#: ../src/waei/console.c:344 ../src/waei/console.c:346
+#: ../src/gwaei/output-callbacks.c:711
+msgid "E:\t"
+msgstr "E:\t"
+
+# J: Japanese
+#. TRANSLATORS: The "J" stands for "Japanese"
+#: ../src/waei/console.c:353 ../src/waei/console.c:355
+#: ../src/gwaei/output-callbacks.c:722
+msgid ""
+"\n"
+"J:\t"
+msgstr ""
+"\n"
+"J:\t"
+
+# D: Detail
+#. TRANSLATORS: The "D" stands for "Detail"
+#: ../src/waei/console.c:362 ../src/waei/console.c:364
+#: ../src/gwaei/output-callbacks.c:733
+msgid ""
+"\n"
+"D:\t"
+msgstr ""
+"\n"
+"D:\t"
+
+#: ../src/waei/console.c:508
+#, c-format
+msgid "Requested dictionary not found!\n"
+msgstr "Požadovaný slovník nebyl nalezen.\n"
+
+#: ../src/waei/console.c:531 ../src/waei/ncurses.c:392 ../src/gwaei/main.c:546
+#, c-format
+msgid "Found %d result"
+msgid_plural "Found %d results"
+msgstr[0] "%d výsledek nalezen"
+msgstr[1] "%d výsledků nalezeno"
+
+#. TRANSLATORS: relevant what ? It's the number of "relevant" result(s) displayed while or after searching.
+#: ../src/waei/console.c:532 ../src/waei/ncurses.c:393 ../src/gwaei/main.c:550
+#, c-format
+msgid "(%d Relevant)"
+msgid_plural "(%d Relevant)"
+msgstr[0] "(%d odpovídá)"
+msgstr[1] "(%d pertinents)"
+
+#. TRANSLATORS: First part of the sentence : 'Searching for "${query}" in the ${dictionary} dictionary'
+#: ../src/waei/ncurses.c:88
+msgid "Searching for \""
+msgstr "Hledá se \""
+
+#. TRANSLATORS: Second part of the sentence : 'Searching for "${query}" in the ${dictionary} dictionary'
+#: ../src/waei/ncurses.c:93
+msgid "\" in the "
+msgstr "\" ve slovníku "
+
+#. TRANSLATORS: Third and last part of the sentence : 'Searching for "${query}" in the ${dictionary} dictionary'
+#: ../src/waei/ncurses.c:98
+msgid " dictionary..."
+msgstr " ..."
+
+#: ../src/waei/ncurses.c:226 ../src/waei/ncurses.c:300
+#: ../src/waei/ncurses.c:410
+#, fuzzy
+msgid "Search: "
+msgstr "Hledat:"
+
+#: ../src/waei/ncurses.c:227 ../src/waei/ncurses.c:331
+#: ../src/waei/ncurses.c:396
+msgid "Results: "
+msgstr "Výsledky: "
+
+#: ../src/waei/ncurses.c:444
 msgid "- Japanese-English dictionary program that allows regex searches"
 msgstr ""
 "- Japonsko-anglický slovník, který umožňuje hledání pomocí regulárních "
 "výrazů (regex)"
 
-#: src/console-main-interface.c:275
+#: ../src/waei/ncurses.c:447 ../src/waei/waei.c:95
+msgid "Display less information"
+msgstr "Zobrazovat méně údajů"
+
+#: ../src/waei/ncurses.c:448 ../src/waei/waei.c:97
+msgid "Search using a chosen dictionary"
+msgstr "Hledání pomocí vybraného slovníku"
+
+#. TRANSLATORS: The "%s" stands for the error message
+#: ../src/waei/ncurses.c:455
+#, c-format
+msgid "Option parsing failed: %s\n"
+msgstr "Volbu se nepodařilo zpracovat: « %s »\n"
+
+#: ../src/waei/waei.c:70 ../src/gwaei/gwaei.c:69
+msgid "- A dictionary program for Japanese-English translation."
+msgstr "- Slovníkový program pro překlad z japonštiny do angličtiny"
+
+#: ../src/waei/waei.c:71
 msgid ""
 "waei generally outputs directly to the console.  If you want to do multiple\n"
 "searches, please start gWaei with the -n switch for the multisearch mode."
@@ -75,7 +372,7 @@ msgstr ""
 "vícenásobné hledání, použijte parametr « -n », se kterým spusťte gWaei v "
 "režimu vícenásobného hledání."
 
-#: src/console-main-interface.c:279
+#: ../src/waei/waei.c:76
 #, c-format
 msgid ""
 "Examples:\n"
@@ -105,590 +402,488 @@ msgstr ""
 "  waei -d Names %s     Vyhledání jména ve slovníku jmen\n"
 "  waei -d Places %s     Vyhledání místa ve slovníku míst"
 
-#: src/console-main-interface.c:301 src/ncurses-main-interface.c:451
-msgid "Open up the multisearch window (beta)"
+#: ../src/waei/waei.c:92
+#, fuzzy
+msgid "Open up the multisearch window"
 msgstr "Otevřít okno pro více hledání (beta)"
 
-#: src/console-main-interface.c:303 src/ncurses-main-interface.c:452
+#: ../src/waei/waei.c:94
 msgid "Do not display less relevant results"
 msgstr "Nezobrazovat méně závažné výsledky"
 
-#: src/console-main-interface.c:304 src/ncurses-main-interface.c:453
-msgid "Display less information"
+#: ../src/waei/waei.c:96
+#, fuzzy
+msgid "Display results with color"
 msgstr "Zobrazovat méně údajů"
 
-#: src/console-main-interface.c:305 src/ncurses-main-interface.c:454
-msgid "Search using a chosen dictionary"
-msgstr "Hledání pomocí vybraného slovníku"
-
-#: src/console-main-interface.c:306
+#: ../src/waei/waei.c:98
 msgid "Show available dictionaries for searches"
 msgstr "Ukázat slovníky dostupné pro hledání"
 
-#: src/console-main-interface.c:307
+#: ../src/waei/waei.c:99
+#, fuzzy
 msgid "Install dictionary"
-msgstr "Nainstalovat slovník"
+msgstr "Odinstalovat slovník"
 
-#: src/console-main-interface.c:308
+#: ../src/waei/waei.c:100
 msgid "Uninstall dictionary"
 msgstr "Odinstalovat slovník"
 
-#: src/console-main-interface.c:309
+#: ../src/waei/waei.c:101
 msgid "Check the waei version information"
 msgstr "Zobrazit údaj o verzi waei"
 
-#. TRANSLATORS: The "%s" stands for the error message
-#: src/console-main-interface.c:316 src/ncurses-main-interface.c:461
-#, c-format
-msgid "Option parsing failed: %s\n"
-msgstr "Volbu se nepodařilo zpracovat: « %s »\n"
+#: ../src/gwaei/ui/dictionaryinstall.ui.h:1
+#, fuzzy
+msgid "Select Dictionaries..."
+msgstr "Hlavní slovníky"
 
-#: src/console-main-interface.c:384
-#, c-format
-msgid "%s is already Installed. "
-msgstr "%s je již nainstalován. "
-
-#: src/console-main-interface.c:389
-#, c-format
-msgid "%s is not installable with this mechanism. "
-msgstr "%s nelze tímto způsobem nainstalovat."
-
-#: src/console-main-interface.c:408
-#, c-format
-msgid "The %s is not installed. "
-msgstr "« %s » není nainstalován."
-
-#. TRANSLATORS: The "%s" stands for the value provided by the user to the "waei uninstall"
-#: src/console-main-interface.c:415
-#, c-format
-msgid "%s is not installed. "
-msgstr "%s není nainstalován."
-
-#: src/console-main-interface.c:430 src/ncurses-main-interface.c:481
-#, c-format
-msgid "Requested dictionary not found!\n"
-msgstr "Požadovaný slovník nebyl nalezen.\n"
-
-#: src/console-main-interface.c:471
-#, c-format
-msgid "Query parse error\n"
-msgstr "Chyba při zpracovávání požadavku\n"
-
-#: src/console-main-interface.c:482 src/gtk-main-interface.c:976
-#: src/ncurses-main-interface.c:394
-#, c-format
-msgid "Found %d result"
-msgid_plural "Found %d results"
-msgstr[0] "%d výsledek nalezen"
-msgstr[1] "%d výsledků nalezeno"
-
-#. TRANSLATORS: relevant what ? It's the number of "relevant" result(s) displayed while or after searching.
-#: src/console-main-interface.c:483 src/gtk-main-interface.c:980
-#: src/ncurses-main-interface.c:395
-#, c-format
-msgid "(%d Relevant)"
-msgid_plural "(%d Relevant)"
-msgstr[0] "(%d odpovídá)"
-msgstr[1] "(%d pertinents)"
-
-#: src/console-main-interface.c:548 src/gtk-main-interface.c:3405
-#: src/ncurses-main-interface.c:578
-msgid "Radicals:"
-msgstr "Radikály:"
-
-#: src/console-main-interface.c:553 src/gtk-main-interface.c:3459
-#: src/ncurses-main-interface.c:583
-msgid "Stroke:"
-msgstr "Tahy:"
-
-#: src/console-main-interface.c:561 src/gtk-main-interface.c:3466
-#: src/ncurses-main-interface.c:591
-msgid "Freq:"
-msgstr "Častost:"
-
-#: src/console-main-interface.c:569 src/gtk-main-interface.c:3473
-#: src/ncurses-main-interface.c:599
-msgid "Grade:"
-msgstr "Třída:"
-
-#: src/console-main-interface.c:577 src/gtk-main-interface.c:3479
-#: src/ncurses-main-interface.c:607
-msgid "JLPT:"
-msgstr "JLPT:"
-
-#: src/console-main-interface.c:584 src/gtk-main-interface.c:3422
-#: src/ncurses-main-interface.c:614
-msgid "Readings:"
-msgstr "Čtení:"
-
-#: src/console-main-interface.c:586 src/gtk-main-interface.c:3433
-#: src/ncurses-main-interface.c:616
-msgid "Name:"
-msgstr "Název:"
-
-#: src/console-main-interface.c:588 src/gtk-main-interface.c:3444
-#: src/ncurses-main-interface.c:618
-msgid "Radical Name:"
-msgstr "Název radikálu:"
-
-#: src/console-main-interface.c:591 src/gtk-main-interface.c:3488
-#: src/ncurses-main-interface.c:621
-msgid "Meanings:"
-msgstr "Význam: "
-
-# E: English
-#. TRANSLATORS: The "E" stands for "English"
-#: src/console-main-interface.c:608 src/gtk-main-interface.c:3521
-msgid "E:\t"
-msgstr "E:\t"
-
-# J: Japanese
-#. TRANSLATORS: The "J" stands for "Japanese"
-#: src/console-main-interface.c:614 src/gtk-main-interface.c:3532
-msgid ""
-"\n"
-"J:\t"
+#: ../src/gwaei/ui/dictionaryinstall.ui.h:2
+msgid "Show Dictionary Install Details"
 msgstr ""
-"\n"
-"J:\t"
 
-# D: Detail
-#. TRANSLATORS: The "D" stands for "Detail"
-#: src/console-main-interface.c:620 src/gtk-main-interface.c:3543
-msgid ""
-"\n"
-"D:\t"
+#: ../src/gwaei/ui/dictionaryinstall.ui.h:3
+msgid "Where can I get other dictionaries?"
+msgstr "Kde lze získat další slovníky?"
+
+#: ../src/gwaei/ui/installprogress.ui.h:1
+#, fuzzy
+msgid "Installing Dictionaries..."
+msgstr "Hlavní slovníky"
+
+#: ../src/gwaei/ui/installprogress.ui.h:2
+msgid "Installing..."
+msgstr "Instaluje se..."
+
+#: ../src/gwaei/ui/installprogress.ui.h:3
+msgid "description"
 msgstr ""
-"\n"
-"D:\t"
 
-#: src/dictinfo-object.c:97
-msgid "English Dictionary"
-msgstr "Anglický slovník"
-
-#: src/dictinfo-object.c:98
-msgid "English"
-msgstr "Angličtina"
-
-#: src/dictinfo-object.c:102
-msgid "Spanish Dictionary"
-msgstr "Španělský slovník"
-
-#: src/dictinfo-object.c:103
-msgid "Spanish"
-msgstr "Španělština"
-
-#: src/dictinfo-object.c:107 src/dictinfo-object.c:112
-msgid "Kanji Dictionary"
-msgstr "Slovník kanji"
-
-#: src/dictinfo-object.c:108 src/dictinfo-object.c:113
-msgid "Kanji"
-msgstr "Kanji"
-
-#: src/dictinfo-object.c:117
-msgid "Radicals Dictionary"
-msgstr "Slovník radikálů"
-
-#: src/dictinfo-object.c:118
-msgid "Radicals"
-msgstr "Radikály"
-
-#: src/dictinfo-object.c:122
-msgid "Places Dictionary"
-msgstr "Slovník míst"
-
-#: src/dictinfo-object.c:123
-msgid "Places"
-msgstr "Místa"
-
-#: src/dictinfo-object.c:127
-msgid "Names Dictionary"
-msgstr "Slovník jmen"
-
-#: src/dictinfo-object.c:128
-msgid "Names"
-msgstr "Jména"
-
-#: src/dictinfo-object.c:132
-msgid "Examples Dictionary"
-msgstr "Slovník příkladů"
-
-#: src/dictinfo-object.c:133
-msgid "Examples"
-msgstr "Příklady"
-
-#: src/dictinfo-object.c:137
-msgid "French Dictionary"
-msgstr "Francouzský slovník"
-
-#: src/dictinfo-object.c:138
-msgid "French"
-msgstr "Francouzština"
-
-#: src/dictinfo-object.c:142
-msgid "German Dictionary"
-msgstr "Německý slovník"
-
-#: src/dictinfo-object.c:143
-msgid "German"
-msgstr "Němčina"
-
-#: src/dictinfo-object.c:147
-#, c-format
-msgid "%s Dictionary"
-msgstr "Slovník %s"
-
-#. TRANSLATORS: The %s stands for the internal (untranslated) short name of the dictionary
-#: src/dictlist-object.c:653
-#, c-format
-msgid "Syncing %s dictionary"
-msgstr "Seřízení slovníku « %s »"
-
-#: src/dictlist-object.c:658
-msgid "File read failed"
-msgstr "Soubor se nepodařilo přečíst"
-
-#: src/dictlist-object.c:683
-msgid "Success"
-msgstr "Úspěch"
-
-#: src/gtk-main-callbacks.c:510
-msgid "Save As"
-msgstr "Uložit jako"
-
-#: src/gtk-main-callbacks.c:522 src/gtk-main-callbacks.c:592
-msgid "vocabulary.txt"
-msgstr "slovník.txt"
-
-#: src/gtk-main-callbacks.c:582
-msgid "Save"
-msgstr "Uložit"
-
-#: src/gtk-main-callbacks.c:1121
-msgid ""
-"Program for Japanese translation and reference. The\n"
-"dictionaries are supplied by Jim Breen's WWWJDIC.\n"
-"Special thanks to the maker of GJITEN who served as an inspiration."
-msgstr ""
-"Program pro překlad japonštiny a doporučení. \n"
-"Slovníky poskytujer WWWJDIC Jima Breena.\n"
-"Zvláštní poděkování tvůrci GJITEN, který tomuto projektu posloužil jako "
-"námět."
-
-#. TRANSLATORS: You can add your own name to the translation of this field, it will be displayed in the "about" box when gwaei is run in your language
-#: src/gtk-main-callbacks.c:1125
-msgid "translator-credits"
-msgstr "www.fripohled.blogspot.com"
-
-#: src/gtk-main-callbacks.c:1741
-msgid "A_ppend Selected"
-msgstr "Při_pojit vybrané"
-
-#: src/gtk-main-callbacks.c:1743
-msgid "Save Selected _As"
-msgstr "Uložit výběr _jako"
-
-#: src/gtk-main-callbacks.c:1745
-msgid "_Print Selected"
-msgstr "_Vytisknout vybrané"
-
-#: src/gtk-main-callbacks.c:1752 src/gtk-main-interface.c:409
+#: ../src/gwaei/ui/main.ui.h:1 ../src/gwaei/main.c:2183
 msgid "A_ppend"
 msgstr "Při_pojit"
 
-#. TRANSLATORS: The first variable is the expression to look for, the second is the dictionary full name
-#: src/gtk-main-callbacks.c:1793
-#, c-format
-msgid "Search for \"%s\" in the %s"
-msgstr "Hledat \"%s\" v %s"
+#: ../src/gwaei/ui/main.ui.h:2
+msgid "Append"
+msgstr "Přidat"
 
-#. TRANSLATORS: The variable is the expression to look for
-#: src/gtk-main-callbacks.c:1795
-#, c-format
-msgid "Search for \"%s\" in a Different Dictionary"
-msgstr "Hledat \"%s\" v jiném slovníku"
+#: ../src/gwaei/ui/main.ui.h:3
+msgid "Bound"
+msgstr "Svázaný"
 
-#. TRANSLATORS: The variable is the expression to look for
-#: src/gtk-main-callbacks.c:1797
-#, c-format
-msgid "Cross-reference \"%s\" Online"
-msgstr "Hledat \"%s\" na internetu"
-
-#: src/gtk-main-interface-tabs.c:87 src/gtk-main-interface-tabs.c:90
-msgid "_Close Tab"
-msgstr "_Zavřít kartu"
-
-#: src/gtk-main-interface-tabs.c:91
-msgid "_Close"
-msgstr "_Zavřít"
-
-#: src/gtk-main-interface-tabs.c:205
-msgid "(Empty)"
-msgstr "(Prázdný)"
-
-#: src/gtk-main-interface.c:153 src/gtk-builder-xml/main.glade:7
-msgid "gWaei Japanese-English Dictionary"
-msgstr "Japonsko-anglický slovník gWaei "
-
-#: src/gtk-main-interface.c:373
-msgid "_New Tab"
-msgstr "_Nová karta"
-
-#: src/gtk-main-interface.c:381
-msgid "Only for Non-Japanese Locals"
-msgstr "Pokud rozhraní není v japonštině"
-
-#: src/gtk-main-interface.c:382
-msgid "When Possible"
-msgstr "Je-li to možné"
-
-#: src/gtk-main-interface.c:383
-msgid "Never"
-msgstr "Nikdy"
-
-#: src/gtk-main-interface.c:384 src/gtk-builder-xml/main.glade:469
-msgid "Go to the _Project Homepage"
-msgstr "Navštívit domovskou stránku projektu"
-
-#: src/gtk-main-interface.c:385 src/gtk-builder-xml/main.glade:477
-msgid "Get Help on I_RC"
-msgstr "Získat pomoc přes I_RC"
-
-#: src/gtk-main-interface.c:386
-msgid "Other Dictionaries"
-msgstr "Jiné slovníky"
-
-#: src/gtk-main-interface.c:387
-msgid "Main Dictionaries"
-msgstr "Hlavní slovníky"
-
-#: src/gtk-main-interface.c:389 src/gtk-settings-interface.c:286
-msgid "Order"
-msgstr "Příkaz"
-
-#: src/gtk-main-interface.c:390 src/gtk-settings-interface.c:294
-msgid "Shortcut"
-msgstr "Zkratka"
-
-#: src/gtk-main-interface.c:391 src/gtk-settings-interface.c:301
-msgid "Dictionary"
-msgstr "Slovník"
-
-#: src/gtk-main-interface.c:392 src/gtk-builder-xml/kanjipad.glade:75
-msgid "_Annotate Strokes"
-msgstr "_Opatřit tahy vysvětlivkami"
-
-#: src/gtk-main-interface.c:405
-msgid "Edit the current vocabulary list"
-msgstr "Upravit nynější seznam slovíček"
-
-#: src/gtk-main-interface.c:410
-msgid "Append the current results to a file"
-msgstr "Přidat nynější výsledky na konec souboru"
-
-#: src/gtk-main-interface.c:415
-msgid "Save the current results to a new file"
-msgstr "Uložit nynější výsledky do nového souboru"
-
-#: src/gtk-main-interface.c:419
-msgid "Print the current results"
-msgstr "Vytisknout nynější výsledky"
-
-#: src/gtk-main-interface.c:424
-msgid "_Enlarge Text"
-msgstr "_Zvětšit velikost textu"
-
-#: src/gtk-main-interface.c:425 src/gtk-builder-xml/main.glade:661
-msgid "Enlarge"
-msgstr "Zvětšit"
-
-#: src/gtk-main-interface.c:426
-msgid "Enlarge the results text"
-msgstr "Zvětšit velikost textu s výsledky"
-
-#: src/gtk-main-interface.c:432
-msgid "_Shrink Text"
-msgstr "_Zmenšit velikost textu"
-
-#: src/gtk-main-interface.c:433 src/gtk-builder-xml/main.glade:673
-msgid "Shrink"
-msgstr "Zmenšit"
-
-#: src/gtk-main-interface.c:434
-msgid "Shrink the results text"
-msgstr "Zmenšit velikost textu s výsledky"
-
-#: src/gtk-main-interface.c:440
-msgid "_Normal Size"
-msgstr "_Velikost obyčejného textu"
-
-#: src/gtk-main-interface.c:441
-msgid "Normal"
-msgstr "_Obyčejný"
-
-#: src/gtk-main-interface.c:447
-msgid "Show _Toolbar"
-msgstr "Ukázat nástrojový pruh"
-
-#: src/gtk-main-interface.c:451
-msgid "Show _Less Relevant Results"
-msgstr "Ukázat _méně závažné výsledky"
-
-#: src/gtk-main-interface.c:455
-msgid "Using _Kanjipad"
-msgstr "Pomocí _Kanjipadu"
-
-#: src/gtk-main-interface.c:460
-msgid "Using _Radical Search Tool"
-msgstr "Pomocí nástroje na hledání _radikálů"
-
-#: src/gtk-main-interface.c:465
-msgid "_Word-edge Mark"
-msgstr "Značka pro _okraj slova"
-
-#: src/gtk-main-interface.c:466
-msgid "_Edge"
-msgstr "_Okraj"
-
-#: src/gtk-main-interface.c:467
-msgid "Insert a word-edge character"
-msgstr "Vložit znak pro okraj slova"
-
-#: src/gtk-main-interface.c:473
-msgid "_Not-word-edge Mark"
-msgstr "Značka pro _není okrajem slova"
-
-#: src/gtk-main-interface.c:474
-msgid "_Not Edge"
-msgstr "_Není okrajem slova"
-
-#: src/gtk-main-interface.c:475
-msgid "Insert a not-word-edge character"
-msgstr "Vložit znak pro není okrajem slova"
-
-#: src/gtk-main-interface.c:480
-msgid "_Unknown Character"
-msgstr "_Neznámý znak"
-
-#: src/gtk-main-interface.c:481
-msgid "_Unknown"
-msgstr "_Neznámý"
-
-#: src/gtk-main-interface.c:482
-msgid "Insert an unknown character"
-msgstr "Vložit značku pro neznámý znak"
-
-#: src/gtk-main-interface.c:486
-msgid "_Or Character"
-msgstr "Znak pro logické _Nebo"
-
-#: src/gtk-main-interface.c:490
-msgid "_And Character"
-msgstr "Znak pro logické _A"
-
-#: src/gtk-main-interface.c:494
-msgid "_Previous Search"
-msgstr "_Předchozí hledání"
-
-#: src/gtk-main-interface.c:495
-msgid "Previous"
-msgstr "Předchozí"
-
-#: src/gtk-main-interface.c:496
-msgid "Go to the previous search"
-msgstr "Vrátit se k předchozímu hledání"
-
-#: src/gtk-main-interface.c:501
-msgid "_Next Search"
-msgstr "_Další hledání"
-
-#: src/gtk-main-interface.c:502
-msgid "Next"
-msgstr "Další"
-
-#: src/gtk-main-interface.c:503
-msgid "Go to the next search"
-msgstr "Přejít na další hledání"
-
-#: src/gtk-main-interface.c:508
-msgid "_Contents"
-msgstr "_Obsah"
-
-#: src/gtk-main-interface.c:509
-msgid "Help"
-msgstr "Nápověda"
-
-#: src/gtk-main-interface.c:510
-msgid "Open the help dialog"
-msgstr "Otevřít dialog s nápovědou"
-
-#: src/gtk-main-interface.c:515
-msgid "Dictionary _Terminology Glossary"
-msgstr "Slovníček _pojmů nacházejících se ve slovníku"
-
-#: src/gtk-main-interface.c:522
-msgid "Enable spellcheck for searches"
-msgstr "Zapnout pro hledání kontrolu pravopisu"
-
-#: src/gtk-main-interface.c:526
-msgid "Input your query here"
-msgstr "Zde zadejte své požadavky"
-
-#: src/gtk-main-interface.c:530
-msgid "Select the dictionary you want to use"
-msgstr "Vyberte sloníky, které chcete používat"
-
-#: src/gtk-main-interface.c:534
+#: ../src/gwaei/ui/main.ui.h:4
 msgid "Click to start search"
 msgstr "Klepněte pro spuštění hledání"
 
-#: src/gtk-main-interface.c:974
+#: ../src/gwaei/ui/main.ui.h:5
+msgid "Dictionary _Terminology Glossary"
+msgstr "Slovníček _pojmů nacházejících se ve slovníku"
+
+#: ../src/gwaei/ui/main.ui.h:6
+msgid "Did you mean?"
+msgstr "Návrhy: "
+
+#: ../src/gwaei/ui/main.ui.h:7
+msgid "Enable spellcheck for searches"
+msgstr "Zapnout pro hledání kontrolu pravopisu"
+
+#: ../src/gwaei/ui/main.ui.h:8
+msgid "Enlarge"
+msgstr "Zvětšit"
+
+#: ../src/gwaei/ui/main.ui.h:9
+msgid "Get Help on I_RC"
+msgstr "Získat pomoc přes I_RC"
+
+#: ../src/gwaei/ui/main.ui.h:10
+#, fuzzy
+msgid "Go to _Homepage"
+msgstr "Navštívit domovskou stránku projektu"
+
+#: ../src/gwaei/ui/main.ui.h:11
+msgid "Go to the _Project Homepage"
+msgstr "Navštívit domovskou stránku projektu"
+
+#: ../src/gwaei/ui/main.ui.h:12
+msgid "Hi_story"
+msgstr "_Historie"
+
+#: ../src/gwaei/ui/main.ui.h:13
+#, fuzzy
+msgid "Logical _And Character"
+msgstr "Znak pro logické _A"
+
+#: ../src/gwaei/ui/main.ui.h:14
+#, fuzzy
+msgid "Logical _Or Character"
+msgstr "Znak pro logické _Nebo"
+
+#: ../src/gwaei/ui/main.ui.h:15
+msgid "Ne_xt Tab"
+msgstr "_Další karta"
+
+#: ../src/gwaei/ui/main.ui.h:16
+#, fuzzy
+msgid "New _Tab"
+msgstr "_Nová karta"
+
+#: ../src/gwaei/ui/main.ui.h:17
+msgid "Not Bound"
+msgstr "Nesvázaný"
+
+#: ../src/gwaei/ui/main.ui.h:18
+#, fuzzy
+msgid "Sear_ch:"
+msgstr "Hledat:"
+
+#: ../src/gwaei/ui/main.ui.h:19
+#, fuzzy
+msgid "Search"
+msgstr "Hledat: "
+
+#: ../src/gwaei/ui/main.ui.h:20
+msgid "Select the dictionary you want to use"
+msgstr "Vyberte sloníky, které chcete používat"
+
+#: ../src/gwaei/ui/main.ui.h:21
+msgid "Show _Toolbar"
+msgstr "Ukázat nástrojový pruh"
+
+#: ../src/gwaei/ui/main.ui.h:22
+msgid "Shrink"
+msgstr "Zmenšit"
+
+#: ../src/gwaei/ui/main.ui.h:23
+msgid "Unknown"
+msgstr "Neznámý"
+
+#: ../src/gwaei/ui/main.ui.h:24
+msgid "Using _Kanjipad"
+msgstr "Pomocí _Kanjipadu"
+
+#: ../src/gwaei/ui/main.ui.h:25
+msgid "Using _Radical Search Tool"
+msgstr "Pomocí nástroje na hledání _radikálů"
+
+#: ../src/gwaei/ui/main.ui.h:26
+msgid "_Contents"
+msgstr "_Obsah"
+
+#: ../src/gwaei/ui/main.ui.h:27
+msgid "_Dictionaries"
+msgstr "_Slovníky"
+
+#: ../src/gwaei/ui/main.ui.h:28
+msgid "_Edit"
+msgstr "Ú_pravy"
+
+#: ../src/gwaei/ui/main.ui.h:29
+msgid "_Enlarge Text"
+msgstr "_Zvětšit velikost textu"
+
+#: ../src/gwaei/ui/main.ui.h:30
+msgid "_File"
+msgstr "_Soubor"
+
+#: ../src/gwaei/ui/main.ui.h:31
+msgid "_Help"
+msgstr "Ná_pověda"
+
+#: ../src/gwaei/ui/main.ui.h:32
+msgid "_Insert"
+msgstr "_Vložky"
+
+#: ../src/gwaei/ui/main.ui.h:33
+msgid "_Next Search"
+msgstr "_Další hledání"
+
+#: ../src/gwaei/ui/main.ui.h:34
+msgid "_Normal Size"
+msgstr "_Velikost obyčejného textu"
+
+#: ../src/gwaei/ui/main.ui.h:35
+msgid "_Not-word-edge Mark"
+msgstr "Značka pro _není okrajem slova"
+
+#: ../src/gwaei/ui/main.ui.h:36
+msgid "_Previous Search"
+msgstr "_Předchozí hledání"
+
+#: ../src/gwaei/ui/main.ui.h:37
+msgid "_Previous Tab"
+msgstr "_Předchozí karta"
+
+#: ../src/gwaei/ui/main.ui.h:38
+msgid "_Shrink Text"
+msgstr "_Zmenšit velikost textu"
+
+#: ../src/gwaei/ui/main.ui.h:39
+msgid "_Unknown Character"
+msgstr "_Neznámý znak"
+
+#: ../src/gwaei/ui/main.ui.h:40
+msgid "_View"
+msgstr "_Pohled"
+
+#: ../src/gwaei/ui/main.ui.h:41
+msgid "_Word-edge Mark"
+msgstr "Značka pro _okraj slova"
+
+#: ../src/gwaei/ui/main.ui.h:42 ../src/gwaei/main.c:183
+#: ../src/desktop/gwaei.desktop.in.h:2
+msgid "gWaei Japanese-English Dictionary"
+msgstr "Japonsko-anglický slovník gWaei "
+
+#: ../src/gwaei/ui/main.ui.h:43
+msgid "menuitem2"
+msgstr "menuitem2"
+
+#: ../src/gwaei/ui/radicals.ui.h:1
+msgid " _strokes"
+msgstr " _tah(y)"
+
+#: ../src/gwaei/ui/radicals.ui.h:2 ../src/gwaei/ui/kanjipad.ui.h:1
+msgid "C_lear"
+msgstr "Vy_mazat"
+
+#: ../src/gwaei/ui/radicals.ui.h:3
+msgid "_Restrict to Kanji of"
+msgstr "_Omezit na kanji "
+
+#: ../src/gwaei/ui/radicals.ui.h:4
+msgid "gWaei Radical Search Tool"
+msgstr "Nástroj hledání radikálů gWaei"
+
+#: ../src/gwaei/ui/settings.ui.h:1
+msgid "<b>Manual Dictionary Management</b>"
+msgstr "<b>Ruční správa slovníků</b>"
+
+#: ../src/gwaei/ui/settings.ui.h:2
+msgid "<b>Result Window Colors</b>"
+msgstr "<b>Barvy  v okně s výsledky</b>"
+
+#: ../src/gwaei/ui/settings.ui.h:3
+msgid "<b>Result Window Fonts</b>"
+msgstr "<b>Písmo v okně s výsledky</b>"
+
+#: ../src/gwaei/ui/settings.ui.h:4
+msgid "<b>Search Entry Settings</b>"
+msgstr "<b>Nastavení vyhledávání</b>"
+
+#: ../src/gwaei/ui/settings.ui.h:5
+msgid "Advanced"
+msgstr "Pokročilé"
+
+#: ../src/gwaei/ui/settings.ui.h:6
+msgid "Appearance"
+msgstr "Vzhled"
+
+#: ../src/gwaei/ui/settings.ui.h:7
+msgid "Comment"
+msgstr "Poznámka"
+
+#: ../src/gwaei/ui/settings.ui.h:8
+msgid "Convert Hiragana to _Katakana"
+msgstr "Převést Hiragana na _Katakana"
+
+#: ../src/gwaei/ui/settings.ui.h:9
+msgid "Convert Katakana to _Hiragana"
+msgstr "Převést Katakana na _Hiragana"
+
+#: ../src/gwaei/ui/settings.ui.h:10
+msgid "Convert _Romaji to Kana: "
+msgstr "Převést _Romaji na Kana:"
+
+#: ../src/gwaei/ui/settings.ui.h:11
+msgid "Custom Font: "
+msgstr "Vlastní písmo:"
+
+#: ../src/gwaei/ui/settings.ui.h:12
+#, fuzzy
+msgid "Dictionaries"
+msgstr "_Slovníky"
+
+#: ../src/gwaei/ui/settings.ui.h:13
+msgid "Enable Spell _Checking"
+msgstr "Povolit _ověřování pravopisu"
+
+#: ../src/gwaei/ui/settings.ui.h:14
+msgid "Header"
+msgstr "Záhlaví"
+
+#: ../src/gwaei/ui/settings.ui.h:15
+msgid "Match"
+msgstr "Výsledek"
+
+#: ../src/gwaei/ui/settings.ui.h:16
+msgid "Never"
+msgstr "Nikdy"
+
+#: ../src/gwaei/ui/settings.ui.h:17
+msgid "Only for Non-Japanese Locals"
+msgstr "Pokud rozhraní není v japonštině"
+
+#: ../src/gwaei/ui/settings.ui.h:18
+msgid "Plugins"
+msgstr ""
+
+#: ../src/gwaei/ui/settings.ui.h:19
+msgid "When Possible"
+msgstr "Je-li to možné"
+
+#: ../src/gwaei/ui/settings.ui.h:20
+msgid "_Open the gWaei dictionary folder"
+msgstr "_Otevřít složku se slovníky gWaei"
+
+#: ../src/gwaei/ui/settings.ui.h:21
+msgid "_Reset"
+msgstr "_Nastavit znovu"
+
+#: ../src/gwaei/ui/settings.ui.h:22
+msgid "_Update dictionaries using Rsync"
+msgstr "_Obnovit nainstalované slovníky pomocí Rsync"
+
+#: ../src/gwaei/ui/settings.ui.h:23
+msgid "_Use the system document font (Sans 10)"
+msgstr "_Používat písmo dokumentů používané systémem (%s 10)"
+
+#: ../src/gwaei/ui/settings.ui.h:24
+msgid "gWaei Settings"
+msgstr "Nastavení gWaei"
+
+#: ../src/gwaei/ui/settings.ui.h:25
+msgid "gWaei requires at least one dictionary to be installed."
+msgstr "gWaei vyžaduje, aby byl nainstalován alespoň jeden slovník."
+
+#: ../src/gwaei/ui/kanjipad.ui.h:2
+msgid "_Annotate Strokes"
+msgstr "_Opatřit tahy vysvětlivkami"
+
+#: ../src/gwaei/ui/kanjipad.ui.h:3
+msgid "gWaei Kanjipad"
+msgstr "gWaei Kanjipad"
+
+#: ../src/gwaei/installprogress.c:185
+#, fuzzy, c-format
+msgid "Installing %s..."
+msgstr "Instaluje se..."
+
+#: ../src/gwaei/installprogress.c:186
+#, fuzzy, c-format
+msgid "Installing dictionary %d of %d..."
+msgstr "Hlavní slovníky"
+
+#: ../src/gwaei/dictionaryinstall.c:68
+#, c-format
+msgid "<b>%s Install Details</b>"
+msgstr ""
+
+#. Third row
+#: ../src/gwaei/dictionaryinstall.c:90
+msgid "Filename: "
+msgstr ""
+
+#. Forth row
+#: ../src/gwaei/dictionaryinstall.c:102
+msgid "Engine: "
+msgstr ""
+
+#. Fifth row
+#: ../src/gwaei/dictionaryinstall.c:120
+#, fuzzy
+msgid "Source: "
+msgstr "Zdroj: "
+
+#. Sixth row
+#: ../src/gwaei/dictionaryinstall.c:144
+msgid "Encoding: "
+msgstr ""
+
+#. Seventh row
+#: ../src/gwaei/dictionaryinstall.c:161
+#, fuzzy
+msgid "Compression: "
+msgstr "Rozbaluje se..."
+
+#. Eighth row
+#: ../src/gwaei/dictionaryinstall.c:178
+#, fuzzy
+msgid "Split Places from Names Dictionary"
+msgstr "Slovník míst"
+
+#. Ninth row
+#: ../src/gwaei/dictionaryinstall.c:188
+#, fuzzy
+msgid "Merge Radicals into Kanji Dictionary"
+msgstr "Slovník radikálů"
+
+#: ../src/gwaei/dictionarymanager.c:85
+#, fuzzy
+msgid "Name"
+msgstr "Jména"
+
+#: ../src/gwaei/dictionarymanager.c:91
+msgid "Engine"
+msgstr ""
+
+#: ../src/gwaei/dictionarymanager.c:96
+msgid "Shortcut"
+msgstr "Zkratka"
+
+#: ../src/gwaei/dictionarymanager.c:195
+msgid "_Cycle Up"
+msgstr "Vrátit se k _předchozímu"
+
+#: ../src/gwaei/dictionarymanager.c:201
+msgid "Cycle _Down"
+msgstr "Vrátit se k _dalšímu"
+
+#: ../src/gwaei/gwaei.c:59
+#, fuzzy
+msgid "Choose the dictionary to use"
+msgstr "Vyberte sloníky, které chcete používat"
+
+#: ../src/gwaei/gwaei.c:61
+msgid "Open a new instance of gWaei"
+msgstr ""
+
+#: ../src/gwaei/gwaei.c:63
+#, fuzzy
+msgid "Check the gWaei version information"
+msgstr "Zobrazit údaj o verzi waei"
+
+#: ../src/gwaei/main.c:544
 msgid "Searching..."
 msgstr "Vyhledává se..."
 
-#: src/gtk-main-interface.c:977
+#: ../src/gwaei/main.c:547
 #, c-format
 msgid "Searching... %d result"
 msgid_plural "Searching... %d results"
 msgstr[0] "Vyhledává se... %d výsledky"
 msgstr[1] "Vyhledává se... %d výsledků"
 
-#: src/gtk-main-interface.c:1259
-msgid "_Cycle Up"
-msgstr "Vrátit se k _předchozímu"
-
-#: src/gtk-main-interface.c:1265
-msgid "Cycle _Down"
-msgstr "Vrátit se k _dalšímu"
-
-#: src/gtk-main-interface.c:1275
-#, c-format
-msgid "%d dictionary is being used."
-msgid_plural "%d dictionaries are being used."
-msgstr[0] "%d slovníky jsou používány."
-msgstr[1] "%d slovníků jsou používáno."
-
 #. TRANSLATORS: The argument is the dictionary long name
-#: src/gtk-main-interface.c:2335
+#: ../src/gwaei/main.c:1671
 #, c-format
 msgid "Nothing found in the %s!"
 msgstr "V %s nebyl nalezen žádný výsledek!"
 
-#: src/gtk-main-interface.c:2366
+#: ../src/gwaei/main.c:1702
 msgid "Search Other Dictionary: "
 msgstr "Hledat v ostatních slovnících: "
 
-#: src/gtk-main-interface.c:2428
+#: ../src/gwaei/main.c:1741
 msgid "Search Online: "
 msgstr "Hledat na internetu: "
 
-#: src/gtk-main-interface.c:2484
+#: ../src/gwaei/main.c:1794
 #, c-format
 msgid "gWaei Usage Tip #%d: "
 msgstr "Rada pro používání gWaei n°%d :"
 
-#: src/gtk-main-interface.c:2497
+#. Tip 1
+#: ../src/gwaei/main.c:1807
 #, c-format
 msgid ""
 "Use the Unknown Character from the Insert menu or toolbar in place of "
@@ -699,33 +894,35 @@ msgid ""
 "and drawing the strokes in the correct direction is very important."
 msgstr ""
 "Používejte « Neznámý znak » → \".\", dostupný přes nabídku « Vložit » nebo v "
-"nástrojovém pruhuna místě neznámého kanji. « %s » vrátí výsledky jako « %s ».\n"
+"nástrojovém pruhuna místě neznámého kanji. « %s » vrátí výsledky jako « %s "
+"».\n"
 "\n"
 "Kanjipad je další možností pro vkládání znaků kanji. Z důvodu, jakým "
 "způsobem Kanjipad uvnitř pracuje, je velmi důležité kanji kreslit se "
 "správným počtem tahů  a kreslit je ve správném směru."
 
-#: src/gtk-main-interface.c:2504
+#: ../src/gwaei/main.c:1814
 msgid "Inputting Unknown Kanji"
 msgstr "Zadat neznámý kanji"
 
-#: src/gtk-main-interface.c:2521
+#: ../src/gwaei/main.c:1831
 msgid "Getting More Exact Matches"
 msgstr "Obdržet více přesných shod"
 
-#: src/gtk-main-interface.c:2527
+#: ../src/gwaei/main.c:1837
 msgid ""
 "Use the Word-edge Mark and the Not-word-edge Mark from the insert menu to "
 "get more relevant results.  fish\\b will return results like fish and "
 "selfish , but not fisherman"
 msgstr ""
-"Požívejte značky pro « okraj slova » → \"\\b\" a « není okrajem slova » → \"\\B"
-"\", které jsou dostupné přes nabídku « Vložit » nebo v nástrojovém pruhu, "
-"abyste získal výsledky, které jsou více závažné. \"fish\\b\" vrátí výsledky "
-"jako \"fish\" a \"selfish\", ale vyloučí výrazy, v nichž  \"fish\" není na "
-"okraji slova, jako je \"fisherman\"."
+"Požívejte značky pro « okraj slova » → \"\\b\" a « není okrajem slova » → "
+"\"\\B\", které jsou dostupné přes nabídku « Vložit » nebo v nástrojovém "
+"pruhu, abyste získal výsledky, které jsou více závažné. \"fish\\b\" vrátí "
+"výsledky jako \"fish\" a \"selfish\", ale vyloučí výrazy, v nichž  \"fish\" "
+"není na okraji slova, jako je \"fisherman\"."
 
-#: src/gtk-main-interface.c:2535
+#. Tip 3
+#: ../src/gwaei/main.c:1845
 #, c-format
 msgid ""
 "Use the And Character or Or Character to search for results that contain a "
@@ -733,19 +930,19 @@ msgid ""
 "will return only results that contain both the words cats and dogs like %s "
 "does."
 msgstr ""
-"POužívejte znaky: « A » → \"&\" a « NEBO » → \"|\". Umožní vám najít výsledky, "
-"které obsahují spojení slov, jež nemusejí následovat hned po sobě. « cat&dogs "
-"» vrátí pouze výsledky, které obsahují dvě slova, jako « %s »."
+"POužívejte znaky: « A » → \"&\" a « NEBO » → \"|\". Umožní vám najít "
+"výsledky, které obsahují spojení slov, jež nemusejí následovat hned po sobě. "
+"« cat&dogs » vrátí pouze výsledky, které obsahují dvě slova, jako « %s »."
 
-#: src/gtk-main-interface.c:2541
+#: ../src/gwaei/main.c:1851
 msgid "Searching for Multiple Words"
 msgstr "Hledají se vícenásobná slova"
 
-#: src/gtk-main-interface.c:2558
+#: ../src/gwaei/main.c:1868
 msgid "Make a Vocabulary List"
 msgstr "Udělat seznam se slovní zásobou"
 
-#: src/gtk-main-interface.c:2564
+#: ../src/gwaei/main.c:1874
 msgid ""
 "Specific sections of results can be printed or saved by dragging the mouse "
 "to highlight them.  Using this in combination with the Append command from "
@@ -757,11 +954,11 @@ msgstr ""
 "dostupný přes nabídku « Soubor » nebo z pruhu s nástroji, umožněno rychlé a "
 "snadné vytváření seznamů slovíček."
 
-#: src/gtk-main-interface.c:2574
+#: ../src/gwaei/main.c:1884
 msgid "Why Use the Mouse?"
 msgstr "Proč tedy používat myš?"
 
-#: src/gtk-main-interface.c:2580
+#: ../src/gwaei/main.c:1890
 msgid ""
 "Typing something will move the focus to the search input box.  Hitting the "
 "Up or Down arrow key will move the focus to the results pane so you can "
@@ -773,11 +970,11 @@ msgstr ""
 "můžete posunovat výsledky. Stisknutí spojení kláves Alt + šipka nahoru nebo "
 "Alt + šipka dolů budete točit nyní nainstalovanými slovníky."
 
-#: src/gtk-main-interface.c:2590
+#: ../src/gwaei/main.c:1900
 msgid "Get Ready for the JLPT"
 msgstr "Připravte se na JLPT"
 
-#: src/gtk-main-interface.c:2596
+#: ../src/gwaei/main.c:1906
 msgid ""
 "The Kanji dictionary has some hidden features.  One such one is the ability "
 "to filter out Kanji that don't meet a certain criteria.  If you are planning "
@@ -798,11 +995,11 @@ msgstr ""
 "Jinou z těchto skrytých funkcí je možnost filtrovat kanji na úrovni, jaká se "
 "učí v japonských školách - kód G# (kde # je rokem studia)."
 
-#: src/gtk-main-interface.c:2610
+#: ../src/gwaei/main.c:1920
 msgid "Just drag words in!"
 msgstr "Prostě přetáhněte slova!"
 
-#: src/gtk-main-interface.c:2616
+#: ../src/gwaei/main.c:1926
 msgid ""
 "If you drag and drop a highlighted word into gWaei's search result box, "
 "gWaei will automatically start a search using that text.  This can be a nice "
@@ -813,11 +1010,11 @@ msgstr ""
 "text. To může být hezkou cestou pro rychlé hledání slov při procházení "
 "internetových stránek. "
 
-#: src/gtk-main-interface.c:2627
+#: ../src/gwaei/main.c:1937
 msgid "What does (adj-i) mean?"
 msgstr "Co znamená (adj-i)?"
 
-#: src/gtk-main-interface.c:2633
+#: ../src/gwaei/main.c:1943
 msgid ""
 "It is part of the terminalogy used by the EDICT group of dictionaries to "
 "categorize words.  Some are obvious, but there are a number that there is no "
@@ -835,11 +1032,11 @@ msgstr ""
 "položku Slovníček pojmů nacházejících se ve slovníku, kterou najdete v "
 "nabídce Nápověda, abyste se k ní dostal."
 
-#: src/gtk-main-interface.c:2645
+#: ../src/gwaei/main.c:1955
 msgid "Books are Heavy"
 msgstr "Knihy jsou těžké"
 
-#: src/gtk-main-interface.c:2651
+#: ../src/gwaei/main.c:1961
 msgid ""
 "Aways wear a construction helmet when working with books.  They are "
 "dangerous heavy objects that can at any point fall on and injure you.  "
@@ -850,34 +1047,83 @@ msgstr ""
 "těžké předměty, které mohou začít kdykoli padat a poranit vás. Povězte o tom "
 "také, prosím, všem svým přátelům. Později vám poděkují. Opravdu."
 
-#: src/gtk-main-interface.c:2876
-msgid "- A dictionary program for Japanese-English translation."
-msgstr "- Slovníkový program pro překlad z japonštiny do angličtiny"
+#: ../src/gwaei/main.c:2172
+msgid "A_ppend Selected"
+msgstr "Při_pojit vybrané"
 
-#: src/gtk-main-interface.c:3234 src/gtk-main-interface.c:3331
-msgid "Pop"
-msgstr "Vyskočit"
+#: ../src/gwaei/main.c:2174
+msgid "Save Selected _As"
+msgstr "Uložit výběr _jako"
 
-#: src/gtk-main-interface.c:3640
+#: ../src/gwaei/main.c:2176
+msgid "_Print Selected"
+msgstr "_Vytisknout vybrané"
+
+#: ../src/gwaei/main-callbacks.c:504
+msgid "Save As"
+msgstr "Uložit jako"
+
+#: ../src/gwaei/main-callbacks.c:517
+msgid "vocabulary.txt"
+msgstr "slovník.txt"
+
+#: ../src/gwaei/main-callbacks.c:1112
+#, fuzzy
+msgid ""
+"Program for Japanese translation and reference. The\n"
+"dictionaries are supplied by Jim Breen's WWWJDIC.\n"
+"Special thanks to the maker of GJITEN who served as an inspiration.\n"
+" Dedicated to Chuus"
+msgstr ""
+"Program pro překlad japonštiny a doporučení. \n"
+"Slovníky poskytujer WWWJDIC Jima Breena.\n"
+"Zvláštní poděkování tvůrci GJITEN, který tomuto projektu posloužil jako "
+"námět."
+
+#. TRANSLATORS: You can add your own name to the translation of this field, it will be displayed in the "about" box when gwaei is run in your language
+#: ../src/gwaei/main-callbacks.c:1116
+msgid "translator-credits"
+msgstr "www.fripohled.blogspot.com"
+
+#. TRANSLATORS: The first variable is the expression to look for, the second is the dictionary full name
+#: ../src/gwaei/main-callbacks.c:1705
 #, c-format
-msgid "Other Result %d"
-msgid_plural "Other Results %d"
-msgstr[0] "Podobný výsledek %d"
-msgstr[1] "%d résultats similaires"
+msgid "Search for \"%s\" in the %s"
+msgstr "Hledat \"%s\" v %s"
 
-#: src/gtk-main-interface.c:3655
+#. TRANSLATORS: The variable is the expression to look for
+#: ../src/gwaei/main-callbacks.c:1707
 #, c-format
-msgid "Main Result %d"
-msgid_plural "Main Results %d"
-msgstr[0] "Hlavní výsledek %d"
-msgstr[1] "%d résultats principaux"
+msgid "Search for \"%s\" in a Different Dictionary"
+msgstr "Hledat \"%s\" v jiném slovníku"
 
-#: src/gtk-printing.c:311
+#. TRANSLATORS: The variable is the expression to look for
+#: ../src/gwaei/main-callbacks.c:1709
 #, c-format
-msgid "Page %d"
+msgid "Cross-reference \"%s\" Online"
+msgstr "Hledat \"%s\" na internetu"
+
+#. if (pages > 0) gtk_menu_item_set_label (GTK_MENU_ITEM (close_menuitem), gettext("_Close Tab"));
+#. gtk_widget_set_sensitive (close_menuitem, (pages > 0));
+#: ../src/gwaei/main-tabs.c:120 ../src/gwaei/main-tabs.c:123
+msgid "_Close Tab"
+msgstr "_Zavřít kartu"
+
+#: ../src/gwaei/main-tabs.c:124
+msgid "_Close"
+msgstr "_Zavřít"
+
+#: ../src/gwaei/main-tabs.c:292
+msgid "(Empty)"
+msgstr "(Prázdný)"
+
+#. Initializations
+#: ../src/gwaei/printing.c:146
+#, fuzzy, c-format
+msgid "Page %d/%d"
 msgstr "Strana %d"
 
-#: src/gtk-radicals-interface.c:361
+#: ../src/gwaei/radsearchtool.c:375
 #, c-format
 msgid ""
 "<b>Substitution Radical:</b> %s\n"
@@ -888,298 +1134,247 @@ msgstr ""
 "<b>Současný radikál:</b> %s\n"
 "<b>Název radikálu:</b> %s"
 
-#: src/gtk-settings-callbacks.c:323
-#: src/gtk-settings-interface-install-line.c:63
-msgid "Installed"
-msgstr "Nainstalován"
-
-#: src/gtk-settings-callbacks.c:331 src/gtk-settings-callbacks.c:521
-msgid "Installing..."
-msgstr "Instaluje se..."
-
-#: src/gtk-settings-callbacks.c:485
-msgid "Cancelling..."
-msgstr "Ruší se..."
-
-#: src/gtk-settings-callbacks.c:501
-#: src/gtk-settings-interface-install-line.c:68
-msgid "Not Installed"
-msgstr "Nenainstalován"
-
-#: src/gtk-settings-callbacks.c:698
-msgid "Dictionary File Select"
-msgstr "Výběr souboru se slovníkem"
-
-#: src/gtk-settings-interface-install-line.c:113
-msgid "Downloading..."
-msgstr "Stahuje se..."
-
-#: src/gtk-settings-interface-install-line.c:133
-msgid "Source: "
-msgstr "Zdroj: "
-
-#: src/gtk-settings-interface-install-line.c:136
-msgid "Browse..."
-msgstr "Procházet..."
-
-#: src/gtk-settings-interface-install-line.c:139
-msgid "Reset"
-msgstr "Nastavit znovu"
-
-#: src/gtk-settings-interface.c:363
+#: ../src/gwaei/settings.c:151
 #, c-format
 msgid "_Use the System Document Font (%s)"
 msgstr "_Používat písmo dokumentů používané systémem (%s)"
 
-#: src/io.c:325
-msgid "File copy error"
-msgstr "Chyba kopie souboru"
+#: ../src/gwaei/output-callbacks.c:288 ../src/gwaei/output-callbacks.c:387
+msgid "Pop"
+msgstr "Vyskočit"
 
-#: src/io.c:553 src/io.c:589
-msgid "gunzip error"
-msgstr "Chyba gunzip"
+#: ../src/gwaei/output-callbacks.c:594
+#, fuzzy
+msgid "Radical Name"
+msgstr "Název radikálu:"
 
-#. TRANSLATORS: The %s stands for a file path
-#: src/io.c:633
+#: ../src/gwaei/output-callbacks.c:788
 #, c-format
-msgid "Removing %s..."
-msgstr "Odstraňuje se: %s..."
+msgid "Other Result %d"
+msgid_plural "Other Results %d"
+msgstr[0] "Podobný výsledek %d"
+msgstr[1] "%d résultats similaires"
 
-#: src/io.c:635
-msgid "Removing..."
-msgstr "Odstraňuje se..."
-
-#. TRANSLATORS: The %s stands for an URL
-#: src/io.c:703
+#: ../src/gwaei/output-callbacks.c:803
 #, c-format
-msgid "Downloading %s..."
-msgstr "Stahuje se %s..."
+msgid "Main Result %d"
+msgid_plural "Main Results %d"
+msgstr[0] "Hlavní výsledek %d"
+msgstr[1] "%d résultats principaux"
 
-#: src/io.c:721
-msgid "Unable to create dictionary folder"
-msgstr "Nelze vytvořit složku pro slovník"
+#: ../src/desktop/gwaei.desktop.in.h:1
+msgid "Enter a Japanese or English word to easily get translations."
+msgstr ""
 
-#: src/io.c:745
-msgid "Decompressing..."
-msgstr "Rozbaluje se..."
+#~ msgid "Radicals"
+#~ msgstr "Radikály"
 
-#: src/io.c:755
-msgid "Unzip Error"
-msgstr "Chyba při rozbalování (unzip)"
+#, fuzzy
+#~ msgid "Readings"
+#~ msgstr "Čtení:"
 
-#: src/io.c:763
-msgid "Converting encoding..."
-msgstr "Převádí se kódování..."
+#, fuzzy
+#~ msgid "Stroke"
+#~ msgstr "Tahy:"
 
-#: src/io.c:777
-msgid "Postprocessing..."
-msgstr "Následné zpracování..."
+#, fuzzy
+#~ msgid "Freq"
+#~ msgstr "Častost:"
 
-#. TRANSLATORS: First part of the sentence : 'Searching for "${query}" in the ${dictionary} dictionary'
-#: src/ncurses-main-interface.c:97
-msgid "Searching for \""
-msgstr "Hledá se \""
+#, fuzzy
+#~ msgid "Grade"
+#~ msgstr "Třída:"
 
-#. TRANSLATORS: Second part of the sentence : 'Searching for "${query}" in the ${dictionary} dictionary'
-#: src/ncurses-main-interface.c:102
-msgid "\" in the "
-msgstr "\" ve slovníku "
+#, fuzzy
+#~ msgid "JLPT"
+#~ msgstr "JLPT:"
 
-#. TRANSLATORS: Third and last part of the sentence : 'Searching for "${query}" in the ${dictionary} dictionary'
-#: src/ncurses-main-interface.c:107
-msgid " dictionary..."
-msgstr " ..."
+#, fuzzy
+#~ msgid "Meanings"
+#~ msgstr "Význam: "
 
-#: src/ncurses-main-interface.c:237 src/ncurses-main-interface.c:311
-#: src/ncurses-main-interface.c:412
-msgid "Search: "
-msgstr "Hledat: "
+#, fuzzy
+#~ msgid "This is the example dictionary."
+#~ msgstr "Slovník příkladů"
 
-#: src/ncurses-main-interface.c:238 src/ncurses-main-interface.c:342
-#: src/ncurses-main-interface.c:398
-msgid "Results: "
-msgstr "Výsledky: "
+#, fuzzy
+#~ msgid "<b>Details</b>"
+#~ msgstr "<b>Fonctionnalités</b>"
 
-#: src/gtk-builder-xml/kanjipad.glade:6
-msgid "gWaei Kanjipad"
-msgstr "gWaei Kanjipad"
+#~ msgid "Input your query here"
+#~ msgstr "Zde zadejte své požadavky"
 
-#: src/gtk-builder-xml/kanjipad.glade:128
-#: src/gtk-builder-xml/radicals.glade:154
-msgid "C_lear"
-msgstr "Vy_mazat"
+#, fuzzy
+#~ msgid "Install Dictionaries"
+#~ msgstr "Nainstalovat slovník"
 
-#: src/gtk-builder-xml/main.glade:29
-msgid "_File"
-msgstr "_Soubor"
+#~ msgid "File copy error"
+#~ msgstr "Chyba kopie souboru"
 
-#: src/gtk-builder-xml/main.glade:83
-msgid "_Dictionaries"
-msgstr "_Slovníky"
+#~ msgid "gunzip error"
+#~ msgstr "Chyba gunzip"
 
-#: src/gtk-builder-xml/main.glade:91
-msgid "menuitem2"
-msgstr "menuitem2"
+#~ msgid "Removing %s..."
+#~ msgstr "Odstraňuje se: %s..."
 
-#: src/gtk-builder-xml/main.glade:146
-msgid "_Edit"
-msgstr "Ú_pravy"
+#~ msgid "Removing..."
+#~ msgstr "Odstraňuje se..."
 
-#: src/gtk-builder-xml/main.glade:217
-msgid "_View"
-msgstr "_Pohled"
+#~ msgid "Order"
+#~ msgstr "Příkaz"
 
-#: src/gtk-builder-xml/main.glade:285
-msgid "_Previous Tab"
-msgstr "_Předchozí karta"
+#~ msgid "Dictionary"
+#~ msgstr "Slovník"
 
-#: src/gtk-builder-xml/main.glade:294
-msgid "Ne_xt Tab"
-msgstr "_Další karta"
+#~ msgid "Edit the current vocabulary list"
+#~ msgstr "Upravit nynější seznam slovíček"
 
-#: src/gtk-builder-xml/main.glade:307
-msgid "_Insert"
-msgstr "_Vložky"
+#~ msgid "Append the current results to a file"
+#~ msgstr "Přidat nynější výsledky na konec souboru"
 
-#: src/gtk-builder-xml/main.glade:402
-msgid "Hi_story"
-msgstr "_Historie"
+#~ msgid "Save the current results to a new file"
+#~ msgstr "Uložit nynější výsledky do nového souboru"
 
-#: src/gtk-builder-xml/main.glade:439
-msgid "_Help"
-msgstr "Ná_pověda"
+#~ msgid "Print the current results"
+#~ msgstr "Vytisknout nynější výsledky"
 
-#: src/gtk-builder-xml/main.glade:541
-msgid "Append"
-msgstr "Přidat"
+#~ msgid "Enlarge the results text"
+#~ msgstr "Zvětšit velikost textu s výsledky"
 
-#: src/gtk-builder-xml/main.glade:598
-msgid "Bound"
-msgstr "Svázaný"
+#~ msgid "Shrink the results text"
+#~ msgstr "Zmenšit velikost textu s výsledky"
 
-#: src/gtk-builder-xml/main.glade:610
-msgid "Not Bound"
-msgstr "Nesvázaný"
+#~ msgid "Normal"
+#~ msgstr "_Obyčejný"
 
-#: src/gtk-builder-xml/main.glade:622
-msgid "Unknown"
-msgstr "Neznámý"
+#~ msgid "_Edge"
+#~ msgstr "_Okraj"
 
-#: src/gtk-builder-xml/main.glade:715
-msgid "Search:"
-msgstr "Hledat:"
+#~ msgid "Insert a word-edge character"
+#~ msgstr "Vložit znak pro okraj slova"
 
-#: src/gtk-builder-xml/main.glade:859
-msgid "Did you mean?"
-msgstr "Návrhy: "
+#~ msgid "_Not Edge"
+#~ msgstr "_Není okrajem slova"
 
-#: src/gtk-builder-xml/main.glade:939
-msgid "Kanji Lookup:"
-msgstr "Hledání pomocí kanji:"
+#~ msgid "Insert a not-word-edge character"
+#~ msgstr "Vložit znak pro není okrajem slova"
 
-#: src/gtk-builder-xml/radicals.glade:7
-msgid "gWaei Radical Search Tool"
-msgstr "Nástroj hledání radikálů gWaei"
+#~ msgid "_Unknown"
+#~ msgstr "_Neznámý"
 
-#: src/gtk-builder-xml/radicals.glade:64
-msgid "_Restrict to Kanji of"
-msgstr "_Omezit na kanji "
+#~ msgid "Insert an unknown character"
+#~ msgstr "Vložit značku pro neznámý znak"
 
-#: src/gtk-builder-xml/radicals.glade:98
-msgid " _strokes"
-msgstr " _tah(y)"
+#~ msgid "Previous"
+#~ msgstr "Předchozí"
 
-#: src/gtk-builder-xml/settings.glade:38
-msgid "gWaei Settings"
-msgstr "Nastavení gWaei"
+#~ msgid "Go to the previous search"
+#~ msgstr "Vrátit se k předchozímu hledání"
 
-#: src/gtk-builder-xml/settings.glade:82
-msgid "_Use the system document font (Sans 10)"
-msgstr "_Používat písmo dokumentů používané systémem (%s 10)"
+#~ msgid "Next"
+#~ msgstr "Další"
 
-#: src/gtk-builder-xml/settings.glade:102
-msgid "Custom Font: "
-msgstr "Vlastní písmo:"
+#~ msgid "Go to the next search"
+#~ msgstr "Přejít na další hledání"
 
-#: src/gtk-builder-xml/settings.glade:134
-msgid "<b>Result Window Fonts</b>"
-msgstr "<b>Písmo v okně s výsledky</b>"
+#~ msgid "Help"
+#~ msgstr "Nápověda"
 
-#: src/gtk-builder-xml/settings.glade:271
-msgid "Match"
-msgstr "Výsledek"
+#~ msgid "Open the help dialog"
+#~ msgstr "Otevřít dialog s nápovědou"
 
-#: src/gtk-builder-xml/settings.glade:280
-msgid "Header"
-msgstr "Záhlaví"
+#~ msgid "Save"
+#~ msgstr "Uložit"
 
-#: src/gtk-builder-xml/settings.glade:291
-msgid "Comment"
-msgstr "Poznámka"
+#~ msgid "Finished\n"
+#~ msgstr "Hotovo\n"
 
-#: src/gtk-builder-xml/settings.glade:301
-msgid "_Reset"
-msgstr "_Nastavit znovu"
+#~ msgid "Trying to install the %s...\n"
+#~ msgstr "Pokouší se instalovat %s ...\n"
 
-#: src/gtk-builder-xml/settings.glade:341
-msgid "<b>Result Window Colors</b>"
-msgstr "<b>Barvy  v okně s výsledky</b>"
+#~ msgid "%s is already Installed. "
+#~ msgstr "%s je již nainstalován. "
 
-#: src/gtk-builder-xml/settings.glade:359
-msgid "Appearance"
-msgstr "Vzhled"
+#~ msgid "%s is not installable with this mechanism. "
+#~ msgstr "%s nelze tímto způsobem nainstalovat."
 
-#: src/gtk-builder-xml/settings.glade:390
-msgid "gWaei requires at least one dictionary to be installed."
-msgstr "gWaei vyžaduje, aby byl nainstalován alespoň jeden slovník."
+#~ msgid "The %s is not installed. "
+#~ msgstr "« %s » není nainstalován."
 
-#: src/gtk-builder-xml/settings.glade:475
-msgid "Where can I get other dictionaries?"
-msgstr "Kde lze získat další slovníky?"
+#~ msgid "%s is not installed. "
+#~ msgstr "%s není nainstalován."
 
-#: src/gtk-builder-xml/settings.glade:527
-msgid "Install"
-msgstr "Nainstalovat"
+#, fuzzy
+#~ msgid "Query prepare error\n"
+#~ msgstr "Chyba při zpracovávání požadavku\n"
 
-#: src/gtk-builder-xml/settings.glade:655
-msgid "Organize"
-msgstr "Uspořádat"
+#~ msgid "Query parse error\n"
+#~ msgstr "Chyba při zpracovávání požadavku\n"
 
-#: src/gtk-builder-xml/settings.glade:690
-msgid "Convert _Romaji to Kana: "
-msgstr "Převést _Romaji na Kana:"
+#~ msgid "Spanish Dictionary"
+#~ msgstr "Španělský slovník"
 
-#: src/gtk-builder-xml/settings.glade:726
-msgid "Convert Hiragana to _Katakana"
-msgstr "Převést Hiragana na _Katakana"
+#~ msgid "Spanish"
+#~ msgstr "Španělština"
 
-#: src/gtk-builder-xml/settings.glade:742
-msgid "Convert Katakana to _Hiragana"
-msgstr "Převést Katakana na _Hiragana"
+#~ msgid "French Dictionary"
+#~ msgstr "Francouzský slovník"
 
-#: src/gtk-builder-xml/settings.glade:758
-msgid "Enable Spell _Checking"
-msgstr "Povolit _ověřování pravopisu"
+#~ msgid "French"
+#~ msgstr "Francouzština"
 
-#: src/gtk-builder-xml/settings.glade:779
-msgid "<b>Search Entry Settings</b>"
-msgstr "<b>Nastavení vyhledávání</b>"
+#~ msgid "German Dictionary"
+#~ msgstr "Německý slovník"
 
-#: src/gtk-builder-xml/settings.glade:811
-msgid "_Open the gWaei dictionary folder"
-msgstr "_Otevřít složku se slovníky gWaei"
+#~ msgid "German"
+#~ msgstr "Němčina"
 
-#: src/gtk-builder-xml/settings.glade:825
-msgid "_Update dictionaries using Rsync"
-msgstr "_Obnovit nainstalované slovníky pomocí Rsync"
+#~ msgid "%d dictionary is being used."
+#~ msgid_plural "%d dictionaries are being used."
+#~ msgstr[0] "%d slovníky jsou používány."
+#~ msgstr[1] "%d slovníků jsou používáno."
 
-#: src/gtk-builder-xml/settings.glade:841
-msgid "<b>Manual Dictionary Management</b>"
-msgstr "<b>Ruční správa slovníků</b>"
+#~ msgid "Cancelling..."
+#~ msgstr "Ruší se..."
 
-#: src/gtk-builder-xml/settings.glade:866
-msgid "Advanced"
-msgstr "Pokročilé"
+#~ msgid "Not Installed"
+#~ msgstr "Nenainstalován"
+
+#~ msgid "Dictionary File Select"
+#~ msgstr "Výběr souboru se slovníkem"
+
+#~ msgid "Browse..."
+#~ msgstr "Procházet..."
+
+#~ msgid "Reset"
+#~ msgstr "Nastavit znovu"
+
+#~ msgid "Unable to create dictionary folder"
+#~ msgstr "Nelze vytvořit složku pro slovník"
+
+#~ msgid "Unzip Error"
+#~ msgstr "Chyba při rozbalování (unzip)"
+
+#~ msgid "Kanji Lookup:"
+#~ msgstr "Hledání pomocí kanji:"
+
+#~ msgid "Install"
+#~ msgstr "Nainstalovat"
+
+#~ msgid "Organize"
+#~ msgstr "Uspořádat"
+
+#~ msgid "Show _Less Relevant Results"
+#~ msgstr "Ukázat _méně závažné výsledky"
+
+#~ msgid "Syncing %s dictionary"
+#~ msgstr "Seřízení slovníku « %s »"
+
+#~ msgid "File read failed"
+#~ msgstr "Soubor se nepodařilo přečíst"
+
+#~ msgid "Success"
+#~ msgstr "Úspěch"
 
 #~ msgid ""
 #~ "gWaei (C) 2008-2010 Zachary Dovel\n"
@@ -1199,9 +1394,6 @@ msgstr "Pokročilé"
 
 #~ msgid "Syncing %s with server..."
 #~ msgstr "Synchronisation du %s avec le serveur ..."
-
-#~ msgid "Finalizing %s changes..."
-#~ msgstr "Finalisation des changements dans le %s ..."
 
 #~ msgid "Recreating Mixed dictionary..."
 #~ msgstr "Re-création du dictionnaire mixte ..."
@@ -1312,8 +1504,8 @@ msgstr "Pokročilé"
 #~ "adjectif. (Essayer de rechercher %s%s ?)"
 
 #~ msgid ""
-#~ "Your query is possibly a past-form na-adjective.  (Try searching for %s%"
-#~ "s?)"
+#~ "Your query is possibly a past-form na-adjective.  (Try searching for %s"
+#~ "%s?)"
 #~ msgstr ""
 #~ "Votre requête est potentiellement une forme passée d'un na-adjectif. "
 #~ "(Essayer de rechercher %s%s ?)"
@@ -1331,8 +1523,8 @@ msgstr "Pokročilé"
 #~ "(Essayer de rechercher %s%s ?)"
 
 #~ msgid ""
-#~ "Your query is possibly a causitive na-adjective.  (Try searching for %s%"
-#~ "s?)"
+#~ "Your query is possibly a causitive na-adjective.  (Try searching for %s"
+#~ "%s?)"
 #~ msgstr ""
 #~ "Votre requête est potentiellement une forme causale d'un na-adjectif. "
 #~ "(Essayer de rechercher %s%s ?)"
@@ -1468,9 +1660,6 @@ msgstr "Pokročilé"
 
 #~ msgid "         Look up a name in the name database"
 #~ msgstr "         Rechercher un nom dans la base de données des noms"
-
-#~ msgid "  waei -d Places "
-#~ msgstr "  waei -d Places "
 
 #~ msgid "      Look up a place in the place database"
 #~ msgstr "      Rechercher un nom de lieu dans la base de données des lieux"
@@ -1688,9 +1877,6 @@ msgstr "Pokročilé"
 #~ msgstr ""
 #~ "Outil de recherche de kanjis avec caractères de radicaux cliquables. Pour "
 #~ "activer, installer le dictionnaire de radicaux."
-
-#~ msgid "<b>Features</b>"
-#~ msgstr "<b>Fonctionnalités</b>"
 
 #~ msgid "Status"
 #~ msgstr "État"

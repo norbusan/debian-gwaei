@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=3.0
+_Name=gWaei Japanese-English Dictionary
+_Comment=Enter a Japanese or English word to easily get translations.
+Type=Application
+Exec=gwaei
+TryExec=gwaei
+Icon=gwaei
+#Categories=Game;Emulator;
+Categories=GNOME;GTK;Utility;

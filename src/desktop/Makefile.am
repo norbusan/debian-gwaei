@@ -3,8 +3,14 @@
 PACKAGE = @PACKAGE@
 VERSION = @VERSION@
 
-datadesktopdir = $(prefix)/share/applications
-datadesktop_DATA = $(PACKAGE).desktop
+desktopdir   = $(datadir)/applications
+desktop_in_files = gwaei.desktop.in
+desktop_DATA   = $(desktop_in_files:.desktop.in=.desktop)
+@INTLTOOL_DESKTOP_RULE@
 
-EXTRA_DIST = $(PACKAGE).desktop
+distclean:
+	rm -f $(PACKAGE).desktop
+	rm -f Makefile
+
+EXTRA_DIST = $(PACKAGE).desktop.in
 

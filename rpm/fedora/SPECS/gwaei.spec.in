@@ -104,6 +104,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 * <DATE> René Ribaud <rene.ribaud@free.fr> - @VERSION@-@RELEASE@
 - New package with @PACKAGE@ @VERSION@ release.
 
+* Sat Oct 16 2010 René Ribaud <rene.ribaud@free.fr> - 1.4.3-1
+- New package with gwaei 1.4.3 release.
+- Now build with gettext 0.18.
+
 * Thu May 27 2010 René Ribaud <rene.ribaud@free.fr> - 1.4.0-1
 - New package with gwaei 1.4.0 release.
 

@@ -138,7 +138,7 @@ _db2omf  ?= `$(PKG_CONFIG) --variable db2omf gnome-doc-utils`
 _malrng  ?= `$(PKG_CONFIG) --variable malrng gnome-doc-utils`
 _chunks  ?= `$(PKG_CONFIG) --variable xmldir gnome-doc-utils`/gnome/xslt/docbook/utils/chunks.xsl
 _credits ?= `$(PKG_CONFIG) --variable xmldir gnome-doc-utils`/gnome/xslt/docbook/utils/credits.xsl
-_ids ?= `$(PKG_CONFIG) --variable xmldir gnome-doc-utils`/gnome/xslt/docbook/utils/ids.xsl
+_ids ?= $(shell $(PKG_CONFIG) --variable xmldir gnome-doc-utils)/gnome/xslt/docbook/utils/ids.xsl
 
 if ENABLE_SK
 _ENABLE_SK = true
@@ -361,7 +361,7 @@ $(_DOC_LC_DOCS) : $(_DOC_C_DOCS)
 
 ## @ _DOC_POT
 ## A pot file
-_DOC_POT = $(if $(DOC_MODULE),$(DOC_MODULE).pot)
+_DOC_POT = $(if $(DOC_MODULE),$(DOC_MODULE).pot,$(if $(DOC_ID),$(DOC_ID).pot))
 .PHONY: pot
 pot: $(_DOC_POT)
 $(_DOC_POT): $(_DOC_C_DOCS_NOENT)

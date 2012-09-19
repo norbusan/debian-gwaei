@@ -1,0 +1,140 @@
+<schemalist>
+  <schema id="org.gnome.gwaei" path="/desktop/gnome/gwaei/">
+    <key name="version" type="s">
+      <default>'0.0.0'</default>
+      <summary>The program version</summary>
+      <description>Used to determine if data migration is required.</description>
+    </key>
+
+    <key name="toolbar-show" type="b">
+      <default>false</default>
+      <summary>Toolbar show status</summary>
+      <description>Determines if the toolbar is hidden or not.</description>
+    </key>
+
+    <key name="query-katakana-to-hiragana" type="b">
+      <default>true</default>
+      <summary>Convert Katakana queries to Hiragana</summary>
+      <description>Will also search for the Hiragana version of a Katakana query.</description>
+    </key>
+
+    <key name="query-hiragana-to-katakana" type="b">
+      <default>true</default>
+      <summary>Convert Hiragana queries to Katakana</summary>
+      <description>Will also search for the Katakana version of a Hiragana query.</description>
+    </key>
+
+    <key name="query-romanji-to-kana" type="i">
+      <default>2</default>
+      <summary>Convert Romanji queries to Kana</summary>
+      <description>Will also search for Kana versions of a Romanji query.</description>
+    </key>
+
+    <key name="query-spellcheck" type="b">
+      <default>true</default>
+      <summary>Check the spelling of queries as they are typed</summary>
+      <description>Checks the spelling of search queries as the user types them in.</description>
+    </key>
+
+    <key name="window-positions" type="s">
+      <default>''</default>
+      <summary>For saving window coordinates</summary>
+      <description>Used for saving the position of closed windows for when they are next opened.</description>
+    </key>
+
+    <child schema="org.gnome.gwaei.dictionary" name="dictionary"/>
+    <child schema="org.gnome.gwaei.fonts" name="fonts"/>
+    <child schema="org.gnome.gwaei.highlighting" name="highlighting"/>
+  </schema>
+
+  <!-- Dictionary settings -->
+  <schema id="org.gnome.gwaei.dictionary" path="/desktop/gnome/gwaei/dictionary/">
+    <key name="load-order" type="s">
+      <default>'edict/English,kanji/Kanji,edict/Names,edict/Places,examples/Examples'</default>
+      <summary>Used for the styling of some titles</summary>
+      <description>Used as a separator for the "Other results" section. Is not always used.</description>
+    </key>
+
+    <key name="english-source" type="s">
+      <default>'ftp://ftp.monash.edu.au/pub/nihongo/edict.gz'</default>
+      <summary>English dictionary install source</summary>
+      <description>Used for determining the path to install and update the English dictionary from.</description>
+    </key>
+
+    <key name="kanji-source" type="s">
+      <default>'ftp://ftp.monash.edu.au/pub/nihongo/kanjidic.gz;ftp://ftp.monash.edu.au/pub/nihongo/kradfile.gz'</default>
+      <summary>Kanji dictionary install source</summary>
+      <description>Used for determining the path to install and update the Kanji dictionary from.</description>
+    </key>
+
+    <key name="names-places-source" type="s">
+      <default>'ftp://ftp.monash.edu.au/pub/nihongo/enamdict.gz'</default>
+      <summary>Names dictionary install source</summary>
+      <description>Used for determining the path to install and update the Names dictionary from.</description>
+    </key>
+
+    <key name="examples-source" type="s">
+      <default>'http://www.csse.monash.edu.au/~jwb/examples.gz'</default>
+      <summary>Examples dictionary install source</summary>
+      <description>Used for determining the path to install and update the Radicals dictionary from.</description>
+    </key>
+  </schema>
+
+  <!-- Font settings -->
+  <schema id="org.gnome.gwaei.fonts" path="/desktop/gnome/gwaei/fonts/">
+    <key name="use-global-document-font" type="b">
+      <default>true</default>
+      <summary>Use the global document font</summary>
+      <description>Makes the program use the global document font instead of the custom one.</description>
+    </key>
+
+    <key name="custom-document-font" type="s">
+      <default>'Sans 10'</default>
+      <summary>Custom document font</summary>
+      <description>A document font to use instead of the global one.</description>
+    </key>
+
+    <key name="magnification" type="i">
+      <default>0</default>
+      <summary>Results font size</summary>
+      <description>Enlarges the document font by the step given here.</description>
+    </key>
+  </schema>
+
+  <!-- Highlighting settings -->
+  <schema id="org.gnome.gwaei.highlighting" path="/desktop/gnome/gwaei/highlighting/">
+    <key name="comment-foreground" type="s">
+      <default>'#2222DD'</default>
+      <summary>Color for comments in dictionary files</summary>
+      <description>Is used to make the definitions stand out more from the comments.</description>
+    </key>
+
+    <key name="match-foreground" type="s">
+      <default>'#002200'</default>
+      <summary>Color used for query matches</summary>
+      <description>Is used to make the matched portions of results more visible.</description>
+    </key>
+
+    <key name="match-background" type="s">
+      <default>'#CCEECC'</default>
+      <summary>Color used for query matches</summary>
+      <description>Is used to make the matched portions of results more visible.</description>
+    </key>
+
+    <key name="header-foreground" type="s">
+      <default>'#EE1111'</default>
+      <summary>Used for the styling of some titles</summary>
+      <description>Used as a separator for the "Other results" section.</description>
+    </key>
+
+    <key name="header-background" type="s">
+      <default>'#FFDEDE'</default>
+      <summary>Used for the styling of some titles</summary>
+      <description>Used as a separator for the "Other results" section. Is not always used.</description>
+    </key>
+
+  </schema>
+
+</schemalist>
+
+

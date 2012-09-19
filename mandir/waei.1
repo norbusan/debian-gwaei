@@ -21,11 +21,14 @@ waei \- Japanese-English dictionary
 .B waei
 .RI [ options ] " pattern" ...
 .SH DESCRIPTION
-A Japanese-English dictionary that is a drop-in replacement for gjiten.
+A dictionary program for Japanese-English translation.
 
 This is the console version of 
 .B gwaei.
 .SH OPTIONS
+.TP 
+-n, --ncurses
+Open up the multisearch window
 .TP 
 -e, --exact
 Do not display less relevant results
@@ -34,28 +37,22 @@ Do not display less relevant results
 Search using a chosen dictionary
 .TP
 -l, --list
-Show available dictionaries for searches
-.TP
--i, --install
-List installable dictionaries
+Show available dictionaries for searches/install/uninstall
 .TP
 -i, --install dictionary
 Install dictionary
 .TP
--u, --uninstall
-List uninstallable dictionaries
-.TP
 -u, --uninstall dictionary
 Uninstall dictionary
-.TP
--s, --sync
-Sync installed dictionaries using rsync
 .TP
 -v, --version
 Check the waei version info
 .TP
 -q, --quiet      
 Display less information
+.TP
+-c, --color
+Display results with color
 .TP
 -h, --help
 Display help
