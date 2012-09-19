@@ -135,7 +135,6 @@ _xml2po_mode = $(if $(DOC_ID),mallard,docbook)
 
 _db2html ?= `$(PKG_CONFIG) --variable db2html gnome-doc-utils`
 _db2omf  ?= `$(PKG_CONFIG) --variable db2omf gnome-doc-utils`
-_malrng  ?= `$(PKG_CONFIG) --variable malrng gnome-doc-utils`
 _chunks  ?= `$(PKG_CONFIG) --variable xmldir gnome-doc-utils`/gnome/xslt/docbook/utils/chunks.xsl
 _credits ?= `$(PKG_CONFIG) --variable xmldir gnome-doc-utils`/gnome/xslt/docbook/utils/credits.xsl
 _ids ?= $(shell $(PKG_CONFIG) --variable xmldir gnome-doc-utils)/gnome/xslt/docbook/utils/ids.xsl
@@ -147,6 +146,24 @@ _sklocalstatedir ?= `scrollkeeper-config --pkglocalstatedir`
 _skcontentslist ?= $(_skpkgdatadir)/Templates/C/scrollkeeper_cl.xml
 endif
 
+
+################################################################################
+## Support for automake silent-rules
+GDU_V_XML2PO=$(GDU__v_XML2PO_$(V))
+GDU__v_XML2PO_=$(GDU__v_XML2PO_$(AM_DEFAULT_VERBOSITY))
+GDU__v_XML2PO_0=@echo "  XML2PO" $@;
+
+GDU_V_MSGFMT=$(GDU__v_MSGFMT_$(V))
+GDU__v_MSGFMT_=$(GDU__v_MSGFMT_$(AM_DEFAULT_VERBOSITY))
+GDU__v_MSGFMT_0=@echo "  MSGFMT" $@;
+
+GDU_V_DB2OMF=$(GDU__v_DB2OMF_$(V))
+GDU__v_DB2OMF_=$(GDU__v_DB2OMF_$(AM_DEFAULT_VERBOSITY))
+GDU__v_DB2OMF_0=@echo "  DB2OMF" $@;
+
+GDU_V_DB2HTM=$(GDU__v_DB2HTM_$(V))
+GDU__v_DB2HTM_=$(GDU__v_DB2HTM_$(AM_DEFAULT_VERBOSITY))
+GDU__v_DB2HTM_0=@echo "  DB2HTM" $@;
 
 ################################################################################
 ## @@ Rules for OMF Files
@@ -180,7 +197,7 @@ $(_DOC_OMF_DB) : $(DOC_MODULE)-%.omf : %/$(DOC_MODULE).xml
 	  echo "The file '$(_skcontentslist)' does not exist." >&2;		\
 	  echo "Please check your ScrollKeeper installation." >&2;		\
 	  exit 1; }
-	xsltproc -o $@ $(call db2omf_args,$@,$<,'docbook') || { rm -f "$@"; exit 1; }
+	$(GDU_V_DB2OMF)xsltproc -o $@ $(call db2omf_args,$@,$<,'docbook') || { rm -f "$@"; exit 1; }
 
 ## @ _DOC_OMF_HTML
 ## The OMF files for HTML output
@@ -195,7 +212,7 @@ if ENABLE_SK
 	  echo "Please check your ScrollKeeper installation." >&2;		\
 	  exit 1; }
 endif
-	xsltproc -o $@ $(call db2omf_args,$@,$<,'xhtml') || { rm -f "$@"; exit 1; }
+	$(GDU_V_DB2OMF)xsltproc -o $@ $(call db2omf_args,$@,$<,'xhtml') || { rm -f "$@"; exit 1; }
 
 ## @ _DOC_OMF_ALL
 ## All OMF output files to be built
@@ -340,18 +357,15 @@ $(_DOC_POFILES):
 	fi
 
 $(_DOC_MOFILES): %.mo: %.po
-	@if ! test -d $(dir $@); then \
-	  echo "mkdir $(dir $@)"; \
-	  mkdir "$(dir $@)"; \
-	fi
-	msgfmt -o $@ $<
+	$(AM_V_at)if ! test -d $(dir $@); then mkdir "$(dir $@)"; fi
+	$(GDU_V_MSGFMT)msgfmt -o $@ $<
 
 # FIXME: fix the dependancy
 # FIXME: hook xml2po up
 $(_DOC_LC_DOCS) : $(_DOC_MOFILES)
 $(_DOC_LC_DOCS) : $(_DOC_C_DOCS)
-	if ! test -d $(dir $@); then mkdir $(dir $@); fi
-	if [ -f "C/$(notdir $@)" ]; then d="../"; else d="$(_DOC_ABS_SRCDIR)/"; fi; \
+	$(AM_V_at)if ! test -d $(dir $@); then mkdir $(dir $@); fi
+	$(GDU_V_XML2PO)if [ -f "C/$(notdir $@)" ]; then d="../"; else d="$(_DOC_ABS_SRCDIR)/"; fi; \
 	mo="$(dir $@)$(patsubst %/$(notdir $@),%,$@).mo"; \
 	if [ -f "$${mo}" ]; then mo="../$${mo}"; else mo="$(_DOC_ABS_SRCDIR)/$${mo}"; fi; \
 	(cd $(dir $@) && \
@@ -365,7 +379,7 @@ _DOC_POT = $(if $(DOC_MODULE),$(DOC_MODULE).pot,$(if $(DOC_ID),$(DOC_ID).pot))
 .PHONY: pot
 pot: $(_DOC_POT)
 $(_DOC_POT): $(_DOC_C_DOCS_NOENT)
-	$(_xml2po) -m $(_xml2po_mode) -e -o $@ $^
+	$(GDU_V_XML2PO)$(_xml2po) -m $(_xml2po_mode) -e -o $@ $^
 
 
 ################################################################################
@@ -379,7 +393,7 @@ _DOC_HTML_ALL = $(if $(filter html HTML,$(_DOC_REAL_FORMATS)), \
 _DOC_HTML_TOPS = $(foreach lc,C $(_DOC_REAL_LINGUAS),$(lc)/$(DOC_MODULE).xhtml)
 
 $(_DOC_HTML_TOPS): $(_DOC_C_DOCS) $(_DOC_LC_DOCS)
-	xsltproc -o $@ --xinclude --param db.chunk.chunk_top "false()" --stringparam db.chunk.basename "$(DOC_MODULE)" --stringparam db.chunk.extension ".xhtml" $(_db2html) $(patsubst %.xhtml,%.xml,$@)
+	$(GDU_V_DB2HTM)xsltproc -o $@ --xinclude --param db.chunk.chunk_top "false()" --stringparam db.chunk.basename "$(DOC_MODULE)" --stringparam db.chunk.extension ".xhtml" $(_db2html) $(patsubst %.xhtml,%.xml,$@)
 
 
 ################################################################################
@@ -459,7 +473,29 @@ dist-doc-docs: $(_DOC_C_DOCS) $(_DOC_LC_DOCS) $(_DOC_POFILES)
 	  echo " $(mkinstalldirs) $(distdir)/$$lc"; \
 	  $(mkinstalldirs) "$(distdir)/$$lc"; \
 	done
-	@list='$(_DOC_C_DOCS) $(_DOC_LC_DOCS) $(_DOC_POFILES)'; \
+	@list='$(_DOC_C_DOCS)'; \
+	for doc in $$list; do \
+	  if test -f "$$doc"; then d=; else d="$(srcdir)/"; fi; \
+	    docdir=`echo $$doc | sed -e 's/^\(.*\/\).*/\1/' -e '/\//!s/.*//'`; \
+	    if ! test -d "$(distdir)/$$docdir"; then \
+	      echo "$(mkinstalldirs) $(distdir)/$$docdir"; \
+	      $(mkinstalldirs) "$(distdir)/$$docdir"; \
+	    fi; \
+	  echo "$(INSTALL_DATA) $$d$$doc $(distdir)/$$doc"; \
+	  $(INSTALL_DATA) "$$d$$doc" "$(distdir)/$$doc"; \
+	done
+	@list='$(_DOC_LC_DOCS)'; \
+	for doc in $$list; do \
+	  if test -f "$$doc"; then d=; else d="$(srcdir)/"; fi; \
+	    docdir=`echo $$doc | sed -e 's/^\(.*\/\).*/\1/' -e '/\//!s/.*//'`; \
+	    if ! test -d "$(distdir)/$$docdir"; then \
+	      echo "$(mkinstalldirs) $(distdir)/$$docdir"; \
+	      $(mkinstalldirs) "$(distdir)/$$docdir"; \
+	    fi; \
+	  echo "$(INSTALL_DATA) $$d$$doc $(distdir)/$$doc"; \
+	  $(INSTALL_DATA) "$$d$$doc" "$(distdir)/$$doc"; \
+	done
+	@list='$(_DOC_POFILES)'; \
 	for doc in $$list; do \
 	  if test -f "$$doc"; then d=; else d="$(srcdir)/"; fi; \
 	    docdir=`echo $$doc | sed -e 's/^\(.*\/\).*/\1/' -e '/\//!s/.*//'`; \
@@ -530,8 +566,8 @@ check-doc-pages: $(_DOC_C_PAGES) $(_DOC_LC_PAGES)
 	    xmlpath="$$lc:$(srcdir)/$$lc"; \
 	  fi; \
 	  for page in $(DOC_PAGES); do \
-	    echo "xmllint --noout --noent --path $$xmlpath --xinclude --relaxng $(_malrng) $$d$$lc/$$page"; \
-	    xmllint --noout --noent --path "$$xmlpath" --xinclude --relaxng "$(_malrng)" "$$d$$lc/$$page"; \
+	    echo "xmllint --noout --noent --path $$xmlpath --xinclude $$d$$lc/$$page"; \
+	    xmllint --noout --noent --path "$$xmlpath" --xinclude "$$d$$lc/$$page"; \
 	  done; \
 	done
 
@@ -562,7 +598,18 @@ install-doc-docs:
 	  echo "$(mkinstalldirs) $(DESTDIR)$(HELP_DIR)/$(_doc_install_dir)/$$lc"; \
 	  $(mkinstalldirs) $(DESTDIR)$(HELP_DIR)/$(_doc_install_dir)/$$lc; \
 	done
-	@list='$(_DOC_C_DOCS) $(_DOC_LC_DOCS)'; for doc in $$list; do \
+	@list='$(_DOC_C_DOCS)'; for doc in $$list; do \
+	  if test -f "$$doc"; then d=; else d="$(srcdir)/"; fi; \
+	  docdir="$$lc/"`echo $$doc | sed -e 's/^\(.*\/\).*/\1/' -e '/\//!s/.*//'`; \
+	  docdir="$(DESTDIR)$(HELP_DIR)/$(_doc_install_dir)/$$docdir"; \
+	  if ! test -d "$$docdir"; then \
+	    echo "$(mkinstalldirs) $$docdir"; \
+	    $(mkinstalldirs) "$$docdir"; \
+	  fi; \
+	  echo "$(INSTALL_DATA) $$d$$doc $(DESTDIR)$(HELP_DIR)/$(_doc_install_dir)/$$doc"; \
+	  $(INSTALL_DATA) $$d$$doc $(DESTDIR)$(HELP_DIR)/$(_doc_install_dir)/$$doc; \
+	done
+	@list='$(_DOC_LC_DOCS)'; for doc in $$list; do \
 	  if test -f "$$doc"; then d=; else d="$(srcdir)/"; fi; \
 	  docdir="$$lc/"`echo $$doc | sed -e 's/^\(.*\/\).*/\1/' -e '/\//!s/.*//'`; \
 	  docdir="$(DESTDIR)$(HELP_DIR)/$(_doc_install_dir)/$$docdir"; \
@@ -633,7 +680,11 @@ uninstall-local:					\
 #	$(if $(_DOC_DSK_IN),uninstall-doc-dsk)
 
 uninstall-doc-docs:
-	@list='$(_DOC_C_DOCS) $(_DOC_LC_DOCS)'; for doc in $$list; do \
+	@list='$(_DOC_C_DOCS)'; for doc in $$list; do \
+	  echo " rm -f $(DESTDIR)$(HELP_DIR)/$(_doc_install_dir)/$$doc"; \
+	  rm -f "$(DESTDIR)$(HELP_DIR)/$(_doc_install_dir)/$$doc"; \
+	done
+	@list='$(_DOC_LC_DOCS)'; for doc in $$list; do \
 	  echo " rm -f $(DESTDIR)$(HELP_DIR)/$(_doc_install_dir)/$$doc"; \
 	  rm -f "$(DESTDIR)$(HELP_DIR)/$(_doc_install_dir)/$$doc"; \
 	done

@@ -6,6 +6,12 @@
       <description>Used to determine if data migration is required.</description>
     </key>
 
+    <key name="window-size" type="s">
+      <default>''</default>
+      <summary>Stores the size of the window type when last closed.</summary>
+      <description>Stores the size of the window type when last closed.</description>
+    </key>
+
     <key name="toolbar-show" type="b">
       <default>false</default>
       <summary>Toolbar show status</summary>
@@ -42,21 +48,88 @@
       <description>Checks the spelling of search queries as the user types them in.</description>
     </key>
 
+    <key name="spellcheck-dictionary" type="s">
+      <default>'auto'</default>
+      <summary>The dictionary to use for spellcheck or 'auto'</summary>
+      <description>Sets the default language for spellchecking.  It is usually en_US or some varient by default.</description>
+    </key>
+
     <key name="search-as-you-type" type="b">
       <default>false</default>
       <summary>The search updates as you type</summary>
       <description>Searches dynamically update as you type.</description>
     </key>
 
+    <child schema="org.gnome.gwaei.vocabulary" name="vocabulary"/>
     <child schema="org.gnome.gwaei.dictionary" name="dictionary"/>
     <child schema="org.gnome.gwaei.fonts" name="fonts"/>
     <child schema="org.gnome.gwaei.highlighting" name="highlighting"/>
   </schema>
 
+  <!-- Vocabulary settings -->
+  <schema id="org.gnome.gwaei.vocabulary" path="/org/gnome/gwaei/vocabulary/">
+
+    <key name="toolbar-show" type="b">
+      <default>false</default>
+      <summary>Toolbar show status</summary>
+      <description>Determines if the toolbar is hidden or not.</description>
+    </key>
+
+    <key name="list-order" type="s">
+      <default>''</default>
+      <summary>Used for the styling of some titles</summary>
+      <description>Used as a separator for the "Other results" section. Is not always used.</description>
+    </key>
+
+    <key name="shuffle-flashcards" type="b">
+      <default>true</default>
+      <summary>Whether the generated flashchard decks should be shuffled</summary>
+      <description>The newly created flashcard decks will be shulled.</description>
+    </key>
+
+    <key name="trim-flashcards" type="b">
+      <default>true</default>
+      <summary>Whether the generated flashchard decks should be trimmed.</summary>
+      <description>The newly created flashcard decks will be trimmed to the flashcard-deck-size.</description>
+    </key>
+
+    <key name="flashcard-deck-size" type="i">
+      <default>20</default>
+      <summary>The maximium size of a generate flashcard deck.</summary>
+      <description>This is number of cards that should be taken from a vocabulary list when the list has more than 20 entries.</description>
+    </key>
+
+    <key name="track-results" type="b">
+      <default>false</default>
+      <summary>Whether the generated flashchard results should be saved</summary>
+      <description>Whether the generated flashchard results should be saved.</description>
+    </key>
+
+    <key name="position-column-show" type="b">
+      <default>true</default>
+      <summary>Column</summary>
+      <description>Column.</description>
+    </key>
+
+    <key name="score-column-show" type="b">
+      <default>false</default>
+      <summary>Column</summary>
+      <description>Column.</description>
+    </key>
+
+    <key name="timestamp-column-show" type="b">
+      <default>false</default>
+      <summary>Column</summary>
+      <description>Column.</description>
+    </key>
+
+
+  </schema>
+
   <!-- Dictionary settings -->
   <schema id="org.gnome.gwaei.dictionary" path="/org/gnome/gwaei/dictionary/">
     <key name="load-order" type="s">
-      <default>'edict/English,kanji/Kanji,edict/Names,edict/Places,examples/Examples'</default>
+      <default>'edict/English;kanji/Kanji;edict/Names;edict/Places;examples/Examples'</default>
       <summary>Used for the styling of some titles</summary>
       <description>Used as a separator for the "Other results" section. Is not always used.</description>
     </key>

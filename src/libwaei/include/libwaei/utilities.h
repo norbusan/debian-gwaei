@@ -1,6 +1,7 @@
 #ifndef LW_UTILITIES_INCLUDED
 #define LW_UTILITIES_INCLUDED
 
+G_BEGIN_DECLS
 
 #define HIRAGANA  "(あ)|(い)|(う)|(え)|(お)|(か)(き)|(く)|(け)|(こ)|(が)|(ぎ)|(ぐ)|(げ)|(ご)|(さ)|(し)|(す)|(せ)|(そ)|(ざ)|(じ)|(ず)|(ぜ)|(ぞ)|(た)|(ち)(つ)|(て)|(と)|(だ)|(ぢ)|(づ)|(で)|(ど)|(な)|(に)|(ぬ)|(ね)|(の)|(は)(ひ)|(ふ)|(へ)|(ほ)|(ば)|(び)(ぶ)|(べ)|(ぼ)|(ぱ)|(ぴ)|(ぷ)|(ぺ)|(ぽ)(ま)|(み)|(む)|(め)|(も)|(や)|(ゆ)|(よ)|(ら)|(り)|(る)(れ)|(ろ)|(わ)|(を)|(ん)(ぁ)|(ぃ)|(ぇ)|(ぉ)"
 #define KATAKANA "(ア)|(イ)|(ウ)|(エ)|(オ)|(カ)|(キ)|(ク)|(ケ)|(コ)|(ガ)|(ギ)|(グ)|(ゲ)|(ゴ)|(サ)|(シ)|(ス)|(セ)|(ソ)|(ザ)|(ジ)|(ズ)|(ゼ)|(ゾ)|(タ)|(チ)|(ツ)|(テ)|(ト)|(ダ)|(ジ)|(ヅ)|(デ)|(ド)|(ナ)|(ニ)|(ヌ)|(ネ)|(ノ)|(ハ)|(ヒ)|(フ)|(ヘ)|(ホ)|(バ)|(ビ)|(ブ)|(ベ)|(ボ)|(パ)|(ピ)|(プ)|(ペ)|(ポ)|(マ)|(ミ)|(ム)|(メ)|(モ)|(ヤ)|(ユ)|(ヨ)|(ラ)|(リ)|(ル)|(レ)|(ロ)|(ワ)|(ヲ)|(ン)|(ァ)|(ィ)|(ェ)|(ォ)"
@@ -14,6 +15,7 @@ typedef enum {
   LW_PATH_DICTIONARY_UNKNOWN,
   LW_PATH_PLUGIN,
   LW_PATH_CACHE,
+  LW_PATH_VOCABULARY,
   TOTAL_LW_PATHS
 } LwFolderPath;
 
@@ -70,5 +72,10 @@ gboolean lw_util_is_japanese_locale (void);
 char** lw_util_get_romaji_atoms_from_string (const char*);
 char** lw_util_get_furigana_atoms_from_string (const char*);
 gchar* lw_util_get_query_from_args (int, char**);
+
+gchar* lw_strjoinv (gchar, gchar**, gint);
+gchar* lw_util_collapse_string (const gchar*);
+
+G_END_DECLS
 
 #endif

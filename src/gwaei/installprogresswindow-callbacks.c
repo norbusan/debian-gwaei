@@ -25,11 +25,14 @@
 //! @brief To be written
 //!
 
+
+#include "../private.h"
+
 #include <string.h>
 #include <stdlib.h>
 
 #include <gtk/gtk.h>
-
+ 
 #include <gwaei/gwaei.h>
 #include <gwaei/installprogresswindow-private.h>
 
@@ -42,7 +45,7 @@ gw_installprogresswindow_cancel_cb (GtkWidget *widget, gpointer data)
     LwDictInstList *dictinstlist;
 
     window = GW_INSTALLPROGRESSWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_INSTALLPROGRESSWINDOW));
-    if (window == NULL) return;
+    g_return_if_fail (window != NULL);
     application = gw_window_get_application (GW_WINDOW (window));
     dictinstlist = gw_application_get_dictinstlist (application);
 
@@ -62,9 +65,9 @@ gw_installprogresswindow_update_dictinst_cb (double fraction, gpointer data)
     if (window == NULL) return 0;
     priv = window->priv;
 
-    g_mutex_lock (priv->mutex); 
+    g_mutex_lock (&priv->mutex); 
     priv->install_fraction = lw_dictinst_get_total_progress (priv->di, fraction);
-    g_mutex_unlock (priv->mutex);
+    g_mutex_unlock (&priv->mutex);
 
     return 0;
 }
@@ -85,23 +88,26 @@ gw_installprogresswindow_update_ui_timeout (gpointer data)
     GwInstallProgressWindowPrivate *priv;
     GtkWindow *settingswindow;
     GwApplication *application;
+    GtkListStore *dictionarystore;
     LwDictInstList *dictinstlist;
-    GwDictInfoList *dictinfolist;
     LwDictInst *di;
-    GList *iter;
-    int current_to_install;
-    int total_to_install;
-    char *text_installing;
-    char *text_installing_markup;
-    char *text_left;
-    char *text_left_markup;
-    char *text_progressbar;
+    LwPreferences *preferences;
+    GList *link;
+    gint current_to_install;
+    gint total_to_install;
+    gchar *text_installing;
+    gchar *text_installing_markup;
+    gchar *text_left;
+    gchar *text_left_markup;
+    gchar *text_progressbar;
 
     //Initializations
     window = GW_INSTALLPROGRESSWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (data), GW_TYPE_INSTALLPROGRESSWINDOW));
-    if (window == NULL) return FALSE;
+    g_return_val_if_fail (window != NULL, FALSE);
     application = gw_window_get_application (GW_WINDOW (window));
+    dictionarystore = gw_application_get_dictionarystore (application);
     dictinstlist = gw_application_get_dictinstlist (application);
+    preferences = gw_application_get_preferences (application);
     priv = window->priv;
     current_to_install = 0;
     total_to_install = 0;
@@ -110,9 +116,8 @@ gw_installprogresswindow_update_ui_timeout (gpointer data)
     if (priv->di == NULL)
     {
       settingswindow = gtk_window_get_transient_for (GTK_WINDOW (window));
-      dictinfolist = gw_application_get_dictinfolist (application);
 
-      gw_dictinfolist_reload (dictinfolist);
+      gw_dictionarystore_reload (GW_DICTIONARYSTORE (dictionarystore), preferences);
 
       gtk_widget_destroy (GTK_WIDGET (window));
 
@@ -124,23 +129,23 @@ gw_installprogresswindow_update_ui_timeout (gpointer data)
       return FALSE;
     }
 
-    g_mutex_lock (priv->mutex);
+    g_mutex_lock (&priv->mutex);
 
     //Calculate the number of dictionaries left to install
-    for (iter = dictinstlist->list; iter != NULL; iter = iter->next)
+    for (link = dictinstlist->list; link != NULL; link = link->next)
     {
-      di = LW_DICTINST (iter->data);
+      di = LW_DICTINST (link->data);
       if (di != NULL && di->selected)
       {
         current_to_install++;
       }
-      if (iter->data == priv->di) break;
+      if (link->data == priv->di) break;
     }
 
     //Calculate the number of dictionaries left to install
-    for (iter = dictinstlist->list; iter != NULL; iter = iter->next)
+    for (link = dictinstlist->list; link != NULL; link = link->next)
     {
-      di = LW_DICTINST (iter->data);
+      di = LW_DICTINST (link->data);
       if (di->selected)
       {
         total_to_install++;
@@ -160,7 +165,7 @@ gw_installprogresswindow_update_ui_timeout (gpointer data)
     gtk_progress_bar_set_fraction (priv->progressbar, priv->install_fraction);
     gtk_progress_bar_set_text (priv->progressbar, text_progressbar);
 
-    g_mutex_unlock (priv->mutex);
+    g_mutex_unlock (&priv->mutex);
 
     //Cleanup
     g_free (text_progressbar);

@@ -3,6 +3,8 @@
 
 #include <libwaei/dict.h>
 
+G_BEGIN_DECLS
+
 #define LW_DICTINST(object) (LwDictInst*) object
 
 #define LW_DICTINST_ERROR "gWaei Dictionary Installer Error"
@@ -44,7 +46,7 @@ struct _LwDictInst {
   char **current_target_uris;
   gboolean split;
   gboolean merge;
-  GMutex *mutex;
+  GMutex mutex;
 };
 typedef struct _LwDictInst LwDictInst;
 
@@ -106,5 +108,7 @@ double lw_dictinst_get_process_progress (LwDictInst*, double);
 void lw_dictinst_set_cancel_operations (LwDictInst*, gboolean);
 
 void gw_dictinst_update_source_uri_cb (GSettings*, char*, gpointer);
+
+G_END_DECLS
 
 #endif

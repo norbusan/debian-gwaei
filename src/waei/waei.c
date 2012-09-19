@@ -27,6 +27,9 @@
 //! Main entrance into the program.
 //!
 
+
+#include "../private.h"
+
 #include <stdlib.h>
 #include <string.h>
 #include <locale.h>
@@ -48,10 +51,8 @@ main (int argc, char *argv[])
     textdomain(GETTEXT_PACKAGE);
 
     g_type_init ();
-    g_thread_init (NULL);
 
     application = w_application_new ();
-
     resolution = w_application_run (W_APPLICATION (application), &argc, &argv);
 
     g_object_unref (application);

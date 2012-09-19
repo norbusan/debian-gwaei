@@ -28,6 +28,8 @@
 //!
 
 
+#include "../private.h"
+
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -36,7 +38,8 @@
 
 #include <gtk/gtk.h>
 
-#include <gwaei/gwaei.h>
+#include <libwaei/libwaei.h>
+#include <gwaei/kanjipadwindow.h>
 #include <gwaei/kanjipadwindow-private.h>
 
 static void _kanjipadwindow_initialize_drawingarea (GwKanjipadWindow*);
@@ -44,7 +47,8 @@ static void _kanjipadwindow_initialize_drawingarea (GwKanjipadWindow*);
 //!
 //! @brief To be written
 //!
-void gw_kanjipadwindow_free_drawingarea_stroke (GList *stroke)
+void 
+gw_kanjipadwindow_free_drawingarea_stroke (GList *stroke)
 {
     //Declarations
     GList *iter;
@@ -121,7 +125,8 @@ static void gw_kanjipadwindow_annotate_drawingarea_stroke (GwKanjipadWindow *win
 //!
 //! @brief To be written
 //!
-static void _kanjipadwindow_initialize_drawingarea (GwKanjipadWindow *window)
+static void 
+_kanjipadwindow_initialize_drawingarea (GwKanjipadWindow *window)
 {
     //Declarations
     GwKanjipadWindowPrivate *priv;
@@ -132,7 +137,7 @@ static void _kanjipadwindow_initialize_drawingarea (GwKanjipadWindow *window)
     cairo_t *cr;
     double half_width;
     double half_height;
-    double dashes[] = { 10.0, 10.0,  };
+    double dashes[] = { 10.0, 10.0 };
     int ndash;
     double offset;
 
@@ -153,18 +158,16 @@ static void _kanjipadwindow_initialize_drawingarea (GwKanjipadWindow *window)
     ndash  = sizeof (dashes)/sizeof(dashes[0]);
     offset = 0.0;
 
-    context = gtk_widget_get_style_context (GTK_WIDGET (priv->drawingarea));
-    gtk_style_context_get_color (context, GTK_STATE_FLAG_NORMAL, &fgcolorn);
-    gtk_style_context_get_background_color (context, GTK_STATE_FLAG_NORMAL, &bgcolorn);
-    gtk_style_context_get_color (context, GTK_STATE_FLAG_SELECTED, &fgcolors);
-    gtk_style_context_get_background_color (context, GTK_STATE_FLAG_SELECTED, &bgcolors);
-
+    context = gtk_widget_get_style_context (GTK_WIDGET (window));
+    gtk_style_context_get_background_color (context, GTK_STATE_FLAG_NORMAL, &fgcolorn);
+    gtk_style_context_get_border_color (context, GTK_STATE_FLAG_NORMAL, &bgcolorn);
+    gtk_style_context_get_background_color (context, GTK_STATE_FLAG_SELECTED, &fgcolors);
+    gtk_style_context_get_border_color (context, GTK_STATE_FLAG_SELECTED, &bgcolors);
 
     //Drawing
     cairo_set_source_rgba (cr, fgcolors.red, fgcolors.green, fgcolors.blue, 1.0);
     cairo_rectangle (cr, 0, 0, width, height);
     cairo_fill (cr);
-
 
     //Draw bounding box
     cairo_set_source_rgba (cr, bgcolors.red, bgcolors.green, bgcolors.blue, 0.5);
@@ -187,7 +190,7 @@ static void _kanjipadwindow_initialize_drawingarea (GwKanjipadWindow *window)
     //Draw strokes
     cairo_set_dash (cr, NULL, 0, 0);
     cairo_set_line_width (cr, 2.0);
-    cairo_set_source_rgba (cr, fgcolorn.red, fgcolorn.green, fgcolorn.blue, 1.0);
+    cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 1.0);
 
     for (iter = priv->strokes; iter != NULL; iter = iter->next)
     {
@@ -240,6 +243,7 @@ G_MODULE_EXPORT int gw_kanjipadwindow_drawingarea_configure_event_cb (GtkWidget 
     if (priv->surface != NULL)
     {
       cairo_surface_destroy (priv->surface);
+      priv->surface = NULL;
     }
 
     priv->surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, event->width, event->height);
@@ -334,7 +338,8 @@ G_MODULE_EXPORT int gw_kanjipadwindow_drawingarea_button_release_event_cb (GtkWi
 //!
 //! @brief To be written
 //!
-G_MODULE_EXPORT int gw_kanjipadwindow_drawingarea_motion_event_cb (GtkWidget *widget, GdkEventMotion *event, gpointer data)
+G_MODULE_EXPORT gint 
+gw_kanjipadwindow_drawingarea_motion_event_cb (GtkWidget *widget, GdkEventMotion *event, gpointer data)
 {
     //Declarations
     GwKanjipadWindow *window;
@@ -353,7 +358,13 @@ G_MODULE_EXPORT int gw_kanjipadwindow_drawingarea_motion_event_cb (GtkWidget *wi
 
     if (event->is_hint)
     {
-      gdk_window_get_pointer (gtk_widget_get_window (widget), &x, &y, &state);
+      gdk_window_get_device_position (
+        gtk_widget_get_window (GTK_WIDGET (widget)),
+        gdk_event_get_device ((GdkEvent*) event),
+        &x, 
+        &y, 
+        &state
+      );
     }
     else
     {
@@ -368,8 +379,8 @@ G_MODULE_EXPORT int gw_kanjipadwindow_drawingarea_motion_event_cb (GtkWidget *wi
 
       //extend line
       cr = cairo_create(priv->surface);
-      cairo_set_source_rgb (cr, 0.0, 0.0, 0.0);
-      cairo_set_line_width (cr, 2.0 );
+      cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 1.0);
+      cairo_set_line_width (cr, 2.0);
       cairo_move_to (cr, old->x,  old->y);
       cairo_line_to (cr, x, y);
       cairo_stroke (cr);
@@ -402,7 +413,8 @@ G_MODULE_EXPORT int gw_kanjipadwindow_drawingarea_motion_event_cb (GtkWidget *wi
 //!
 //! @brief To be written
 //!
-void gw_kanjipadwindow_clear_drawingarea (GwKanjipadWindow *window)
+void 
+gw_kanjipadwindow_clear_drawingarea (GwKanjipadWindow *window)
 {
     //Declarations
     GwKanjipadWindowPrivate *priv;
@@ -414,12 +426,8 @@ void gw_kanjipadwindow_clear_drawingarea (GwKanjipadWindow *window)
     {
       gw_kanjipadwindow_free_drawingarea_stroke (iter->data);
     }
-    g_list_free (priv->strokes);
-
-    g_list_free (priv->curstroke);
-
-    priv->strokes = NULL;
-    priv->curstroke = NULL;
+    g_list_free (priv->strokes); priv->strokes = NULL;
+    g_list_free (priv->curstroke); priv->curstroke = NULL;
 
     _kanjipadwindow_initialize_drawingarea (window);
 }

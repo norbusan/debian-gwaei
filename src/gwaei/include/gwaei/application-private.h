@@ -1,6 +1,8 @@
 #ifndef GW_APPLICATION_PRIVATE_INCLUDED
 #define GW_APPLICATION_PRIVATE_INCLUDED
 
+#include <gwaei/vocabularyliststore.h>
+
 G_BEGIN_DECLS
 
 typedef enum {
@@ -19,9 +21,7 @@ struct _GwApplicationPrivate {
   GError *error;
 
   LwPreferences *preferences;
-  GwDictInfoList *dictinfolist;
   LwDictInstList *dictinstlist;
-  GtkTextTagTable *tagtable;
   GwSearchWindow *last_focused;
 
   guint signalid[TOTAL_GW_APPLICATION_SIGNALIDS];
@@ -31,6 +31,10 @@ struct _GwApplicationPrivate {
   gchar   *arg_dictionary;
   gchar   *arg_query;
   gboolean arg_version_switch;
+  gboolean arg_new_vocabulary_window_switch;
+
+  GtkListStore *dictionarystore;
+  GtkListStore *vocabularyliststore;
 
   gint block_new_searches;
 };

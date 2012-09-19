@@ -23,6 +23,9 @@
 //! @file libwaei.c
 //!
 
+
+#include "../private.h"
+
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>

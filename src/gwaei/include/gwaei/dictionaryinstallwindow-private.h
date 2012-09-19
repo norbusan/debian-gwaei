@@ -39,7 +39,9 @@ struct _GwDictionaryInstallWindowPrivate {
 
   GtkTreeView *view;
   GtkButton *add_button;
+  GtkButton *cancel_button;
   GtkToggleButton *details_togglebutton;
+  GtkBox *details_hbox;
 
   //Volatile pointers: They are not available through gtkbuilder
   GtkEntry* filename_entry;

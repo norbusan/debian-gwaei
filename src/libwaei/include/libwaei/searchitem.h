@@ -1,33 +1,5 @@
 #ifndef LW_SEARCHITEM_INCLUDED
 #define LW_SEARCHITEM_INCLUDED
-/******************************************************************************
-    AUTHOR:
-    File written and Copyrighted by Zachary Dovel. All Rights Reserved.
-
-    LICENSE:
-    This file is part of gWaei.
-
-    gWaei is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    gWaei is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-    
-    You should have received a copy of the GNU General Public License
-    along with gWaei.  If not, see <http://www.gnu.org/licenses/>.
-*******************************************************************************/
-
-//!
-//! @file searchitem.h
-//!
-//! @brief To be written.
-//!
-//! To be written.
-//!
 
 #include <stdio.h>
 
@@ -35,6 +7,7 @@
 #include <libwaei/resultline.h>
 #include <libwaei/dictinfo.h>
 
+G_BEGIN_DECLS
 
 #define LW_SEARCHITEM(object) (LwSearchItem*) object
 #define LW_SEARCHITEM_DATA_FREE_FUNC(object) (LwSearchItemDataFreeFunc)object
@@ -47,7 +20,7 @@ typedef enum
 {
   LW_SEARCHSTATUS_IDLE,
   LW_SEARCHSTATUS_SEARCHING,
-  LW_SEARCHSTATUS_CANCELING
+  LW_SEARCHSTATUS_FINISHING
 } LwSearchStatus;
 
 typedef void(*LwSearchItemDataFreeFunc)(gpointer);
@@ -62,7 +35,7 @@ struct _LwSearchItem {
 
     FILE* fd;                               //!< File descriptor for file search position
     GThread *thread;                        //!< Thread the search is processed in
-    GMutex *mutex;                          //!< Mutext to help ensure threadsafe operation
+    GMutex mutex;                          //!< Mutext to help ensure threadsafe operation
 
     LwSearchStatus status;                  //!< Used to test if a search is in progress.
     char *scratch_buffer;                   //!< Scratch space
@@ -109,11 +82,14 @@ LwResultLine* lw_searchitem_get_result (LwSearchItem*);
 void lw_searchitem_parse_result_string (LwSearchItem*);
 void lw_searchitem_cancel_search (LwSearchItem*);
 
-void lw_searchitem_lock_mutex (LwSearchItem*);
-void lw_searchitem_unlock_mutex (LwSearchItem*);
+void lw_searchitem_lock (LwSearchItem*);
+void lw_searchitem_unlock (LwSearchItem*);
+
+void lw_searchitem_set_status (LwSearchItem*, LwSearchStatus);
+LwSearchStatus lw_searchitem_get_status (LwSearchItem*);
 
 double lw_searchitem_get_progress (LwSearchItem*);
 
-
+G_END_DECLS
 
 #endif

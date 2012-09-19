@@ -16,15 +16,17 @@
     <property name="has_resize_grip">False</property>
     <signal name="delete-event" handler="gw_kanjipadwindow_delete_event_action_cb" object="toplevel" swapped="no"/>
     <child>
-      <object class="GtkVBox" id="toplevel">
+      <object class="GtkBox" id="toplevel">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="border_width">8</property>
         <property name="spacing">8</property>
+        <property name="orientation">vertical</property>
         <child>
-          <object class="GtkHBox" id="hbox1">
+          <object class="GtkBox" id="hbox1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="orientation">horizontal</property>
             <child>
               <object class="GtkAlignment" id="alignment1">
                 <property name="width_request">250</property>
@@ -75,14 +77,16 @@
           </packing>
         </child>
         <child>
-          <object class="GtkHBox" id="hbox2">
+          <object class="GtkBox" id="hbox2">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="orientation">horizontal</property>
             <child>
-              <object class="GtkHBox" id="hbox3">
+              <object class="GtkBox" id="hbox3">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="spacing">8</property>
+                <property name="orientation">horizontal</property>
                 <child>
                   <object class="GtkCheckButton" id="checkbutton1">
                     <property name="label" translatable="yes">_Annotate Strokes</property>

@@ -3,6 +3,13 @@
 
 G_BEGIN_DECLS
 
+#include <gwaei/window.h>
+
+typedef enum {
+  GW_RADICALSWINDOW_CLASS_SIGNALID_QUERY_CHANGED,
+  TOTAL_GW_RADICALSWINDOW_CLASS_SIGNALIDS
+} GwRadicalsWindowClassSignalId;
+
 //Boilerplate
 typedef struct _GwRadicalsWindow GwRadicalsWindow;
 typedef struct _GwRadicalsWindowClass GwRadicalsWindowClass;
@@ -23,6 +30,8 @@ struct _GwRadicalsWindow {
 
 struct _GwRadicalsWindowClass {
   GwWindowClass parent_class;
+  guint signalid[TOTAL_GW_RADICALSWINDOW_CLASS_SIGNALIDS];
+  void (*query_changed) (GwRadicalsWindow *window);
 };
 
 

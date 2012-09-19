@@ -1,2 +1,7 @@
+2012-02-24  gettextize  <bug-gnu-gettext@gnu.org>
+
+	* Makefile.am (EXTRA_DIST): Add config.rpath.
+	* configure.ac (AC_CONFIG_FILES): Add m4/Makefile.
+
 2011-11-18  Zachary Dovel  <pizzach@gmail.com>
 	* Updated the change log.  You would be best off looking at the git log.

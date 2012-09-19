@@ -24,6 +24,8 @@
 //!
 
 
+#include "../private.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -209,7 +211,7 @@ lw_history_add_searchitem (LwHistory *list, LwSearchItem *item)
     list->back = g_list_prepend (list->back, item);
 
     //Make sure the list hasn't gotten too long
-    if (g_list_length(list->back) >= list->max)
+    if (g_list_length (list->back) >= list->max)
     {
       link = g_list_last (list->back); 
       lw_searchitem_free (LW_SEARCHITEM (link->data));

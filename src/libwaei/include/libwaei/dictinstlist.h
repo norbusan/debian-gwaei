@@ -1,6 +1,8 @@
 #ifndef LW_DICTINSTLIST_INCLUDED
 #define LW_DICTINSTLIST_INCLUDED
 
+G_BEGIN_DECLS
+
 #define LW_DICTINSTLIST(object) (LwDictInstList*) object
 
 struct _LwDictInstList {
@@ -18,5 +20,7 @@ LwDictInst* lw_dictinstlist_get_dictinst_fuzzy (LwDictInstList*, const char*);
 LwDictInst* lw_dictinstlist_get_dictinst_by_idstring (LwDictInstList*, const char*);
 LwDictInst* lw_dictinstlist_get_dictinst_by_filename (LwDictInstList*, const char*);
 void lw_dictinstlist_set_cancel_operations (LwDictInstList*, gboolean);
+
+G_END_DECLS
 
 #endif

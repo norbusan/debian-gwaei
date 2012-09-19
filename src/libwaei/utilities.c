@@ -24,6 +24,8 @@
 //!
 
 
+#include "../private.h"
+
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -55,6 +57,9 @@ lw_util_build_filename (const LwFolderPath PATH, const char *FILENAME)
     char *path;
     
     base = g_build_filename (g_get_user_config_dir (), PACKAGE, NULL);
+    folder = NULL;
+    path = NULL;
+
     switch (PATH)
     {
       case LW_PATH_BASE:
@@ -80,6 +85,10 @@ lw_util_build_filename (const LwFolderPath PATH, const char *FILENAME)
       case LW_PATH_DICTIONARY_UNKNOWN:
         folder = g_build_filename (base, "dictionaries", lw_util_dicttype_to_string (LW_DICTTYPE_UNKNOWN), NULL);
         path = g_build_filename (base, "dictionaries", lw_util_dicttype_to_string (LW_DICTTYPE_UNKNOWN), FILENAME, NULL);
+        break;
+      case LW_PATH_VOCABULARY:
+        folder = g_build_filename (base, "vocabulary", NULL);
+        path = g_build_filename (base, "vocabulary", FILENAME, NULL);
         break;
       case LW_PATH_PLUGIN:
         folder = g_build_filename (base, "plugins", NULL);
@@ -485,20 +494,20 @@ lw_util_is_yojijukugo_str (const char* INPUT)
 
 
 //!
-//! @brief Shifts the characters in a specific direction
+//! @brief Shifts kana characters in a specific direction
 //! @param input The string to shift
 //! @param shift How much to shift by
 //! @see lw_util_str_shift_hira_to_kata ()
 //! @see lw_util_str_shift_kata_to_hira ()
 //!
 void 
-lw_util_shift_all_chars_in_str_by (char *input, int shift)
+lw_util_shift_kana_chars_in_str_by (char *input, int shift)
 {
     //Setup
     char *input_ptr;
     input_ptr = input;
 
-    char output[strlen(input)];
+    char output[strlen(input) + 1];
     char *output_ptr;
     output_ptr = output;
 
@@ -510,10 +519,14 @@ lw_util_shift_all_chars_in_str_by (char *input, int shift)
     //Start the conversion
     while (*input_ptr != '\0')
     {
-      if (unic == L'ー')
-        offset = g_unichar_to_utf8((unic), output_ptr);
-      else
+      if (unic >= 0x3041 && unic <= 0x30ff &&
+          unic + shift >= 0x3041 && unic + shift <= 0x30ff &&
+          unic != L'ー') {
         offset = g_unichar_to_utf8((unic + shift), output_ptr);
+      }
+      else {
+        offset = g_unichar_to_utf8((unic), output_ptr);
+      }
       output_ptr = output_ptr + offset;
 
       input_ptr = g_utf8_next_char(input_ptr);
@@ -529,13 +542,13 @@ lw_util_shift_all_chars_in_str_by (char *input, int shift)
 //! @brief Convenience function to shift hiragana to katakana
 //!
 //! @param input The string to shift
-//! @see lw_util_shift_all_chars_in_str_by ()
+//! @see lw_util_shift_kana_chars_in_str_by ()
 //! @see lw_util_str_shift_kata_to_hira ()
 //!
 void 
 lw_util_str_shift_hira_to_kata (char input[])
 {
-    lw_util_shift_all_chars_in_str_by (input, (L'ア' - L'あ'));
+    lw_util_shift_kana_chars_in_str_by (input, (L'ア' - L'あ'));
 }
 
 
@@ -543,13 +556,13 @@ lw_util_str_shift_hira_to_kata (char input[])
 //! @brief Convenience function to shift katakana to hiragana
 //!
 //! @param input The string to shift
-//! @see lw_util_shift_all_chars_in_str_by ()
+//! @see lw_util_shift_kana_chars_in_str_by ()
 //! @see lw_util_str_shift_hira_to_kata ()
 //!
 void 
 lw_util_str_shift_kata_to_hira (char input[])
 {
-    lw_util_shift_all_chars_in_str_by (input, (L'あ' - L'ア'));
+    lw_util_shift_kana_chars_in_str_by (input, (L'あ' - L'ア'));
 }
 
 
@@ -1024,7 +1037,7 @@ lw_util_roma_char_to_hira (const char *input, char *output)
 //! @param input The string to shift.
 //! @param output the string to output the changes to.
 //! @param max The max length of the string to output to.
-//! @see lw_util_shift_all_chars_in_str_by ()
+//! @see lw_util_shift_kana_chars_in_str_by ()
 //! @see lw_util_str_shift_hira_to_kata ()
 //!
 gboolean 
@@ -1269,6 +1282,7 @@ lw_util_get_romaji_atoms_from_string (const char *string)
     //Initializations;
     delimitor = "&";
     buffer = (char*) malloc(sizeof(char) * (strlen(string) * 2) + 1); //max size is if there is a delimitor for every character
+    buffer[0] = '\0';
     string_ptr = string;
     buffer_ptr = buffer;
     new_atom_start = FALSE;
@@ -1339,6 +1353,7 @@ lw_util_get_furigana_atoms_from_string (const char *string)
     //Initializations;
     delimitor = "&";
     buffer = (char*) malloc(sizeof(char) * (strlen(string) * 2) + 1); //max size is if there is a delimitor for every character
+    buffer[0] = '\0';
     string_ptr = string;
     buffer_ptr = buffer;
     new_atom_start = FALSE;
@@ -1433,5 +1448,92 @@ lw_util_get_query_from_args (int argc, char** argv)
     if (text != NULL) free (text);
 
     return query;
+}
+
+
+gchar*
+lw_strjoinv (gchar delimitor, gchar** array, gint array_length)
+{
+    g_assert (array != NULL);
+
+    //Declarations
+    gint text_length;
+    gint delimitor_length;
+    gchar *text, *src_ptr, *tgt_ptr;
+    gint i;
+
+    //Initializations
+    text_length = 0;
+    delimitor_length = sizeof (delimitor);
+    i = 0;
+
+    //Calculate the needed size
+    while (i < array_length)
+    {
+      src_ptr = *(array + i);
+      if (src_ptr != NULL) 
+      {
+        text_length += strlen (src_ptr);
+      }
+      text_length += delimitor_length;
+      i++;
+    }
+
+    text = g_new (gchar, text_length);
+
+    //Concatinate the strings
+    if (text != NULL)
+    {
+      tgt_ptr = text;
+      i = 0;
+
+      while (i < array_length)
+      {
+        src_ptr = *(array + i);
+        if (src_ptr != NULL)
+          while (*src_ptr != '\0')
+            *(tgt_ptr++) = *(src_ptr++);
+        *(tgt_ptr++) = delimitor;
+        i++;
+      }
+      *(--tgt_ptr) = '\0';
+    }
+
+    return text;
+}
+
+
+gchar*
+lw_util_collapse_string (const gchar *text)
+{
+    gchar *buffer;
+    gchar *target_ptr;
+    const gchar *source_ptr;
+    gunichar c;
+    gint bytes;
+
+    buffer = g_new (gchar, strlen(text) + 1);
+
+    if (buffer != NULL)
+    {
+      source_ptr = text;
+      target_ptr = buffer;
+
+      while (*source_ptr != '\0')
+      {
+        c = g_unichar_tolower (g_utf8_get_char (source_ptr));
+
+        if (!g_unichar_ispunct (c) && !g_unichar_isspace (c))
+        {
+          bytes = g_unichar_to_utf8 (c, target_ptr);
+          target_ptr += bytes;
+        }
+
+        source_ptr = g_utf8_next_char (source_ptr);
+      }
+      *target_ptr = '\0';
+    }
+
+    return buffer;
 }
 

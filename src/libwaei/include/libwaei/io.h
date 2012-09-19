@@ -3,6 +3,8 @@
 
 #include <glib.h>
 
+G_BEGIN_DECLS
+
 #define LW_IO_MAX_FGETS_LINE 5000
 #define LW_IO_ERROR "libwaei generic error"
 
@@ -39,8 +41,9 @@ gboolean lw_io_unzip_file (char*, LwIoProgressCallback, gpointer, GError**);
 void lw_io_set_savepath (const gchar *);
 const gchar* lw_io_get_savepath (void);
 
-gboolean lw_io_pipe_data (char**, const char *source_path, const char *target_path, LwIoProgressCallback cb, gpointer data, GError **error);
 void lw_io_set_cancel_operations (gboolean);
 long lw_io_get_size_for_uri (const char*);
+
+G_END_DECLS
 
 #endif

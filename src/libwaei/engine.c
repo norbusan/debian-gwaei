@@ -23,6 +23,9 @@
 //! @file engine.c
 //!
 
+
+#include "../private.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -79,21 +82,25 @@ static gpointer _stream_results_thread (gpointer data)
     if (item == NULL || item->fd == NULL) return NULL;
     char *line_pointer = NULL;
 
-    lw_searchitem_lock_mutex (item);
+    lw_searchitem_lock (item);
     item->status = LW_SEARCHSTATUS_SEARCHING;
 
     //We loop, processing lines of the file until the max chunk size has been
     //reached or we reach the end of the file or a cancel request is recieved.
     while ((line_pointer = fgets(item->resultline->string, LW_IO_MAX_FGETS_LINE, item->fd)) != NULL &&
-           item->status != LW_SEARCHSTATUS_CANCELING)
+           item->status != LW_SEARCHSTATUS_FINISHING)
     {
+
       //Give a chance for something else to run
-      lw_searchitem_unlock_mutex (item);
-      if (g_main_context_pending (NULL))
+      lw_searchitem_unlock (item);
+/*
+      //THIS CODE CAUSES A DEADLOCK ON GTK+3.3.X
+      if (item->status != LW_SEARCHSTATUS_FINISHING && g_main_context_pending (NULL))
       {
         g_main_context_iteration (NULL, FALSE);
       }
-      lw_searchitem_lock_mutex (item);
+*/
+      lw_searchitem_lock (item);
 
       item->current += strlen(item->resultline->string);
 
@@ -162,7 +169,7 @@ static gpointer _stream_results_thread (gpointer data)
     lw_searchitem_cleanup_search (item);
     lw_enginedata_free (enginedata);
 
-    lw_searchitem_unlock_mutex (item);
+    lw_searchitem_unlock (item);
 
     return NULL;
 }
@@ -176,8 +183,10 @@ static gpointer _stream_results_thread (gpointer data)
 //!
 void lw_searchitem_start_search (LwSearchItem *item, gboolean create_thread, gboolean exact)
 {
+    GError *error;
     gpointer data;
 
+    error = NULL;
     data = lw_enginedata_new (item, exact);
 
     if (data != NULL)
@@ -185,10 +194,17 @@ void lw_searchitem_start_search (LwSearchItem *item, gboolean create_thread, gbo
       lw_searchitem_prepare_search (item);
       if (create_thread)
       {
-        item->thread = g_thread_create ((GThreadFunc) _stream_results_thread, (gpointer) data, TRUE, NULL);
+        item->thread = g_thread_try_new (
+          "libwaei-search",
+          (GThreadFunc) _stream_results_thread, 
+          (gpointer) data, 
+          &error
+        );
         if (item->thread == NULL)
         {
-          fprintf(stderr, "Couldn't create the thread");
+          g_warning ("Thread Creation Error: %s\n", error->message);
+          g_error_free (error);
+          error = NULL;
         }
       }
       else
@@ -207,32 +223,17 @@ void lw_searchitem_start_search (LwSearchItem *item, gboolean create_thread, gbo
 //!
 void lw_searchitem_cancel_search (LwSearchItem *item)
 {
-    if (item == NULL)
+    if (item == NULL) return;
+
+    lw_searchitem_set_status (item, LW_SEARCHSTATUS_FINISHING);
+
+    if (item->thread != NULL)
     {
-      return;
-    }
-    else
-    {
-      lw_searchitem_lock_mutex (item);
-
-      if (item->thread == NULL)
-      {
-        item->thread = NULL;
-        item->status = LW_SEARCHSTATUS_IDLE;
-        lw_searchitem_unlock_mutex (item);
-        return;
-      }
-
-      item->status = LW_SEARCHSTATUS_CANCELING;
-      lw_searchitem_unlock_mutex (item);
-
       g_thread_join (item->thread);
       item->thread = NULL;
-
-      lw_searchitem_lock_mutex (item);
-      item->status = LW_SEARCHSTATUS_IDLE;
-      lw_searchitem_unlock_mutex (item);
     }
+
+    lw_searchitem_set_status (item, LW_SEARCHSTATUS_IDLE);
 }
 
 
@@ -246,19 +247,19 @@ LwResultLine* lw_searchitem_get_result (LwSearchItem *item)
 
     LwResultLine *line;
 
-    g_mutex_lock (item->mutex);
+    lw_searchitem_lock (item);
 
     if (item->results_high != NULL)
     {
       line = LW_RESULTLINE (item->results_high->data);
       item->results_high = g_list_delete_link (item->results_high, item->results_high);
     }
-    else if (item->results_medium != NULL && item->status == LW_SEARCHSTATUS_IDLE)
+    else if (item->results_medium != NULL && item->status == LW_SEARCHSTATUS_FINISHING)
     {
       line = LW_RESULTLINE (item->results_medium->data);
       item->results_medium = g_list_delete_link (item->results_medium, item->results_medium);
     }
-    else if (item->results_low != NULL && item->status == LW_SEARCHSTATUS_IDLE)
+    else if (item->results_low != NULL && item->status == LW_SEARCHSTATUS_FINISHING)
     {
       line = LW_RESULTLINE (item->results_low->data);
       item->results_low = g_list_delete_link (item->results_low, item->results_low);
@@ -268,7 +269,7 @@ LwResultLine* lw_searchitem_get_result (LwSearchItem *item)
       line = NULL;
     }
 
-    g_mutex_unlock (item->mutex);
+    lw_searchitem_unlock (item);
 
     return line;
 }
@@ -278,16 +279,39 @@ LwResultLine* lw_searchitem_get_result (LwSearchItem *item)
 //!
 //! @brief Tells if you should keep checking for results
 //!
-gboolean lw_searchitem_should_check_results (LwSearchItem *item)
+gboolean 
+lw_searchitem_should_check_results (LwSearchItem *item)
 {
-    gboolean should_check_results;
+    if (item == NULL) return FALSE;
 
-    g_mutex_lock (item->mutex);
-    should_check_results = (item->status != LW_SEARCHSTATUS_IDLE ||
-                            item->results_high != NULL ||
-                            item->results_medium != NULL ||
-                            item->results_low != NULL);
-    g_mutex_unlock (item->mutex);
+    gboolean should_check_results;
+    gboolean results_in_queue;
+    LwSearchStatus status;
+
+    status = lw_searchitem_get_status (item);
+
+    if (status == LW_SEARCHSTATUS_FINISHING)
+    {
+      if (item->thread != NULL)
+      {
+        g_thread_join (item->thread);
+        item->thread = NULL;
+      }
+    }
+
+    lw_searchitem_lock (item);
+    results_in_queue = (item->results_high != NULL ||
+                        item->results_medium != NULL ||
+                        item->results_low != NULL);
+    lw_searchitem_unlock (item);
+
+    if (status == LW_SEARCHSTATUS_FINISHING && 
+                       (item->results_high == NULL &&
+                        item->results_medium == NULL &&
+                        item->results_low == NULL))
+      lw_searchitem_set_status (item, LW_SEARCHSTATUS_IDLE);
+
+    should_check_results = (results_in_queue || status != LW_SEARCHSTATUS_IDLE);
 
     return should_check_results;
 }

@@ -26,6 +26,8 @@
 //!
 
 
+#include "../private.h"
+
 #include <string.h>
 #include <stdlib.h>
 
@@ -41,6 +43,69 @@ static void gw_searchwindow_append_unknowndict_result (GwSearchWindow*, LwSearch
 static void gw_searchwindow_append_less_relevant_header (GwSearchWindow*, LwSearchItem*);
 static void gw_searchwindow_append_more_relevant_header (GwSearchWindow*, LwSearchItem*);
 
+
+static void
+gw_searchwindow_insert_addlink (GwSearchWindow   *window,
+                                GtkTextBuffer    *buffer,
+                                GtkTextIter      *iter,
+                                LwVocabularyItem *item   )
+{
+    //Sanity check
+    g_assert (item != NULL);
+
+    //Declarations
+    GtkTextTag *tag;
+    gchar *data;
+    
+    //Initializations
+    tag = gtk_text_buffer_create_tag (buffer, NULL, 
+        "rise",   5000, 
+        "scale",  0.75, 
+        "weight", PANGO_WEIGHT_BOLD,
+        NULL);
+    data = lw_vocabularyitem_to_string (item);
+    g_object_set_data_full (G_OBJECT (tag), "vocabulary-data", data, g_free);
+    g_object_set_data (G_OBJECT (tag), "buffer", (gpointer) buffer);
+
+    gtk_text_buffer_insert (buffer, iter, " ", -1);
+    gtk_text_buffer_insert_with_tags (buffer, iter, "+", -1, tag, NULL);
+    gtk_text_buffer_insert (buffer, iter, " ", -1 );
+}
+
+
+void
+gw_searchwindow_insert_edict_addlink (GwSearchWindow *window, 
+                                      LwResultLine   *resultline, 
+                                      GtkTextBuffer  *buffer, 
+                                      GtkTextIter    *iter)
+{
+    //Declarations
+    gchar *kanji, *furigana, *definitions;
+    LwVocabularyItem *item;
+
+    //Initializations
+    kanji = resultline->kanji_start;
+    furigana = resultline->furigana_start;
+    if (furigana == NULL || strlen (furigana) == 0)
+      furigana = kanji;
+    definitions = g_strjoinv ("/", resultline->def_start);
+
+    if (definitions != NULL)
+    {
+      item = lw_vocabularyitem_new ();
+      if (item != NULL)
+      {
+        lw_vocabularyitem_set_kanji (item, kanji);
+        lw_vocabularyitem_set_furigana (item, furigana);
+        lw_vocabularyitem_set_definitions (item, definitions);
+
+        gw_searchwindow_insert_addlink (window, buffer, iter, item);
+
+        lw_vocabularyitem_free (item);
+      }
+      g_free (definitions);
+    }
+}
 
 //!
 //! @brief Appends a result to the output
@@ -318,12 +383,14 @@ gw_searchwindow_append_def_same_to_buffer (GwSearchWindow *window, LwSearchItem*
     g_assert (lw_searchitem_has_data (item));
 
     //Declarations
+    GwSearchWindowClass *klass;
     GwSearchData *sdata;
     GtkTextView *view;
     GtkTextBuffer *buffer;
     GtkTextMark *mark;
 
     //Initializations
+    klass = GW_SEARCHWINDOW_CLASS (G_OBJECT_GET_CLASS (window));
     sdata = GW_SEARCHDATA (lw_searchitem_get_data (item));
     view = GTK_TEXT_VIEW (sdata->view);
     buffer = gtk_text_view_get_buffer (view);
@@ -364,7 +431,15 @@ gw_searchwindow_append_def_same_to_buffer (GwSearchWindow *window, LwSearchItem*
       }
       end_offset = gtk_text_iter_get_line_offset (&iter);
       gw_add_match_highlights (line, start_offset, end_offset, item);
+
+      gw_searchwindow_insert_edict_addlink (window, resultline, buffer, &iter);
     }
+
+    g_signal_emit (window, 
+      klass->signalid[GW_SEARCHWINDOW_CLASS_SIGNALID_WORD_ADDED], 
+      g_quark_from_static_string ("edict"), 
+      resultline
+    );
 }
 
 
@@ -398,6 +473,7 @@ gw_searchwindow_append_edict_result (GwSearchWindow *window, LwSearchItem *item)
     g_assert (lw_searchitem_has_data (item));
 
     //Declarations
+    GwSearchWindowClass *klass;
     LwResultLine *resultline;
     GwSearchData *sdata;
     GtkTextView *view;
@@ -407,6 +483,7 @@ gw_searchwindow_append_edict_result (GwSearchWindow *window, LwSearchItem *item)
     int line, start_offset, end_offset;
 
     //Initializations
+    klass = GW_SEARCHWINDOW_CLASS (G_OBJECT_GET_CLASS (window));
     resultline = lw_searchitem_get_result (item);
     if (resultline == NULL) return;
     sdata = GW_SEARCHDATA (lw_searchitem_get_data (item));
@@ -447,6 +524,7 @@ gw_searchwindow_append_edict_result (GwSearchWindow *window, LwSearchItem *item)
     {
       gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, resultline->kanji_start, -1, "important", NULL);
     }
+
     //Furigana
     if (resultline->furigana_start != NULL)
     {
@@ -466,11 +544,11 @@ gw_searchwindow_append_edict_result (GwSearchWindow *window, LwSearchItem *item)
       gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, gettext("Pop"), -1, "small", NULL);
     }
 
+    gw_searchwindow_insert_edict_addlink (window, resultline, buffer, &iter);
+
     gw_shift_stay_mark (item, "previous_result");
     start_offset = 0;
     end_offset = gtk_text_iter_get_line_offset (&iter);
-
-//    gw_searchwindow_insert_resultpopup_button (window, item, resultline, &iter);
 
     gtk_text_buffer_insert (buffer, &iter, "\n", -1);
     gw_add_match_highlights (line, start_offset, end_offset, item);
@@ -490,9 +568,45 @@ gw_searchwindow_append_edict_result (GwSearchWindow *window, LwSearchItem *item)
       gtk_text_buffer_insert                   (buffer, &iter, "\n", -1);
       i++;
     }
-    gtk_text_buffer_insert (buffer, &iter, "\n", -1);
+    gtk_text_buffer_insert (buffer, &iter, " \n", -1);
 
+    g_signal_emit (window, 
+      klass->signalid[GW_SEARCHWINDOW_CLASS_SIGNALID_WORD_ADDED], 
+      g_quark_from_static_string ("edict"), 
+      resultline
+    );
 }
+
+
+static void
+gw_searchwindow_insert_kanjidict_addlink (GwSearchWindow *window, LwResultLine *resultline, GtkTextBuffer *buffer, GtkTextIter *iter)
+{
+    //Declarations
+    gchar *kanji, *furigana, *definitions;
+    LwVocabularyItem *item;
+
+    //Initializations
+    kanji = resultline->kanji;
+    furigana = g_strjoinv (",", resultline->readings);
+    definitions = resultline->meanings;
+
+    if (furigana != NULL)
+    {
+      item = lw_vocabularyitem_new ();
+      if (item != NULL)
+      {
+        lw_vocabularyitem_set_kanji (item, kanji);
+        lw_vocabularyitem_set_furigana (item, furigana);
+        lw_vocabularyitem_set_definitions (item, definitions);
+
+        gw_searchwindow_insert_addlink (window, buffer, iter, item);
+
+        lw_vocabularyitem_free (item);
+      }
+      g_free (furigana);
+    }
+}
+
 
 
 //!
@@ -510,6 +624,7 @@ gw_searchwindow_append_kanjidict_result (GwSearchWindow *window, LwSearchItem *i
     g_assert (lw_searchitem_has_data (item));
 
     //Declarations
+    GwSearchWindowClass *klass;
     GwApplication *application;
     GwSearchData *sdata;
     LwResultLine *resultline;
@@ -520,6 +635,7 @@ gw_searchwindow_append_kanjidict_result (GwSearchWindow *window, LwSearchItem *i
     int line, start_offset, end_offset;
 
     //Initializations
+    klass = GW_SEARCHWINDOW_CLASS (G_OBJECT_GET_CLASS (window));
     application = gw_window_get_application (GW_WINDOW (window));
     resultline = lw_searchitem_get_result (item);
     if (resultline == NULL) return;
@@ -554,6 +670,8 @@ gw_searchwindow_append_kanjidict_result (GwSearchWindow *window, LwSearchItem *i
     gtk_text_buffer_get_iter_at_mark (buffer, &iter, mark); line = gtk_text_iter_get_line (&iter);
     gw_add_match_highlights (line, start_offset, end_offset, item);
 
+    gw_searchwindow_insert_kanjidict_addlink (window, resultline, buffer, &iter);
+
     gtk_text_buffer_insert (buffer, &iter, "\n", -1);
     gtk_text_buffer_get_iter_at_mark (buffer, &iter, mark); line = gtk_text_iter_get_line (&iter);
 
@@ -569,13 +687,6 @@ gw_searchwindow_append_kanjidict_result (GwSearchWindow *window, LwSearchItem *i
 
       gtk_text_buffer_insert (buffer, &iter, "\n", -1);
       gtk_text_buffer_get_iter_at_mark (buffer, &iter, mark); line = gtk_text_iter_get_line (&iter);
-
-      GwRadicalsWindow *radicalswindow;
-      radicalswindow =  GW_RADICALSWINDOW (gw_application_get_window_by_type (application, GW_TYPE_RADICALSWINDOW));
-      if (radicalswindow != NULL && resultline->radicals != NULL)
-      {
-        gw_radicalswindow_set_button_sensitive_when_label_is (radicalswindow, resultline->radicals);
-      }
     }
 
     //Readings
@@ -649,7 +760,23 @@ gw_searchwindow_append_kanjidict_result (GwSearchWindow *window, LwSearchItem *i
     gtk_text_buffer_get_iter_at_mark (buffer, &iter, mark); end_offset = gtk_text_iter_get_line_offset (&iter);
     gw_add_match_highlights (line, start_offset, end_offset, item);
 
-    gtk_text_buffer_insert (buffer, &iter, "\n\n", -1);
+    gtk_text_buffer_insert (buffer, &iter, "\n \n", -1);
+
+    g_signal_emit (window, 
+      klass->signalid[GW_SEARCHWINDOW_CLASS_SIGNALID_WORD_ADDED], 
+      g_quark_from_static_string ("kanjidict"), 
+      resultline
+    );
+
+    if (resultline->radicals != NULL)
+    {
+      GwRadicalsWindow *radicalswindow;
+      radicalswindow =  GW_RADICALSWINDOW (gw_application_get_window_by_type (application, GW_TYPE_RADICALSWINDOW));
+      if (radicalswindow != NULL && resultline->radicals != NULL)
+      {
+        gw_radicalswindow_set_button_sensitive_when_label_is (radicalswindow, resultline->radicals);
+      }
+    }
 }
 
 
@@ -668,6 +795,7 @@ gw_searchwindow_append_examplesdict_result (GwSearchWindow *window, LwSearchItem
     g_assert (lw_searchitem_has_data (item));
 
     //Declarations
+    GwSearchWindowClass *klass;
     GwSearchData *sdata;
     LwResultLine *resultline;
     GtkTextView *view;
@@ -677,6 +805,7 @@ gw_searchwindow_append_examplesdict_result (GwSearchWindow *window, LwSearchItem
     GtkTextIter iter;
 
     //Initializations
+    klass = GW_SEARCHWINDOW_CLASS (G_OBJECT_GET_CLASS (window));
     resultline = lw_searchitem_get_result (item);
     if (resultline == NULL) return;
     sdata = GW_SEARCHDATA (lw_searchitem_get_data (item));
@@ -721,7 +850,14 @@ gw_searchwindow_append_examplesdict_result (GwSearchWindow *window, LwSearchItem
     }
 
     gtk_text_buffer_get_iter_at_mark (buffer, &iter, mark);
-    gtk_text_buffer_insert (buffer, &iter, "\n\n", -1);
+    gtk_text_buffer_insert (buffer, &iter, "\n \n", -1);
+
+    g_signal_emit (window, 
+      klass->signalid[GW_SEARCHWINDOW_CLASS_SIGNALID_WORD_ADDED], 
+      g_quark_from_static_string ("examplesdict"), 
+      resultline
+    );
+
 }
 
 
@@ -740,6 +876,7 @@ gw_searchwindow_append_unknowndict_result (GwSearchWindow *window, LwSearchItem 
     g_assert (lw_searchitem_has_data (item));
 
     //Definitions
+    GwSearchWindowClass *klass;
     LwResultLine *resultline;
     GwSearchData *sdata;
     GtkTextView *view;
@@ -750,6 +887,7 @@ gw_searchwindow_append_unknowndict_result (GwSearchWindow *window, LwSearchItem 
 
 
     //Initializations
+    klass = GW_SEARCHWINDOW_CLASS (G_OBJECT_GET_CLASS (window));
     resultline = lw_searchitem_get_result (item);
     if (resultline == NULL) return;
     sdata = GW_SEARCHDATA (lw_searchitem_get_data (item));
@@ -767,8 +905,14 @@ gw_searchwindow_append_unknowndict_result (GwSearchWindow *window, LwSearchItem 
     gw_add_match_highlights (line, start_offset, end_offset, item);
 
     gtk_text_buffer_get_iter_at_mark (buffer, &iter, mark);
-    gtk_text_buffer_insert (buffer, &iter, "\n\n", -1);
+    gtk_text_buffer_insert (buffer, &iter, "\n \n", -1);
     gtk_text_buffer_get_iter_at_mark (buffer, &iter, mark); line = gtk_text_iter_get_line (&iter);
+
+    g_signal_emit (window, 
+      klass->signalid[GW_SEARCHWINDOW_CLASS_SIGNALID_WORD_ADDED], 
+      g_quark_from_static_string ("unknowndict"), 
+      resultline
+    );
 }
 
 
@@ -1016,6 +1160,7 @@ gw_searchwindow_display_no_results_found_page (GwSearchWindow *window, LwSearchI
     GwApplication *application;
     GwSearchWindowPrivate *priv;
     priv = window->priv;
+    GtkListStore *dictionarystore;
     LwDictInfoList *dictinfolist;
     gint32 temp = g_random_int_range (0,9);
     while (temp == priv->previous_tip)
@@ -1039,7 +1184,8 @@ gw_searchwindow_display_no_results_found_page (GwSearchWindow *window, LwSearchI
     GwSearchData *sdata;
 
     application = gw_window_get_application (GW_WINDOW (window));
-    dictinfolist = LW_DICTINFOLIST (gw_application_get_dictinfolist (application));
+    dictionarystore = gw_application_get_dictionarystore (application);
+    dictinfolist = gw_dictionarystore_get_dictinfolist (GW_DICTIONARYSTORE (dictionarystore));
     sdata = (GwSearchData*) lw_searchitem_get_data (item);
     view = GTK_TEXT_VIEW (sdata->view);
     buffer = gtk_text_view_get_buffer (view);
@@ -1084,7 +1230,7 @@ gw_searchwindow_display_no_results_found_page (GwSearchWindow *window, LwSearchI
 
 
     //Linebreak after the image
-    gw_searchwindow_append_to_buffer (window, item, "\n\n\n", NULL, NULL, NULL, NULL);
+    gw_searchwindow_append_to_buffer (window, item, "\n \n \n", NULL, NULL, NULL, NULL);
 
 
     if (lw_dictinfolist_get_total (dictinfolist) > 1)
@@ -1116,7 +1262,8 @@ gw_searchwindow_display_no_results_found_page (GwSearchWindow *window, LwSearchI
         if (di != di_selected)
         {
           button = gtk_button_new_with_label (di->shortname);
-          g_signal_connect (G_OBJECT (button), "clicked", G_CALLBACK (gw_searchwindow_no_results_search_for_dictionary_cb), di);
+          g_object_set_data (G_OBJECT (button), "load-position", GINT_TO_POINTER (di->load_position));
+          g_signal_connect (G_OBJECT (button), "clicked", G_CALLBACK (gw_searchwindow_no_results_search_for_dictionary_cb), window);
           gtk_container_add (GTK_CONTAINER (box), GTK_WIDGET (button));
           gtk_widget_show (GTK_WIDGET (button));
         }
@@ -1180,7 +1327,7 @@ gw_searchwindow_display_no_results_found_page (GwSearchWindow *window, LwSearchI
 
 
 
-    gw_searchwindow_append_to_buffer (window, item, "\n\n\n", NULL, NULL, NULL, NULL);
+    gw_searchwindow_append_to_buffer (window, item, "\n \n \n", NULL, NULL, NULL, NULL);
 
 
 
@@ -1201,7 +1348,7 @@ gw_searchwindow_display_no_results_found_page (GwSearchWindow *window, LwSearchI
       case 0:
         //Tip 1
         body = g_strdup_printf (gettext("Use the Unknown Character from the Insert menu or toolbar in "
-                                "place of unknown Kanji. %s will return results like %s.\n\nKanjipad "
+                                "place of unknown Kanji. %s will return results like %s.\n \nKanjipad "
                                 "is another option for inputting Kanji characters.  Because of how the "
                                 "innards of Kanjipad works, drawing with the correct number of strokes "
                                 "and drawing the strokes in the correct direction is very important."),
@@ -1210,7 +1357,7 @@ gw_searchwindow_display_no_results_found_page (GwSearchWindow *window, LwSearchI
                                 gettext("Inputting Unknown Kanji"),
                                 "header", "important", NULL, NULL         );
         gw_searchwindow_append_to_buffer (window, item,
-                                "\n\n",
+                                "\n \n",
                                 NULL, NULL, NULL, NULL         );
         if (body != NULL)
         {
@@ -1227,7 +1374,7 @@ gw_searchwindow_display_no_results_found_page (GwSearchWindow *window, LwSearchI
                                 gettext("Getting More Exact Matches"),
                                 "important", "header", NULL, NULL         );
         gw_searchwindow_append_to_buffer (window, item,
-                                "\n\n",
+                                "\n \n",
                                 NULL, NULL, NULL, NULL);
         gw_searchwindow_append_to_buffer (window, item,
                                 gettext("Use the Word-edge Mark and the Not-word-edge Mark from the "
@@ -1247,7 +1394,7 @@ gw_searchwindow_display_no_results_found_page (GwSearchWindow *window, LwSearchI
                                 gettext("Searching for Multiple Words"),
                                 "important", "header", NULL, NULL);
         gw_searchwindow_append_to_buffer (window, item,
-                                "\n\n",
+                                "\n \n",
                                 NULL, NULL, NULL, NULL);
         if (body != NULL)
         {
@@ -1264,7 +1411,7 @@ gw_searchwindow_display_no_results_found_page (GwSearchWindow *window, LwSearchI
                                 gettext("Make a Vocabulary List"),
                                 "important", "header", NULL, NULL);
         gw_searchwindow_append_to_buffer (window, item,
-                                "\n\n",
+                                "\n \n",
                                 NULL, NULL, NULL, NULL);
         gw_searchwindow_append_to_buffer (window, item,
                                 gettext("Specific sections of results can be printed or saved by "
@@ -1280,7 +1427,7 @@ gw_searchwindow_display_no_results_found_page (GwSearchWindow *window, LwSearchI
                                 gettext("Why Use the Mouse?"),
                                 "important", "header", NULL, NULL);
         gw_searchwindow_append_to_buffer (window, item,
-                                "\n\n",
+                                "\n \n",
                                 NULL, NULL, NULL, NULL         );
         gw_searchwindow_append_to_buffer (window, item,
                                 gettext("Typing something will move the focus to the window input "
@@ -1296,7 +1443,7 @@ gw_searchwindow_display_no_results_found_page (GwSearchWindow *window, LwSearchI
                                 gettext("Get Ready for the JLPT"),
                                 "important", "header", NULL, NULL);
         gw_searchwindow_append_to_buffer (window, item,
-                                "\n\n",
+                                "\n \n",
                                 NULL, NULL, NULL, NULL         );
         gw_searchwindow_append_to_buffer (window, item,
                                 gettext("The Kanji dictionary has some hidden features.  One such "
@@ -1304,7 +1451,7 @@ gw_searchwindow_display_no_results_found_page (GwSearchWindow *window, LwSearchI
                                 "criteria.  If you are planning on taking the Japanese Language "
                                 "Proficiency Test, using the phrase J# will filter out Kanji not of "
                                 "that level for easy study.  For example, J4 will only show Kanji "
-                                "that appears on the forth level test.\n\nAlso of interest, the "
+                                "that appears on the forth level test.\n \nAlso of interest, the "
                                 "phrase G# will filter out Kanji for the grade level a Japanese "
                                 "person would study it at in school."),
                                 NULL, NULL, NULL, NULL         );
@@ -1316,7 +1463,7 @@ gw_searchwindow_display_no_results_found_page (GwSearchWindow *window, LwSearchI
                                 gettext("Just drag words in!"),
                                 "important", "header", NULL, NULL);
         gw_searchwindow_append_to_buffer (window, item,
-                                "\n\n",
+                                "\n \n",
                                 NULL, NULL, NULL, NULL         );
         gw_searchwindow_append_to_buffer (window, item,
                                 gettext("If you drag and drop a highlighted word into gWaei's "
@@ -1333,13 +1480,13 @@ gw_searchwindow_display_no_results_found_page (GwSearchWindow *window, LwSearchI
                                 gettext("What does (adj-i) mean?"),
                                 "important", "header", NULL, NULL);
         gw_searchwindow_append_to_buffer (window, item,
-                                "\n\n",
+                                "\n \n",
                                 NULL, NULL, NULL, NULL         );
         gw_searchwindow_append_to_buffer (window, item,
                                 gettext("It is part of the terminalogy used by the EDICT group of "
                                 "dictionaries to categorize words.  Some are obvious, but there are "
                                 "a number that there is no way to know the meaning other than by looking "
-                                "it up.\n\ngWaei includes some of the EDICT documentation in its help "
+                                "it up.\n \ngWaei includes some of the EDICT documentation in its help "
                                 "manual.  Click the Dictionary Terminology Glossary menuitem in the "
                                 "Help menu to get to it."),
                                 NULL, NULL, NULL, NULL         );
@@ -1351,7 +1498,7 @@ gw_searchwindow_display_no_results_found_page (GwSearchWindow *window, LwSearchI
                                 gettext("Books are Heavy"),
                                 "important", "header", NULL, NULL);
         gw_searchwindow_append_to_buffer (window, item,
-                                "\n\n",
+                                "\n \n",
                                 NULL, NULL, NULL, NULL         );
         gw_searchwindow_append_to_buffer (window, item,
                                 gettext("Aways wear a construction helmet when working with books.  "
@@ -1363,6 +1510,6 @@ gw_searchwindow_display_no_results_found_page (GwSearchWindow *window, LwSearchI
     }
 
     gw_searchwindow_append_to_buffer (window, item,
-                               "\n\n",
+                               "\n \n",
                                NULL, NULL, NULL, NULL         );
 }

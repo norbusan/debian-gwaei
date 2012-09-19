@@ -28,6 +28,8 @@
 //!
 
 
+#include "../private.h"
+
 #include <stdlib.h>
 #include <string.h>
 

@@ -38,6 +38,11 @@ AM_CONDITIONAL([HAVE_GNOME_DOC_UTILS],[test "$gdu_cv_have_gdu" = "yes"])
 AC_DEFUN([GNOME_DOC_INIT],
 [AC_REQUIRE([AC_PROG_LN_S])dnl
 
+if test -z "$AM_DEFAULT_VERBOSITY"; then
+  AM_DEFAULT_VERBOSITY=1
+fi
+AC_SUBST([AM_DEFAULT_VERBOSITY])
+
 ifelse([$1],,[gdu_cv_version_required=0.3.2],[gdu_cv_version_required=$1])
 
 AC_MSG_CHECKING([gnome-doc-utils >= $gdu_cv_version_required])

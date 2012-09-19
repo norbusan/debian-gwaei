@@ -28,6 +28,8 @@
 //!
 
 
+#include "../private.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -278,8 +280,6 @@ w_console_search (WApplication *application, GError **error)
     exact_switch = w_application_get_exact_switch (application);
 
     di = lw_dictinfolist_get_dictinfo_fuzzy (dictinfolist, dictionary_switch_data);
-    item = lw_searchitem_new (query_text_data, di, preferences, error);
-    resolution = 0;
 
     //Sanity checks
     if (di == NULL)
@@ -288,6 +288,9 @@ w_console_search (WApplication *application, GError **error)
       fprintf (stderr, gettext("Requested dictionary not found!\n"));
       return resolution;
     }
+
+    item = lw_searchitem_new (query_text_data, di, preferences, error);
+    resolution = 0;
 
     if (item == NULL)
     {
@@ -300,6 +303,11 @@ w_console_search (WApplication *application, GError **error)
     {
       // TRANSLATORS: 'Searching for "${query}" in ${dictionary long name}'
       printf(gettext("Searching for \"%s\" in %s...\n"), query_text_data, di->longname);
+#if WITH_MECAB
+      if (item->queryline->morphology) {
+          printf(gettext("Also showing results for 「%s」\n"), item->queryline->morphology);
+      }
+#endif
       printf("\n");
     }
 
@@ -335,6 +343,7 @@ w_console_search (WApplication *application, GError **error)
 
     //Cleanup
     lw_searchitem_free (item);
+    g_main_loop_unref (loop);
 
     return 0;
 }

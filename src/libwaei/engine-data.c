@@ -23,6 +23,8 @@
 //! @file engine-data.c
 //!
 
+#include "../private.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -30,7 +32,6 @@
 #include <glib.h>
 
 #include <libwaei/libwaei.h>
-
 #include <libwaei/engine-data.h>
 
 

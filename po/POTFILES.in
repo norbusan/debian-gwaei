@@ -9,22 +9,27 @@ src/libwaei/regex.c
 src/libwaei/resultline.c
 src/libwaei/searchitem.c
 src/libwaei/utilities.c
+src/libwaei/vocabularyitem.c
+src/libwaei/vocabularylist.c
 
 src/waei/console.c
 src/waei/console-callbacks.c
 src/waei/waei.c
 
+[type: gettext/glade] src/gwaei/addvocabularywindow.ui
 [type: gettext/glade] src/gwaei/dictionaryinstallwindow.ui
 [type: gettext/glade] src/gwaei/installprogresswindow.ui
 [type: gettext/glade] src/gwaei/searchwindow.ui
 [type: gettext/glade] src/gwaei/radicalswindow.ui
 [type: gettext/glade] src/gwaei/settingswindow.ui
 [type: gettext/glade] src/gwaei/kanjipadwindow.ui
+[type: gettext/glade] src/gwaei/vocabularywindow.ui
+[type: gettext/glade] src/gwaei/flashcardwindow.ui
 
 src/gwaei/application-callbacks.c
 src/gwaei/application.c
-src/gwaei/dictinfolist-callbacks.c
-src/gwaei/dictinfolist.c
+src/gwaei/dictionarystore-callbacks.c
+src/gwaei/dictionarystore.c
 src/gwaei/dictionaryinstallwindow-callbacks.c
 src/gwaei/dictionaryinstallwindow.c
 src/gwaei/gwaei.c
@@ -46,5 +51,11 @@ src/gwaei/settingswindow.c
 src/gwaei/spellcheck-callbacks.c
 src/gwaei/spellcheck.c
 src/gwaei/window.c
+src/gwaei/vocabularywindow.c
+src/gwaei/vocabularywindow-callbacks.c
+src/gwaei/vocabularyliststore.c
+src/gwaei/vocabularywordstore.c
+src/gwaei/flashcardwindow.c
+src/gwaei/flashcardwindow-callbacks.c
 
 src/desktop/gwaei.desktop.in
