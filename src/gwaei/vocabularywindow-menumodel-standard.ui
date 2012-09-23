@@ -6,7 +6,7 @@
         <item>
           <attribute name='label' translatable='yes'>New _List</attribute>
           <attribute name='action'>win.new-list</attribute>
-          <attribute name='accel'>&lt;Primary&gt;n</attribute>
+          <attribute name='accel'>&lt;Primary&gt;&lt;Shift&gt;&lt;Alt&gt;n</attribute>
         </item>
         <item>
           <attribute name='label' translatable='yes'>New _Word</attribute>

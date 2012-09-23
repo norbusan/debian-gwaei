@@ -105,5 +105,8 @@ void gw_searchwindow_insert_or_cb (GSimpleAction *, GVariant*, gpointer);
 void gw_searchwindow_set_dictionary_cb (GSimpleAction*, GVariant*, gpointer);
 void gw_searchwindow_clear_entry_button_pressed_cb (GtkEntry*, GtkEntryIconPosition, GdkEvent*, gpointer);
 
+void gw_searchwindow_dictionarylist_changed_cb (GwSearchWindow*, GwDictionaryList*);
+
+
 #endif
 

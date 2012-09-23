@@ -137,7 +137,6 @@ gw_dictionarylist_menumodel_append (GwDictionaryList *dictionarylist,
     gchar *detailed_action;
     const gchar *shortname;
     gchar *longname;
-    gchar accel[12];
 
     //Initializations
     menumodel = gw_dictionarylist_get_menumodel (dictionarylist);
@@ -145,18 +144,15 @@ gw_dictionarylist_menumodel_append (GwDictionaryList *dictionarylist,
     longname = NULL;
     detailed_action = NULL;
     menuitem = NULL;
-    *accel = '\0';
     shortname = lw_dictionary_get_name (dictionary);
 
     longname = g_strdup_printf (gettext("%s Dictionary"), shortname);
     if (longname == NULL) goto errored;
     detailed_action = g_strdup_printf ("win.set-dictionary::%d", index);
     if (detailed_action == NULL) goto errored;
-    if (index < 10) sprintf (accel, "<Primary>%d", index);
 
     menuitem = g_menu_item_new (longname, detailed_action);
     if (menuitem == NULL) goto errored;
-    g_menu_item_set_attribute (menuitem, "accel", "s", accel);
     g_menu_append_item (G_MENU (menumodel), menuitem);
 
 errored:
@@ -338,6 +334,8 @@ gw_dictionarylist_save_order (GwDictionaryList *dictionarylist, LwPreferences *p
     lw_dictionarylist_save_order (LW_DICTIONARYLIST (dictionarylist), preferences);
 
     g_hash_table_unref (hashtable); hashtable = NULL;
+
+    lw_dictionarylist_load_order (LW_DICTIONARYLIST (dictionarylist), preferences);
 }
 
 

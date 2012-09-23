@@ -89,38 +89,35 @@ lw_dictionarylist_class_init (LwDictionaryListClass *klass)
 {
     //Declarations
     GObjectClass *object_class;
-    LwDictionaryListClass *dictionarylist_class;
 
     //Initializations
     object_class = G_OBJECT_CLASS (klass);
     object_class->finalize = lw_dictionarylist_finalize;
   
-    dictionarylist_class = LW_DICTIONARYLIST_CLASS (klass);
-
-    dictionarylist_class->signalid[LW_DICTIONARYLIST_CLASS_SIGNALID_CHANGED] = g_signal_new (
+    klass->signalid[LW_DICTIONARYLIST_CLASS_SIGNALID_CHANGED] = g_signal_new (
         "changed",
         G_OBJECT_CLASS_TYPE (object_class),
-        G_SIGNAL_RUN_FIRST | G_SIGNAL_DETAILED,
+        G_SIGNAL_RUN_FIRST,
         G_STRUCT_OFFSET (LwDictionaryListClass, changed),
         NULL, NULL,
         g_cclosure_marshal_VOID__VOID,
         G_TYPE_NONE, 0
     );
 
-    dictionarylist_class->signalid[LW_DICTIONARYLIST_CLASS_SIGNALID_ADDED] = g_signal_new (
+    klass->signalid[LW_DICTIONARYLIST_CLASS_SIGNALID_ADDED] = g_signal_new (
         "added",
         G_OBJECT_CLASS_TYPE (object_class),
-        G_SIGNAL_RUN_FIRST | G_SIGNAL_DETAILED,
+        G_SIGNAL_RUN_FIRST,
         G_STRUCT_OFFSET (LwDictionaryListClass, added),
         NULL, NULL,
         g_cclosure_marshal_VOID__VOID,
         G_TYPE_NONE, 0
     );
 
-    dictionarylist_class->signalid[LW_DICTIONARYLIST_CLASS_SIGNALID_REMOVED] = g_signal_new (
+    klass->signalid[LW_DICTIONARYLIST_CLASS_SIGNALID_REMOVED] = g_signal_new (
         "removed",
         G_OBJECT_CLASS_TYPE (object_class),
-        G_SIGNAL_RUN_FIRST | G_SIGNAL_DETAILED,
+        G_SIGNAL_RUN_FIRST,
         G_STRUCT_OFFSET (LwDictionaryListClass, removed),
         NULL, NULL,
         g_cclosure_marshal_VOID__VOID,

@@ -49,6 +49,7 @@ static gboolean gw_application_local_command_line (GApplication*, gchar***, gint
 static int gw_application_command_line (GApplication*, GApplicationCommandLine*);
 static void gw_application_startup (GApplication*);
 static void gw_application_load_app_menu (GwApplication*);
+static void gw_application_load_menubar (GwApplication*);
 
 
 G_DEFINE_TYPE (GwApplication, gw_application, GTK_TYPE_APPLICATION)
@@ -91,6 +92,7 @@ gw_application_constructed (GObject *object)
     }
 
     lw_regex_initialize ();
+    gw_application_initialize_accelerators (GW_APPLICATION (object));
 
 /*
 #ifdef OS_MINGW
@@ -726,6 +728,7 @@ gw_application_startup (GApplication *application)
     G_APPLICATION_CLASS (gw_application_parent_class)->startup (application);
 
     gw_application_load_app_menu (GW_APPLICATION (application));
+    gw_application_load_menubar (GW_APPLICATION (application));
 
     gw_application_attach_signals (GW_APPLICATION (application));
 }
@@ -813,6 +816,15 @@ gw_application_load_app_menu (GwApplication *application)
 
 errored:
     if (builder != NULL) g_object_unref (builder);
+}
+
+
+static void
+gw_application_load_menubar (GwApplication *application)
+{
+    GMenuModel *menumodel;
+    menumodel = G_MENU_MODEL (g_menu_new ());
+    gtk_application_set_menubar (GTK_APPLICATION (application), menumodel);
 }
 
 
@@ -940,6 +952,94 @@ gw_menumodel_set_links (GMenuModel *menumodel, const gchar *LABEL, const gchar *
 
 
 void
+gw_application_add_accelerators (GwApplication *application, GMenuModel *menumodel)
+{
+    //Sanity checks
+    g_return_if_fail (application != NULL);
+    g_return_if_fail (menumodel != NULL);
+
+    //Declarations
+    gint total_items;
+    gint index;
+    gchar *accel = NULL;
+    gchar *action = NULL;
+    gchar *detail = NULL;
+    GMenuModel *sublink = NULL;
+
+    //Initializations
+    total_items = g_menu_model_get_n_items (menumodel);
+
+    for (index = 0; index < total_items; index++)
+    {
+      g_menu_model_get_item_attribute (menumodel, index, "accel", "s", &accel, NULL);
+      g_menu_model_get_item_attribute (menumodel, index, G_MENU_ATTRIBUTE_ACTION, "s", &action, NULL);
+      g_menu_model_get_item_attribute (menumodel, index, G_MENU_ATTRIBUTE_TARGET, "s", &detail, NULL);
+      if (accel != NULL && action != NULL)
+      {
+        if (detail != NULL)
+          gtk_application_add_accelerator (GTK_APPLICATION (application), accel, action, g_variant_new_string (detail));
+        else
+          gtk_application_add_accelerator (GTK_APPLICATION (application), accel, action, NULL);
+      }
+
+      if (accel != NULL) g_free (accel); accel = NULL;
+      if (action != NULL) g_free (action); action = NULL;
+      if (detail != NULL) g_free (detail); detail = NULL;
+
+      //Recursive work
+      sublink = g_menu_model_get_item_link (menumodel, index, G_MENU_LINK_SUBMENU);
+      if (sublink != NULL) gw_application_add_accelerators (application, sublink);
+      sublink = g_menu_model_get_item_link (menumodel, index, G_MENU_LINK_SECTION);
+      if (sublink != NULL) gw_application_add_accelerators (application, sublink);
+    }
+}
+
+
+void
+gw_application_remove_accelerators (GwApplication *application, GMenuModel *menumodel)
+{
+    //Sanity checks
+    g_return_if_fail (application != NULL);
+    g_return_if_fail (menumodel != NULL);
+
+    //Declarations
+    gint total_items;
+    gint index;
+    gchar *accel = NULL;
+    gchar *action = NULL;
+    gchar *detail = NULL;
+    GMenuModel *sublink = NULL;
+
+    //Initializations
+    total_items = g_menu_model_get_n_items (menumodel);
+
+    for (index = 0; index < total_items; index++)
+    {
+      g_menu_model_get_item_attribute (menumodel, index, "accel", "s", &accel, NULL);
+      g_menu_model_get_item_attribute (menumodel, index, G_MENU_ATTRIBUTE_ACTION, "s", &action, NULL);
+      g_menu_model_get_item_attribute (menumodel, index, G_MENU_ATTRIBUTE_TARGET, "s", &detail, NULL);
+      if (accel != NULL && action != NULL)
+      {
+        if (detail != NULL)
+          gtk_application_remove_accelerator (GTK_APPLICATION (application), action, g_variant_new_string (detail));
+        else
+          gtk_application_remove_accelerator (GTK_APPLICATION (application), action, NULL);
+      }
+
+      if (accel != NULL) g_free (accel); accel = NULL;
+      if (action != NULL) g_free (action); action = NULL;
+      if (detail != NULL) g_free (detail); detail = NULL;
+
+      //Recursive work
+      sublink = g_menu_model_get_item_link (menumodel, index, G_MENU_LINK_SUBMENU);
+      if (sublink != NULL) gw_application_remove_accelerators (application, sublink);
+      sublink = g_menu_model_get_item_link (menumodel, index, G_MENU_LINK_SECTION);
+      if (sublink != NULL) gw_application_remove_accelerators (application, sublink);
+    }
+}
+
+
+void
 gw_application_show_vocabularywindow (GwApplication *application, gint index)
 {
     //Declarations
@@ -968,39 +1068,61 @@ gw_application_set_win_menubar (GwApplication *application, GMenuModel *menumode
     //Sanity checks
     g_return_if_fail (application != NULL);
     g_return_if_fail (menumodel != NULL);
+    if (g_menu_model_get_n_items (menumodel) == 0) return;
 
-   //This is the normal menu setter code.  Use the below if your OS crashes when trying to change the menu
-   gtk_application_set_menubar (GTK_APPLICATION (application), menumodel);
-
-/*
     //Declarations
     GMenuModel *menubar;
+    gint length;
 
-    //Set the menubar to a sane state
+    //Initializations
     menubar = gtk_application_get_menubar (GTK_APPLICATION (application));
-    if (menubar == NULL)
-    {
-      GMenu *menu = g_menu_new ();
-      gtk_application_set_menubar (GTK_APPLICATION (application), G_MENU_MODEL (menu));
-      menubar = G_MENU_MODEL (menu);
-    }
-    else
-    {
-      gint length;
-      length = g_menu_model_get_n_items (menubar);
-      while (length-- > 0) g_menu_remove (G_MENU (menubar), 0);
-    }
+    g_return_if_fail (menubar != NULL);
+    length = g_menu_model_get_n_items (menubar);
+
+    //Clear the menubar
+    while (length-- > 0) g_menu_remove (G_MENU (menubar), 0);
 
     //Add the menuitem linking the menus 
     {
-      GMenuItem *menuitem;
-      menuitem = g_menu_item_new_section (NULL, menumodel);
+      GMenuItem *menuitem = g_menu_item_new_section (NULL, menumodel);
       if (menuitem != NULL)
       {
         g_menu_append_item (G_MENU (menubar), menuitem);
         g_object_unref (menuitem); menuitem = NULL;
       }
+      gw_application_add_accelerators (application, menubar);
     }
-*/
+}
+
+
+void
+gw_application_initialize_accelerators (GwApplication *application)
+{
+    //Sanity checks
+    g_return_if_fail (application != NULL);
+
+    //Declarations
+    gchar *accel;
+    gchar *action;
+    gchar *detail;
+    gint index;
+
+    //Initializations
+    index = 1;
+
+    while (index + 1 < 10)
+    {
+      accel = g_strdup_printf ("<Alt>%d", index);
+      action = g_strdup_printf ("win.set-dictionary");
+      detail = g_strdup_printf ("%d", index);
+      if (accel != NULL && action != NULL && detail != NULL)
+      {
+        gtk_application_add_accelerator (GTK_APPLICATION (application), accel, action, g_variant_new_string (detail));
+        index++;
+      }
+      if (accel != NULL) g_free (accel); accel = NULL;
+      if (action != NULL) g_free (action); action = NULL;
+      if (detail != NULL) g_free (detail); detail = NULL;
+    }
 }
 

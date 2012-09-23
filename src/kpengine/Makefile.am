@@ -17,7 +17,7 @@ DEFS = -DLOCALEDIR=\"$(localedir)\" -DVERSION=\"$(VERSION)\" -DPACKAGE=\"$(PACKA
 
 
 AM_CFLAGS = $(LIBWAEI_CFLAGS) 
-INCLUDES =  -I jstroke
+AM_CPPFLAGS =  -I jstroke
 
 
 kpengine_SOURCES = jstroke/scoring.c jstroke/util.c kpengine.c jstroke/jstroke.h
@@ -27,7 +27,7 @@ kpengine_LDADD =  $(LIBWAEI_LIBS)
 if OS_MINGW
 kpengine_LDFLAGS =-Wl,-subsystem,windows 
 MINGW_DEFS = -DCURL_STATICLIB
-INCLUDES += $(MINGW_CFLAGS) $(MINGW_DEFS) 
+AM_CPPFLAGS += $(MINGW_CFLAGS) $(MINGW_DEFS) 
 kpengine_LDADD += $(MINGW_LIBS) 
 endif
 
