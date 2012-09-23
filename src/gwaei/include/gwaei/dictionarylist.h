@@ -3,10 +3,11 @@
 
 G_BEGIN_DECLS
 
+/*
 typedef enum {
-  GW_DICTIONARYLIST_SIGNALID_ROW_CHANGED,
   TOTAL_GW_DICTIONARYLIST_SIGNALIDS
 } GwDictionaryListSignalId;
+*/
 
 
 typedef enum { 
@@ -35,13 +36,13 @@ typedef struct _GwDictionaryListPrivate GwDictionaryListPrivate;
 #define GW_DICTIONARYLIST_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS((obj), GW_TYPE_DICTIONARYLIST, GwDictionaryListClass))
 
 struct _GwDictionaryList {
-  LwDictionaryList store;
+  LwDictionaryList list;
   GwDictionaryListPrivate *priv;
 };
 
 struct _GwDictionaryListClass {
   LwDictionaryListClass parent_class;
-  guint signalid[TOTAL_GW_DICTIONARYLIST_SIGNALIDS];
+//  guint signalid[TOTAL_GW_DICTIONARYLIST_SIGNALIDS];
 };
 
 //Methods

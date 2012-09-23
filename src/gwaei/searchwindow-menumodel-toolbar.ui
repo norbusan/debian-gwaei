@@ -2,19 +2,19 @@
   <menu id='menu'>
     <section>
       <item>
-        <attribute name='label' translatable='yes'>_Menubar</attribute>
+        <attribute name='label' translatable='yes'>Show _Menubar</attribute>
         <attribute name='action'>win.toggle-menubar-show</attribute>
       </item>
       <item>
-        <attribute name='label' translatable='yes'>_Toolbar</attribute>
+        <attribute name='label' translatable='yes'>Show _Toolbar</attribute>
         <attribute name='action'>win.toggle-toolbar-show</attribute>
       </item>
       <item>
-        <attribute name='label' translatable='yes'>T_ab Bar</attribute>
+        <attribute name='label' translatable='yes'>Always Show T_ab Bar</attribute>
         <attribute name='action'>win.toggle-tabbar-show</attribute>
       </item>
       <item>
-        <attribute name='label' translatable='yes'>_Statusbar</attribute>
+        <attribute name='label' translatable='yes'>Show _Statusbar</attribute>
         <attribute name='action'>win.toggle-statusbar-show</attribute>
       </item>
     </section>

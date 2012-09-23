@@ -86,6 +86,8 @@ void gw_application_show_vocabularywindow (GwApplication*, gint);
 void gw_application_spellcheck_toggled_cb (GSimpleAction*, GVariant*, gpointer);
 
 void   gw_application_set_win_menubar (GwApplication*, GMenuModel*);
+void gw_application_initialize_accelerators (GwApplication*);
+void gw_application_add_accelerators (GwApplication*, GMenuModel*);
 
 #include "application-callbacks.h"
 

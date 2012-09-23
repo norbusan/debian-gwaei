@@ -48,6 +48,7 @@ GMenuModel* gw_window_get_menumodel (GwWindow*);
 
 void gw_window_show_menubar (GwWindow*, gboolean);
 void gw_window_load_menubar (GwWindow*, const gchar*);
+GMenuModel* gw_window_get_transient_for_menumodel (GwWindow*);
 
 #include "window-callbacks.h"
 

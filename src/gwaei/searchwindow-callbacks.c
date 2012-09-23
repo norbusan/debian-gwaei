@@ -644,7 +644,7 @@ gw_searchwindow_dictionary_combobox_changed_cb (GtkWidget *widget, gpointer data
     //Declarations
     GwSearchWindow *window;
     GwSearchWindowPrivate *priv;
-    int active;
+    gint active;
 
     //Initializations
     window = GW_SEARCHWINDOW (gtk_widget_get_ancestor (GTK_WIDGET (widget), GW_TYPE_SEARCHWINDOW));
@@ -2406,5 +2406,33 @@ gw_searchwindow_sync_spellcheck_cb (GSettings *settings, gchar *KEY, gpointer da
         g_object_unref (G_OBJECT (priv->spellcheck));
     }
 #endif
+}
+
+
+//!
+//! @brief Makes sure the selected combobox item is sane when the dictionary list is updated
+//!
+G_MODULE_EXPORT void
+gw_searchwindow_dictionarylist_changed_cb (GwSearchWindow *window, GwDictionaryList *dictionarylist)
+{
+    //Sanity checks
+    g_return_if_fail (window != NULL);
+    g_return_if_fail (dictionarylist != NULL);
+
+    //Declarations
+    GtkTreeModel *treemodel;
+    gint children;
+    GwSearchWindowPrivate *priv;
+    GtkComboBox *combobox;
+    gint active;
+
+    //Initializations
+    treemodel = GTK_TREE_MODEL (gw_dictionarylist_get_liststore (dictionarylist));
+    children = gtk_tree_model_iter_n_children (treemodel, NULL);
+    priv = window->priv;
+    combobox = priv->combobox;
+    active = gtk_combo_box_get_active (combobox);
+
+    if (active < 0 && children > 0) gw_searchwindow_set_dictionary (window, 0);
 }
 

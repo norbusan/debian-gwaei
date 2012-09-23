@@ -1958,6 +1958,9 @@ gw_searchwindow_set_font (GwSearchWindow *window)
 static void 
 gw_searchwindow_attach_signals (GwSearchWindow *window)
 {
+    //Sanit check
+    g_return_if_fail (window != NULL);
+
     //Declarations
     GwApplication *application;
     GwSearchWindowPrivate *priv;
@@ -1973,7 +1976,8 @@ gw_searchwindow_attach_signals (GwSearchWindow *window)
     dictionarylist = gw_application_get_installed_dictionarylist (application);
     preferences = gw_application_get_preferences (application);
 
-
+    g_signal_connect_swapped (G_OBJECT (dictionarylist), "changed",
+                              G_CALLBACK (gw_searchwindow_dictionarylist_changed_cb), window);
     g_signal_connect_after (G_OBJECT (window), "delete-event", 
                             G_CALLBACK (gw_window_delete_event_cb), window);
     g_signal_connect (G_OBJECT (window), "key-release-event", 
@@ -2450,6 +2454,14 @@ gw_searchwindow_initialize_toolbar (GwSearchWindow *window)
     gtk_toolbar_insert (toolbar, item, -1);
     gtk_actionable_set_detailed_action_name (GTK_ACTIONABLE (item), "win.toggle-radicals-show");
     gtk_widget_show (GTK_WIDGET (item));
+
+
+    {
+      GtkWidget *widget = GTK_WIDGET (toolbar);
+      GtkStyleContext* context = gtk_widget_get_style_context (widget);
+      gtk_style_context_add_class (context, GTK_STYLE_CLASS_PRIMARY_TOOLBAR);
+      gtk_widget_reset_style (widget);
+    }
 }
 
 
