@@ -1,3 +1,9 @@
+gwaei (3.6.1-1) experimental; urgency=low
+
+  * new upstream release: fixing bugs with Ubuntu (LP: #971240)
+
+ -- Norbert Preining <preining@debian.org>  Mon, 24 Sep 2012 08:13:57 +0900
+
 gwaei (3.6.0-1) experimental; urgency=low
 
   * unfuzzify patch(es)
