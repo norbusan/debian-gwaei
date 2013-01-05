@@ -1,3 +1,10 @@
+gwaei (3.6.2-1) unstable; urgency=low
+
+  * Imported Upstream version 3.6.2
+  * drop debian/patches/fix-google-translate-url, fixed in a different way
+
+ -- Norbert Preining <preining@debian.org>  Sat, 05 Jan 2013 12:46:08 +0900
+
 gwaei (3.6.1-1) experimental; urgency=low
 
   * new upstream release: fixing bugs with Ubuntu (LP: #971240)
