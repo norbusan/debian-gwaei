@@ -23,6 +23,10 @@
 //! @file libwaei.c
 //!
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
@@ -32,3 +36,4 @@
 #include <glib-object.h>
 
 #include <libwaei/libwaei.h>
+#include <libwaei/gettext.h>

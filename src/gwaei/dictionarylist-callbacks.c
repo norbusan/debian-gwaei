@@ -25,6 +25,10 @@
 //! @brief To be written
 //!
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <string.h>
 #include <stdlib.h>
 
@@ -33,6 +37,7 @@
 
 #include <gwaei/gwaei.h>
 #include <gwaei/dictionarylist-private.h>
+#include <gwaei/gettext.h>
 
 
 G_MODULE_EXPORT void

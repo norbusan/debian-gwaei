@@ -66,7 +66,7 @@ void lw_query_clear (LwQuery*);
 void lw_query_tokenlist_append_primary (LwQuery*, LwQueryType, const gchar*);
 void lw_query_tokenlist_append_supplimentary (LwQuery*, LwQueryType, gint, const gchar*);
 
-gchar* lw_query_get_supplimentary (LwQuery*, LwQueryType, const gchar*, LwQueryType*);
+gchar* lw_query_get_supplimentary (LwQuery*, LwRelevance, LwQueryType, const gchar*, LwQueryType*);
 gchar** lw_query_tokenlist_get (LwQuery*, LwQueryType);
 
 void lw_query_rangelist_set (LwQuery*, LwQueryRangeType, LwRange*);

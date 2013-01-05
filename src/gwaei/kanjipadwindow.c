@@ -27,6 +27,9 @@
 //! @brief To be written
 //!
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <ctype.h>
 #include <errno.h>
@@ -36,10 +39,6 @@
 #include <unistd.h>
 
 #include <gtk/gtk.h>
-
-#ifdef HAVE_CONFIG_H
-#include "../../config.h"
-#endif
 
 #include <libwaei/libwaei.h>
 #include <gwaei/gettext.h>
@@ -236,7 +235,6 @@ static void _kanjipadwindow_initialize_engine (GwKanjipadWindow *window)
     //Declarations
     GwApplication *application;
     GwKanjipadWindowPrivate *priv;
-    char *dir;
     char *path;
     char *argv[2];
     GError *error;
@@ -247,11 +245,14 @@ static void _kanjipadwindow_initialize_engine (GwKanjipadWindow *window)
     application = gw_window_get_application (GW_WINDOW (window));
     priv = window->priv;
     error = NULL;
-    dir = g_get_current_dir ();
-#ifdef G_OS_WIN32
-    path = g_build_filename (dir, "..", "lib", PACKAGE, "kpengine.exe", NULL);
-#else
+#ifndef G_OS_WIN32
     path = g_build_filename (LIBDIR, PACKAGE, "kpengine", NULL);
+#else
+    gchar *prefix;
+
+    prefix = g_win32_get_package_installation_directory_of_module (NULL);
+    path = g_build_filename (prefix, "lib", PACKAGE, "kpengine.exe", NULL);
+    g_free (prefix);
 #endif
     argv[0] = path;
     argv[1] = NULL;
@@ -283,7 +284,6 @@ static void _kanjipadwindow_initialize_engine (GwKanjipadWindow *window)
 
     //Cleanup
     g_free(path);
-    g_free(dir);
 }
 
 

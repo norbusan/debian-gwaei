@@ -25,6 +25,10 @@
 //! @brief To be written
 //!
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -36,6 +40,7 @@
 
 #include <gwaei/flashcardstore-private.h>
 #include <gwaei/flashcardstore.h>
+#include <gwaei/gettext.h>
 
 G_DEFINE_TYPE (GwFlashCardStore, gw_flashcardstore, GTK_TYPE_LIST_STORE)
 

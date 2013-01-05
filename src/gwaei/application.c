@@ -25,6 +25,10 @@
 //! @brief To be written
 //!
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,10 +37,6 @@
 #include <gio/gio.h>
 
 #include <gtk/gtk.h>
-
-#ifdef HAVE_CONFIG_H
-#include "../../config.h"
-#endif
 
 #include <gwaei/gettext.h>
 #include <gwaei/gwaei.h>
@@ -667,11 +667,11 @@ gw_application_command_line (GApplication *application, GApplicationCommandLine 
     if (window == NULL) 
       return 0;
     dictionary = lw_dictionarylist_get_dictionary_fuzzy (LW_DICTIONARYLIST (dictionarylist), priv->arg_dictionary);
-    position = lw_dictionarylist_get_position (LW_DICTIONARYLIST (dictionarylist), dictionary);
 
     //Set the initial dictionary
     if (dictionary != NULL)
     {
+      position = lw_dictionarylist_get_position (LW_DICTIONARYLIST (dictionarylist), dictionary);
       gw_searchwindow_set_dictionary (window, position);
     }
 
@@ -832,53 +832,38 @@ gboolean
 gw_application_load_xml (GtkBuilder *builder, const gchar *FILENAME)
 {
     //Declarations
-    gint i;
     gchar *path;
-    const gint TOTAL_PATHS = 4;
-    gchar *paths[TOTAL_PATHS];
-    gboolean file_exists;
-    gboolean is_valid_xml;
     GError *error;
 
     //Initializations
-    is_valid_xml = FALSE;
-    file_exists = FALSE;
-    paths[0] = g_build_filename (FILENAME, NULL);
-    paths[1] = g_build_filename ("..", "share", PACKAGE, FILENAME, NULL);
-    paths[2] = g_build_filename (DATADIR2, PACKAGE, FILENAME, NULL);
-    paths[3] = NULL;
     error = NULL;
+#ifndef G_OS_WIN32
+    path = g_build_filename (DATADIR2, PACKAGE, FILENAME, NULL);
+#else
+    gchar *prefix;
+
+    prefix = g_win32_get_package_installation_directory_of_module (NULL);
+    path = g_build_filename (prefix, "share", PACKAGE, FILENAME, NULL);
+    g_free (prefix);
+#endif
 
     //Search for the files
-    for (i = 0; i < TOTAL_PATHS; i++)
+    if (g_file_test (path, G_FILE_TEST_IS_REGULAR))
     {
-      path = paths[i];
-
-      file_exists = g_file_test (path, G_FILE_TEST_IS_REGULAR);
-      if (file_exists == FALSE)
-        continue;
-
-      is_valid_xml = gtk_builder_add_from_file (builder, path,  &error);
-      if (error != NULL) 
+      gtk_builder_add_from_file (builder, path,  &error);
+      if (error)
       {
         g_warning ("Problems loading xml from %s. %s\n", path, error->message);
         g_error_free (error); error = NULL;
-        continue;
       }
-      if (is_valid_xml == FALSE) 
-        continue;
-
-      gtk_builder_connect_signals (builder, NULL);
-      break;
+      else
+      {
+        gtk_builder_connect_signals (builder, NULL);
+        return TRUE;
+      }
     }
 
-    //Cleanup
-    for (i = 0; i < TOTAL_PATHS; i++)
-    {
-      g_free (paths[i]); paths[i] = NULL;
-    }
-
-    return (file_exists && is_valid_xml);
+    return FALSE;
 }
 
 

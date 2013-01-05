@@ -25,6 +25,10 @@
 //! @brief To be written
 //!
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -36,6 +40,7 @@
 
 #include <gwaei/gwaei.h>
 #include <gwaei/texttagtable-private.h>
+#include <gwaei/gettext.h>
 
 static void gw_texttagtable_init_base_tags (GwTextTagTable*);
 static void gw_texttagtable_attach_signals (GwTextTagTable*);

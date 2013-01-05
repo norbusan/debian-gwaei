@@ -23,6 +23,10 @@
 //! @file query.c
 //!
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -30,7 +34,10 @@
 #include <glib.h>
 
 #include <libwaei/libwaei.h>
+#ifdef WITH_MECAB
 #include <libwaei/morphology.h>
+#endif
+#include <libwaei/gettext.h>
 
 
 LwQuery* 
@@ -245,6 +252,7 @@ lw_query_tokenlist_append_primary (LwQuery     *query,
 
 static gchar* 
 lw_query_tokenlist_build_kanji_supplimentary (LwQuery      *query,
+                                              LwRelevance   relevance,
                                               const gchar  *TOKEN,
                                               LwQueryType  *new_type)
 {
@@ -260,6 +268,7 @@ lw_query_tokenlist_build_kanji_supplimentary (LwQuery      *query,
     supplimentary = g_strdup (TOKEN);
 
 #ifdef WITH_MECAB
+    if (relevance == LW_RELEVANCE_LOW)
     {
       LwMorphologyEngine *engine;
       LwMorphology *morphology;
@@ -291,6 +300,7 @@ lw_query_tokenlist_build_kanji_supplimentary (LwQuery      *query,
 
 static gchar*
 lw_query_tokenlist_build_furigana_supplimentary (LwQuery      *query,
+                                                 LwRelevance   relevance,
                                                  const gchar  *TOKEN,
                                                  LwQueryType  *new_type)
 {
@@ -317,6 +327,7 @@ lw_query_tokenlist_build_furigana_supplimentary (LwQuery      *query,
     *new_type = LW_QUERY_TYPE_FURIGANA;
 
 #ifdef WITH_MECAB
+    if (relevance == LW_RELEVANCE_LOW)
     {
       LwMorphologyEngine *engine;
       LwMorphology *morphology;
@@ -363,6 +374,7 @@ lw_query_tokenlist_build_furigana_supplimentary (LwQuery      *query,
 
 static gchar* 
 lw_query_tokenlist_build_romaji_supplimentary (LwQuery      *query,
+                                               LwRelevance   relevance,
                                                const gchar  *TOKEN,
                                                LwQueryType  *new_type)
 {
@@ -390,13 +402,14 @@ lw_query_tokenlist_build_romaji_supplimentary (LwQuery      *query,
     *new_type = LW_QUERY_TYPE_ROMAJI;
     convertable = lw_util_str_roma_to_hira (TOKEN, buffer, LENGTH);
     
-    if (romaji_to_furigana && is_romaji && convertable)
+    if (romaji_to_furigana && is_romaji && convertable && relevance == LW_RELEVANCE_LOW)
     {
       *new_type = LW_QUERY_TYPE_MIX;
       temp = g_strjoin (LW_QUERY_DELIMITOR_SUPPLIMENTARY_STRING, supplimentary, buffer, NULL);
       g_free (supplimentary); supplimentary = temp; temp = NULL;
 
 #ifdef WITH_MECAB
+      if (relevance == LW_RELEVANCE_LOW)
       {
         LwMorphologyEngine *engine;
         LwMorphology *morphology;
@@ -445,6 +458,7 @@ lw_query_tokenlist_build_romaji_supplimentary (LwQuery      *query,
 //!
 gchar*
 lw_query_get_supplimentary (LwQuery      *query, 
+                            LwRelevance   relevance,
                             LwQueryType   type, 
                             const gchar  *token,
                             LwQueryType  *new_type)
@@ -462,13 +476,13 @@ lw_query_get_supplimentary (LwQuery      *query,
     switch (type)
     {
       case LW_QUERY_TYPE_KANJI:
-        supplimentary = lw_query_tokenlist_build_kanji_supplimentary (query, token, new_type);
+        supplimentary = lw_query_tokenlist_build_kanji_supplimentary (query, relevance, token, new_type);
       break;
     case LW_QUERY_TYPE_FURIGANA:
-      supplimentary = lw_query_tokenlist_build_furigana_supplimentary (query, token, new_type);
+      supplimentary = lw_query_tokenlist_build_furigana_supplimentary (query, relevance, token, new_type);
       break;
     case LW_QUERY_TYPE_ROMAJI:
-      supplimentary = lw_query_tokenlist_build_romaji_supplimentary (query, token, new_type);
+      supplimentary = lw_query_tokenlist_build_romaji_supplimentary (query, relevance, token, new_type);
       break;
     default:
       supplimentary = g_strdup (token);

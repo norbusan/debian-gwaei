@@ -25,6 +25,9 @@
 //! @brief To be written
 //!
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <string.h>
 #include <stdlib.h>
@@ -32,10 +35,6 @@
 #include <gdk/gdkkeysyms.h>
 #include <gdk/gdk.h>
 #include <gtk/gtk.h>
-
-#ifdef HAVE_CONFIG_H
-#include "../../config.h"
-#endif
 
 #include <gwaei/gwaei.h>
 #include <gwaei/gettext.h>
@@ -2109,45 +2108,73 @@ gw_searchwindow_radicalswindow_destroy_cb (GtkWidget *widget, gpointer data)
 //! @brief Disables portions of the interface depending on the currently queued jobs.
 //!
 G_MODULE_EXPORT void 
-gw_searchwindow_dictionaries_changed_cb (GwSearchWindow   *window,
-                                         LwDictionaryList *dictionarylist)
+gw_searchwindow_dictionarylist_changed_cb (GwSearchWindow   *window, 
+                                           GwDictionaryList *dictionarylist)
 {
+    //Sanity checks
+    g_return_if_fail (window != NULL);
+    g_return_if_fail (dictionarylist != NULL);
+
     //Declarations
     GwSearchWindowPrivate *priv;
-    gboolean enabled;
-    GActionMap *map;
-    GSimpleAction *action;
-    LwHistory *history;
 
     //Initializations
     g_return_if_fail (window != NULL);
     priv = window->priv;
-    map = G_ACTION_MAP (window);
-    history = LW_HISTORY (priv->history);
 
     //Update radicals window tool menuitem
-    action = G_SIMPLE_ACTION (g_action_map_lookup_action (map, "toggle-radicals-show"));
-    enabled = (lw_dictionarylist_get_dictionary (dictionarylist, LW_TYPE_KANJIDICTIONARY, "Kanji") != NULL);
-    g_simple_action_set_enabled (action, enabled);
+    {
+      GActionMap *map;
+      GSimpleAction *action;
+      gboolean enabled;
 
-    //Set the show state of the dictionaries required message
-    if (lw_dictionarylist_get_total (dictionarylist) > 0)
-      gw_searchwindow_set_dictionary (window, 0);
+      map = G_ACTION_MAP (window);
+      action = G_SIMPLE_ACTION (g_action_map_lookup_action (map, "toggle-radicals-show"));
+      enabled = (lw_dictionarylist_get_dictionary (LW_DICTIONARYLIST (dictionarylist), LW_TYPE_KANJIDICTIONARY, "Kanji") != NULL);
+
+      g_simple_action_set_enabled (action, enabled);
+    }
 
     //Reset history and searchitems
-    lw_history_clear_forward_list (history);
-    lw_history_clear_back_list (history);
-
-    GList *children, *link;
-    children = link = gtk_container_get_children (GTK_CONTAINER (priv->notebook));
-    if (children != NULL)
     {
-      while (link != NULL)
+      LwHistory *history;
+
+      history = LW_HISTORY (priv->history);
+
+      lw_history_clear_forward_list (history);
+      lw_history_clear_back_list (history);
+    }
+
+    {
+      //Reset searchitems
+      GList *children, *link;
+      children = link = gtk_container_get_children (GTK_CONTAINER (priv->notebook));
+      if (children != NULL)
       {
-        if (link->data != NULL) g_object_set_data (G_OBJECT (link->data), "searchitem", NULL);
-        link = link->next;
+        while (link != NULL)
+        {
+          if (link->data != NULL) g_object_set_data (G_OBJECT (link->data), "searchitem", NULL);
+          link = link->next;
+        }
+        g_list_free (children); children = NULL;
       }
-      g_list_free (children); children = NULL;
+    }
+
+    //Make sure the combobox is in a sane state
+    {
+      //Declarations
+      GtkTreeModel *treemodel;
+      gint children;
+      GtkComboBox *combobox;
+      gint active;
+
+      //Initializations
+      treemodel = GTK_TREE_MODEL (gw_dictionarylist_get_liststore (dictionarylist));
+      children = gtk_tree_model_iter_n_children (treemodel, NULL);
+      combobox = priv->combobox;
+      active = gtk_combo_box_get_active (combobox);
+
+      if (active < 0 && children > 0) gw_searchwindow_set_dictionary (window, 0);
     }
 }
 
@@ -2408,31 +2435,4 @@ gw_searchwindow_sync_spellcheck_cb (GSettings *settings, gchar *KEY, gpointer da
 #endif
 }
 
-
-//!
-//! @brief Makes sure the selected combobox item is sane when the dictionary list is updated
-//!
-G_MODULE_EXPORT void
-gw_searchwindow_dictionarylist_changed_cb (GwSearchWindow *window, GwDictionaryList *dictionarylist)
-{
-    //Sanity checks
-    g_return_if_fail (window != NULL);
-    g_return_if_fail (dictionarylist != NULL);
-
-    //Declarations
-    GtkTreeModel *treemodel;
-    gint children;
-    GwSearchWindowPrivate *priv;
-    GtkComboBox *combobox;
-    gint active;
-
-    //Initializations
-    treemodel = GTK_TREE_MODEL (gw_dictionarylist_get_liststore (dictionarylist));
-    children = gtk_tree_model_iter_n_children (treemodel, NULL);
-    priv = window->priv;
-    combobox = priv->combobox;
-    active = gtk_combo_box_get_active (combobox);
-
-    if (active < 0 && children > 0) gw_searchwindow_set_dictionary (window, 0);
-}
 

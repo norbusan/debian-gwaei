@@ -28,6 +28,9 @@
 //!         objects exist for that purpose.
 //!
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <string.h>
 #include <stdlib.h>
@@ -717,7 +720,7 @@ lw_dictionary_get_installed_idlist (GType type_filter)
         while ((filename = g_dir_read_name (directory)) != NULL && length > 0)
         {
           *iditer = lw_dictionary_build_id_from_type (*childiter, filename);
-          printf("id: %s\n", *iditer);
+          fprintf(stderr, "id: %s\n", *iditer);
           
           iditer++;
           length--;
@@ -766,7 +769,7 @@ lw_dictionary_build_regex (LwDictionary *dictionary, LwQuery *query, GError **er
         {
           for (i = 0; tokenlist[i] != NULL; i++)
           {
-            supplimentary = lw_query_get_supplimentary (query, type, tokenlist[i], &new_type);
+            supplimentary = lw_query_get_supplimentary (query, relevance, type, tokenlist[i], &new_type);
             pattern = klass->patterns[new_type];
             if (relevance != LW_RELEVANCE_HIGH && supplimentary != NULL) regex = lw_regex_new (pattern[relevance], supplimentary, error);
             else regex = lw_regex_new (pattern[relevance], tokenlist[i], error);

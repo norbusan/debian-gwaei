@@ -28,6 +28,10 @@
 //!         objects exist for that purpose.
 //!
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -146,7 +150,7 @@ lw_edictionary_class_init (LwEDictionaryClass *klass)
 //TODO
 //    dictionary_class->patterns[LW_QUERY_TYPE_FURIGANA][LW_RELEVANCE_LOW] = "(\\b|お|を|に|で|は|と)(%s)(で|が|の|を|に|で|は|と|\\b)";
     dictionary_class->patterns[LW_QUERY_TYPE_FURIGANA][LW_RELEVANCE_LOW] = "(%s)";
-    dictionary_class->patterns[LW_QUERY_TYPE_FURIGANA][LW_RELEVANCE_MEDIUM] = "(\\b|お|を|に|で|は|と)(%s)(で|が|の|を|に|で|は|と|)\\b";
+    dictionary_class->patterns[LW_QUERY_TYPE_FURIGANA][LW_RELEVANCE_MEDIUM] = "(\\b|お|を|に|で|は|と)(%s)(で|が|の|を|に|で|は|と|)";
     dictionary_class->patterns[LW_QUERY_TYPE_FURIGANA][LW_RELEVANCE_HIGH] = "\\b(お|)(%s)\\b";
 
     dictionary_class->patterns[LW_QUERY_TYPE_ROMAJI][LW_RELEVANCE_LOW] = "(%s)";

@@ -25,7 +25,13 @@
 //! @brief To be written
 //!
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <waei/waei.h>
+
+#include <waei/gettext.h>
 
 
 WSearchData* 

@@ -25,12 +25,12 @@
 //! @brief To be written
 //!
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <string.h>
 #include <stdlib.h>
-
-#ifdef HAVE_CONFIG_H
-#include "../../config.h"
-#endif
 
 #include <gtk/gtk.h>
 
@@ -139,8 +139,17 @@ gw_application_open_aboutdialog_cb (GSimpleAction *action,
                                     GVariant      *parameter,
                                     gpointer       data)
 {
-    gchar *global_path = DATADIR2 G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "logo.png";
-    gchar *local_path = ".." G_DIR_SEPARATOR_S "share" G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "logo.png";
+    gchar *path;
+
+#ifndef G_OS_WIN32
+    path = g_build_filename (DATADIR2, PACKAGE, "logo.png", NULL);
+#else
+    gchar *prefix;
+
+    prefix = g_win32_get_package_installation_directory_of_module (NULL);
+    path = g_build_filename (prefix, "share", PACKAGE, "logo.png", NULL);
+    g_free (prefix);
+#endif
 
     gchar *programmer_credits[] = 
     {
@@ -150,8 +159,7 @@ gw_application_open_aboutdialog_cb (GSimpleAction *action,
     };
 
     GdkPixbuf *logo;
-    if ( (logo = gdk_pixbuf_new_from_file (global_path,    NULL)) == NULL &&
-         (logo = gdk_pixbuf_new_from_file (local_path, NULL)) == NULL    )
+    if ( (logo = gdk_pixbuf_new_from_file (path, NULL)) == NULL)
     {
       printf ("Was unable to load the gwaei logo.\n");
     }

@@ -25,6 +25,9 @@
 //! @brief To be written
 //!
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <string.h>
 
@@ -34,6 +37,7 @@
 #include <libwaei/libwaei.h>
 #include <gwaei/radicalswindow.h>
 #include <gwaei/radicalswindow-private.h>
+#include <gwaei/gettext.h>
 
 
 //!

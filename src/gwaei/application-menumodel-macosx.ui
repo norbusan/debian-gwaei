@@ -1,29 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
-
-  <menu id='menu'>
-
+  <menu id="menu">
     <section>
       <item>
-        <attribute name='label' translatable='yes'>_About gWaei</attribute>
-        <attribute name='action'>app.show-about</attribute>
+        <attribute name="label" translatable="yes">_About gWaei</attribute>
+        <attribute name="action">app.show-about</attribute>
       </item>
     </section>
 
     <section>
       <item>
-        <attribute name='label' translatable='yes'>_Preferences</attribute>
-        <attribute name='action'>app.show-preferences</attribute>
-        <attribute name='accel'>&lt;Primary&gt;comma</attribute>
+        <attribute name="label" translatable="yes">_Preferences</attribute>
+        <attribute name="action">app.show-preferences</attribute>
+        <attribute name="accel">&lt;Primary&gt;comma</attribute>
       </item>
     </section>
 
     <section>
       <item>
-        <attribute name='label' translatable='yes'>_Quit gWaei</attribute>
-        <attribute name='action'>app.quit</attribute>
-        <attribute name='accel'>&lt;Primary&gt;q</attribute>
+        <attribute name="label" translatable="yes">_Quit gWaei</attribute>
+        <attribute name="action">app.quit</attribute>
+        <attribute name="accel">&lt;Primary&gt;q</attribute>
       </item>
     </section>
-
   </menu>
 </interface>

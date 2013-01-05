@@ -1,2 +1,2 @@
-2012-09-22: gWaei 3.6.1
-Bugfix release.  The changes mostly focus on getting the menus to work correctly on Ubuntu unity without causing crashes.  Reenabled dictionary switch accelerators. Added primary-toolbar style to the main toolbar.  Fixed ui updates when dictionaries are reordered.  
+2013-01-01: gWaei 3.6.2
+Bugfix release. Various windows compilation fixes.  Morphology was made less obtrusive because it is a bit greedy.  Fixes to a segfault in waei if no dictionaries are installed and a search is carried out.  Fixes to localization.

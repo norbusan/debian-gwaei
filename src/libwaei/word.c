@@ -24,53 +24,65 @@
 //!  @file word.c
 //!
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <locale.h>
 
 #include <libwaei/gettext.h>
 #include <libwaei/libwaei.h>
 
-const gchar* lw_word_get_kanji (LwWord *word)
+const gchar* 
+lw_word_get_kanji (LwWord *word)
 {
   return word->fields[LW_WORD_FIELD_KANJI];
 }
 
-void lw_word_set_kanji (LwWord *word, const gchar *text)
+void 
+lw_word_set_kanji (LwWord *word, const gchar *text)
 {
   if (word->fields[LW_WORD_FIELD_KANJI] != NULL)
     g_free (word->fields[LW_WORD_FIELD_KANJI]);
   word->fields[LW_WORD_FIELD_KANJI] = g_strdup (text);
 }
 
-const gchar* lw_word_get_furigana (LwWord *word)
+const gchar* 
+lw_word_get_furigana (LwWord *word)
 {
   return word->fields[LW_WORD_FIELD_FURIGANA];
 }
 
-void lw_word_set_furigana (LwWord *word, const gchar *text)
+void 
+lw_word_set_furigana (LwWord *word, const gchar *text)
 {
   if (word->fields[LW_WORD_FIELD_FURIGANA] != NULL)
     g_free (word->fields[LW_WORD_FIELD_FURIGANA]);
   word->fields[LW_WORD_FIELD_FURIGANA] = g_strdup (text);
 }
 
-const gchar* lw_word_get_definitions (LwWord *word)
+const gchar* 
+lw_word_get_definitions (LwWord *word)
 {
   return word->fields[LW_WORD_FIELD_DEFINITIONS];
 }
 
-void lw_word_set_definitions (LwWord *word, const gchar *text)
+void 
+lw_word_set_definitions (LwWord *word, const gchar *text)
 {
   if (word->fields[LW_WORD_FIELD_DEFINITIONS] != NULL)
     g_free (word->fields[LW_WORD_FIELD_DEFINITIONS]);
   word->fields[LW_WORD_FIELD_DEFINITIONS] = g_strdup (text);
 }
 
-gint lw_word_get_correct_guesses (LwWord *word)
+gint 
+lw_word_get_correct_guesses (LwWord *word)
 {
   return word->correct_guesses;
 }
 
-void lw_word_set_correct_guesses (LwWord *word, gint number)
+void 
+lw_word_set_correct_guesses (LwWord *word, gint number)
 {
   if (word->fields[LW_WORD_FIELD_CORRECT_GUESSES] != NULL)
     g_free (word->fields[LW_WORD_FIELD_CORRECT_GUESSES]);
@@ -79,12 +91,14 @@ void lw_word_set_correct_guesses (LwWord *word, gint number)
   if (word->score != NULL) g_free (word->score); word->score = NULL;
 }
 
-gint lw_word_get_incorrect_guesses (LwWord *word)
+gint 
+lw_word_get_incorrect_guesses (LwWord *word)
 {
   return word->incorrect_guesses;
 }
 
-void lw_word_set_incorrect_guesses (LwWord *word, gint number)
+void 
+lw_word_set_incorrect_guesses (LwWord *word, gint number)
 {
   if (word->fields[LW_WORD_FIELD_INCORRECT_GUESSES] != NULL)
     g_free (word->fields[LW_WORD_FIELD_INCORRECT_GUESSES]);

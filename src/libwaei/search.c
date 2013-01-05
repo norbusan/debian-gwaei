@@ -23,6 +23,9 @@
 //! @file searchitem.c
 //!
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -31,6 +34,7 @@
 #include <glib.h>
 
 #include <libwaei/libwaei.h>
+#include <libwaei/gettext.h>
 
 static void lw_search_init (LwSearch*, LwDictionary*, const gchar*, LwSearchFlags, GError**);
 static void lw_search_deinit (LwSearch*);
@@ -474,9 +478,9 @@ lw_search_stream_results_thread (gpointer data)
     {
       //Give a chance for something else to run
       lw_search_unlock (search);
-      if (search->status == LW_SEARCHSTATUS_SEARCHING && g_main_context_pending (NULL))
+      if (search->status == LW_SEARCHSTATUS_SEARCHING)
       {
-        g_main_context_iteration (NULL, FALSE);
+        g_thread_yield ();
       }
       lw_search_lock (search);
       //Results match, add to the text buffer

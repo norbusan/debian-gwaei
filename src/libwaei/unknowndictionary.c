@@ -28,6 +28,9 @@
 //!         objects exist for that purpose.
 //!
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <string.h>
 #include <stdlib.h>
@@ -37,6 +40,7 @@
 
 #include <libwaei/libwaei.h>
 #include <libwaei/dictionary-private.h>
+#include <libwaei/gettext.h>
 
 static gboolean lw_unknowndictionary_parse_query (LwDictionary*, LwQuery*, const gchar*, GError**);
 static gint lw_unknowndictionary_parse_result (LwDictionary*, LwResult*, FILE*);

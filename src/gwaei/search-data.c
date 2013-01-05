@@ -27,6 +27,9 @@
 //! @brief To be written
 //!
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <stdlib.h>
 #include <string.h>
@@ -36,6 +39,7 @@
 #include <gtk/gtk.h>
 
 #include <gwaei/gwaei.h>
+#include <gwaei/gettext.h>
 
 
 GwSearchData* 

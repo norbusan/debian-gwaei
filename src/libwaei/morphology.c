@@ -23,6 +23,10 @@
 //! @file morphology.c
 //!
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -30,7 +34,7 @@
 #include <glib.h>
 
 #include <libwaei/libwaei.h>
-#include "config.h"
+#include <libwaei/gettext.h>
 
 static LwMorphology *lw_morphology_new ();
 static void lw_morphology_free (LwMorphology *morphology);
@@ -99,6 +103,7 @@ lw_morphologyengine_new ()
 {
     //Declarations
     static gchar *argv[] = {"mecab", NULL};
+    static gboolean message_shown = FALSE;
     LwMorphologyEngine *engine;
 
     //Initializations
@@ -111,15 +116,17 @@ lw_morphologyengine_new ()
 
     //Error checking
     if (engine->mecab == NULL) {
-/*
-mecab_strerr CAUSES A SEGFAULT
-      if (engine->mecab == NULL) 
-        g_warning ("Failed to initialize Mecab engine: %s", mecab_strerror (NULL));
-*/
       lw_morphologyengine_free (engine); engine = NULL;
-      g_message ("You may not have any mecab dictionaries installed... (Try installing mecab-ipadic?)");
+      if (message_shown == FALSE)
+      {
+        g_message ("You may not have any mecab dictionaries installed... (Try installing mecab-ipadic?)");
+        message_shown = TRUE;
+      }
     }
-    g_return_val_if_fail (engine != NULL, NULL);
+    else
+    {
+      message_shown = FALSE;
+    }
 
     return engine;
 }
@@ -309,7 +316,7 @@ lw_morphologyengine_analyze (LwMorphologyEngine *engine, const gchar *INPUT_RAW)
 
     g_mutex_unlock (&engine->mutex);
 
-    list = g_list_reverse(list);
+    list = g_list_reverse (list);
 
     return list;
 
