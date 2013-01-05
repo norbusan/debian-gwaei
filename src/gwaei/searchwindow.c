@@ -25,6 +25,10 @@
 //! @brief To be written
 //!
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <stdlib.h>
 #include <string.h>
 
@@ -1438,7 +1442,7 @@ gw_searchwindow_update_tab_text_by_index (GwSearchWindow *window, gint index)
     container = GTK_WIDGET (gtk_notebook_get_nth_page (priv->notebook, index));
     search = LW_SEARCH (g_object_get_data (G_OBJECT (container), "searchitem"));
     query = NULL;
-    text = "New Tab";
+    text = gettext("New Tab");
     box = GTK_WIDGET (gtk_notebook_get_tab_label (priv->notebook, GTK_WIDGET (container)));
     children = gtk_container_get_children (GTK_CONTAINER (box));
 
@@ -1976,8 +1980,6 @@ gw_searchwindow_attach_signals (GwSearchWindow *window)
     dictionarylist = gw_application_get_installed_dictionarylist (application);
     preferences = gw_application_get_preferences (application);
 
-    g_signal_connect_swapped (G_OBJECT (dictionarylist), "changed",
-                              G_CALLBACK (gw_searchwindow_dictionarylist_changed_cb), window);
     g_signal_connect_after (G_OBJECT (window), "delete-event", 
                             G_CALLBACK (gw_window_delete_event_cb), window);
     g_signal_connect (G_OBJECT (window), "key-release-event", 
@@ -2064,10 +2066,10 @@ gw_searchwindow_attach_signals (GwSearchWindow *window)
     );
 #endif
 
-    priv->signalid[GW_SEARCHWINDOW_SIGNALID_DICTIONARIES_CHANGED] = g_signal_connect_swapped (
+    priv->signalid[GW_SEARCHWINDOW_SIGNALID_DICTIONARYLIST_CHANGED] = g_signal_connect_swapped (
         G_OBJECT (dictionarylist),
         "changed",
-        G_CALLBACK (gw_searchwindow_dictionaries_changed_cb),
+        G_CALLBACK (gw_searchwindow_dictionarylist_changed_cb),
         window 
     );
 
@@ -2107,6 +2109,7 @@ gw_searchwindow_remove_signals (GwSearchWindow *window)
     //Declarations
     GwApplication *application;
     GwSearchWindowPrivate *priv;
+    GwDictionaryList *dictionarylist;
     LwPreferences *preferences;
     GSource *source;
     gint i;
@@ -2114,6 +2117,7 @@ gw_searchwindow_remove_signals (GwSearchWindow *window)
     application = gw_window_get_application (GW_WINDOW (window));
     priv = window->priv;
     preferences = gw_application_get_preferences (application);
+    dictionarylist = gw_application_get_installed_dictionarylist (application);
   
     if (priv->radicalswindow != NULL && priv->signalid[GW_SEARCHWINDOW_SIGNALID_RADICALSWINDOW_CLOSED] != 0)
     {
@@ -2127,6 +2131,12 @@ gw_searchwindow_remove_signals (GwSearchWindow *window)
       g_signal_handler_disconnect (priv->kanjipadwindow, priv->signalid[GW_SEARCHWINDOW_SIGNALID_KANJIPADWINDOW_CLOSED]);
       priv->signalid[GW_SEARCHWINDOW_SIGNALID_KANJIPADWINDOW_CLOSED] = 0;
       gtk_widget_destroy (GTK_WIDGET (priv->kanjipadwindow));
+    }
+
+    if (dictionarylist != NULL && priv->signalid[GW_SEARCHWINDOW_SIGNALID_DICTIONARYLIST_CHANGED] != 0)
+    {
+      g_signal_handler_disconnect (dictionarylist, priv->signalid[GW_SEARCHWINDOW_SIGNALID_DICTIONARYLIST_CHANGED]);
+      priv->signalid[GW_SEARCHWINDOW_SIGNALID_DICTIONARYLIST_CHANGED] = 0;
     }
 
     for (i = 0; i < TOTAL_GW_SEARCHWINDOW_TIMEOUTIDS; i++)

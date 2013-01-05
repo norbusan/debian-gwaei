@@ -12,7 +12,7 @@ DEFINITIONS =-DDATADIR2=\"$(datadir)\" -DLIBDIR=\"$(libdir)\" -DGWAEI_LOCALEDIR=
 gwaei_SOURCES = gwaei.c application.c application-callbacks.c window.c window-callbacks.c dictionarylist.c dictionarylist-callbacks.c searchwindow.c searchwindow-callbacks.c searchwindow-output.c search-data.c printing.c radicalswindow.c radicalswindow-callbacks.c kanjipadwindow-callbacks.c kanjipad-drawingarea.c kanjipad-candidatearea.c  kanjipadwindow.c settingswindow.c settingswindow-callbacks.c dictionaryinstallwindow.c dictionaryinstallwindow-callbacks.c  installprogresswindow.c installprogresswindow-callbacks.c vocabularywindow.c vocabularywindow-callbacks.c vocabularywordstore.c vocabularyliststore.c addvocabularywindow.c addvocabularywindow-callbacks.c flashcardwindow.c flashcardwindow-callbacks.c flashcardstore.c texttagtable.c history.c
 
 gwaei_LDADD =  $(GWAEI_LIBS) ../libwaei/libwaei.la
-gwaei_CPPFLAGS = $(DEFINITIONS) $(GWAEI_CFLAGS) $(GWAEI_DEFS) -I$(top_srcdir)/src/libwaei/include -I$(top_srcdir)/src/gwaei/include
+gwaei_CPPFLAGS = -I$(top_srcdir)/src/libwaei/include -I$(top_srcdir)/src/gwaei/include $(GWAEI_CFLAGS) $(GWAEI_DEFS) $(DEFINITIONS)
 
 if WITH_HUNSPELL
 gwaei_LDADD +=$(HUNSPELL_LIBS)

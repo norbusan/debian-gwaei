@@ -36,7 +36,7 @@ TABLE OF CONTENTS
   Debian/Ubuntu build Depandancies:
     sudo apt-get install gcc autoconf automake make intltool gettext \
     rarian-compat gnome-doc-utils dconf gsettings-desktop-schemas \
-    imagemagick libcurl4-gnutls-dev libhunspell-dev libmecab-dev libgtk-3-dev 
+    imagemagick libcurl4-gnutls-dev libhunspell-dev libmecab-dev libgtk-3-dev libtool
 
   Debian/Ubuntu optional runtime dependancies:
     sudo apt-get install hunspell-en-us mecab-ipadic fonts-kanjistrokeorders \
@@ -45,7 +45,7 @@ TABLE OF CONTENTS
   Fedora build dependancies:
     sudo yum install gcc autoconf automake make intltool gettext rarian-compat \
     gnome-doc-utils dconf gsettings-desktop-schemas libcurl-devel hunspell-devel \
-    mecab-devel gtk3-devel libstdc++-devel
+    mecab-devel gtk3-devel libstdc++-devel libtool
 
   Fedora optional runtime dependancies:
     sudo yum install hunspell-en-US mecab-ipadic kanjistrokeorders-fonts \
@@ -54,7 +54,7 @@ TABLE OF CONTENTS
   Arch build depandancies:
     sudo pacman -S gcc autoconf automake make intltool gettext rarian \
     gnome-doc-utils pkg-config dconf gsettings-desktop-schemas curl hunspell \
-    mecab gtk3
+    mecab gtk3 libtool
 
   Arch optional runtime depandancies (other packages must be installed from AUR)
     sudo pacman -S hunspell-en gnome-icon-theme-symbolic

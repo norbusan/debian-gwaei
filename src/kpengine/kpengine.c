@@ -42,18 +42,16 @@ load_database()
     }
   else
     {
-#ifdef G_OS_WIN32
-      //char *dir = g_win32_get_package_installation_directory (NULL, NULL);
-      char *dir = g_build_filename ("..", "share", "gwaei", NULL);
+#ifndef G_OS_WIN32
+      gchar *dir = g_strdup (KP_LIBDIR);
 #else
-      char *dir = g_strdup (KP_LIBDIR);
-#endif      
+      gchar *prefix = g_win32_get_package_installation_directory_of_module (NULL);
+      gchar *dir = g_build_filename (prefix, "..", "..", "share", "gwaei", NULL);
+      g_free (prefix);
+#endif
       char *fname = g_build_filename (dir, "jdata.dat", NULL);
       file = fopen (fname, "rb");
       
-      if (!file)
-	      file = fopen ("jdata.dat", "rb");
-
       g_free (fname);
       g_free (dir);
     }

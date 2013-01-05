@@ -23,6 +23,9 @@
 //! @file history.c
 //!
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,6 +36,7 @@
 #include <libwaei/libwaei.h>
 
 #include <libwaei/history-private.h>
+#include <libwaei/gettext.h>
 
 G_DEFINE_TYPE (LwHistory, lw_history, G_TYPE_OBJECT)
 

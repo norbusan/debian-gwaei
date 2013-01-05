@@ -25,6 +25,9 @@
 //! @brief To be written
 //!
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -32,6 +35,7 @@
 
 #include <glib.h>
 
+#include <waei/gettext.h>
 #include <waei/waei.h>
 
 gint 

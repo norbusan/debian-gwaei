@@ -27,6 +27,9 @@
 //! @brief To be written
 //!
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <math.h>
 #include <stdio.h>
@@ -36,6 +39,8 @@
 
 #include <gtk/gtk.h>
 #include <pango/pangocairo.h>
+
+#include <gwaei/gettext.h>
 
 #include <libwaei/libwaei.h>
 #include <gwaei/kanjipadwindow.h>

@@ -50,8 +50,6 @@ void gw_searchwindow_search_drag_data_recieved_cb (GtkWidget*, GdkDragContext*, 
 gboolean gw_searchwindow_focus_change_on_key_press_cb (GtkWidget*, GdkEvent*, gpointer*);
 gboolean gw_searchwindow_update_icons_for_selection_cb (GtkWidget*, GdkEvent*, gpointer); 
 
-void gw_searchwindow_dictionaries_changed_cb (GwSearchWindow*, LwDictionaryList*);
-
 gboolean gw_searchwindow_scroll_or_zoom_cb (GtkWidget*, GdkEventScroll*, gpointer);
 
 void gw_searchwindow_remove_tab_cb (GtkWidget*, gpointer);

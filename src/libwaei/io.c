@@ -23,6 +23,9 @@
 //! @file io.c
 //!
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -96,7 +99,7 @@ lw_io_write_file (const char* PATH, const char* mode, gchar *text, LwIoProgressC
 {
     //Sanity checks
     g_assert (PATH != NULL && mode != NULL && text != NULL);
-    if (*error != NULL) return;
+    if (error != NULL && *error != NULL) return;
 
     //Declarations
     gchar *ptr;
@@ -145,7 +148,7 @@ lw_io_copy_with_encoding (const gchar           *SOURCE_PATH,
                           GCancellable          *cancellable,
                           GError               **error)
 {
-    if (*error != NULL) return FALSE;
+    if (error != NULL && *error != NULL) return FALSE;
 
     //Declarations
     FILE* readfd = NULL;
@@ -369,7 +372,8 @@ lw_io_copy (const gchar           *SOURCE_PATH,
             GCancellable          *cancellable,
             GError               **error)
 {
-    if (*error != NULL) return FALSE;
+    if (error != NULL && *error != NULL) return FALSE;
+    if (!g_file_test (SOURCE_PATH, G_FILE_TEST_IS_REGULAR)) return FALSE;
 
     //Declarations
     FILE *infd;

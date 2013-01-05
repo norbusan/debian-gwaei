@@ -11,7 +11,7 @@ DEFINITIONS =-DDATADIR2=\"$(datadir)\" -DLIBDIR=\"$(libdir)\" -DGWAEI_LOCALEDIR=
 
 waei_SOURCES =waei.c application.c search-data.c console.c console-output.c console-callbacks.c
 waei_LDADD =$(WAEI_LIBS) ../libwaei/libwaei.la
-waei_CPPFLAGS =$(DEFINITIONS) $(WAEI_CFLAGS) $(WAEI_DEFS) -I$(top_srcdir)/src/libwaei/include -I$(top_srcdir)/src/waei/include
+waei_CPPFLAGS = -I$(top_srcdir)/src/libwaei/include -I$(top_srcdir)/src/waei/include $(WAEI_CFLAGS) $(WAEI_DEFS) $(DEFINITIONS)
 
 if WITH_MECAB
 MECAB_DEFS =-DWITH_MECAB

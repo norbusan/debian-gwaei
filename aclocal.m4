@@ -1,4 +1,4 @@
-# generated automatically by aclocal 1.12.4 -*- Autoconf -*-
+# generated automatically by aclocal 1.12.6 -*- Autoconf -*-
 
 # Copyright (C) 1996-2012 Free Software Foundation, Inc.
 
@@ -540,6 +540,39 @@ m4_ifdef([_AM_SUBST_NOTMAKE], [_AM_SUBST_NOTMAKE([$1])])
 ]
 )
 
+# nls.m4 serial 5 (gettext-0.18)
+dnl Copyright (C) 1995-2003, 2005-2006, 2008-2010 Free Software Foundation,
+dnl Inc.
+dnl This file is free software; the Free Software Foundation
+dnl gives unlimited permission to copy and/or distribute it,
+dnl with or without modifications, as long as this notice is preserved.
+dnl
+dnl This file can can be used in projects which are not available under
+dnl the GNU General Public License or the GNU Library General Public
+dnl License but which still want to provide support for the GNU gettext
+dnl functionality.
+dnl Please note that the actual code of the GNU gettext library is covered
+dnl by the GNU Library General Public License, and the rest of the GNU
+dnl gettext package package is covered by the GNU General Public License.
+dnl They are *not* in the public domain.
+
+dnl Authors:
+dnl   Ulrich Drepper <drepper@cygnus.com>, 1995-2000.
+dnl   Bruno Haible <haible@clisp.cons.org>, 2000-2003.
+
+AC_PREREQ([2.50])
+
+AC_DEFUN([AM_NLS],
+[
+  AC_MSG_CHECKING([whether NLS is requested])
+  dnl Default is enabled NLS
+  AC_ARG_ENABLE([nls],
+    [  --disable-nls           do not use Native Language Support],
+    USE_NLS=$enableval, USE_NLS=yes)
+  AC_MSG_RESULT([$USE_NLS])
+  AC_SUBST([USE_NLS])
+])
+
 # pkg.m4 - Macros to locate and utilise pkg-config.            -*- Autoconf -*-
 # serial 1 (pkg-config-0.24)
 # 
@@ -755,7 +788,7 @@ AC_DEFUN([AM_AUTOMAKE_VERSION],
 [am__api_version='1.12'
 dnl Some users find AM_AUTOMAKE_VERSION and mistake it for a way to
 dnl require some minimum version.  Point them to the right macro.
-m4_if([$1], [1.12.4], [],
+m4_if([$1], [1.12.6], [],
       [AC_FATAL([Do not call $0, use AM_INIT_AUTOMAKE([$1]).])])dnl
 ])
 
@@ -771,7 +804,7 @@ m4_define([_AM_AUTOCONF_VERSION], [])
 # Call AM_AUTOMAKE_VERSION and AM_AUTOMAKE_VERSION so they can be traced.
 # This function is AC_REQUIREd by AM_INIT_AUTOMAKE.
 AC_DEFUN([AM_SET_CURRENT_AUTOMAKE_VERSION],
-[AM_AUTOMAKE_VERSION([1.12.4])dnl
+[AM_AUTOMAKE_VERSION([1.12.6])dnl
 m4_ifndef([AC_AUTOCONF_VERSION],
   [m4_copy([m4_PACKAGE_VERSION], [AC_AUTOCONF_VERSION])])dnl
 _AM_AUTOCONF_VERSION(m4_defn([AC_AUTOCONF_VERSION]))])
@@ -1711,4 +1744,3 @@ m4_include([m4/ltoptions.m4])
 m4_include([m4/ltsugar.m4])
 m4_include([m4/ltversion.m4])
 m4_include([m4/lt~obsolete.m4])
-m4_include([m4/nls.m4])

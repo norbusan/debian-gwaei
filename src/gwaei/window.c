@@ -25,6 +25,10 @@
 //! @brief To be written
 //!
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,12 +38,9 @@
 
 #include <gtk/gtk.h>
 
-#ifdef HAVE_CONFIG_H
-#include "../../config.h"
-#endif
-
 #include <gwaei/gwaei.h>
 #include <gwaei/window-private.h>
+#include <gwaei/gettext.h>
 
 G_DEFINE_ABSTRACT_TYPE (GwWindow, gw_window, GTK_TYPE_APPLICATION_WINDOW)
 
@@ -216,46 +217,41 @@ gw_window_load_ui_xml (GwWindow *window, const char *filename)
     GwWindowPrivate *priv;
     GtkWidget *toplevel;
     GtkWidget *unused;
-    gchar *paths[4];
-    gchar **iter;
     gchar *path;
     gboolean loaded;
 
     //Initializations
     priv = window->priv;
-    paths[0] = g_build_filename (filename, NULL);
-    paths[1] = g_build_filename ("..", "share", PACKAGE, filename, NULL);
-    paths[2] = g_build_filename (DATADIR2, PACKAGE, filename, NULL);
-    paths[3] = NULL;
     loaded = FALSE;
+#ifndef G_OS_WIN32
+    path = g_build_filename (DATADIR2, PACKAGE, filename, NULL);
+#else
+    gchar *prefix;
+
+    prefix = g_win32_get_package_installation_directory_of_module (NULL);
+    path = g_build_filename (prefix, "share", PACKAGE, filename, NULL);
+    g_free (prefix);
+#endif
 
     //Search for the files
-    for (iter = paths; *iter != NULL && loaded == FALSE; iter++)
+    if (g_file_test (path, G_FILE_TEST_IS_REGULAR) && gtk_builder_add_from_file (priv->builder, path,  NULL))
     {
-      path = *iter;
-      if (g_file_test (path, G_FILE_TEST_IS_REGULAR) && gtk_builder_add_from_file (priv->builder, path,  NULL))
-      {
-        gtk_builder_connect_signals (priv->builder, NULL);
+      gtk_builder_connect_signals (priv->builder, NULL);
 
-        unused = GTK_WIDGET (gtk_builder_get_object (priv->builder, "unused"));
-        toplevel = GTK_WIDGET (gtk_builder_get_object (priv->builder, "toplevel"));
-        g_assert (unused != NULL && toplevel != NULL);
-        g_object_ref(toplevel);
-        gtk_container_remove (GTK_CONTAINER (unused), toplevel);
-        gtk_container_add (GTK_CONTAINER (window), toplevel);
-        g_object_unref(toplevel);
+      unused = GTK_WIDGET (gtk_builder_get_object (priv->builder, "unused"));
+      toplevel = GTK_WIDGET (gtk_builder_get_object (priv->builder, "toplevel"));
+      g_assert (unused != NULL && toplevel != NULL);
+      g_object_ref(toplevel);
+      gtk_container_remove (GTK_CONTAINER (unused), toplevel);
+      gtk_container_add (GTK_CONTAINER (window), toplevel);
+      g_object_unref(toplevel);
   
-        gtk_widget_destroy (unused); unused = NULL;
+      gtk_widget_destroy (unused); unused = NULL;
 
-        loaded = TRUE;
-      }
+      loaded = TRUE;
     }
 
-    //Cleanup
-    for (iter = paths; *iter != NULL; iter++)
-    {
-      g_free (*iter);
-    }
+    g_free (path);
 
     //Bug test
     g_assert (loaded);

@@ -28,6 +28,9 @@
 //!         objects exist for that purpose.
 //!
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <string.h>
 #include <stdlib.h>
@@ -191,6 +194,12 @@ lw_dictionary_installer_get_decompresslist (LwDictionary *dictionary)
       while (*tempiter != NULL)
       {
         filename = strrchr(*tempiter, G_DIR_SEPARATOR);
+
+#ifdef G_OS_WIN32
+        if (!filename)
+          filename = strrchr(*tempiter, '/');
+#endif
+
         if (filename == NULL || *(filename + 1) == '\0') goto errored;
         filename++;
 

@@ -27,16 +27,15 @@
 //! Used as a go between for functions interacting with the console.
 //!
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
 #include <glib.h>
-
-#ifdef HAVE_CONFIG_H
-#include "../../config.h"
-#endif
 
 #include <waei/gettext.h>
 #include <waei/waei.h>
@@ -72,7 +71,7 @@ w_console_uninstall_dictionary (WApplication* application, GError **error)
     }
     else
     {
-      printf("\n%s was not found!\n\n", uninstall_switch_data);
+      printf("\n\"%s\" Dictionary was not found!\n\n", uninstall_switch_data);
       w_console_print_available_dictionaries (application);
     }
 
@@ -127,7 +126,7 @@ w_console_install_dictionary (WApplication *application, GError **error)
     }
     else
     {
-      printf("\n%s was not found!\n\n", install_switch_data);
+      printf("\n%s \"was not\" found!\n\n", install_switch_data);
       w_console_print_installable_dictionaries (application);
     }
 
@@ -303,20 +302,18 @@ w_console_search (WApplication *application, GError **error)
     exact_switch = w_application_get_exact_switch (application);
     flags = 0;
 
-    dictionary = lw_dictionarylist_get_dictionary_fuzzy (dictionarylist, dictionary_switch_data);
     if (exact_switch) flags = flags | LW_SEARCH_FLAG_EXACT;
-    if (dictionary == NULL) printf("dictionary equals zero! %s\n", dictionary_switch_data);
-    search = lw_search_new (dictionary, query_text_data, flags, error);
     resolution = 0;
 
-    //Sanity checks
+    dictionary = lw_dictionarylist_get_dictionary_fuzzy (dictionarylist, dictionary_switch_data);
     if (dictionary == NULL)
     {
       resolution = 1;
-      fprintf (stderr, gettext("Requested dictionary not found!\n"));
+      fprintf (stderr, gettext("\"%s\" Dictionary was not found!\n"), dictionary_switch_data);
       return resolution;
     }
 
+    search = lw_search_new (dictionary, query_text_data, flags, error);
     if (search == NULL)
     {
       resolution = 1;

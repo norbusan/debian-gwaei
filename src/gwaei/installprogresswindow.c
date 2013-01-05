@@ -25,13 +25,17 @@
 //! @brief To be written
 //!
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <string.h>
 #include <stdlib.h>
 
 #include <gtk/gtk.h>
 
-#include <gwaei/gwaei.h>
 #include <gwaei/gettext.h>
+#include <gwaei/gwaei.h>
 #include <gwaei/installprogresswindow-private.h>
 
 static gpointer gw_installprogresswindow_install_thread (gpointer);

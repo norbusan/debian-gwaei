@@ -25,6 +25,10 @@
 //! @brief To be written
 //!
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -77,65 +81,28 @@ gw_spellcheck_new_with_entry (GwApplication *application, GtkEntry *entry)
 static gchar**
 gw_spellcheck_get_dictionary_paths ()
 {
-    //Decalrations
-    gchar **relative_path;
+    //Declarations
     gchar **path;
     gchar *text;
-    gchar *temp;
     const gchar * const * system_path = g_get_system_data_dirs ();
     gint i;
 
-    //Initializations
-    path = NULL;
-
-    relative_path = g_new (gchar*, 6);
-    if (relative_path != NULL)
+    for (i = 0; system_path[i] != NULL; i++)
     {
-      relative_path[0] = g_build_filename ("..", "share", "myspell", NULL);
-      relative_path[1] = g_build_filename ("..", "share", "myspell", "dicts", NULL);
-      relative_path[2] = g_build_filename ("..", "share", "hunspell", NULL);
-      relative_path[3] = g_build_filename ("..", "..", "share", "myspell", NULL);
-      relative_path[4] = g_build_filename ("..", "..", "share", "myspell", "dicts", NULL);
-      relative_path[5] = g_build_filename ("..", "..", "share", "hunspell", NULL);
+      gchar *temp_path1 = g_build_filename (system_path[i], "myspell", NULL);
+      gchar *temp_path2 = g_build_filename (system_path[i], "myspell", "dicts", NULL);
+      gchar *temp_path3 = g_build_filename (system_path[i], "hunspell", NULL);
 
-      text = g_strjoin (":", HUNSPELL_MYSPELL_DICTIONARY_PATH,
-                             relative_path[0],
-                             relative_path[1],
-                             relative_path[2],
-                             relative_path[3],
-                             relative_path[4],
-                             relative_path[5],
-                             NULL
-      );
+      text = g_strjoin (":", HUNSPELL_MYSPELL_DICTIONARY_PATH, temp_path1, temp_path2, temp_path3, NULL);
 
-      for (i = 0; system_path[i] != NULL; i++)
-      {
-        gchar *temp_path1 = g_build_filename (system_path[i], "myspell", NULL);
-        gchar *temp_path2 = g_build_filename (system_path[i], "myspell", "dicts", NULL);
-        gchar *temp_path3 = g_build_filename (system_path[i], "hunspell", NULL);
-
-        temp = g_strjoin (":", text, temp_path1, temp_path2, temp_path3, NULL);
-        g_free (text);
-        text = temp;
-        temp = NULL;
-
-        if (temp_path1 != NULL) g_free (temp_path1);
-        if (temp_path2 != NULL) g_free (temp_path2);
-        if (temp_path3 != NULL) g_free (temp_path3);
-        if (temp != NULL) g_free (temp);
-      }
-      
-      path = g_strsplit (text, ":", -1);
-
-      if (text != NULL) g_free (text); text = NULL;
-      if (relative_path[0] != NULL) g_free (relative_path[0]);
-      if (relative_path[1] != NULL) g_free (relative_path[1]);
-      if (relative_path[2] != NULL) g_free (relative_path[2]);
-      if (relative_path[3] != NULL) g_free (relative_path[3]);
-      if (relative_path[4] != NULL) g_free (relative_path[4]);
-      if (relative_path[5] != NULL) g_free (relative_path[5]);
-      g_free (relative_path); relative_path = NULL;
+      g_free (temp_path1);
+      g_free (temp_path2);
+      g_free (temp_path3);
     }
+
+    path = g_strsplit (text, ":", -1);
+
+    g_free (text);
 
     return path;
 }

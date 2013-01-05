@@ -1,115 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <menu id='menu'>
+  <menu id="menu">
     <submenu>
-      <attribute name='label' translatable='yes'>_File</attribute>
+      <attribute name="label" translatable="yes">_File</attribute>
       <section>
         <item>
-          <attribute name='label' translatable='yes'>New _List</attribute>
-          <attribute name='action'>win.new-list</attribute>
-          <attribute name='accel'>&lt;Primary&gt;&lt;Shift&gt;&lt;Alt&gt;n</attribute>
+          <attribute name="label" translatable="yes">New _List</attribute>
+          <attribute name="action">win.new-list</attribute>
+          <attribute name="accel">&lt;Primary&gt;&lt;Shift&gt;&lt;Alt&gt;n</attribute>
         </item>
         <item>
-          <attribute name='label' translatable='yes'>New _Word</attribute>
-          <attribute name='action'>win.new-word</attribute>
-          <attribute name='accel'>&lt;Primary&gt;n</attribute>
+          <attribute name="label" translatable="yes">New _Word</attribute>
+          <attribute name="action">win.new-word</attribute>
+          <attribute name="accel">&lt;Primary&gt;n</attribute>
         </item>
       </section>
       <section>
         <item>
-          <attribute name='label' translatable='yes'>_Save</attribute>
-          <attribute name='action'>win.save-list</attribute>
-          <attribute name='accel'>&lt;Primary&gt;s</attribute>
+          <attribute name="label" translatable="yes">_Save</attribute>
+          <attribute name="action">win.save-list</attribute>
+          <attribute name="accel">&lt;Primary&gt;s</attribute>
         </item>
         <item>
-          <attribute name='label' translatable='yes'>_Revert</attribute>
-          <attribute name='action'>win.revert-list</attribute>
-        </item>
-      </section>
-      <section>
-        <item>
-          <attribute name='label' translatable='yes'>_Import</attribute>
-          <attribute name='action'>win.import</attribute>
-        </item>
-        <item>
-          <attribute name='label' translatable='yes'>_Export</attribute>
-          <attribute name='action'>win.export</attribute>
+          <attribute name="label" translatable="yes">_Revert</attribute>
+          <attribute name="action">win.revert-list</attribute>
         </item>
       </section>
       <section>
         <item>
-          <attribute name='label' translatable='yes'>_Close</attribute>
-          <attribute name='action'>win.close</attribute>
+          <attribute name="label" translatable="yes">_Import</attribute>
+          <attribute name="action">win.import</attribute>
+        </item>
+        <item>
+          <attribute name="label" translatable="yes">_Export</attribute>
+          <attribute name="action">win.export</attribute>
+        </item>
+      </section>
+      <section>
+        <item>
+          <attribute name="label" translatable="yes">_Close</attribute>
+          <attribute name="action">win.close</attribute>
         </item>
       </section>
     </submenu>
 
     <submenu>
-      <attribute name='label' translatable='yes'>_Edit</attribute>
+      <attribute name="label" translatable="yes">_Edit</attribute>
       <section>
         <item>
-          <attribute name='label' translatable='yes'>_Reset</attribute>
-          <attribute name='action'>win.reset</attribute>
-          <attribute name='accel'>&lt;Primary&gt;z</attribute>
+          <attribute name="label" translatable="yes">_Reset</attribute>
+          <attribute name="action">win.reset</attribute>
+          <attribute name="accel">&lt;Primary&gt;z</attribute>
         </item>
       </section>
       <section>
         <item>
-          <attribute name='label' translatable='yes'>_Cut</attribute>
-          <attribute name='action'>win.cut</attribute>
-          <attribute name='accel'>&lt;Primary&gt;x</attribute>
+          <attribute name="label" translatable="yes">_Cut</attribute>
+          <attribute name="action">win.cut</attribute>
+          <attribute name="accel">&lt;Primary&gt;x</attribute>
         </item>
         <item>
-          <attribute name='label' translatable='yes'>_Copy</attribute>
-          <attribute name='action'>win.copy</attribute>
-          <attribute name='accel'>&lt;Primary&gt;c</attribute>
+          <attribute name="label" translatable="yes">_Copy</attribute>
+          <attribute name="action">win.copy</attribute>
+          <attribute name="accel">&lt;Primary&gt;c</attribute>
         </item>
         <item>
-          <attribute name='label' translatable='yes'>_Paste</attribute>
-          <attribute name='action'>win.paste</attribute>
-          <attribute name='accel'>&lt;Primary&gt;v</attribute>
+          <attribute name="label" translatable="yes">_Paste</attribute>
+          <attribute name="action">win.paste</attribute>
+          <attribute name="accel">&lt;Primary&gt;v</attribute>
         </item>
       </section>
       <section>
         <item>
-          <attribute name='label' translatable='yes'>_Delete</attribute>
-          <attribute name='action'>win.delete</attribute>
-          <attribute name='accel'>Delete</attribute>
+          <attribute name="label" translatable="yes">_Delete</attribute>
+          <attribute name="action">win.delete</attribute>
+          <attribute name="accel">Delete</attribute>
         </item>
       </section>
     </submenu>
 
     <submenu>
-      <attribute name='label' translatable='yes'>_View</attribute>
+      <attribute name="label" translatable="yes">_View</attribute>
 <!--
       <section>
         <item>
-          <attribute name='label' translatable='yes'>_Menubar</attribute>
-          <attribute name='action'>win.toggle-menubar-show</attribute>
+          <attribute name="label" translatable="yes">_Menubar</attribute>
+          <attribute name="action">win.toggle-menubar-show</attribute>
         </item>
         <item>
-          <attribute name='label' translatable='yes'>_Toolbar</attribute>
-          <attribute name='action'>win.toggle-toolbar-show</attribute>
+          <attribute name="label" translatable="yes">_Toolbar</attribute>
+          <attribute name="action">win.toggle-toolbar-show</attribute>
         </item>
       </section>
 -->
       <section>
         <item>
-          <attribute name='label' translatable='yes'>_Position Column</attribute>
-          <attribute name='action'>win.toggle-position-column-show</attribute>
+          <attribute name="label" translatable="yes">_Position Column</attribute>
+          <attribute name="action">win.toggle-position-column-show</attribute>
         </item>
         <item>
-          <attribute name='label' translatable='yes'>_Timestamp Column</attribute>
-          <attribute name='action'>win.toggle-timestamp-column-show</attribute>
+          <attribute name="label" translatable="yes">_Timestamp Column</attribute>
+          <attribute name="action">win.toggle-timestamp-column-show</attribute>
         </item>
         <item>
-          <attribute name='label' translatable='yes'>_Score Column</attribute>
-          <attribute name='action'>win.toggle-score-column-show</attribute>
+          <attribute name="label" translatable="yes">_Score Column</attribute>
+          <attribute name="action">win.toggle-score-column-show</attribute>
         </item>
       </section>
     </submenu>
 
     <item>
-      <attribute name='label'>flashcards-list-link</attribute>
+      <attribute name="label">flashcards-list-link</attribute>
     </item>
   </menu>
 </interface>

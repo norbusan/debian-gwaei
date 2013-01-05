@@ -23,17 +23,16 @@
 //! @file history.c
 //!
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#ifdef HAVE_CONFIG_H
-#include "../../config.h"
-#endif
-
-#include <gwaei/gwaei.h>
 #include <gwaei/gettext.h>
+#include <gwaei/gwaei.h>
 
 #include <gwaei/history.h>
 #include <gwaei/history-private.h>

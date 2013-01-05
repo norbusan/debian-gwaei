@@ -27,6 +27,9 @@
 //! Used as a go between for functions interacting with the console.
 //!
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <stdlib.h>
 #include <stdio.h>

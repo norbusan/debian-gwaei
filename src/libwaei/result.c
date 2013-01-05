@@ -23,6 +23,10 @@
 //!  @file result.c
 //!
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -30,6 +34,7 @@
 #include <glib.h>
 
 #include <libwaei/libwaei.h>
+#include <libwaei/gettext.h>
 
 
 

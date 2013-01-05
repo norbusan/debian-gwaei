@@ -25,15 +25,14 @@
 //! @brief To be written
 //!
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <string.h>
 #include <stdlib.h>
 
 #include <gtk/gtk.h>
-
-#ifdef HAVE_CONFIG_H
-#include "../../config.h"
-#endif
 
 #include <gwaei/gettext.h>
 #include <gwaei/gwaei.h>
@@ -1191,7 +1190,7 @@ gw_searchwindow_display_no_results_found_page (GwSearchWindow *window, LwSearch 
 
     //Add links
     char *website_url_menuitems[] = {
-      "Google", "http://www.google.com/window?q=%s", "google.png",
+      "Google", "http://www.google.com/?q=%s", "google.png",
       "Goo", "http://dictionary.goo.ne.jp/srch/all/%s/m0u/", "goo.png",
       "Wikipedia", "http://www.wikipedia.org/wiki/%s", "wikipedia.png",
       NULL, NULL, NULL
@@ -1203,7 +1202,13 @@ gw_searchwindow_display_no_results_found_page (GwSearchWindow *window, LwSearch 
       char *name = website_url_menuitems[i];
       char *url = g_strdup_printf(website_url_menuitems[i + 1], query_text);
       char *icon_path = website_url_menuitems[i + 2];
-      char *path = g_build_filename (DATADIR2, PACKAGE, icon_path, NULL);
+#ifndef G_OS_WIN32
+      gchar *path = g_build_filename (DATADIR2, PACKAGE, icon_path, NULL);
+#else
+      gchar *prefix = g_win32_get_package_installation_directory_of_module (NULL);
+      gchar *path = g_build_filename (prefix, "share", PACKAGE, icon_path, NULL);
+      g_free (prefix);
+#endif
       image = NULL;
 
       //Start creating
