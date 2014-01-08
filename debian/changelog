@@ -1,3 +1,9 @@
+gwaei (3.6.2-2) unstable; urgency=medium
+
+  * import changes from Ubuntu to use reautoconf (Closes: #734562)
+
+ -- Norbert Preining <preining@debian.org>  Wed, 08 Jan 2014 18:28:16 +0900
+
 gwaei (3.6.2-1) unstable; urgency=low
 
   * Imported Upstream version 3.6.2

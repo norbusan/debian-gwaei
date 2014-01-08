@@ -43,11 +43,13 @@ clean:
 	rm -f src/img/Makefile
 	rm -f deb/DEBIAN/control deb/DEBIAN/postinst deb/DEBIAN/prerm
 	rm -f build-stamp configure-stamp
+	dh_autoreconf_clean
 	dh_clean
 
 config: config-stamp
 config-stamp: configure
 	dh_testdir
+	dh_autoreconf
 	CFLAGS="$(CFLAGS)" ./configure --prefix=/usr	\
 		--sysconfdir=/usr/share	\
 		--mandir=/usr/share/man
