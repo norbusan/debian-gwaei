@@ -1,8 +1,9 @@
 gwaei (3.6.2-3) unstable; urgency=medium
 
   * fix missing dependency on libwaei (Closes: #715124)
+  * bump standards version, no changes necessary
 
- -- Norbert Preining <preining@debian.org>  Wed, 05 Nov 2014 13:47:33 +0900
+ -- Norbert Preining <preining@debian.org>  Wed, 05 Nov 2014 13:50:11 +0900
 
 gwaei (3.6.2-2) unstable; urgency=medium
 
