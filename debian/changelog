@@ -1,3 +1,9 @@
+gwaei (3.6.2-3) UNRELEASED; urgency=medium
+
+  * fix missing dependency on libwaei (Closes: #715124)
+
+ -- Norbert Preining <preining@debian.org>  Wed, 05 Nov 2014 13:42:45 +0900
+
 gwaei (3.6.2-2) unstable; urgency=medium
 
   * import changes from Ubuntu to use reautoconf (Closes: #734562)
