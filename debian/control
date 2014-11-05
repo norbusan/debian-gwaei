@@ -34,7 +34,7 @@ Description: Japanese-English Dictionary for GNOME
 Package: libwaei-dev
 Section: libdevel
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libwaei2 ((>= ${source:Version}), libwaei2 (<< ${source:Version}.1~)
+Depends: ${shlibs:Depends}, ${misc:Depends}, libwaei2 ((>= ${source:Upstream-Version}), libwaei2 (<< ${source:Upstream-Version}+1~)
 Description: Japanese-English Dictionary for GNOME
  gWaei is an easy to use and yet powerful full-featured
  dictionary program for Japanese to English translation.
