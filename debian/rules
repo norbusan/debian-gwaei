@@ -97,7 +97,7 @@ binary-arch: build install
 	dh_testdir
 	dh_testroot
 	dh_makeshlibs
-	dh_installchangelogs ChangeLog
+	dh_installchangelogs
 	dh_installdocs NEWS README THANKS
 	dh_installmenu
 	# should be done by the installation above
