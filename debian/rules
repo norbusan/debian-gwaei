@@ -18,9 +18,9 @@ clean:
 	dh_testdir
 	dh_testroot
 	make clean || true
-	for i in 16x16 24x24 32x32 ; do \
-	  rm -f src/images/$$i/gwaei.xpm ; \
-	done
+	#for i in 16x16 24x24 32x32 ; do \
+	#  rm -f src/images/$$i/gwaei.xpm ; \
+	#done
 	rm -f config.status Doxyfile config.h stamp-h1 config.log
 	rm -f Makefile help/gwaei.omf help/Makefile po/Makefile libtool
 	rm -f po/POTFILES po/Makefile.in rpm/rpm_gconf_install_post.sh
@@ -54,9 +54,9 @@ config-stamp: configure
 		--sysconfdir=/usr/share	\
 		--mandir=/usr/share/man
 	# convert png icons to xpm so that we can use them with menu system
-	for i in 16x16 24x24 32x32 ; do \
-	  convert src/images/$$i/gwaei.png src/images/$$i/gwaei.xpm ; \
-	done
+	#for i in 16x16 24x24 32x32 ; do \
+	#  convert src/images/$$i/gwaei.png src/images/$$i/gwaei.xpm ; \
+	#done
 	touch config-stamp
 
 build: build-arch build-indep
@@ -81,13 +81,13 @@ install: build
 	rm -f $(CURDIR)/debian/$(PACKAGE)/usr/share/doc/gwaei/ChangeLog
 	#
 	# install additional xpm icons
-	dh_installdirs usr/share/pixmaps
-	cp src/images/16x16/gwaei.xpm \
-		$(CURDIR)/debian/$(PACKAGE)/usr/share/pixmaps/gwaei_16x16.xpm
-	cp src/images/32x32/gwaei.xpm \
-		$(CURDIR)/debian/$(PACKAGE)/usr/share/pixmaps/gwaei_32x32.xpm
-	cp src/images/24x24/gwaei.xpm \
-		$(CURDIR)/debian/$(PACKAGE)/usr/share/pixmaps/gwaei.xpm
+	#dh_installdirs usr/share/pixmaps
+	#cp src/images/16x16/gwaei.xpm \
+	#	$(CURDIR)/debian/$(PACKAGE)/usr/share/pixmaps/gwaei_16x16.xpm
+	#cp src/images/32x32/gwaei.xpm \
+	#	$(CURDIR)/debian/$(PACKAGE)/usr/share/pixmaps/gwaei_32x32.xpm
+	#cp src/images/24x24/gwaei.xpm \
+	#	$(CURDIR)/debian/$(PACKAGE)/usr/share/pixmaps/gwaei.xpm
 
 # Build architecture-independent files here.
 binary-indep: build install
@@ -99,7 +99,7 @@ binary-arch: build install
 	dh_makeshlibs
 	dh_installchangelogs
 	dh_installdocs NEWS README THANKS
-	dh_installmenu
+	#dh_installmenu
 	# should be done by the installation above
 	#dh_installman mandir/gwaei.1 mandir/waei.1
 	dh_gconf

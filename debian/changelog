@@ -1,10 +1,11 @@
 gwaei (3.6.2-3) unstable; urgency=medium
 
   * fix missing dependency on libwaei (Closes: #715124)
-  * bump standards version, no changes necessary
   * use debhelper compat version 9
+  * bump standards version:
+    - stop shipping menu files, deprecated 
 
- -- Norbert Preining <preining@debian.org>  Sat, 05 Nov 2016 16:47:04 +0900
+ -- Norbert Preining <preining@debian.org>  Sat, 05 Nov 2016 16:52:17 +0900
 
 gwaei (3.6.2-2) unstable; urgency=medium
 
