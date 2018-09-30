@@ -1,3 +1,10 @@
+gwaei (3.6.2-5) unstable; urgency=medium
+
+  * add VCS fields
+  * disable scrollkeeper, fix ftbfs (Closes: #885654)
+
+ -- Norbert Preining <preining@debian.org>  Mon, 01 Oct 2018 08:00:36 +0900
+
 gwaei (3.6.2-4) unstable; urgency=medium
 
   * drop rarian-compat from build deps (Closes: #885654)

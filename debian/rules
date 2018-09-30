@@ -52,7 +52,8 @@ config-stamp: configure
 	dh_autoreconf
 	CFLAGS="$(CFLAGS)" ./configure --prefix=/usr	\
 		--sysconfdir=/usr/share	\
-		--mandir=/usr/share/man
+		--mandir=/usr/share/man \
+		--disable-scrollkeeper
 	# convert png icons to xpm so that we can use them with menu system
 	#for i in 16x16 24x24 32x32 ; do \
 	#  convert src/images/$$i/gwaei.png src/images/$$i/gwaei.xpm ; \
