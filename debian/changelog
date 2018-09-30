@@ -1,3 +1,11 @@
+gwaei (3.6.2-4) unstable; urgency=medium
+
+  * drop rarian-compat from build deps (Closes: #885654)
+  * don't use dh_gconf (Closes: #908881)
+  * bump standards version, no changes necessary
+
+ -- Norbert Preining <preining@debian.org>  Sun, 30 Sep 2018 22:27:25 +0900
+
 gwaei (3.6.2-3) unstable; urgency=medium
 
   * fix missing dependency on libwaei (Closes: #715124)
