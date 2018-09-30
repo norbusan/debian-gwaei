@@ -102,7 +102,6 @@ binary-arch: build install
 	#dh_installmenu
 	# should be done by the installation above
 	#dh_installman mandir/gwaei.1 mandir/waei.1
-	dh_gconf
 	dh_makeshlibs
 	dh_strip
 	dh_compress
