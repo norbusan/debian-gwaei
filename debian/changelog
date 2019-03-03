@@ -1,3 +1,9 @@
+gwaei (3.6.2-6) unstable; urgency=medium
+
+  * update VCS and email
+
+ -- Norbert Preining <norbert@preining.info>  Sun, 03 Mar 2019 09:26:40 +0900
+
 gwaei (3.6.2-5) unstable; urgency=medium
 
   * add VCS fields
