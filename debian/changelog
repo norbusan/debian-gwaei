@@ -1,3 +1,10 @@
+gwaei (3.6.2-7) experimental; urgency=medium
+
+  * Fix FTCBFS: Let dh_auto_configure pass --host to ./configure.
+    Patch by Helmut Grohne, thanks. (Closes: #928848)
+
+ -- Norbert Preining <norbert@preining.info>  Mon, 13 May 2019 10:06:00 +0900
+
 gwaei (3.6.2-6) unstable; urgency=medium
 
   * update VCS and email

@@ -50,9 +50,9 @@ config: config-stamp
 config-stamp: configure
 	dh_testdir
 	dh_autoreconf
-	CFLAGS="$(CFLAGS)" ./configure --prefix=/usr	\
+	CFLAGS="$(CFLAGS)" dh_auto_configure --	\
 		--sysconfdir=/usr/share	\
-		--mandir=/usr/share/man \
+		--libdir='$${prefix}/lib' \
 		--disable-scrollkeeper
 	# convert png icons to xpm so that we can use them with menu system
 	#for i in 16x16 24x24 32x32 ; do \
