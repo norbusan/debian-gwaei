@@ -1,3 +1,9 @@
+gwaei (3.6.2-8) unstable; urgency=medium
+
+  * Upload to unstable
+
+ -- Norbert Preining <norbert@preining.info>  Wed, 10 Jul 2019 18:26:43 +0900
+
 gwaei (3.6.2-7) experimental; urgency=medium
 
   * Fix FTCBFS: Let dh_auto_configure pass --host to ./configure.
