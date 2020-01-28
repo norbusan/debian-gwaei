@@ -1,3 +1,11 @@
+gwaei (3.6.2-9) UNRELEASED; urgency=medium
+
+  * Trim trailing whitespace.
+  * Bump debhelper from old 9 to 10.
+  * Use canonical URL in Vcs-Git.
+
+ -- Debian Janitor <janitor@jelmer.uk>  Tue, 28 Jan 2020 16:21:47 +0000
+
 gwaei (3.6.2-8) unstable; urgency=medium
 
   * Upload to unstable
@@ -37,7 +45,7 @@ gwaei (3.6.2-3) unstable; urgency=medium
   * fix missing dependency on libwaei (Closes: #715124)
   * use debhelper compat version 9
   * bump standards version:
-    - stop shipping menu files, deprecated 
+    - stop shipping menu files, deprecated
 
  -- Norbert Preining <preining@debian.org>  Sat, 05 Nov 2016 16:52:17 +0900
 
