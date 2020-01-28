@@ -1,6 +1,7 @@
 gwaei (3.6.2-9) UNRELEASED; urgency=medium
 
   * Trim trailing whitespace.
+  * Bump debhelper from old 9 to 10.
 
  -- Debian Janitor <janitor@jelmer.uk>  Tue, 28 Jan 2020 16:21:47 +0000
 
