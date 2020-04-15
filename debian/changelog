@@ -1,10 +1,14 @@
-gwaei (3.6.2-9) UNRELEASED; urgency=medium
+gwaei (3.6.2-9) unstable; urgency=medium
 
+  [ Debian Janitor ]
   * Trim trailing whitespace.
   * Bump debhelper from old 9 to 10.
   * Use canonical URL in Vcs-Git.
 
- -- Debian Janitor <janitor@jelmer.uk>  Tue, 28 Jan 2020 16:21:47 +0000
+  [ Norbert Preining ]
+  * switch to yelp (Closes: #947532)
+
+ -- Norbert Preining <norbert@preining.info>  Thu, 16 Apr 2020 06:28:36 +0900
 
 gwaei (3.6.2-8) unstable; urgency=medium
 
