@@ -2,7 +2,7 @@ Source: gwaei
 Section: gnome
 Priority: optional
 Maintainer: Norbert Preining <norbert@preining.info>
-Build-Depends: libcurl4-gnutls-dev | libcurl4-openssl-dev, libgtk-3-dev (>= 3.3.0), yelp-tools, debhelper (>= 10~), libncurses5-dev, libncursesw5-dev, imagemagick, intltool, gsettings-desktop-schemas, libhunspell-dev, libmecab-dev
+Build-Depends: libcurl4-gnutls-dev | libcurl4-openssl-dev, libgtk-3-dev (>= 3.3.0), yelp-tools, debhelper, libncurses5-dev, libncursesw5-dev, imagemagick, intltool, gsettings-desktop-schemas, libhunspell-dev, libmecab-dev
 Standards-Version: 4.2.1
 Homepage: http://www.zacharydovel.com/software/gwaei
 Vcs-Browser: https://github.com/norbusan/debian-gwaei
