@@ -1,3 +1,10 @@
+gwaei (3.6.2-10) UNRELEASED; urgency=medium
+
+  * Remove constraints unnecessary since buster:
+    + Build-Depends: Drop versioned constraint on debhelper.
+
+ -- Debian Janitor <janitor@jelmer.uk>  Tue, 24 Aug 2021 18:09:52 -0000
+
 gwaei (3.6.2-9) unstable; urgency=medium
 
   [ Debian Janitor ]
