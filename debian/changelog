@@ -1,3 +1,10 @@
+gwaei (3.6.2-10) UNRELEASED; urgency=medium
+
+  * Remove constraints unnecessary since buster:
+    + Build-Depends: Drop versioned constraint on libgtk-3-dev.
+
+ -- Debian Janitor <janitor@jelmer.uk>  Mon, 18 Oct 2021 03:32:30 -0000
+
 gwaei (3.6.2-9) unstable; urgency=medium
 
   [ Debian Janitor ]
